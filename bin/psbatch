@@ -54,6 +54,10 @@ then
 		--error "${logdir}/${name}.err")
 fi
 
+# only Infiniband nodes work with /scratch, the Myrinet nodes hang
+# See ITS RITM0188766
+args+=(--constraint "IB")
+
 CONSTRAINT="$(constraint "${arch}")" 
 if [ -n "${CONSTRAINT}" ]
 then
