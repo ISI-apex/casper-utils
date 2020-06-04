@@ -4,8 +4,8 @@
 #SBATCH --constraint=IB
 #SBATCH --time=23:59:00
 #SBATCH --oversubscribe
-#SBATCH --output logs/glprefix.out
-#SBATCH --error logs/glprefix.err
+#SBATCH --output glprefix.out
+#SBATCH --error glprefix.err
 
 # For testing in shell:
 # 	salloc -N1 --ntasks=24 --time=00:15:00
