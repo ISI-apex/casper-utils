@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=12
+#SBATCH --constraint=IB
 #SBATCH --time=23:59:00
 #SBATCH --oversubscribe
 #SBATCH --output logs/glprefix.out
