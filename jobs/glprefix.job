@@ -68,6 +68,7 @@ export DISTDIR="$STG/distfiles"
 export USE_CPU_CORES=$JOBS
 export TODO=noninteractive
 export OFFLINE_MODE=1
+export SNAPSHOT_DATE=20200330
 
 ## Workaround for failure to create a symlink at end of stage1
 mkdir -p $ROOT/tmp/var/db/repos/
