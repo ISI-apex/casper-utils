@@ -1,0 +1,3 @@
+[submodule "prefix"]
+	path = prefix
+	url = https://github.com/acolinisi/gentoo-prefix.git
