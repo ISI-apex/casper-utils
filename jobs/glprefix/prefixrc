@@ -1,0 +1,62 @@
+# Initialize prefix environment on HPCC worker or login node
+
+# Directory with tarballs shared among prefixes
+#P_DISTDIR=/staging/jnw2/acolin/casper/distfiles
+#P_DISTDIR=/scratch/acolin/casper/distfiles
+
+# These names don't strictly matter, the UID/GID is taken from the prefix
+# dir, but set them to match the host so that ls output is consistent.
+#P_GROUP=lc_jnw2
+#P_USER=acolin
+
+# The .prefixrc file should be located in the root dir of the prefix tree
+EPREFIX="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+if [ ! -f "${EPREFIX}"/.prefixvars ]
+then
+	echo "ERROR: .prefixvars with variable definitions not found" 1>&2
+	exit 1
+fi
+source "${EPREFIX}"/.prefixvars
+
+if [ -z "${P_DISTDIR}" ]
+then
+	echo "ERROR: P_DISTDIR not set in .prefixvars" 1>&2
+	exit 1
+fi
+if [ -z "${P_USER}" ]
+then
+	echo "ERROR: P_USER not set in .prefixvars" 1>&2
+	exit 1
+fi
+if [ -z "${P_GROUP}" ]
+then
+	echo "ERROR: P_GROUP not set in .prefixvars" 1>&2
+	exit 1
+fi
+
+echo TMPDIR "$TMPDIR"
+
+if [ -n "$TMPDIR" ]
+then
+	portage_tmpdir="${TMPDIR}"
+else
+	portage_tmpdir="${EPREFIX}/var/tmp"
+fi
+if ! grep -q '^PORTAGE_TMPDIR=' "${EPREFIX}"/etc/portage/make.conf
+then # add
+	echo "PORTAGE_TMPDIR=\"${portage_tmpdir}\"" >> "${EPREFIX}"/etc/portage/make.conf
+else # replace
+	sed -i "s@^PORTAGE_TMPDIR=.*@PORTAGE_TMPDIR=\"${portage_tmpdir}\"@" "${EPREFIX}"/etc/portage/make.conf
+fi
+unset portage_tmpdir
+cat  "${EPREFIX}"/etc/portage/make.conf
+sed -i "s@DISTDIR=.*@DISTDIR=${P_DISTDIR}@" "${EPREFIX}"/etc/portage/make.conf
+sed -i "s@MAKEOPTS=\"\(.*\)-j[0-9]\+\(.*\)\"@MAKEOPTS=\"\1-j$(nproc)\2\"@" "${EPREFIX}"/etc/portage/make.conf
+
+sed -i "/^${P_GROUP}:/d" "${EPREFIX}"/etc/group
+stat -c '${P_GROUP}:x:%g:' "${EPREFIX}"  >> "${EPREFIX}"/etc/group
+sed -i "s/^${P_USER}:x:[0-9]\+:[0-9]\+:/${P_USER}:x:$(stat -c '%u' ${EPREFIX}):$(stat -c '%g' ${EPREFIX}):/" "${EPREFIX}"/etc/passwd
+
+source "${EPREFIX}"/etc/profile
+source $HOME/.bashrc

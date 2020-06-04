@@ -1,0 +1,22 @@
+--- startprefix.orig	2020-05-30 14:44:24.000000000 -0700
++++ startprefix	2020-05-30 14:45:00.000000000 -0700
+@@ -68,6 +68,19 @@
+ 	# some Windows programs (e.g. devenv.exe) need TMP or TEMP
+ 	[[ -n ${TEMP} ]] && RETAIN+=" TEMP=$TEMP"
+ fi
++# retain variables optinally listed in a file
++ENV_FILE="${ENV_FILE:-${EPREFIX}/.prefixenv}"
++if [[ -f "${ENV_FILE}" ]]
++then
++       VAR_NAMES=( $(cat "${ENV_FILE}" | sed -e '/^#.*/d' -e '/^\s*$/d') )
++       ENV_VARS=()
++       for var in ${VAR_NAMES[@]}
++       do
++               [[ -v "${var}" ]] && ENV_VARS+=(${var}="${!var}")
++       done
++       RETAIN+=" ${ENV_VARS[@]}"
++fi
++echo RETAIN "${RETAIN}"
+ # do it!
+ if [[ ${SHELL#${EPREFIX}} != ${SHELL} ]] ; then
+ 	'/scratch/acolin/casper/gpref/gp-skylake/usr/bin/env' -i $RETAIN $SHELL --rcfile "${EPREFIX}"/.prefixrc -i "$@"

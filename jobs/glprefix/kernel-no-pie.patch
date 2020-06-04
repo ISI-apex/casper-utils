@@ -1,0 +1,11 @@
+--- a/arch/x86/Makefile	2020-04-18 00:25:17.196817814 -0000
++++ b/arch/x86/Makefile	2020-04-18 00:26:23.905871736 -0000
+@@ -79,6 +79,8 @@
+ 
+         KBUILD_CFLAGS += -mno-red-zone
+         KBUILD_CFLAGS += -mcmodel=kernel
++	# In newer gcc (e.g. 9.3+), PIE is default, not compatible with cmodel=kernel
++	KBUILD_CFLAGS += -fno-pie
+ 
+         # -funit-at-a-time shrinks the kernel .text considerably
+         # unfortunately it makes reading oopses harder.

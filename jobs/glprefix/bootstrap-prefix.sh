@@ -1,0 +1,1 @@
+../../prefix/scripts/bootstrap-prefix.sh

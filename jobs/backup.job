@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -x
+set -e
+
+PDIR="${PDIR:-/scratch/acolin/casper/gpref}"
+PREFIX="${PREFIX:-gp-amd64}"
+
+TIMESTAMP=$(date +%Y%m%d)
+
+package() {
+	local name="$1"
+	shift 1
+	echo "Compressing ${name}: $@"
+	TARBALL=${PREFIX}-${name}-${TIMESTAMP}.tar.lz4
+	tar -C "${PDIR}" -c "$@" | lz4 -z - "${TMPDIR}/${TARBALL}"
+	cp -a "${TMPDIR}/${TARBALL}" "${PDIR}/${TARBALL}"
+	rm "${TMPDIR}/${TARBALL}"
+}
+
+package portage ${PREFIX}/etc/portage ${PREFIX}/var/db/repos 
+package full ${PREFIX}
