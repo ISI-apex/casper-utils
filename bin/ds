@@ -1,0 +1,6 @@
+#!/staging/jnw2/acolin/casper/glprefix/usr/bin/python
+
+import pandas as pd
+
+d = pd.read_csv(sys.argv[0])
+print(d)

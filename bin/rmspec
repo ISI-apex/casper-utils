@@ -1,0 +1,12 @@
+#!/staging/jnw2/acolin/casper/glprefix/usr/bin/python
+
+import os
+import sys
+
+d = sys.argv[1]
+for fname in os.listdir(d):
+	print("remove?: ", fname)
+	ans = sys.stdin.readline()
+	if ans.strip().lower() in ["y", "yes"]:
+		os.remove(os.path.join(d,fname))
+

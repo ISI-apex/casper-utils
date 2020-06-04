@@ -1,0 +1,155 @@
+#!/bin/bash
+
+# Wrapper for {emerge,ebuild,equery} that flattens commands into a simple iface.
+
+set -e
+
+dorun() {
+	if [ -n "${env_vars}" ]
+	then
+		echo env "${env_vars}" "$@"
+		${EXEC} env "${env_vars}" "$@"
+	else
+		echo "$@"
+		${EXEC} "$@"
+	fi
+}
+run() {
+	EXEC= dorun "$@"
+}
+rune() {
+	EXEC=exec dorun "$@"
+}
+
+usage() {
+	echo "USAGE: $0 -e pkg command [args]"
+	echo "  -e: preserve temp/environment file"
+}
+
+ebuild_args=()
+options=$(getopt -o ed -- "$@")
+[ $? -eq 0 ] || {
+	usage 1>&2
+	exit 1
+}
+eval set -- "$options"
+while true
+do
+	case "$1" in
+		-e) preserve_env=1;;
+		-d) ebuild_args+=(--debug);;
+		--) shift; break;;
+	esac
+	shift
+done
+if [[ "$#" -lt 2 ]]
+then
+	usage 1>&2
+	exit 1
+fi
+
+pkg=$1
+cmd_abv=$2
+shift 2
+
+if [ ! -f "$PWD/metadata/layout.conf" ]
+then
+	echo "ERROR: not in a repo dir: $PWD" 1>&2
+	exit 1
+fi
+
+# Latest version is not quite the last in alphanumeric sort order (up to -rN)
+set -- ${pkg}/*.ebuild
+if [ ! -f "$1" ]
+then
+	echo "ERROR: .ebuild file not found" 1>&2
+	exit 1
+fi
+pkg_ebuild="$(echo "$@" | xargs -n 1 echo | sed 's/.ebuild$//' | sort | tail -1).ebuild"
+pkgver=$(echo "${pkg_ebuild}" | sed 's/.*-\([0-9.]\+\(_[0-9a-z]\+\)\?\(-r[0-9]\+\)\?\).ebuild/\1/')
+TMPDIR=$(bash -c "source ${EP}/etc/portage/make.conf && echo \$PORTAGE_TMPDIR")
+bld_dir="${TMPDIR}/portage/${pkg}-${pkgver}"
+
+case "$cmd_abv" in
+em*k)
+	env_vars=FEATURES="${FEATURES} keepwork"
+	;&
+em*)
+	run ebuild "${pkg_ebuild}" manifest
+	rune emerge --ask "${pkg}" "$@"
+	;;
+fi*)
+	rune equery files "$@" "${pkg}"
+	;;
+l*)
+	rune equery list "$@" "${pkg}"
+	;;
+eq*)
+	rune equery "$@" "${pkg}"
+	;;
+im*)
+	cd "${bld_dir}/image"
+	rune find . "$@"
+	;;
+# ebuild subcommands
+ma*)
+	rune ebuild "${pkg_ebuild}" manifest
+	;;
+cl*) cmd="clean" ;;
+fe*) cmd="fetch" ;;
+unp*) cmd="unpack" ;;
+p*) cmd="prepare" ;;
+conf*) cmd="configure" ;;
+comp*) cmd="compile" ;;
+in*) cmd="install" ;;
+t*) cmd="test" ;;
+qm*)
+	cmd="qmerge"
+	feat+=" keepwork"
+	;;
+me*)
+	cmd="merge"
+	feat+=" keepwork"
+	;;
+unm*) cmd="unmerge" ;;
+*)
+	echo "ERROR: unrecognized command: $cmd_abv" 1>&2
+	exit 1
+	;;
+esac
+
+# handle the ebuild subcommands (other than 'manifest')
+
+run ebuild "${pkg_ebuild}" manifest
+
+if [[ "${cmd}" = *e ]]
+then
+	step=${cmd}d
+else
+	step=${cmd}ed
+fi
+
+step_file="${bld_dir}/.${step}"
+if [ -f "${step_file}" ]
+then
+	run rm "${step_file}"
+fi
+
+env_file="${bld_dir}/temp/environment"
+if [ -z "${preserve_env}" -a -f "${env_file}" ]
+then
+	run rm "${env_file}"
+fi
+
+if [ ! -f "${pkg_ebuild}" ]
+then
+	echo "ERROR: ebuild file not found: ${pkg_ebuild}" 1>&2
+	exit 1
+fi
+
+if [ -n "${feat}" ]
+then
+	env_vars=FEATURES="${FEATURES} ${feat}"
+fi
+
+rune ebuild ${ebuild_args[@]} "${pkg_ebuild}" "${cmd}"

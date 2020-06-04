@@ -1,0 +1,120 @@
+#!/bin/bash
+
+set -e
+
+self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "${self_dir}"/pscommon.sh
+
+if [[ "$#" -lt 7 ]]
+then
+	echo "Usage: $0 prefix arch mem_per_cpu nodes num_tasks max_time command arg..." 1>&2
+	exit 1
+fi
+
+eprefix=$1
+arch=$2
+gpu=$3
+mem_per_cpu=$4
+nodes=$5
+tasks=$6
+max_time=$7
+shift 7
+
+sbatch_args=()
+while [[ "$1" = -* ]]
+do
+	sbatch_args+=("$1")
+	shift
+done
+
+logdir="${eprefix}"/var/log/sjobs
+mkdir -p "${logdir}"
+
+name="j-$(echo "$@" | sed -e 's/\s\+/_/g' -e 's@/@-@g' | cut -c1-128)_$(date +%Y%m%d%H%M%S)_$$"
+
+args=(--nodes "${nodes}" --ntasks "${tasks}"
+	--mem-per-cpu "${mem_per_cpu}"
+	--time "${max_time}")
+
+for arg in ${sbatch_args[@]}
+do
+	echo "OUTPUT ARG: $arg"
+	if [[ "${arg}" = --output* ]]
+	then
+		echo "FOUND OUTPUT ARG: $arg"
+		log_args_found=1
+		break
+	fi
+done
+
+if [ -z "${log_args_found}" ]
+then
+	echo "FOOOOO"
+	args+=(--output "${logdir}/${name}.out"
+		--error "${logdir}/${name}.err")
+fi
+
+CONSTRAINT="$(constraint "${arch}")" 
+if [ -n "${CONSTRAINT}" ]
+then
+	args+=(--constraint "${CONSTRAINT}")
+fi
+if [ -n "${gpu}" ]
+then
+	args+=(--gres "gpu:${gpu}")
+fi
+PCMD=$@
+# sbatch's CLI parsing doesn't support quoting, so can't pass command strings
+#cmd=(sbatch "${args[@]}" ./startprefix -c \'$PCMD\')
+tmpscr="${logdir}"/${name}.sh
+cat <<EOF > $tmpscr
+#!/bin/bash
+# When bash invoked with -c, it does not load rcfile
+"${eprefix}"/startprefix -c "source "${eprefix}"/${RCFILE} && $PCMD"
+EOF
+chmod +x "${tmpscr}"
+echo "${tmpscr}": && cat "${tmpscr}"
+cmd=(sbatch "${args[@]}" "${sbatch_args[@]}" "${tmpscr}")
+echo "${cmd[@]}"
+out=$(${cmd[@]})
+echo "$out"
+jobid=$(echo "$out" | sed 's/^Submitted batch job \([0-9]\+\)$/\1/')
+echo "Job ID: $jobid"
+
+if [ -n "${NONBLOCK}" ]
+then
+	echo "EXITING: non-block mode enabled"
+	exit 0
+fi
+
+while true # while job state is not 'running'
+do
+	cmd=(squeue -j ${jobid})
+	run "${cmd[@]}"
+	state=$(${cmd[@]} -o '%t' --noheader)
+	if [ -z "$state" ]
+	then
+		echo "Job finished"
+		finished=1
+		break
+	fi
+	if [[ "$state" = "R" ]]
+	then
+		break
+	fi
+	sleep 60
+done
+
+logs=("${logdir}"/${name}.{out,err})
+if [ -z "$finished" ]
+then
+	while ! test -f "${logs[0]}" -a -f "${logs[1]}"
+	do
+		echo "Waiting for log files to be created..."
+		sleep 10
+	done
+	cat "${logs[@]}"
+	run tail -f "${logs[@]}"
+else
+	cat "${logs[@]}"
+fi
