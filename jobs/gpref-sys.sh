@@ -61,6 +61,8 @@ export USE_CPU_CORES=$JOBS
 export TODO=noninteractive
 export OFFLINE_MODE=$OFFLINE_MODE
 export SNAPSHOT_DATE=20200330
+# TODO: have single date for both gentoo-*.tar.bz2 and portage-*.tar.gz2
+export SNAPSHOT_PORTAGE_DATE=20200211
 
 ## Workaround for failure to create a symlink at end of stage1
 mkdir -p $ROOT/tmp/var/db/repos/
