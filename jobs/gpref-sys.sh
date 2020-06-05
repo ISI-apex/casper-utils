@@ -78,6 +78,12 @@ prun() {
 	run "$ROOT"/startprefix -c "command $1 </dev/null"
 }
 
+# Temporary patch to allow prun; later patched package re-installed
+sed -i 's:\(env. -i $RETAIN $SHELL\) -l:\1 --rcfile "${EPREFIX}"/.prefixrc -i "$@":' "$ROOT"/startprefix
+sed -i '$ i\RC=$?' "$ROOT"/startprefix
+echo 'exit $RC' >> "$ROOT"/startprefix
+patch -p1 "$ROOT"/startprefix ${FILES}/startprefix.patch
+
 # When run in offline mode, bootstrap script disables fetching: re-enable
 sed -i '/^FETCH_COMMAND=/d' "$ROOT/etc/portage/make.conf"
 
@@ -112,9 +118,3 @@ ln -sf kernels/${kver} "$ROOT"/usr/src/linux
 pushd "$ROOT"/usr/src/linux
 patch -p1 < "${FILES}"/kernel-no-pie.patch
 popd
-
-# Temporary patch to allow prun; later patched package re-installed
-sed -i 's:\(env. -i $RETAIN $SHELL\) -l:\1 --rcfile "${EPREFIX}"/.prefixrc -i "$@":' "$ROOT"/startprefix
-sed -i '$ i\RC=$?' "$ROOT"/startprefix
-echo 'exit $RC' >> "$ROOT"/startprefix
-patch -p1 "$ROOT"/startprefix ${FILES}/startprefix.patch
