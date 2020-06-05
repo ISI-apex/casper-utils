@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [[ ! -e "${OVERLAY_PATH}" ]]
 then
 	echo "ERROR: OVERLAY_PATH var not pointing to ebuilds repo" 1>&2
