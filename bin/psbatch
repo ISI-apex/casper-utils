@@ -49,7 +49,6 @@ done
 
 if [ -z "${log_args_found}" ]
 then
-	echo "FOOOOO"
 	args+=(--output "${logdir}/${name}.out"
 		--error "${logdir}/${name}.err")
 fi
