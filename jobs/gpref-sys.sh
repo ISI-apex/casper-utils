@@ -69,6 +69,15 @@ mkdir -p $ROOT/tmp/var/db/repos/
 
 "${FILES}"/bootstrap-prefix.sh
 
+run() {
+	echo "$@"
+	"$@"
+}
+
+prun() {
+	run "$ROOT"/startprefix -c "command $1 </dev/null"
+}
+
 # When run in offline mode, bootstrap script disables fetching: re-enable
 sed -i '/^FETCH_COMMAND=/d' "$ROOT/etc/portage/make.conf"
 

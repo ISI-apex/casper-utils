@@ -33,8 +33,14 @@ priority = 51
 location = $ROOT/${REPO_PATH}
 EOF
 
+run() {
+	echo "$@"
+	"$@"
+}
+
 prun() {
-	"$ROOT"/startprefix -c "$1"
+	# prevent emerge alias (if any) from braking non-interactive script
+	run "$ROOT"/startprefix -c "command $1 </dev/null"
 }
 
 # Remove python-2.7, gcc-9.2 and a few other unnecessary leftovers
