@@ -11,6 +11,7 @@ CASPER_UTILS=$(realpath ${SELF_DIR}/..)
 
 export DIST_PATH=${CASPER_UTILS}/distfiles
 export OVERLAY_PATH=${CASPER_UTILS}/casper-ebuilds
+export OFFLINE_MODE=1
 
 # for constraint() function
 source ${CASPER_UTILS}/bin/pscommon.sh

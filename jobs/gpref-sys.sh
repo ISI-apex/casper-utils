@@ -59,7 +59,7 @@ export DISTDIR="${DIST_PATH}/distfiles"
 
 export USE_CPU_CORES=$JOBS
 export TODO=noninteractive
-export OFFLINE_MODE=1
+export OFFLINE_MODE=$OFFLINE_MODE
 export SNAPSHOT_DATE=20200330
 
 ## Workaround for failure to create a symlink at end of stage1
