@@ -6,9 +6,12 @@ set -e
 # configured with CASPER overlay, but do not want to build the numerical
 # libraries.
 
-STG_HOME=/scratch/acolin/casper
-export DIST_PATH=${STG_HOME}/distfiles
-export OVERLAY_PATH=${STG_HOME}/casper-utils/casper-ebuilds
+SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+CASPER_UTILS=$(realpath ${SELF_DIR}/..)
+
+export DIST_PATH=${CASPER_UTILS}/distfiles
+export OVERLAY_PATH=${CASPER_UTILS}/casper-ebuilds
+
 
 PPATH=$1
 if [ -z "${PPATH}" ]
@@ -17,9 +20,14 @@ then
 	exit 1
 fi
 PPATH=$(realpath "${PPATH}")
-PROFILE=${2:-casper-usc-hpcc-amd64}
+PROFILE=$2
+ARCH=$3
+if [[ -z "${PROFILE}" || -z "${ARCH}" ]]
+then
+	echo "ERROR: usage: $0 prefix_path profile arch" 1>&2
+	exit 1
+fi
 
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 LOGDIR="${PPATH}"/var/log/prefix
 mkdir -p "${LOGDIR}"
 
