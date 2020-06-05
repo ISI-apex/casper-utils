@@ -12,6 +12,8 @@ CASPER_UTILS=$(realpath ${SELF_DIR}/..)
 export DIST_PATH=${CASPER_UTILS}/distfiles
 export OVERLAY_PATH=${CASPER_UTILS}/casper-ebuilds
 
+# for constraint() function
+source ${CASPER_UTILS}/bin/pscommon.sh
 
 PPATH=$1
 if [ -z "${PPATH}" ]
@@ -34,7 +36,7 @@ mkdir -p "${LOGDIR}"
 # Constrain to Infiniband nodes, because Myrinet nodes hang on /scratch
 # Note that this is not limiting to 12 threads; the job uses nproc;
 # we could pass 1 here, but be nice and declare resources ("at least N").
-ARGS+=(--nodes=1 --ntasks=12 --constraint=IB)
+ARGS+=(--nodes=1 --ntasks=12 --constraint=$(constraint ${ARCH}))
 
 # Split jobs because on USC HPCC max limit for a single job is 24h
 
