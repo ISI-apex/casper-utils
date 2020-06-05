@@ -55,7 +55,7 @@ export SHELL="${TMP_HOME}/bin/bash"
 rm -rf "$ROOT"
 
 export PORTAGE_TMPDIR="${TMP_HOME}"
-export DISTDIR="${DIST_PATH}/distfiles"
+export DISTDIR="${DIST_PATH}"
 
 export USE_CPU_CORES=$JOBS
 export TODO=noninteractive
