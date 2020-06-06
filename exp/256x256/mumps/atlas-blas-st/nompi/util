@@ -1,0 +1,4 @@
+during assembly: one core
+during solve all 32 cores at about 50% each
+during plot: one core
+

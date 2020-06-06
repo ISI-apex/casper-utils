@@ -1,0 +1,1 @@
+for np in 1 2 4 8 16 32; do sh -c "mpirun -np $np python demo_cavity.py  2>&1 | tee meas/256x256/mumps/atlas-blas-st/mpi/np$np.log"; done

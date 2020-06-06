@@ -1,0 +1,1 @@
+for t in 1 2; do sh -c "python demo_cavity.py  2>&1 | tee meas/256x256/mumps/atlas-blas-mt/nompi/tr$t.log"; done

@@ -1,0 +1,4 @@
+32 is with --oversubscribed, otherwise mpirun rejects
+
+with np 1, 2 each process forks of 2 threads (2 threads total per process)
+with np 4+ we have 16 threads per process

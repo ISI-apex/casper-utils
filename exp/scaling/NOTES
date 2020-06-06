@@ -1,0 +1,46 @@
+superlu 1024 npc 1 with 1 tasks -- fault
+superlu 1024 npc 1 with 2 tasks -- ? >2hr
+superlu 1024 npc 1 with 4 tasks -- success
+superlu 1024 npc 1 with 8 tasks -- success
+superlu 1024 npc 1 with 16 tasks -- success
+superlu 1024 npc 1 with 32 tasks -- success
+
+superlu 1024 npc 2 with 8 tasks -- success
+superlu 1024 npc 2 with 16 tasks -- success
+.... 32,64 -- success
+
+# does it help if each slice is smaller? (slices per node constant)
+superlu 1024 npc 4 with 8 tasks -- fault
+superlu 1024 npc 4 with 16 tasks -- fault
+superlu 1024 npc 4 with 32 tasks -- success!
+superlu 1024 npc 4 with 64 tasks -- success
+superlu 1024 npc 4 with 128 tasks -- success
+
+superlu 1024 npc 8 with 32,64 -- failed
+superlu 1024 npc 8 with 128 tasks -- failed
+superlu 1024 npc 8 with 256 tasks -- failed
+superlu 1024 npc 8 with 512 tasks -- failed
+superlu 1024 npc 8 with 768 tasks -- failed
+
+TODO: superlu 2048
+* does 2048 fit inside 30G per task, like 1024 does?
+N=1,2,4,8: ntasks 32-128: all segfault
+
+MUMPS: attempts at 3072
+* N=4 -- diverged
+* N=2 -- diverged
+* N=8 -- diverged with 96 nodes
+env NTASKS=96 SOLVERS=mumps NTASKS_PER_NODE=1 MESHES=3072 bash jobs/su-scaling.sh 02:00:00
+env NTASKS=256 SOLVERS=mumps NTASKS_PER_NODE=2 MESHES=3072 bash jobs/su-scaling.sh 02:00:00
+env NTASKS=64 SOLVERS=mumps NTASKS_PER_NODE=2 MESHES=3072 bash jobs/su-scaling.sh 02:00:00
+env NTASKS=512,768 SOLVERS=mumps NTASKS_PER_NODE=4 MESHES=3072 bash jobs/su-scaling.sh 02:00:00
+^ all of the above failed to converge
+
+mumps 3072, 16x16 extent of mesh -- WIP
+* N=128 -- diverged
+* N=256 -- diverged
+* N=512 -- diverged
+
+MUMPS: datapoints for mesh 2560: ntasks=256,512,768 TPN=8 -- done
+
+pastix: N=1 with 32,64,96 ntasks -- all killed with SIGKILL
