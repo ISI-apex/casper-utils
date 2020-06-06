@@ -87,6 +87,11 @@ patch -p1 "$ROOT"/startprefix ${FILES}/startprefix.patch
 # When run in offline mode, bootstrap script disables fetching: re-enable
 sed -i '/^FETCH_COMMAND=/d' "$ROOT/etc/portage/make.conf"
 
+# Bootstrap script sets some default flags, remove them in favor of profile
+sed -i -e 's/^CFLAGS=.*/CFLAGS="${CFLAGS}"/'  \
+	-e 's/^CXXFLAGS=.*/CXXFLAGS="${CXXFLAGS}"/' \
+	"$ROOT/etc/portage/make.conf"
+
 echo 'ACCEPT_KEYWORDS="~amd64 ~amd64-linux"' >> "$ROOT/etc/portage/make.conf"
 
 sed -i 's/^#en_US.UTF-8/en_US.UTF-8/' "$ROOT"/etc/locale.gen
