@@ -58,7 +58,25 @@ where
   family for which to optimize via the `-march,-mtune` compiler flags (for the
   generic unoptimized use `amd64`; for supported families see
  `ebuilds/profiles/casper-usc-hpcc-*`),
-* the third argument (for USC HPCC only) ARCH again
+* the third argument (for USC HPCC only) ARCH again, but cannot be `amd64`;
+  even if you want a generic (unoptimized) build, you still have to choose a
+  CPU family for the build host (`sandybridge` is a reasonable choice for
+  building a generic prefix, see notes below).
+
+Some notes:
+
+* Due to imperfections in the build recipes for some libraries, the
+  cpu family of the build host must be the same as that of the target host,
+  i.e. if you want a prefix optimized for Sandy Bridge, you have to
+  build it on a Sandy Bridge node. (This could be fixed by tracking down
+  the offending packages and fixing each to not use target compiler flags
+  for tools that need to be run on the build host.)
+* Some packages optimize for the build host even if you did not request
+  any optimization, so you can't build a generic unoptimized prefix on
+  a new CPU family; use Sandy Bridge nodes to build generic prefixes that
+  should mostly work on newer CPU families too.
+* Builds of numerical libraries on AMD Opteron node appear to be broken
+  when optimized for opteron CPU family (even with `-march=native`).
 
 Step 3. Test the prefix
 ------------------------
