@@ -7,11 +7,12 @@ set -x
 
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-if [[ ! -e "${TMP_HOME}" ]]
+if [[ ! -e "${TMPDIR}" ]]
 then
-	echo "ERROR: TMP_HOME var not pointing to a temp dir" 1>&2
+	echo "ERROR: TMPDIR var not pointing to a temp dir" 1>&2
 	exit 1
 fi
+TMP_HOME=$TMPDIR
 
 if [[ ! -e "${DIST_PATH}" ]]
 then
