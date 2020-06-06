@@ -10,7 +10,7 @@ SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CASPER_UTILS=$(realpath ${SELF_DIR}/..)
 
 export DIST_PATH=${CASPER_UTILS}/distfiles
-export OVERLAY_PATH=${CASPER_UTILS}/casper-ebuilds
+export OVERLAY_PATH=${CASPER_UTILS}/ebuilds
 export TMP_HOME=/tmp
 
 PPATH=$1

@@ -2,5 +2,5 @@
 	path = prefix
 	url = https://github.com/acolinisi/gentoo-prefix.git
 [submodule "casper-ebuilds"]
-	path = casper-ebuilds
+	path = ebuilds
 	url = git@github.com:acolinisi/casper-ebuilds.git
