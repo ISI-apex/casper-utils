@@ -31,7 +31,7 @@ then
 	exit 1
 fi
 
-LOGDIR="${PPATH}"/var/log/prefix
+LOGDIR="${PPATH}-logs"
 mkdir -p "${LOGDIR}"
 
 # Constrain to Infiniband nodes, because Myrinet nodes hang on /scratch
