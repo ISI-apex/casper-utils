@@ -5,8 +5,6 @@ JOBS=$(nproc)
 set -e
 set -x
 
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
 if [[ ! -e "${TMPDIR}" ]]
 then
 	echo "ERROR: TMPDIR var not pointing to a temp dir" 1>&2
@@ -20,6 +18,12 @@ then
 	exit 1
 fi
 DIST_PATH=$(realpath ${DIST_PATH})
+
+if [[ ! -e "${FILES_PATH}" ]]
+then
+	echo "ERROR: FILES_PATH not pointing to dir with job files" 1>&2
+	exit 1
+fi
 
 # set env var BARE to non-zero value if you just want a prefix,
 # but do not want to build the numerical libraries.
@@ -39,9 +43,6 @@ fi
 
 PNAME=$(basename ${PPATH})
 export ROOT=$(realpath ${PPATH})
-
-# directory with files that accompanies this job
-FILES=${SELF_DIR}/gpref
 
 mkdir -p $ROOT
 
@@ -66,7 +67,7 @@ export SNAPSHOT_DATE=20200604
 ## Workaround for failure to create a symlink at end of stage1
 mkdir -p $ROOT/tmp/var/db/repos/
 
-"${FILES}"/bootstrap-prefix.sh
+"${FILES_PATH}"/bootstrap-prefix.sh
 
 run() {
 	echo "$@"
@@ -81,7 +82,7 @@ prun() {
 sed -i 's:\(env. -i $RETAIN $SHELL\) -l:\1 --rcfile "${EPREFIX}"/.prefixrc -i "$@":' "$ROOT"/startprefix
 sed -i '$ i\RC=$?' "$ROOT"/startprefix
 echo 'exit $RC' >> "$ROOT"/startprefix
-patch -p1 "$ROOT"/startprefix ${FILES}/startprefix.patch
+patch -p1 "$ROOT"/startprefix ${FILES_PATH}/startprefix.patch
 
 # When run in offline mode, bootstrap script disables fetching: re-enable
 sed -i '/^FETCH_COMMAND=/d' "$ROOT/etc/portage/make.conf"
@@ -97,8 +98,8 @@ sed -i 's/^#en_US.UTF-8/en_US.UTF-8/' "$ROOT"/etc/locale.gen
 prun "locale-gen"
 echo -e "LANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n" > "$ROOT"/etc/locale.conf
 
-cp "${FILES}"/prefixenv "$ROOT/.prefixenv"
-sed "s:@__P_DISTDIR__@:${DISTDIR}:" "${FILES}"/prefixrc > "$ROOT"/.prefixrc
+cp "${FILES_PATH}"/prefixenv "$ROOT/.prefixenv"
+sed "s:@__P_DISTDIR__@:${DISTDIR}:" "${FILES_PATH}"/prefixrc > "$ROOT"/.prefixrc
 
 # The user/group names don't strictly matter, the UID/GID is taken from
 # the prefix dir anyway, but set them to match the host so that ls output
@@ -120,5 +121,5 @@ mkdir -p "$ROOT"/usr/src/kernels
 rsync -aq  /usr/src/kernels/${kver} "$ROOT"/usr/src/kernels/
 ln -sf kernels/${kver} "$ROOT"/usr/src/linux
 pushd "$ROOT"/usr/src/linux
-patch -p1 < "${FILES}"/kernel-no-pie.patch
+patch -p1 < "${FILES_PATH}"/kernel-no-pie.patch
 popd

@@ -11,6 +11,7 @@ CASPER_UTILS=$(realpath ${SELF_DIR}/..)
 
 export DIST_PATH=${CASPER_UTILS}/distfiles
 export OVERLAY_PATH=${CASPER_UTILS}/ebuilds
+export FILES_PATH=${CASPER_UTILS}/jobs/gpref
 export TMPDIR=/tmp
 
 PPATH=$1
