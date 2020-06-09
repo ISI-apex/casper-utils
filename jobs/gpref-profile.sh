@@ -18,20 +18,38 @@ fi
 PROFILE=${2:-casper-usc-hpcc-amd64}
 
 ROOT=$(realpath ${PPATH})
-REPO=casper
 
-# profile that holds files that need to be copied to /etc
+# Keep track of which steps are done, so that job can be rerun
+STATUS_DIR=$ROOT/status
+mkdir -p ${STATUS_DIR}
+
+step_is_done() {
+	test -f "${STATUS_DIR}/$1"
+}
+step_done() {
+	touch "${STATUS_DIR}/$1"
+}
+
+REPO=casper
 REPO_PATH=var/db/repos/${REPO}
 
-# "Upstream" repo: https://github.com/acolinisi/casper-ebuilds
-git clone "${OVERLAY_PATH}" "$ROOT"/${REPO_PATH}
+if ! step_is_done clone_casper_ebuilds
+then
+	# "Upstream" repo: https://github.com/acolinisi/casper-ebuilds
+	git clone "${OVERLAY_PATH}" "$ROOT"/${REPO_PATH}
+	step_done clone_casper_ebuilds
+fi
 
-mkdir -p "$ROOT"/etc/portage/repos.conf
-cat <<EOF > "$ROOT"/etc/portage/repos.conf/casper.conf
-[casper]
-priority = 51
-location = $ROOT/${REPO_PATH}
-EOF
+if ! step_is_done add_casper_repo
+then
+	mkdir -p "$ROOT"/etc/portage/repos.conf
+	cat <<-EOF > "$ROOT"/etc/portage/repos.conf/casper.conf
+	[casper]
+	priority = 51
+	location = $ROOT/${REPO_PATH}
+	EOF
+	step_done add_casper_repo
+fi
 
 run() {
 	echo "$@"
@@ -43,35 +61,62 @@ prun() {
 	run "$ROOT"/startprefix -c "command $1 </dev/null"
 }
 
-# Remove python-2.7, gcc-9.2 and a few other unnecessary leftovers
-prun "emerge --depclean"
-
-prun "eselect profile set ${REPO}:${PROFILE}"
-
-# Manual parts of selecting the profile:
-#   Setup files that are not supported by profiles (but we do
-#   store them in the profiles directory tree to keep stuff together)
-cat "$ROOT"/${REPO_PATH}/profiles/casper/package.license.profile \
-	>> "$ROOT"/etc/portage/package.license
-cat "$ROOT"/${REPO_PATH}/profiles/usc-hpcc/package.provided.profile \
-	>> "$ROOT"/etc/portage/package.provided
-mkdir -p "$ROOT"/etc/portage/sets
-(
-	cd "$ROOT"/${REPO_PATH}/profiles/casper/sets
-	for set in *
-	do
-		ln -sf ../../../${REPO_PATH}/profiles/casper/sets/$set \
- 			"$ROOT"/etc/portage/sets/$set
-	done
-)
-
-sets=()
-if [[ -z "$BARE" ]]
+if ! step_is_done depclean_pre
 then
-	sets+=("@casper-libs")
+	# Remove old python versions and potentially other unnecessary leftovers
+	prun "emerge --depclean"
+	step_done depclean_pre
 fi
 
-# Apply use flags, overrides from the newly added repo, install sets
-prun "emerge -v --deep --complete-graph --update --newuse --newrepo @world ${sets[@]}"
+if ! step_is_done select_profile
+then
+	prun "eselect profile set ${REPO}:${PROFILE}"
+	step_done select_profile
+fi
 
-prun "eselect python set python3.8"
+if ! step_is_done select_profile_etc
+then
+	# Manual parts of selecting the profile:
+	#   Setup files that are not supported by profiles (but we do
+	#   store them in the profiles directory tree to keep stuff together)
+	cat "$ROOT"/${REPO_PATH}/profiles/casper/package.license.profile \
+		>> "$ROOT"/etc/portage/package.license
+	cat "$ROOT"/${REPO_PATH}/profiles/usc-hpcc/package.provided.profile \
+		>> "$ROOT"/etc/portage/package.provided
+	mkdir -p "$ROOT"/etc/portage/sets
+	(
+		cd "$ROOT"/${REPO_PATH}/profiles/casper/sets
+		for set in *
+		do
+			ln -sf ../../../${REPO_PATH}/profiles/casper/sets/$set \
+				"$ROOT"/etc/portage/sets/$set
+		done
+	)
+	step_done select_profile_etc
+fi
+
+
+if ! step_is_done emerge_profile
+then
+	sets=()
+	if [[ -z "$BARE" ]]
+	then
+		sets+=("@casper-libs")
+	fi
+	# Apply use flags, overrides from the newly added repo, install sets
+	prun "emerge -v --deep --complete-graph --update --newuse --newrepo @world ${sets[@]}"
+	step_done emerge_profile
+fi
+
+if ! step_is_done select_python
+then
+	prun "eselect python set python3.8"
+	step_done select_python
+fi
+
+if ! step_is_done depclean_post
+then
+	# Remove old python versions and potentially other unnecessary leftovers
+	prun "emerge --depclean"
+	step_done depclean_post
+fi
