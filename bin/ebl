@@ -26,6 +26,10 @@ usage() {
 	echo "  -e: preserve temp/environment file"
 }
 
+# Auto-detect prefix
+LS_PATH=$(which ls)
+EP="${LS_PATH%bin/ls}"
+
 ebuild_args=()
 options=$(getopt -o ed -- "$@")
 [ $? -eq 0 ] || {
