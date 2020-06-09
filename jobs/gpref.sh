@@ -28,5 +28,9 @@ then
 	exit 1
 fi
 
-${SELF_DIR}/gpref-sys.sh "${PPATH}"
-${SELF_DIR}/gpref-profile.sh "${PPATH}" "${PROFILE}"
+LOGDIR="${PPATH}/var/log/prefix"
+mkdir -p "${LOGDIR}"
+tstamp=$(date +%Y%m%d%H%M%S)
+
+${SELF_DIR}/gpref-sys.sh "${PPATH}" 2>&1 | tee ${LOGDIR}/gpref-sys-${tstamp}.log
+${SELF_DIR}/gpref-profile.sh "${PPATH}" "${PROFILE}" 2>&1 | tee ${LOGDIR}/gpref-profile-${tstamp}.log
