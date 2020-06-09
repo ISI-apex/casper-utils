@@ -30,28 +30,47 @@ done
 logdir=${LOG_DIR:-"${eprefix}"/var/log/sjobs}
 mkdir -p "${logdir}"
 
-name="j-$(echo "$@" | sed -e 's/\s\+/_/g' -e 's@/@-@g' | cut -c1-128)_$(date +%Y%m%d%H%M%S)_$$"
-
 args=(--nodes "${nodes}" --ntasks "${tasks}"
 	--mem-per-cpu "${mem_per_cpu}"
 	--time "${max_time}")
 
 for arg in ${sbatch_args[@]}
 do
-	echo "OUTPUT ARG: $arg"
-	if [[ "${arg}" = --output* ]]
+	if [[ "${arg}" = --output=* ]]
 	then
-		echo "FOUND OUTPUT ARG: $arg"
 		log_args_found=1
+		output_file="${arg#--output=}"
+		break
+	fi
+	if [[ "${arg}" = --error=* ]]
+	then
+		log_args_found=1
+		error_file="${arg#--error=}"
+		break
+	fi
+	if [[ "${arg}" = --job-name=* ]]
+	then
+		name=${arg#--job-name=}
 		break
 	fi
 done
 
-if [ -z "${log_args_found}" ]
+if [ -z "${name}" ]
 then
-	args+=(--output "${logdir}/${name}.out"
-		--error "${logdir}/${name}.err")
+	name="$(echo "$@" | sed -e 's/\s\+/_/g' -e 's@/@-@g' | cut -c1-128)"
 fi
+log_name="$(basename ${eprefix})_${name}_$(date +%Y%m%d%H%M%S)_$$"
+if [ -z "${output_file}" ]
+then
+	output_file="${logdir}/${log_name}.out"
+	args+=(--output "${output_file}")
+fi
+if [ -z "${error_file}" ]
+then
+	error_file="${logdir}/${log_name}.err"
+	args+=(--error "${error_file}")
+fi
+logs=("${output_file}" "${error_file}")
 
 CONSTRAINT="$(constraint "${arch}")" 
 if [ -n "${CONSTRAINT}" ]
@@ -65,7 +84,7 @@ fi
 PCMD=$@
 # sbatch's CLI parsing doesn't support quoting, so can't pass command strings
 #cmd=(sbatch "${args[@]}" ./startprefix -c \'$PCMD\')
-tmpscr="${logdir}"/${name}.sh
+tmpscr="${logdir}"/${log_name}.sh
 cat <<EOF > $tmpscr
 #!/bin/bash
 # When bash invoked with -c, it does not load rcfile
@@ -104,7 +123,6 @@ do
 	sleep 60
 done
 
-logs=("${logdir}"/${name}.{out,err})
 if [ -z "$finished" ]
 then
 	while ! test -f "${logs[0]}" -a -f "${logs[1]}"
