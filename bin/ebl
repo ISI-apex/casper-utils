@@ -62,15 +62,23 @@ then
 	exit 1
 fi
 
-# Latest version is not quite the last in alphanumeric sort order (up to -rN)
-set -- ${pkg}/*.ebuild
-if [ ! -f "$1" ]
+vers=()
+eblds=()
+for ebl in ${pkg}/*.ebuild
+do
+	ebl_ver=$(echo "${ebl}" | sed 's/.*-\([0-9.]\+\(_[0-9a-z]\+\)\?\(-r[0-9]\+\)\?\).ebuild/\1/')
+	eblds+=(${ebl})
+	vers+=(${ebl_ver})
+done
+if [[ "${#eblds[@]}" -eq 0 || ! -f "${eblds[0]}" ]]
 then
 	echo "ERROR: .ebuild file not found" 1>&2
 	exit 1
 fi
-pkg_ebuild="$(echo "$@" | xargs -n 1 echo | sed 's/.ebuild$//' | sort | tail -1).ebuild"
-pkgver=$(echo "${pkg_ebuild}" | sed 's/.*-\([0-9.]\+\(_[0-9a-z]\+\)\?\(-r[0-9]\+\)\?\).ebuild/\1/')
+vers_sorted=($(echo ${vers[@]} | sort -V -r))
+pkgver="${vers_sorted[0]}"
+pkg_ebuild="${eblds[0]}"
+
 TMPDIR=$(bash -c "source ${EP}/etc/portage/make.conf && echo \$PORTAGE_TMPDIR")
 bld_dir="${TMPDIR}/portage/${pkg}-${pkgver}"
 
