@@ -11,7 +11,7 @@ then
 	exit 1
 fi
 
-EPREFIX=$1
+EPREFIX=$(realpath $1)
 ARCH=$2
 GPU=$3
 
