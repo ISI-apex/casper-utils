@@ -27,7 +27,7 @@ do
 	shift
 done
 
-logdir="${eprefix}"/var/log/sjobs
+logdir=${LOG_DIR:-"${eprefix}"/var/log/sjobs}
 mkdir -p "${logdir}"
 
 name="j-$(echo "$@" | sed -e 's/\s\+/_/g' -e 's@/@-@g' | cut -c1-128)_$(date +%Y%m%d%H%M%S)_$$"
