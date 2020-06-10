@@ -79,19 +79,31 @@ then
 	# Manual parts of selecting the profile:
 	#   Setup files that are not supported by profiles (but we do
 	#   store them in the profiles directory tree to keep stuff together)
-	cat "$ROOT"/${REPO_PATH}/profiles/casper/package.license.profile \
-		>> "$ROOT"/etc/portage/package.license
-	cat "$ROOT"/${REPO_PATH}/profiles/usc-hpcc/package.provided.profile \
-		>> "$ROOT"/etc/portage/package.provided
-	mkdir -p "$ROOT"/etc/portage/sets
-	(
-		cd "$ROOT"/${REPO_PATH}/profiles/casper/sets
-		for set in *
-		do
-			ln -sf ../../../${REPO_PATH}/profiles/casper/sets/$set \
-				"$ROOT"/etc/portage/sets/$set
-		done
+	# NOTE: only depth 1 is supported, no nested dirs
+	ETC_FILES=(
+		usc-hpcc/etc/package.provided
+		casper/etc/package.license
 	)
+	ETC_DIRS=(
+		casper/etc/sets
+	)
+	for f in ${ETC_FILES[@]}
+	do
+		cat "$ROOT"/${REPO_PATH}/profiles/${f} \
+			>> "$ROOT"/etc/portage/$(basename ${f})
+	done
+	for d in ${ETC_DIRS[@]}
+	do
+		mkdir -p "$ROOT"/etc/portage/$(basename ${d})
+		(
+			cd "$ROOT"/${REPO_PATH}/profiles/${d}
+			for set in *
+			do
+				ln -sf ../../../${REPO_PATH}/profiles/${d}/${set} \
+					"$ROOT"/etc/portage/$(basename ${d})/${set}
+			done
+		)
+	done
 	step_done select_profile_etc
 fi
 
