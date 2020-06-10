@@ -5,3 +5,38 @@ mpirun -mca oob_base_verbose 9 -n 2 -N 1 ./mpitest
 #	export SCREEN_DIR=screen/$(hostname)
 # 	mkdir -p -m700 $SCREEN_DIR
 # 	screen
+
+slurm
+* code that parses --constraint
+src/slurmctld/job_mgr.c: build_feature_list
+
+
+
+
+TODO: OpenMPI: paths in error message about PMI are broken
+
+checking if user requested PMI support... yes
+checking for pmi.h in /usr/include/slurm... found
+checking pmi.h usability... yes
+checking pmi.h presence... yes
+checking for pmi.h... yes
+checking for libpmi in /usr... not found
+checking for pmi2.h in /usr/include/slurm... found
+checking pmi2.h usability... yes
+checking pmi2.h presence... yes
+checking for pmi2.h... yes
+checking for libpmi2 in /usr... not found
+checking for pmix.h in /usr/include/slurm... not found
+checking for pmix.h in /usr/include/slurm/include... not found
+checking can PMI support be built... no
+configure: WARNING: PMI support requested (via --with-pmi) but neither pmi.h,
+configure: WARNING: pmi2.h or pmix.h were found under locations:
+configure: WARNING:     /usr/include/slurm
+configure: WARNING:     /usr/include/slurm/slurm
+configure: WARNING: Specified path: /usr/include/slurm
+configure: WARNING: OR neither libpmi, libpmi2, or libpmix were found under:
+configure: WARNING:     /usr/lib
+configure: WARNING:     /usr/lib64
+configure: WARNING: Specified path: /usr
+configure: error: Aborting
+
