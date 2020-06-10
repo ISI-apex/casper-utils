@@ -55,7 +55,7 @@ sed -i "s@DISTDIR=.*@DISTDIR=${P_DISTDIR}@" "${EPREFIX}"/etc/portage/make.conf
 sed -i "s@MAKEOPTS=\"\(.*\)-j[0-9]\+\(.*\)\"@MAKEOPTS=\"\1-j$(nproc)\2\"@" "${EPREFIX}"/etc/portage/make.conf
 
 sed -i "/^${P_GROUP}:/d" "${EPREFIX}"/etc/group
-stat -c '${P_GROUP}:x:%g:' "${EPREFIX}"  >> "${EPREFIX}"/etc/group
+stat -c "${P_GROUP}:x:%g:" "${EPREFIX}"  >> "${EPREFIX}"/etc/group
 sed -i "s/^${P_USER}:x:[0-9]\+:[0-9]\+:/${P_USER}:x:$(stat -c '%u' ${EPREFIX}):$(stat -c '%g' ${EPREFIX}):/" "${EPREFIX}"/etc/passwd
 
 source "${EPREFIX}"/etc/profile
