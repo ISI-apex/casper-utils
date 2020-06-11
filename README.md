@@ -65,6 +65,11 @@ where
 
 Some notes:
 
+* Prefix with all CASPER dependencies takes about 6 hours to build
+  on average 16 core box with a normal disk file system. On USC HPCC
+  the same exact job takes about 24-48 hours due to slow shared
+  filesystem (despite the build working directoies being in fast
+  local /tmp directory).
 * Due to imperfections in the build recipes for some libraries, the
   cpu family of the build host must be the same as that of the target host,
   i.e. if you want a prefix optimized for Sandy Bridge, you have to
