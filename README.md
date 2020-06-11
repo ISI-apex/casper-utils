@@ -100,3 +100,60 @@ On another host (compatible with the ARCH for which the prefix was built):
     $ mkdir -p casper-utils/exp/dat
     $ cd casper-utils/exp/dat
     $ bash ../jobs/test-prefix.sh
+
+Enter the prefix
+================
+
+To build and run applications (or anything else) inside the prefix, it is in
+theory sufficient to invoke the application by its full path, however it is
+usually convenient to "enter" into the prefix, which adds the prefix binary
+PATHs to the PATH env var and does other setup.
+
+USC HPCC
+--------
+
+To enter the prefix on a USC HPCC host (login or worker with interactive shell):
+
+    $ export PATH=ABSOLUTE_PATH_TO/casper-utils/bin:$PATH
+    $ pstart PREFIX_PATH
+
+To eneuque a job inside the prefix on a USC HPCC worker node:
+
+    $ psbatch PREFIX_PATH ARCH GPU:GPU_COUNT NUM_NODES NUM_TASKS TIME_LIMIT command arg arg...
+
+for example:
+
+    $ psbatch /scratch/me/myprefix sandybridge "k20:1" 1 1 00:10:00 python --version
+
+Generic Linux host
+------------------
+
+To enter the prefix on a generic Linux host:
+
+    $ PREFIX_PATH/startprefix
+
+
+Run experiment for Halide schedule tuning
+=========================================
+
+A experiment in `exp/tune-blur` is available for tuning the Halide schedule
+for the blur filter Halide pipeline.
+
+All the dependencies (LLVM, Halide, OpenCL, etc) of this experiment are
+already installed in the Prefix (see first chapter for building a prefix).
+The following commands can be run inside the prefix: to enter the Prefix
+see the previous chapter. If your system has all the dependencies of
+the right versions (with the right patches, etc) installed, then the
+following commands should work on your system too (without the Prefix),
+but nasty build issues might arise that were already solved in the Prefix.
+
+To build and test the binaries for the experiment:
+
+    $ cd casper-utils/exp/tune-blur
+    $ make
+    $ make test
+
+To generate a large profiling dataset for CPU and GPU target in two `*.csv`
+files (takes >24 hours):
+
+    $ make profile
