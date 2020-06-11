@@ -1,5 +1,5 @@
 // On linux, you can compile and run it like so:
-// g++ blur_cpu.cpp -g -std=c++11 -I ../include -L ../bin -lHalide -lpthread -ldl -o blur_cpu 
+// g++ blur_cpu.cpp -g -std=c++11 -I ../include -L ../bin -lHalide -lpthread -ldl -o blur_cpu
 // LD_LIBRARY_PATH=../bin ./blur_cpu
 
 
@@ -17,38 +17,42 @@ using namespace Halide;
 
 int main(int argc, char **argv) {
 
-    if (argc != 4) {
+    /* if changing interface, change test call in CMakeLists.txt */
+    if (argc != 5) {
         std::cerr << "USAGE: " << argv[0]
-            << " <ITERATIONS> <ROUNDS> <output_filename>" << std::endl;
+            << " <MAX_INPUT_SIZE_EXP> <SAMPLES> <ROUNDS> <output_filename>"
+            << std::endl;
         return 1;
     }
-    
-    int NUM = atoi(argv[1]);
-    int ROUNDS = atoi(argv[2]);
-    std::string FILENAME(argv[3]);
+
+    int MAX_INPUT_SIZE_EXP = atoi(argv[1]);
+    int SAMPLES = atoi(argv[2]);
+    int ROUNDS = atoi(argv[3]);
+    std::string FILENAME(argv[4]);
     std::ofstream ofile;
     ofile.open(FILENAME);
 
-    std::cout << "ITERATIONS=" << NUM << " ROUNDS=" << ROUNDS
+    std::cout << "MAX_INPUT_SIZE_EXP=" << MAX_INPUT_SIZE_EXP
+        << "SAMPLES=" << SAMPLES << " ROUNDS=" << ROUNDS
         << " OUTPUT_FILE=" << FILENAME << std::endl;
 
-    for (int k = 0; k <= 5; k++){ 
+    for (int k = 0; k <= MAX_INPUT_SIZE_EXP; k++){
 
         int p_input = 10 + k;
 
-        for (int i = 0; i < NUM; i++) {
+        for (int i = 0; i < SAMPLES; i++) {
 
             if (i % 10 == 0) std::cout << i << std::endl;
-        
+
             Func blur_x, blur_y;
             Var x_, y_, xi, yi;
 
             Func input;
             input(x_,y_) = rand() % 1024 + 1;
-            
+
             int power = 10;
-            int p1 = rand() % power + 1; 
-            int p2 = rand() % power + 1; 
+            int p1 = rand() % power + 1;
+            int p2 = rand() % power + 1;
             int p3 = rand() % p2 + 1; // p2 > p3
             int p4 = rand() % p3 + 1; // p3 > p4
 
@@ -57,7 +61,7 @@ int main(int argc, char **argv) {
             int v2 = pow(2,p2);
             int v3 = pow(2,p3);
             int v4 = pow(2,p4);
-            
+
 
             std::cout << v1 << "," << v2 << "," << v3 << "," << v4 << std::endl;
 
@@ -87,7 +91,7 @@ int main(int argc, char **argv) {
             }
             {
 
-            
+
                 Var x = blur_y.args()[0];
                 Var y = blur_y.args()[1];
                 blur_y
@@ -103,18 +107,18 @@ int main(int argc, char **argv) {
 
 
             double time = 0;
-            int rounds = ROUNDS; 
+            int rounds = ROUNDS;
 
             for (int j = 0; j < rounds; j++){
-                
+
                 double t1 = current_time();
-                blur_y.realize(pow(2,p_input),pow(2,p_input)); 
+                blur_y.realize(pow(2,p_input),pow(2,p_input));
                 double t2 = current_time();
-                
+
                 time += (t2 - t1)/1000;
             }
 
-            double avgtime = time/rounds; 
+            double avgtime = time/rounds;
 
             std::cout << avgtime << std::endl;
 
