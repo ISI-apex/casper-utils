@@ -83,9 +83,11 @@ then
 	ETC_FILES=(
 		usc-hpcc/etc/package.provided
 		casper/etc/package.license
+		casper/etc/package.env
 	)
 	ETC_DIRS=(
 		casper/etc/sets
+		casper/etc/env
 	)
 	for f in ${ETC_FILES[@]}
 	do
