@@ -120,8 +120,10 @@ with tf.Session() as sess:
 
     print("MAE: ", sum_MAE / test_data.shape[0])
     print("MSE: ", sum_MSE / test_data.shape[0])
-    print("MAPE(>0.1): ", sum_MAPE_1 / MAPE_1_length)
-    print("MAPE(>0.5): ", sum_MAPE_5 / MAPE_5_length)
+    MAPE_1 = sum_MAPE_1 / MAPE_1_length if MAPE_1_length > 0 else np.nan
+    MAPE_5 = sum_MAPE_5 / MAPE_5_length if MAPE_5_length > 0 else np.nan
+    print("MAPE(>0.1): ", MAPE_1)
+    print("MAPE(>0.5): ", MAPE_5)
 
     rho, pval = spearmanr(pred_list,test_list)
     print('rho:', rho)
