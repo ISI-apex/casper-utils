@@ -1,16 +1,19 @@
-import tensorflow as tf
+import sys
+import tensorflow.compat.v1 as tf
 import numpy as np
 import pandas as pd
-import time
 from sklearn import preprocessing
+import time
 from scipy.stats import spearmanr
 
-FILENAME = "halide_blur_3x3_gpu.csv"
+FILENAME = sys.argv[1]
+TRAIN_SIZE = int(sys.argv[2])
+MODEL_PATH_PREFIX = sys.argv[3]
 
 data = np.array(pd.read_csv(FILENAME))
 
-train_data = data[:500]
-test_data = data[500:]
+train_data = data[:TRAIN_SIZE]
+test_data = data[TRAIN_SIZE:]
 
 
 train_feature = np.array(train_data[:, [1, 2, 3, 4]])
@@ -24,6 +27,7 @@ test_x = np.array(test_data[:, [1, 2, 3, 4]])
 
 print(test_data.shape)
 
+tf.disable_eager_execution()
 x = tf.placeholder(tf.float32, [None, 4])
 y = tf.placeholder(tf.float32, [None, 1])  
 train_feature = preprocessing.scale(train_feature)  
@@ -57,7 +61,7 @@ for variable in tf.trainable_variables():
     variable_parameters = 1
     for dim in shape:
         print(dim)
-        variable_parameters *= dim.value
+        variable_parameters *= dim
     print(variable_parameters)
     total_parameters += variable_parameters
 print("total parameters: ", total_parameters)
@@ -76,9 +80,9 @@ with tf.Session() as sess:
             print(i)
             print(sess.run(loss, feed_dict={x: train_feature, y: train_label}))
 
-    inference_start = time.clock()
+    inference_start = time.time()
     prd = sess.run(prediction, feed_dict={x: test_xs})
-    inference_end = time.clock()
+    inference_end = time.time()
 
     print('Inference time:', (inference_end - inference_start)/test_data.shape[0])
 
@@ -132,4 +136,4 @@ with tf.Session() as sess:
     # ---------------------------------------#
 
 
-    saver.save(sess, "model/my-model")
+    saver.save(sess, MODEL_PATH_PREFIX)

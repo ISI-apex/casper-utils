@@ -15,14 +15,6 @@ test: build/blur_cpu
 	cd build && ninja -v test
 .PHONY: test
 
-profile: blur_cpu.csv blur_gpu.csv
-.PHONY: profile
-
-blur_cpu.csv:
-	build/blur_cpu 5 1000 5 $@
-blur_gpu.csv:
-	build/blur_gpu 5 5 5 $@
-
 # don't clean data, to prevent accidents
 clean:
 	rm -rf build/
