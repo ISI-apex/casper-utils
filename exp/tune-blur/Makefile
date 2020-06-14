@@ -46,9 +46,9 @@ model/nn/cpu/large/blur_model.meta: TRAIN_SIZE=2000
 model/nn/gpu/small/blur_model.meta: TRAIN_SIZE=1
 model/nn/gpu/large/blur_model.meta: TRAIN_SIZE=500
 model/nn/cpu/%/blur_model.meta: dat/cpu/%/blur.csv | model/nn/cpu/%/
-	python predict/blur_cpu/pred_NN.py $< $(TRAIN_SIZE) $(@D)/blur_model
+	python predict/pred_NN.py $< $(TRAIN_SIZE) 5 10000 $(@D)/blur_model
 model/nn/gpu/%/blur_model.meta: dat/gpu/%/blur.csv | model/nn/gpu/%/
-	python predict/blur_gpu/pred_NN.py $< $(TRAIN_SIZE) $(@D)/blur_model
+	python predict/pred_NN.py $< $(TRAIN_SIZE) 4 5000 $(@D)/blur_model
 
 model-cpu-%-clean:
 	rm -f model/nn/cpu/$*/blur_model*

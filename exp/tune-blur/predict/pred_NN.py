@@ -8,27 +8,24 @@ from scipy.stats import spearmanr
 
 FILENAME = sys.argv[1]
 TRAIN_SIZE = int(sys.argv[2])
-MODEL_PATH_PREFIX = sys.argv[3]
+TRAIN_FEATURES = int(sys.argv[3])
+TRAIN_STEPS = int(sys.argv[4])
+MODEL_PATH_PREFIX = sys.argv[5]
 
 data = np.array(pd.read_csv(FILENAME))
 
 train_data = data[:TRAIN_SIZE]
 test_data = data[TRAIN_SIZE:]
 
-
-train_feature = np.array(train_data[:, [1, 2, 3, 4, 5]])
-
-
+features = range(1, TRAIN_FEATURES+1)
+train_feature = np.array(train_data[:, features])
 train_label = np.array(train_data[:, [0]])
-
-
-test_x = np.array(test_data[:, [1, 2, 3, 4, 5]])
-
+test_x = np.array(test_data[:, features])
 
 print(test_data.shape)
 
 tf.disable_eager_execution()
-x = tf.placeholder(tf.float32, [None, 5])
+x = tf.placeholder(tf.float32, [None, TRAIN_FEATURES])
 y = tf.placeholder(tf.float32, [None, 1])  
 train_feature = preprocessing.scale(train_feature)  
 test_xs = preprocessing.scale(test_x)  
@@ -71,7 +68,7 @@ with tf.Session() as sess:
 
     print(sess.run(loss, feed_dict={x: train_feature, y: train_label}))
 
-    for i in range(10000):
+    for i in range(TRAIN_STEPS):
         sess.run(train_step, feed_dict={x: train_feature, y: train_label})
         if i % 200 == 0:
             print(i)
