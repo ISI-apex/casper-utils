@@ -105,14 +105,14 @@ model/gpu/%/nnc/fft_model.meta: TRAIN_STEPS=5000
 
 model/%/nn/blur_model.meta model/%/nnc/blur_model.meta: \
 	dat/%/blur.csv | model/%/nn/ model/%/nnc/
-	python ../../compiler/autotuner/predict.py $< \
+	python ../../compiler/autotuner/predict.py $< 0 \
 		$(TRAIN_SIZE) $(TRAIN_FEATURES) $(TRAIN_STEPS) \
 		$(TRAIN_TOL) $(LAYERS) $(MAPE_LIM1) $(MAPE_LIM2) \
 		$(@D)/blur_model
 
 model/%/nn/fft_model.meta model/%/nnc/fft_model.meta: \
 	dat/%/fft.csv | model/%/nn/ model/%/nnc/
-	python ../../compiler/autotuner/predict.py $< \
+	python ../../compiler/autotuner/predict.py $< 0 \
 		$(TRAIN_SIZE) $(TRAIN_FEATURES) $(TRAIN_STEPS) \
 		$(TRAIN_TOL) $(LAYERS) $(MAPE_LIM1) $(MAPE_LIM2) \
 		$(@D)/fft_model
