@@ -15,17 +15,15 @@ dat/small/mumps.csv: | dat/small/
 		done \
 	done
 
+# Iterate over (NPROC, NTHREAD) pairs such that total number of ranks
+# is below the total number of cores
+COUNT:=1 2 4 6 8 16 32
+CORES:=32
 dat/log-large/mumps.csv: | dat/log-large/
-	for np in 1 2 4 8; do \
-		for th in 1 2 4; do \
-			$(call run-app,3,9,3,$$np,$$th,$@); \
-		done \
-	done
-	for np in 16 32; do \
-		for th in 1; do \
-			$(call run-app,3,9,3,$$np,$$th,$@); \
-		done \
-	done
+	$(foreach np,$(COUNT),\
+	  $(foreach th,$(COUNT),\
+	    $(if $(filter 1,$(shell echo '$(np)*$(th)<=$(CORES)' | bc)),\
+	      $(call run-app,3,9,3,$(np),$(th),$@)$(NL))))
 
 dat/lin-large/mumps.csv: | dat/lin-large/
 	for np in {1..16..1}; do \
@@ -91,6 +89,14 @@ model-lin-large-clean:
 	rm -rf model/lin-large/
 .PHONY: model-small model-log-large model-lin-large
 .PHONY: model-small-clean model-log-large-clean model-lin-large-clean
+
+# newline
+define NL
+
+
+
+endef
+
 
 # Don't delete intemediate artifacts
 .SECONDARY:
