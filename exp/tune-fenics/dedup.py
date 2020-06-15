@@ -14,4 +14,5 @@ OUT_FILE=sys.argv[2]
 attributes = ['runtime','mesh','np','th','cons']
 df = pd.read_csv(IN_FILE, sep=',', names=attributes)
 df = df.drop_duplicates(['mesh','np','th'])
+df = df.sample(frac=1)
 df.to_csv(OUT_FILE, index=False)
