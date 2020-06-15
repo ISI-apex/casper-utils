@@ -172,8 +172,8 @@ To build and test the binaries for the Halide experiment:
     $ make
     $ make test
 
-To generate a small profiling dataset for testing on CPU and GPU targets in
-`*.csv` files and to train the respective prediction models:
+To perform a quick smoke-test (does not produce a useful model), generate a
+small profiling dataset and train the respective prediction models:
 
     $ make model-small
 
@@ -186,11 +186,14 @@ See `tune-halide/Makefile` for fine-grained make targets for generated
 intermediate artifacts and for cleaning.
 
 
-The FEniCS benchmark application is in Python and does not involve
-an explicit compile step, the experiment can be run with:
+The FEniCS benchmark application is in the following directory, and is written
+in Python so does not involve an explicit compile step
 
 
     $ cd casper-utils/exp/tune-fenics
+
+The perform a quick smoke-test (does not produce a useful model):
+
     $ make model-small
 
 For larger profiling dataset (takes several hours to collect), there
