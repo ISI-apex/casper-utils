@@ -138,11 +138,20 @@ To enter the prefix on a generic Linux host:
     $ PREFIX_PATH/startprefix
 
 
-Run experiment for Halide schedule tuning
-=========================================
+Evaluate CASPER Auto-tuner
+==========================
 
-A experiment in `exp/tune-blur` is available for tuning the Halide schedule
-for the blur filter Halide pipeline.
+Experiments are available for evaluating CASPER Auto-Tuner
+by first profiling the application performance and then using
+these measurements to train a performance prediction model (as a function of
+tunable parameter values) and evaluate the model on
+a test subset of the profiling data. The experiments for
+the followin benchmarks are available:
+* `exp/tune-halide`: tune parameters in the Halide schedule for the blur filter
+  Halide pipeline, evaluated for both a CPU target and a GPU target,
+* `exp/tune-fenics`: tune number of ranks and threads
+  in MPI+OpenMP linear solver operator in context of a 2D Lid-Driven Cavity
+  Finite Element problem implemented in FEniCS framework.
 
 All the dependencies (LLVM, Halide, OpenCL, etc) of this experiment are
 already installed in the Prefix (see first chapter for building a prefix).
@@ -152,7 +161,12 @@ the right versions (with the right patches, etc) installed, then the
 following commands should work on your system too (without the Prefix),
 but nasty build issues might arise that were already solved in the Prefix.
 
-To build and test the binaries for the experiment:
+See `Makefile` in each experiment's directory all available make targets,
+including the fine-grained targets for generated intermediate artifacts and for
+cleaning; what follows is a brief summary. Multiple targets may be
+passed to the same make command where appropriate.
+
+To build and test the binaries for the Halide experiment:
 
     $ cd casper-utils/exp/tune-halide
     $ make
@@ -168,4 +182,20 @@ models:
 
     $ make model-large
 
-See `tune-halide/Makefile` for more fine-grained make targets.
+See `tune-halide/Makefile` for fine-grained make targets for generated
+intermediate artifacts and for cleaning.
+
+
+The FEniCS benchmark application is in Python and does not involve
+an explicit compile step, the experiment can be run with:
+
+
+    $ cd casper-utils/exp/tune-fenics
+    $ make model-small
+
+For larger profiling dataset (takes several hours to collect), there
+are two options depening on how the datapoints along the input size
+are spread: linearly ({2,4,6,...}), or geometrically ({2,4,16,...}):
+
+    $ make model-lin-large
+    $ make model-log-large
