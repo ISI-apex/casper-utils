@@ -8,6 +8,20 @@ import time
 import csv
 import math
 import sys
+
+if len(sys.argv) != 7:
+    print("USAGE: %s <LOG_MESH_SIZE_FROM> <LOG_MESH_SIZE_TO>" + \
+	    " <ROUNDS> <NPROC> <NTHREADS> <OUTPUT_FILE>" % sys.argv[0],
+	    file=sys.stderr)
+    sys.exit(1)
+
+LOG_MESH_SIZE_FROM=int(sys.argv[1])
+LOG_MESH_SIZE_TO=int(sys.argv[2])
+ROUNDS=int(sys.argv[3])
+NP=int(sys.argv[4])
+NTH=int(sys.argv[5])
+OUTPUT_FILE=sys.argv[6]
+
 print(linear_algebra_backends())
 print(linear_solver_methods())
 print(lu_solver_methods())
@@ -30,7 +44,7 @@ result_list = []
 #sub_domains = MeshFunction("size_t", mesh, "../dolfin_fine_subdomains.xml.gz")
 
 # Mesh size: 8 - 256
-for i in range(3,9): 
+for i in range(LOG_MESH_SIZE_FROM, LOG_MESH_SIZE_TO+1): 
 	mesh = UnitSquareMesh(pow(2,i), pow(2,i))
 	#mesh = UnitSquareMesh(8, 8)
 	#mesh = UnitSquareMesh(16, 16)
@@ -43,7 +57,7 @@ for i in range(3,9):
 	#plot(mesh)
 
 	# Run 3 rounds 
-	rounds = 3
+	rounds = ROUNDS
 	total_time = 0.0
 
 	for j in range(rounds):
@@ -124,16 +138,16 @@ for i in range(3,9):
 		total_time += runtime
 	
 	cons = pow(2,i)*math.log(pow(2,i))
-	r = [total_time/rounds,pow(2,i),sys.argv[1],sys.argv[2],cons]
+	r = [total_time/rounds,pow(2,i),NP,NTH,cons]
 	result_list.append(r)
 
 	# Status
-	print(pow(2,i) ," ", sys.argv[1] ," ", sys.argv[2], " ", cons)
+	print(pow(2,i) ," ", NP," ", NTH, " ", cons)
 
 	# Display plots
 	#plt.show()
 
 # Write to result.csv
-with open("result.csv", "a") as file:
+with open(OUTPUT_FILE, "a") as file:
     writer = csv.writer(file)
     writer.writerows(result_list)
