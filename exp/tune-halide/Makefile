@@ -74,6 +74,11 @@ model-gpu-large: \
 .PHONY: model-cpu-small model-cpu-large
 .PHONY: model-gpu-small model-gpu-large
 
+model/%_model.meta: TRAIN_TOL=0.01
+model/%_model.meta: LAYERS=2
+model/%_model.meta: MAPE_LIM1=0.1
+model/%_model.meta: MAPE_LIM2=0.5
+
 model/cpu/small/%/blur_model.meta: TRAIN_SIZE=1
 model/cpu/large/%/blur_model.meta: TRAIN_SIZE=2000
 model/gpu/small/%/blur_model.meta: TRAIN_SIZE=1
@@ -102,12 +107,14 @@ model/%/nn/blur_model.meta model/%/nnc/blur_model.meta: \
 	dat/%/blur.csv | model/%/nn/ model/%/nnc/
 	python predict.py $< \
 		$(TRAIN_SIZE) $(TRAIN_FEATURES) $(TRAIN_STEPS) \
+		$(TRAIN_TOL) $(LAYERS) $(MAPE_LIM1) $(MAPE_LIM2) \
 		$(@D)/blur_model
 
 model/%/nn/fft_model.meta model/%/nnc/fft_model.meta: \
 	dat/%/fft.csv | model/%/nn/ model/%/nnc/
 	python predict.py $< \
 		$(TRAIN_SIZE) $(TRAIN_FEATURES) $(TRAIN_STEPS) \
+		$(TRAIN_TOL) $(LAYERS) $(MAPE_LIM1) $(MAPE_LIM2) \
 		$(@D)/fft_model
 
 model-cpu-%-clean:

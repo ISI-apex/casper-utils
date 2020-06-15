@@ -10,7 +10,11 @@ FILENAME = sys.argv[1]
 TRAIN_SIZE = int(sys.argv[2])
 TRAIN_FEATURES = int(sys.argv[3])
 TRAIN_STEPS = int(sys.argv[4])
-MODEL_PATH_PREFIX = sys.argv[5]
+TRAIN_TOL=float(sys.argv[5])
+LAYERS=int(sys.argv[6])
+MAPE_LIM1=float(sys.argv[7])
+MAPE_LIM2=float(sys.argv[8])
+MODEL_PATH_PREFIX = sys.argv[9]
 
 data = np.array(pd.read_csv(FILENAME, header=None))
 
@@ -33,11 +37,19 @@ test_xs = preprocessing.scale(test_x)
 print(test_xs.shape)
 
 
-L1 = tf.layers.dense(x, 5, tf.nn.relu)
-L2 = tf.layers.dense(x, 5, tf.nn.relu)
+# TODO: parametrize in a way that makes ML sense
+if LAYERS == 1:
+    L = tf.layers.dense(x, 15, tf.nn.relu)
+elif LAYERS == 2:
+    L1 = tf.layers.dense(x, 5, tf.nn.relu)
+    L2 = tf.layers.dense(x, 5, tf.nn.relu)
+    L = L2
+else:
+    print(f"ERROR: unsupported number of layers: {LAYERS}",
+            file=sys.stderr)
+    sys.exit(1)
 
-
-prediction = tf.layers.dense(L2,1)
+prediction = tf.layers.dense(L,1)
 
 loss = tf.reduce_mean(tf.square(y - prediction))
 
@@ -45,7 +57,7 @@ loss = tf.reduce_mean(tf.square(y - prediction))
 saver = tf.train.Saver()
 
 
-train_step = tf.train.AdamOptimizer(0.01).minimize(loss)
+train_step = tf.train.AdamOptimizer(TRAIN_TOL).minimize(loss)
 
 
 total_parameters = 0
@@ -104,11 +116,11 @@ with tf.Session() as sess:
         truth_value = test_data[:, [0]][i][0]
         abs_value = abs(prd[i][0] - test_data[:, [0]][i][0])
 
-        if truth_value > 0.1:
+        if truth_value > MAPE_LIM1:
             sum_MAPE_1 += (abs_value/truth_value)
             MAPE_1_length+=1
 
-        if truth_value > 0.5:
+        if truth_value > MAPE_LIM2:
             sum_MAPE_5 += (abs_value / truth_value)
             MAPE_5_length+=1
 
@@ -122,8 +134,8 @@ with tf.Session() as sess:
     print("MSE: ", sum_MSE / test_data.shape[0])
     MAPE_1 = sum_MAPE_1 / MAPE_1_length if MAPE_1_length > 0 else np.nan
     MAPE_5 = sum_MAPE_5 / MAPE_5_length if MAPE_5_length > 0 else np.nan
-    print("MAPE(>0.1): ", MAPE_1)
-    print("MAPE(>0.5): ", MAPE_5)
+    print(f"MAPE(>{MAPE_LIM1}): ", MAPE_1)
+    print(f"MAPE(>{MAPE_LIM2}): ", MAPE_5)
 
     rho, pval = spearmanr(pred_list,test_list)
     print('rho:', rho)
