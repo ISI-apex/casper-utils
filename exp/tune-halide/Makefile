@@ -105,7 +105,7 @@ model/cpu/%/nnc/fft_model.meta: TRAIN_STEPS=10000
 model/gpu/%/nnc/fft_model.meta: TRAIN_STEPS=5000
 
 define train
-	python ../../compiler/autotuner/predict.py $(1) $(HAS_HEADER) \
+	python ../../compiler/autotuner/train.py $(1) $(HAS_HEADER) \
 		$(TRAIN_SIZE) $(TRAIN_FEATURES) $(TRAIN_STEPS) \
 		$(TRAIN_TOL) $(LAYERS) $(MAPE_LIM1) $(MAPE_LIM2) \
 		$(2)

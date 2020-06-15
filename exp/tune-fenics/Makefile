@@ -71,7 +71,7 @@ model/%/mumps_model.meta: TRAIN_STEPS=10000
 
 model/%/nn/mumps_model.meta model/%/nnc/mumps_model.meta: \
 	dat/%/mumps_uniq.csv | model/%/nn/ model/%/nnc/
-	python ../../compiler/autotuner/predict.py $< $(HAS_HEADER) \
+	python ../../compiler/autotuner/train.py $< $(HAS_HEADER) \
 		$(TRAIN_SIZE) $(TRAIN_FEATURES) $(TRAIN_STEPS) \
 		$(TRAIN_TOL) $(LAYERS) $(MAPE_LIM1) $(MAPE_LIM2) \
 		$(@D)/mumps_model
