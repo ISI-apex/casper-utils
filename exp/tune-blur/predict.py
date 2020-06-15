@@ -12,7 +12,7 @@ TRAIN_FEATURES = int(sys.argv[3])
 TRAIN_STEPS = int(sys.argv[4])
 MODEL_PATH_PREFIX = sys.argv[5]
 
-data = np.array(pd.read_csv(FILENAME))
+data = np.array(pd.read_csv(FILENAME, header=None))
 
 train_data = data[:TRAIN_SIZE]
 test_data = data[TRAIN_SIZE:]
