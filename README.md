@@ -213,8 +213,26 @@ are spread: linearly ({2,4,6,...}), or geometrically ({2,4,16,...}):
     $ make model-lin-large
     $ make model-log-large
 
-Plot speedup
-------------
+Evaluation of the model
+-----------------------
+
+When performance prediction models finish training and testing, a few metrics
+will be printed:
+
+* MAE: mean absolute error
+* MSE: mean squared error
+* MAPE(>*x* s): mean absolute percentage error, restricting to data instances
+  whose runtime is greater than *x* seconds
+
+*Note: The reason to exclude data instances with small runtime is that
+sometimes MAPE gets extremely large (>1000%) when the actual runtime is small.
+In addition, we care more about tasks with a large runtime in the scheduling
+process.*
+
+* rho: Spearman's rank correlation coefficient (or Spearman's rho), which
+  indicates if a higher ranked candidate through prediction also has a higher
+ranked true runtime. In short, how well does our model tell about the order of
+runtimes.
 
 The speedup from best parameter values over poorest or over average parameter
 values can be plotted using scripts in `exp/tune/`, however at the moment, the
