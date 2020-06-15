@@ -47,19 +47,22 @@ int main(int argc, char **argv) {
     int w = 0;
     int h = 0;
 
-    if (argc >= 3) {
+    if (argc != 7) {
+        std::cerr << "Usage: " << argv[0] << " <log(width)> <log(height)>"
+            << " <iterations> <samples> <reps> <output_file>" << std::endl;
+        return 1;
+    }
         
-        w = atoi(argv[1]);
-        h = atoi(argv[2]);
+    w = atoi(argv[1]);
+    h = atoi(argv[2]);
 
-        W = pow(2,w);
-        H = pow(2,h);
-    }
+    W = pow(2,w);
+    H = pow(2,h);
 
-    std::string output_dir;
-    if (argc >= 4) {
-        output_dir = argv[3];
-    }
+    int NUM = atoi(argv[3]);
+    int SAMPLES = atoi(argv[4]);
+    int REPS = atoi(argv[5]);
+    std::string output_file(argv[6]);
 
     // Generate a random image to convolve with.
     Buffer<float> in(W, H);
@@ -151,8 +154,8 @@ int main(int argc, char **argv) {
 
     // Take the minimum time over many of iterations to minimize
     // noise.
-    const int samples = 10;
-    const int reps = 1000; 
+    const int samples = SAMPLES;
+    const int reps = REPS;
 
     Var rep("rep");
 
@@ -170,7 +173,7 @@ int main(int argc, char **argv) {
     // locality.
     c2c_in(x, y, rep) = {re_in(x, y), im_in(x, y)};
     Func bench_c2c = fft2d_c2c(c2c_in, W, H, -1, target, fwd_desc);
-    bench_c2c.compile_to_lowered_stmt(output_dir + "c2c.html", bench_c2c.infer_arguments(), HTML);
+    bench_c2c.compile_to_lowered_stmt(output_file + ".c2c.html", bench_c2c.infer_arguments(), HTML);
     Realization R_c2c = bench_c2c.realize(W, H, reps, target);
     // Write all reps to the same place in memory. This means the
     // output appears to be cached on all but the first
@@ -201,13 +204,10 @@ int main(int argc, char **argv) {
            fftw_t / halide_t);
 */
 
-    std::string FILENAME = "halide_FFT.csv"; // here
     std::ofstream ofile;
-    ofile.open(FILENAME, std::ios_base::app);
+    ofile.open(output_file, std::ios_base::app);
 
     double halide_t;
-
-    int NUM = 1000;
 
     for (int i = 0; i < NUM; i++) {
 
@@ -234,7 +234,7 @@ int main(int argc, char **argv) {
         r2c_in(x, y, rep) = re_in(x, y);
         Func bench_r2c = fft2d_r2c(r2c_in, W, H, target, fwd_desc, v1, v2, v3, v4, v5, v6);
         
-        bench_r2c.compile_to_lowered_stmt(output_dir + "r2c.html", bench_r2c.infer_arguments(), HTML);
+        bench_r2c.compile_to_lowered_stmt(output_file + ".r2c.html", bench_r2c.infer_arguments(), HTML);
         
         Realization R_r2c = bench_r2c.realize(W, H / 2 + 1, reps, target);
         // Write all reps to the same place in memory. See notes on R_c2c.
