@@ -39,6 +39,41 @@ ComplexFunc make_complex(const Buffer<T> &re) {
     return ret;
 }
 
+// A helper function to check if OpenCL, Metal or D3D12 is present on the host machine.
+
+Target find_gpu_target() {
+    // Start with a target suitable for the machine you're running this on.
+    Target target = get_host_target();
+
+    std::vector<Target::Feature> features_to_try;
+    if (target.os == Target::Windows) {
+        // Try D3D12 first; if that fails, try OpenCL.
+        if (sizeof(void*) == 8) {
+            // D3D12Compute support is only available on 64-bit systems at present.
+            features_to_try.push_back(Target::D3D12Compute);
+        }
+        features_to_try.push_back(Target::OpenCL);
+    } else if (target.os == Target::OSX) {
+        // OS X doesn't update its OpenCL drivers, so they tend to be broken.
+        // CUDA would also be a fine choice on machines with NVidia GPUs.
+        features_to_try.push_back(Target::Metal);
+    } else {
+        features_to_try.push_back(Target::OpenCL);
+    }
+    // Uncomment the following lines to also try CUDA:
+    features_to_try.push_back(Target::CUDA);
+
+    for (Target::Feature f : features_to_try) {
+        Target new_target = target.with_feature(f);
+        if (host_supports_target_device(new_target)) {
+            return new_target;
+        }
+    }
+
+    printf("Requested GPU(s) are not supported. (Do you have the proper hardware and/or driver installed?)\n");
+    return target;
+}
+
 int main(int argc, char **argv) {
     
     int W = 0; // input size TODO
@@ -47,9 +82,10 @@ int main(int argc, char **argv) {
     int w = 0;
     int h = 0;
 
-    if (argc != 7) {
+    if (argc != 8) {
         std::cerr << "Usage: " << argv[0] << " <log(width)> <log(height)>"
-            << " <iterations> <samples> <reps> <output_file>" << std::endl;
+            << " <iterations> <samples> <reps> <use_gpu> <output_file>"
+            << std::endl;
         return 1;
     }
         
@@ -62,7 +98,8 @@ int main(int argc, char **argv) {
     int NUM = atoi(argv[3]);
     int SAMPLES = atoi(argv[4]);
     int REPS = atoi(argv[5]);
-    std::string output_file(argv[6]);
+    int GPU = atoi(argv[6]);
+    std::string output_file(argv[7]);
 
     // Generate a random image to convolve with.
     Buffer<float> in(W, H);
@@ -83,7 +120,15 @@ int main(int argc, char **argv) {
         }
     }
 
-    Target target = get_jit_target_from_environment();
+    Target target;
+    if (GPU) {
+        target = find_gpu_target();
+        if (!target.has_gpu_feature()) {
+            return 1;
+        }
+    } else {
+        target = get_jit_target_from_environment();
+    }
     printf("Target: %s\n", target.to_string().c_str());
 
     Fft2dDesc fwd_desc;
@@ -227,6 +272,15 @@ int main(int argc, char **argv) {
         int v5 = pow(2,p5);
         int v6 = pow(2,p6);
 
+        if (GPU) {
+            target = find_gpu_target();
+            if (!target.has_gpu_feature()) {
+                std::cout << "No GPU available" << i << std::endl;
+            }
+
+            std::cout << "GPU target: "  << target.to_string().c_str() << std::endl;
+        }
+
         std::cout << "iteration: " << i << std::endl;
 
         Func r2c_in;
@@ -234,7 +288,12 @@ int main(int argc, char **argv) {
         r2c_in(x, y, rep) = re_in(x, y);
         Func bench_r2c = fft2d_r2c(r2c_in, W, H, target, fwd_desc, v1, v2, v3, v4, v5, v6);
         
-        bench_r2c.compile_to_lowered_stmt(output_file + ".r2c.html", bench_r2c.infer_arguments(), HTML);
+        if (GPU) {
+            bench_r2c.compile_jit(target);
+        } else {
+            bench_r2c.compile_to_lowered_stmt(output_file + ".r2c.html",
+                    bench_r2c.infer_arguments(), HTML);
+        }
         
         Realization R_r2c = bench_r2c.realize(W, H / 2 + 1, reps, target);
         // Write all reps to the same place in memory. See notes on R_c2c.

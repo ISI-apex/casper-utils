@@ -13,9 +13,8 @@ find_package(Halide REQUIRED)
 add_executable(blur_cpu blur_cpu.cpp)
 add_executable(blur_gpu blur_gpu.cpp)
 set(BLUR_TARGETS blur_cpu blur_gpu)
-set(TARGETS fft_cpu ${BLUR_TARGETS})
-
-add_executable(fft_cpu fft.cpp main_fft.cpp)
+add_executable(fft fft.cpp main_fft.cpp)
+set(TARGETS fft ${BLUR_TARGETS})
 
 add_test(NAME test_blur_cpu
     COMMAND blur_cpu 0 1 1 "test_blur_cpu.csv")

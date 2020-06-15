@@ -30,9 +30,13 @@ dat/gpu/large/blur.csv: | dat/gpu/large/
 	profile/build/blur_gpu 5 5 $@
 
 dat/cpu/small/fft.csv: | dat/cpu/small/
-	profile/build/fft_cpu 2 2 1 1 1 $@
+	profile/build/fft 2 2 1 1 1 0 $@
 dat/cpu/large/fft.csv: | dat/cpu/large/
-	profile/build/fft_cpu 2 2 1000 10 1000 $@
+	profile/build/fft 2 2 1000 10 1000 0 $@
+dat/gpu/small/fft.csv: | dat/gpu/small/
+	profile/build/fft 2 2 1 1 1 1 $@
+dat/gpu/large/fft.csv: | dat/gpu/large/
+	profile/build/fft 2 2 1000 10 1000 1 $@
 
 profile-cpu-%-clean:
 	rm -f dat/cpu/$*/blur.csv

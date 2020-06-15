@@ -861,11 +861,13 @@ ComplexFunc fft2d_r2c(Func r,
     // Vectorize the zip groups, and unroll by a factor of 2 to simplify the
     // even/odd selection.
     Var n0o("n0o"), n0i("n0i");
+    Var n1o("n1o"), n1i("n1i");
     unzipped.compute_at(dft, outer)
         .split(n0, n0o, n0i, zip_width * 2) // 
         .reorder(n0i, n1, n0o)
         .vectorize(n0i, zip_width)
-        .unroll(n0i); //
+        .unroll(n0i);
+        //.gpu_tile(n0, n1, n0i, n1i, zip_width, 1); //
     dft1.compute_at(unzipped, n0o);
     if (desc.parallel) {
         // Note that this also parallelizes dft1, which is computed inside this loop
@@ -878,9 +880,14 @@ ComplexFunc fft2d_r2c(Func r,
     //int vector_size = gcd(target.natural_vector_size<float>(), N0);
     std::cout << "vector_size: " << vector_size << std::endl;
     //int vector_size = 16; // TODO
+    std::cout << "Target in fft.cpp: "  << target.to_string().c_str() << std::endl;
     
     dft.vectorize(n0, vector_size) // 
         .unroll(n0, gcd(N0 / vector_size, 4)); // unroll parameter?
+
+    // dft.gpu_tile(n0, n1, n0i, n1i, zip_width, 1); //
+    // dft.gpu_tile(zip_width, 1); //
+    // dft.compile_jit(target);
 
     // The Nyquist bin at n0z = N0/2 looks like a race condition because it
     // simplifies to an expression similar to the DC bin. However, we include it
