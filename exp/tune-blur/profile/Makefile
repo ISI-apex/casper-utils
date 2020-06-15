@@ -1,4 +1,5 @@
-all: test
+all:
+	cd build && ninja -v
 
 # also builds blur_gpu
 build/blur_cpu:
@@ -9,6 +10,7 @@ build/blur_cpu:
 # for convenience
 build:
 	cd build && ninja -v
+.PHONY: build
 
 # also tests blur_gpu
 test: build/blur_cpu
