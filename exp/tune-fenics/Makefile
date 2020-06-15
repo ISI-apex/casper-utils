@@ -90,6 +90,9 @@ model-lin-large-clean:
 .PHONY: model-small model-log-large model-lin-large
 .PHONY: model-small-clean model-log-large-clean model-lin-large-clean
 
+# TODO: ../tune/plot-speedu-{bar,line}.py (requires min/max extraction
+# which is a manual step now)
+
 # newline
 define NL
 

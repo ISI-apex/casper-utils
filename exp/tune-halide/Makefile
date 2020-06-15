@@ -133,5 +133,8 @@ small-clean: profile-small-clean model-small-clean
 large-clean: profile-large-clean model-large-clean
 .PHONY: small-clean large-clean
 
+# TODO: ../tune/plot-speedu-{bar,line}.py (requires min/max extraction
+# which is a manual step now)
+
 # Don't delete intemediate artifacts
 .SECONDARY:

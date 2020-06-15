@@ -166,6 +166,9 @@ including the fine-grained targets for generated intermediate artifacts and for
 cleaning; what follows is a brief summary. Multiple targets may be
 passed to the same make command where appropriate.
 
+Tune Halide schedule
+---------------------
+
 To build and test the binaries for the Halide experiment:
 
     $ cd casper-utils/exp/tune-halide
@@ -185,6 +188,13 @@ models:
 See `tune-halide/Makefile` for fine-grained make targets for generated
 intermediate artifacts and for cleaning.
 
+The speedup from best parameter values over poorest or over average parameter
+values can be plotted using scripts in `exp/tune/`, however at the moment, the
+raw data output by the previous steps needs to be manually post-processed to
+extract aggregated maximum/minimum/etc values.
+
+Tune MPI+OpenMP params in linear solver in FEniCS FEM program
+--------------------------------------------------------------
 
 The FEniCS benchmark application is in the following directory, and is written
 in Python so does not involve an explicit compile step
@@ -202,3 +212,11 @@ are spread: linearly ({2,4,6,...}), or geometrically ({2,4,16,...}):
 
     $ make model-lin-large
     $ make model-log-large
+
+Plot speedup
+------------
+
+The speedup from best parameter values over poorest or over average parameter
+values can be plotted using scripts in `exp/tune/`, however at the moment, the
+raw data output by the previous steps needs to be manually post-processed to
+extract aggregated maximum/minimum/etc values.
