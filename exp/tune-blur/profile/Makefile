@@ -1,5 +1,5 @@
-all:
-	cd build && ninja -v
+# also builds blur_gpu
+all: build/blur_cpu
 
 # also builds blur_gpu
 build/blur_cpu:
