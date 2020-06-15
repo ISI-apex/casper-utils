@@ -154,11 +154,18 @@ but nasty build issues might arise that were already solved in the Prefix.
 
 To build and test the binaries for the experiment:
 
-    $ cd casper-utils/exp/tune-blur
+    $ cd casper-utils/exp/tune-halide
     $ make
     $ make test
 
-To generate a large profiling dataset for CPU and GPU target in two `*.csv`
-files (takes >24 hours):
+To generate a small profiling dataset for testing on CPU and GPU targets in
+`*.csv` files and to train the respective prediction models:
 
-    $ make profile
+    $ make model-small
+
+To generate the large dataset (takes >24 hours) and train the prediction
+models:
+
+    $ make model-large
+
+See `tune-halide/Makefile` for more fine-grained make targets.
