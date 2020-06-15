@@ -74,6 +74,7 @@ model-gpu-large: \
 .PHONY: model-cpu-small model-cpu-large
 .PHONY: model-gpu-small model-gpu-large
 
+model/%_model.meta: HAS_HEADER=0
 model/%_model.meta: TRAIN_TOL=0.01
 model/%_model.meta: LAYERS=2
 model/%_model.meta: MAPE_LIM1=0.1
@@ -103,19 +104,20 @@ model/gpu/%/fft_model.meta: TRAIN_STEPS=5000
 model/cpu/%/nnc/fft_model.meta: TRAIN_STEPS=10000
 model/gpu/%/nnc/fft_model.meta: TRAIN_STEPS=5000
 
-model/%/nn/blur_model.meta model/%/nnc/blur_model.meta: \
-	dat/%/blur.csv | model/%/nn/ model/%/nnc/
-	python ../../compiler/autotuner/predict.py $< 0 \
+define train
+	python ../../compiler/autotuner/predict.py $(1) $(HAS_HEADER) \
 		$(TRAIN_SIZE) $(TRAIN_FEATURES) $(TRAIN_STEPS) \
 		$(TRAIN_TOL) $(LAYERS) $(MAPE_LIM1) $(MAPE_LIM2) \
-		$(@D)/blur_model
+		$(2)
+endef
+
+model/%/nn/blur_model.meta model/%/nnc/blur_model.meta: \
+	dat/%/blur.csv | model/%/nn/ model/%/nnc/
+	$(call train,$<,$(@D)/blur_model)
 
 model/%/nn/fft_model.meta model/%/nnc/fft_model.meta: \
 	dat/%/fft.csv | model/%/nn/ model/%/nnc/
-	python ../../compiler/autotuner/predict.py $< 0 \
-		$(TRAIN_SIZE) $(TRAIN_FEATURES) $(TRAIN_STEPS) \
-		$(TRAIN_TOL) $(LAYERS) $(MAPE_LIM1) $(MAPE_LIM2) \
-		$(@D)/fft_model
+	$(call train,$<,$(@D)/fft_model)
 
 model-cpu-%-clean:
 	rm -rf model/cpu/$*/*/
