@@ -26,7 +26,7 @@ For building on USC HPCC cluster, all source tarballs are on filesystem in
 `/scratch/acolin/casper-utils/distfiles/`, so you can just copy
 all of it:
 
-	$ rsync -aq /scratch/acolin/casper-utils/distfiles/ casper-utils/distfiles/
+	$ rsync -aq /scratch/acolin/casper/casper-utils/distfiles/ casper-utils/distfiles/
 
 On other hosts, the same directory is available as a tar archive, which needs
 to be downloaded manually from the link below via a browser (or by using
