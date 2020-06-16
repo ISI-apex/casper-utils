@@ -1,5 +1,18 @@
 Utilities for building CASPER and running experiments.
 
+Step 0. Clone this repository recursively
+------------------------------------------
+
+This repository contains references to other repositories as git
+submodules. To fetch the whole tree, clone recursively:
+
+    $ git --recursive https://github.com/acolinisi/casper-utils
+
+If you already cloned non-recursively then simply do this:
+
+    $ git submodule init
+    $ git submodule update
+
 Build Gentoo Prefix with CASPER and dependencies
 ================================================
 
