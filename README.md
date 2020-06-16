@@ -3,6 +3,19 @@ Utilities for building CASPER and running experiments.
 Build Gentoo Prefix with CASPER and dependencies
 ================================================
 
+A Gentoo Prefix is a way to manage dependencies installed from source with a
+full-featured package manager without root on a system, hence particularly
+useful on HPC clusters. Conceptually, in essence, it's a wrapper around
+`./configure && make && make install`. Binaries built within the prefix may be
+called from the host as any other binary (although it's usually useful to work
+in a prefix shell, see below), and host binaries may be invoked from within the
+prefix seemlessly. A Prefix allows everything to be independent of the host
+distribution (prefix bootstrap is very robust and should boostrap on any Linux
+system) and thus the versions of any of the software libraries, toolchains, and
+applications may be chosen at will. A Prefix is a lot more useful than
+Singularity or similar containers based on immutable images. The following
+sections describe how to build a prefix on USC HPCC cluster and on other hosts.
+
 Step 1. Prepare source tarballs
 ------------------------------
 
