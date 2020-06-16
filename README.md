@@ -21,7 +21,7 @@ to be downloaded manually from the link below via a browser (or by using
 and extracted at root of this repository:
 
 	$ cd casper-utils
-        $ gdown https://drive.google.com/uc?id=1nQqWsyeYBwCBA8gUdwSyjryr_OvSQFk1
+	$ gdown https://drive.google.com/uc?id=1nQqWsyeYBwCBA8gUdwSyjryr_OvSQFk1
 	$ tar xf distfiles-20200604.tar
 
 Note: Online build hosts will automatically fetch tarballs from upstream (subject to
