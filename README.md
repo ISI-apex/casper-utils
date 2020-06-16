@@ -9,19 +9,27 @@ Step 1. Prepare source tarballs
 To build Gentoo Prefix need to pre-populate `distfiles/` directory
 with some special source tarballs (even if the build host is online).
 
-All source tarballs are on USC HPCC filesystem in
+For building on USC HPCC cluster, all source tarballs are on filesystem in
 `/scratch/acolin/casper-utils/distfiles/`, so you can just copy
 all of it:
 
 	$ rsync -aq /scratch/acolin/casper-utils/distfiles/ casper-utils/distfiles/
 
-For offline build hosts (e.g. worker nodes on USC HPCC), the above copy
-of the whole distfiles directory is a requirement. For online hosts, it
-is sufficient to copy only the special tarballs listed below (however, if you
-have access to all, then might as well copy all to not waste Internet
-bandwidth).
+On other hosts, the same directory is available as a tar archive, which needs
+to be downloaded manually from the link below via a browser (or by using
+`gdown` tool, `curl`/`wget` likely will not work due to Google intricacies)
+and extracted at root of this repository:
 
-The special source tarballs that must be prepopulated, even for online build hosts:
+	$ cd casper-utils
+        $ gdown https://drive.google.com/uc?id=1nQqWsyeYBwCBA8gUdwSyjryr_OvSQFk1
+	$ tar xf distfiles-20200604.tar
+
+Note: Online build hosts will automatically fetch tarballs from upstream (subject to
+broken links or server downtime), but some tarballs (listed below) cannot be
+fetched from upstream at all. So, even for online hosts, you have to obtain
+the tarball directory as described above.
+
+For reference, the special source tarballs that cannot be fetched from upstream:
 
 * `portage-DATE.tar.bz2`
 * `gentoo-DATE.tar.bz2`
