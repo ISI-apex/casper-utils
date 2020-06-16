@@ -21,7 +21,7 @@ is sufficient to copy only the special tarballs listed below (however, if you
 have access to all, then might as well copy all to not waste Internet
 bandwidth).
 
-The special source taballs that must be prepopulated, even for online build hosts:
+The special source tarballs that must be prepopulated, even for online build hosts:
 
 * `portage-DATE.tar.bz2`
 * `gentoo-DATE.tar.bz2`
@@ -68,7 +68,7 @@ Some notes:
 * Prefix with all CASPER dependencies takes about 6 hours to build
   on average 16 core box with a normal disk file system. On USC HPCC
   the same exact job takes about 24-48 hours due to slow shared
-  filesystem (despite the build working directoies being in fast
+  filesystem (despite the build working directories being in fast
   local /tmp directory).
 * Due to imperfections in the build recipes for some libraries, the
   cpu family of the build host must be the same as that of the target host,
@@ -122,7 +122,7 @@ To enter the prefix on a USC HPCC host (login or worker with interactive shell):
     $ export PATH=ABSOLUTE_PATH_TO/casper-utils/bin:$PATH
     $ pstart PREFIX_PATH
 
-To eneuque a job inside the prefix on a USC HPCC worker node:
+To enqueue a job inside the prefix on a USC HPCC worker node:
 
     $ psbatch PREFIX_PATH ARCH GPU:GPU_COUNT NUM_NODES NUM_TASKS TIME_LIMIT command arg arg...
 
@@ -146,7 +146,7 @@ by first profiling the application performance and then using
 these measurements to train a performance prediction model (as a function of
 tunable parameter values) and evaluate the model on
 a test subset of the profiling data. The experiments for
-the followin benchmarks are available:
+the following benchmarks are available:
 * `exp/tune-halide`: tune parameters in the Halide schedule for the blur filter
   Halide pipeline, evaluated for both a CPU target and a GPU target,
 * `exp/tune-fenics`: tune number of ranks and threads
@@ -188,11 +188,6 @@ models:
 See `tune-halide/Makefile` for fine-grained make targets for generated
 intermediate artifacts and for cleaning.
 
-The speedup from best parameter values over poorest or over average parameter
-values can be plotted using scripts in `exp/tune/`, however at the moment, the
-raw data output by the previous steps needs to be manually post-processed to
-extract aggregated maximum/minimum/etc values.
-
 Tune MPI+OpenMP params in linear solver in FEniCS FEM program
 --------------------------------------------------------------
 
@@ -207,7 +202,7 @@ The perform a quick smoke-test (does not produce a useful model):
     $ make model-small
 
 For larger profiling dataset (takes several hours to collect), there
-are two options depening on how the datapoints along the input size
+are two options depending on how the datapoints along the input size
 are spread: linearly ({2,4,6,...}), or geometrically ({2,4,16,...}):
 
     $ make model-lin-large
@@ -224,7 +219,7 @@ will be printed:
 * MAPE(>*x* s): mean absolute percentage error, restricting to data instances
   whose runtime is greater than *x* seconds
 
-*Note: The reason to exclude data instances with small runtime is that
+*Note: the reason to exclude data instances with small runtime is that
 sometimes MAPE gets extremely large (>1000%) when the actual runtime is small.
 In addition, we care more about tasks with a large runtime in the scheduling
 process.*
