@@ -3,6 +3,9 @@ all:
 clean:
 	$(MAKE) -C profile clean
 
+test:
+	$(MAKE) -C profile test
+
 small: model-cpu-small model-gpu-small
 large: model-cpu-large model-gpu-large
 .PHONY: all clean small large
