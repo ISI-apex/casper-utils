@@ -36,13 +36,13 @@ dat/cpu/small/fft.csv: | dat/cpu/small/
 	profile/build/fft 2 2 2 2 2 0 $@
 dat/cpu/large/fft.csv: | dat/cpu/large/
 	for s in 1 2 3 4 5 6; do \
-		profile/build/fft $$s $$s 1000 10 1000 0 $@ \
+		profile/build/fft $$s $$s 1000 10 1000 0 $@; \
 	done
 dat/gpu/small/fft.csv: | dat/gpu/small/
 	profile/build/fft 2 2 2 2 2 2 $@
 dat/gpu/large/fft.csv: | dat/gpu/large/
 	for s in 1 2 3 4 5 6; do \
-		profile/build/fft $$s $$s 1000 10 1000 1 $@ \
+		profile/build/fft $$s $$s 1000 10 1000 1 $@; \
 	done
 
 profile-cpu-%-clean:
