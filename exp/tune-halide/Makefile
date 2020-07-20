@@ -84,7 +84,7 @@ model/%_model.meta: MAPE_LIM1=0.1
 model/%_model.meta: MAPE_LIM2=0.5
 
 model/cpu/small/%/blur_model.meta: TRAIN_SIZE=1
-model/cpu/large/%/blur_model.meta: TRAIN_SIZE=2000
+model/cpu/large/%/blur_model.meta: TRAIN_SIZE=250
 model/gpu/small/%/blur_model.meta: TRAIN_SIZE=1
 model/gpu/large/%/blur_model.meta: TRAIN_SIZE=500
 model/cpu/%/nn/blur_model.meta: TRAIN_FEATURES=5
