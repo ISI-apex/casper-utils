@@ -26,7 +26,7 @@ profile-large: profile-cpu-large profile-gpu-large
 dat/cpu/small/blur.csv: | dat/cpu/small/
 	profile/build/blur_cpu 2 2 2 $@
 dat/cpu/large/blur.csv: | dat/cpu/large/
-	profile/build/blur_cpu 5 1000 5 $@
+	profile/build/blur_cpu 5 50 5 $@
 dat/gpu/small/blur.csv: | dat/gpu/small/
 	profile/build/blur_gpu 2 2 $@
 dat/gpu/large/blur.csv: | dat/gpu/large/
