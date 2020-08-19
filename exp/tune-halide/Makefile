@@ -10,8 +10,10 @@ small: model-cpu-small model-gpu-small
 large: model-cpu-large model-gpu-large
 .PHONY: all clean small large
 
-profile-cpu-small: dat/cpu/small/blur.csv dat/cpu/small/fft.csv
-profile-cpu-large: dat/cpu/large/blur.csv dat/cpu/large/fft.csv
+profile-cpu-small-blur: dat/cpu/small/blur.csv
+profile-cpu-small-fft: dat/cpu/small/fft.csv
+profile-cpu-large-blur: dat/cpu/large/blur.csv
+profile-cpu-large-fft: dat/cpu/large/fft.csv
 profile-gpu-small: dat/gpu/small/blur.csv dat/gpu/small/fft.csv
 profile-gpu-large: dat/gpu/large/blur.csv dat/gpu/large/fft.csv
 profile-small: profile-cpu-small profile-gpu-small
@@ -24,9 +26,9 @@ profile-large: profile-cpu-large profile-gpu-large
 	mkdir -p $@
 
 dat/cpu/small/blur.csv: | dat/cpu/small/
-	profile/build/blur_cpu 2 2 2 $@
+	profile/build/blur_cpu 2 1 $@
 dat/cpu/large/blur.csv: | dat/cpu/large/
-	profile/build/blur_cpu 5 50 5 $@
+	profile/build/blur_cpu 250 1 $@
 dat/gpu/small/blur.csv: | dat/gpu/small/
 	profile/build/blur_gpu 2 2 $@
 dat/gpu/large/blur.csv: | dat/gpu/large/
