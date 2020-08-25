@@ -97,6 +97,9 @@ where
   CPU family for the build host (`sandybridge` is a reasonable choice for
   building a generic prefix, see notes below).
 
+The logs are in `PREFIX_PATH/stage{1,2,3}.log` for the first part of
+the job and in `PREFIX_PATH/var/log/prefix/` for the second part.
+
 Some notes:
 
 * Prefix with all CASPER dependencies takes about 6 hours to build
@@ -119,6 +122,27 @@ Some notes:
 
 Step 3. Test the prefix
 ------------------------
+
+### Minimal smoke test
+
+The minimal test is to enter the prefix shell (more details on entering the
+prefix are in a dedicated section below):
+
+    $ cd PREFIX_PATH
+    $ ./startprefix
+
+A new shell should be opened, now try run a program within the prefix:
+
+    $  emerge --version
+    Portage 2.3.100 ...
+
+If this smoke test was not successful, check the logs for any errors (see
+previous step for log file locations). Errors in later stages, may be fixed by
+entering the prefix shell and using portage (`emerge`) to diagnose. Then,
+the top-level job may be restarted (as described in previous step), and
+it should resume incrementally.
+
+### Application test
 
 The `test-prefix.sh` runs a CFD benchmark in FEniCS and Firedrake
 with MPI and GPU.
