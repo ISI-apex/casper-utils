@@ -38,7 +38,8 @@ mkdir -p "${LOGDIR}"
 # Constrain to Infiniband nodes, because Myrinet nodes hang on /scratch
 # Note that this is not limiting to 12 threads; the job uses nproc;
 # we could pass 1 here, but be nice and declare resources ("at least N").
-ARGS+=(--nodes=1 --ntasks=12 --constraint=$(constraint ${ARCH}))
+# Memory limit of 0 means use all avaialable memory on the node.
+ARGS+=(--nodes=1 --ntasks=12 --mem=0 --constraint=$(constraint ${ARCH}))
 
 # Split jobs because on USC HPCC max limit for a single job is 24h
 
