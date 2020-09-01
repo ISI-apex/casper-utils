@@ -46,12 +46,17 @@ constraint() {
 		;;
 	esac
 	# Restrict to Infiniband nodes, because Myrinet nodes hang with /scratch
-	# See ITS Ticket RITM0188766. 
+	# See ITS Ticket RITM0188766; except for Opteron, which are all on Myrinet.
 	# Note that multiple --constraints args are not allowed (later override
 	# earlier) and --constraint cannot understand an expression (nested
 	# parens with # precedence), it gets converted into a list of features,
 	# with an AND/OR/XAND/XOR "modifier" attached to each feature. So, to
 	# achieve (f1|f2)&f3, passing 'f1|f2&f3' should work.
 	# See build_feature_list() in src/slurmctld/job_scheduler.c
-	echo "${FEAT}&IB"
+	if [[ "${ARCH}" == opteron ]]
+	then
+		echo "${FEAT}"
+	else
+		echo "${FEAT}&IB"
+	fi
 }
