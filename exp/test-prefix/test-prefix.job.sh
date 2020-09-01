@@ -20,4 +20,6 @@ mkdir -p "${WORK_DIR}"
 cd "${WORK_DIR}"
 
 export LOG_DIR=${WORK_DIR}
-exec psbatch "${EPREFIX}" "${ARCH}" "${GPU}:1" 12G 1 2 00:30:00 --job-name=test-prefix bash "${SELF_DIR}"/test-prefix.sh
+
+exec psbatch "${EPREFIX}" "${ARCH}" "${GPU}:1" 8G 2 2 00:30:00 \
+	--job-name=test-prefix bash "${SELF_DIR}"/test-prefix.sh
