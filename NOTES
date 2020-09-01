@@ -1,3 +1,6 @@
+SLURM config file on USC HPCC:
+/var/spool/slurm/slurm.conf
+
 mpirun -mca plm_base_verbose 9  -n 2 -N 1 ./mpitest
 mpirun -mca oob_base_verbose 9 -n 2 -N 1 ./mpitest
 
