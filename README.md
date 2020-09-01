@@ -147,6 +147,8 @@ it should resume incrementally.
 The `test-prefix.sh` runs a CFD benchmark in FEniCS and Firedrake
 with MPI and GPU.
 
+#### On USC HPCC
+
 To launch a job on USC HPCC worker node, run this launcher script
 on the login node:
 
@@ -157,7 +159,9 @@ where `PREFIX_PATH` is the directory with the prefix, ARCH is the CPU Family
 GPU is the GPU model (e.g.  `k20`; look in `bin/pscommon.sh` for which
 CPU families have which CPU models).
 
-On another host (compatible with the ARCH for which the prefix was built):
+#### On a generic host
+
+On a host (compatible with the ARCH for which the prefix was built):
 
     $ PREFIX_PATH/startprefix 
     $ mkdir -p casper-utils/exp/dat
