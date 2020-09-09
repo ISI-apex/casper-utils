@@ -31,8 +31,14 @@ logdir=${LOG_DIR:-"${eprefix}"/var/log/sjobs}
 mkdir -p "${logdir}"
 
 args=(--nodes "${nodes}" --ntasks "${tasks}"
-	--mem-per-cpu "${mem_per_cpu}"
 	--time "${max_time}")
+
+if [[ "${mem_per_cpu}" = "all" ]]
+then
+	args+=(--mem 0)
+else
+	args+=(--mem-per-cpu "${mem_per_cpu}")
+fi
 
 for arg in ${sbatch_args[@]}
 do
