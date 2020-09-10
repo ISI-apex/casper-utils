@@ -79,16 +79,13 @@ model-gpu-large: \
 .PHONY: model-cpu-small model-cpu-large
 .PHONY: model-gpu-small model-gpu-large
 
-model/%_model.meta: HAS_HEADER=0
 model/%_model.meta: TRAIN_TOL=0.01
 model/%_model.meta: LAYERS=2
-model/%_model.meta: MAPE_LIM1=0.1
-model/%_model.meta: MAPE_LIM2=0.5
 
-model/cpu/small/%/blur_model.meta: TRAIN_SIZE=1
-model/cpu/large/%/blur_model.meta: TRAIN_SIZE=250
-model/gpu/small/%/blur_model.meta: TRAIN_SIZE=1
-model/gpu/large/%/blur_model.meta: TRAIN_SIZE=500
+model/cpu/small/%/blur_model.meta: TEST_SET_FRACTION=0.5
+model/cpu/large/%/blur_model.meta: TEST_SET_FRACTION=0.1
+model/gpu/small/%/blur_model.meta: TEST_SET_FRACTION=0.5
+model/gpu/large/%/blur_model.meta: TEST_SET_FRACTION=0.1
 model/cpu/%/nn/blur_model.meta: TRAIN_FEATURES=5
 model/cpu/%/nnc/blur_model.meta: TRAIN_FEATURES=6
 model/gpu/%/nn/blur_model.meta: TRAIN_FEATURES=4
@@ -96,10 +93,10 @@ model/gpu/%/nnc/blur_model.meta: TRAIN_FEATURES=5
 model/cpu/%/blur_model.meta: TRAIN_STEPS=10000
 model/gpu/%/blur_model.meta: TRAIN_STEPS=5000
 
-model/cpu/small/%/fft_model.meta: TRAIN_SIZE=1
-model/cpu/large/%/fft_model.meta: TRAIN_SIZE=2000
-model/gpu/small/%/fft_model.meta: TRAIN_SIZE=1
-model/gpu/large/%/fft_model.meta: TRAIN_SIZE=100
+model/cpu/small/%/fft_model.meta: TEST_SET_FRACTION=0.5
+model/cpu/large/%/fft_model.meta: TEST_SET_FRACTION=0.1
+model/gpu/small/%/fft_model.meta: TEST_SET_FRACTION=0.5
+model/gpu/large/%/fft_model.meta: TEST_SET_FRACTION=0.1
 model/cpu/%/nn/fft_model.meta: TRAIN_FEATURES=7
 model/gpu/%/nn/fft_model.meta: TRAIN_FEATURES=3
 model/cpu/%/nnc/fft_model.meta: TRAIN_FEATURES=8
@@ -110,9 +107,11 @@ model/cpu/%/nnc/fft_model.meta: TRAIN_STEPS=10000
 model/gpu/%/nnc/fft_model.meta: TRAIN_STEPS=5000
 
 define train
-	python ../../compiler/autotuner/train.py $(1) $(HAS_HEADER) \
-		$(TRAIN_SIZE) $(TRAIN_FEATURES) $(TRAIN_STEPS) \
-		$(TRAIN_TOL) $(LAYERS) $(MAPE_LIM1) $(MAPE_LIM2) \
+	python ../../compiler/autotuner/train.py $(1) \
+		--format=single-kernel \
+		--test-set-fraction=$(TEST_SET_FRACTION) \
+		--features=$(TRAIN_FEATURES) --steps=$(TRAIN_STEPS) \
+		--tolerance=$(TRAIN_TOL) --layers=$(LAYERS) \
 		$(2)
 endef
 
