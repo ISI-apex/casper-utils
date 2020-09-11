@@ -1,7 +1,5 @@
 #!/bin/bash
 
-JOBS=$(nproc)
-
 set -e
 set -x
 
@@ -53,7 +51,7 @@ export SHELL="${TMP_HOME}/bin/bash"
 export PORTAGE_TMPDIR="${TMP_HOME}"
 export DISTDIR="${DIST_PATH}"
 
-export USE_CPU_CORES=$JOBS
+export USE_CPU_CORES=$(nproc)
 export TODO=noninteractive
 export OFFLINE_MODE=$OFFLINE_MODE
 export SNAPSHOT_DATE=20200604
