@@ -102,8 +102,13 @@ where
   CPU family for the build host (`sandybridge` is a reasonable choice for
   building a generic prefix, see notes below).
 
-The logs are in `PREFIX_PATH/stage{1,2,3}.log` for the first part of
-the job and in `PREFIX_PATH/var/log/prefix/` for the second part.
+A useful oneliner for monitoring the log from the latest job invocation
+(especially useful when you have to re-invoke the job after fixing failures):
+
+    ls -t PREFIX_PATH/var/log/prefix/*.{out,err} | head -2 | xargs tail -f
+
+The job logs are saved in `PREFIX_PATH/var/log/prefix/`, and logs from
+the bootstrap step are also in `PREFIX_PATH/stage{1,2,3}.log`.
 
 Some notes:
 
