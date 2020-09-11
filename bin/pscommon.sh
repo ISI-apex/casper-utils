@@ -138,6 +138,7 @@ node_info() {
 				exit 1
 				;;
 			esac
+			NODES_WITH_SMALL_TMPDISK="e16-0[1-6],e17-[19-20]"
 			;;
 		*)
 			echo "ERROR: invalid cluster: ${CLUSTER}" 1>&2
