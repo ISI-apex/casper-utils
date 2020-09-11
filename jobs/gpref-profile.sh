@@ -38,7 +38,7 @@ step_done() {
 	touch "${STATUS_DIR}/$1"
 }
 
-set_tmpdir # sets TMPDIR, needed by prun (via .prefixrc)
+set_tmpdir 16000 # MB of space; sets TMPDIR, needed by prun (via .prefixrc)
 
 run() {
 	echo "$@"

@@ -10,7 +10,7 @@ then
 fi
 source "${SELF_DIR}"/gpref-common.sh
 
-set_tmpdir
+set_tmpdir 16000 # MB of free space
 TMP_HOME="${TMPDIR}" # name used in this script, to avoid confusion
 
 if [[ ! -e "${DIST_PATH}" ]]
