@@ -56,6 +56,10 @@ export TODO=noninteractive
 export OFFLINE_MODE=$OFFLINE_MODE
 export SNAPSHOT_DATE=20200604
 
+# This variable may be set on some hosts that use lmod system, but having
+# this variable set breaks the normal GCC shipped with the system.
+unset GCC_ROOT
+
 ## Workaround for failure to create a symlink at end of stage1
 mkdir -p $ROOT/tmp/var/db/repos/
 
