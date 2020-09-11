@@ -39,7 +39,9 @@ mkdir -p "${LOGDIR}"
 
 # Memory limit of 0 means use all avaialable memory on the node.
 node_info "${CLUSTER}" "${ARCH}"
-ARGS+=(--nodes=1 --mem=0 --ntasks=${MIN_CORES} "--constraint=${FEAT}")
+# Exclude nodes with small /tmp (once TmpDisk= is metadata is fixed, use --tmp)
+ARGS+=(--nodes=1 --mem=0 --ntasks=${MIN_CORES} "--constraint=${FEAT}"
+	"--exclude=${NODES_WITH_SMALL_TMPDISK}")
 
 # Split jobs because on USC HPCC max limit for a single job is 24h
 

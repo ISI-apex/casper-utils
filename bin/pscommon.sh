@@ -60,7 +60,6 @@ node_info() {
 			discovery)
 				FEAT="xeon-2640v4"
 				MIN_CORES=20
-				NODES_WITH_SMALL_TMPDISK="e16-0[1-6],e17-[19-20]"
 				;;
 		esac
 		;;
