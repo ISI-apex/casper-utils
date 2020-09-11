@@ -81,13 +81,13 @@ then
 	#   store them in the profiles directory tree to keep stuff together)
 	# NOTE: only depth 1 is supported, no nested dirs
 	ETC_FILES=(
-		usc-hpcc/etc/package.provided
-		casper/etc/package.license
-		casper/etc/package.env
+		usc-hpcc/etc/portage/package.provided
+		casper/etc/portage/package.license
+		casper/etc/portage/package.env
 	)
 	ETC_DIRS=(
-		casper/etc/sets
-		casper/etc/env
+		casper/etc/portage/sets
+		casper/etc/portage/env
 	)
 	for f in ${ETC_FILES[@]}
 	do
