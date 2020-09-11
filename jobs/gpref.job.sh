@@ -49,6 +49,7 @@ qjob() {
 	local out=$("$@")
 	JOBID=$(echo "$out" | sed 's/^Submitted batch job \([0-9]\+\)$/\1/')
 	[ -n "$JOBID" ] || return 1
+	echo "Submitted job: ID ${JOBID}"
 }
 
 tstamp=$(date +%Y%m%d%H%M%S)
