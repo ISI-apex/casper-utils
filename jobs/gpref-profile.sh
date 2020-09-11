@@ -99,10 +99,10 @@ then
 		mkdir -p "$ROOT"/etc/portage/$(basename ${d})
 		(
 			cd "$ROOT"/${REPO_PATH}/profiles/${d}
-			for set in *
+			for f in *
 			do
-				ln -sf ../../../${REPO_PATH}/profiles/${d}/${set} \
-					"$ROOT"/etc/portage/$(basename ${d})/${set}
+				ln -sf ../../../${REPO_PATH}/profiles/${d}/${f} \
+					"$ROOT"/etc/portage/$(basename ${d})/${f}
 			done
 		)
 	done
