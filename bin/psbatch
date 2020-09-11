@@ -12,13 +12,14 @@ then
 fi
 
 eprefix=$1
-arch=$2
-gpu=$3
-mem_per_cpu=$4
-nodes=$5
-tasks=$6
-max_time=$7
-shift 7
+cluster=$2
+arch=$3
+gpu=$4
+mem_per_cpu=$5
+nodes=$6
+tasks=$7
+max_time=$8
+shift 8
 
 sbatch_args=()
 while [[ "$1" = -* ]]
@@ -78,7 +79,7 @@ then
 fi
 logs=("${output_file}" "${error_file}")
 
-CONSTRAINT="$(constraint "${arch}")" 
+CONSTRAINT="$(constraint "${cluster}" "${arch}")"
 if [ -n "${CONSTRAINT}" ]
 then
 	args+=(--constraint "${CONSTRAINT}")

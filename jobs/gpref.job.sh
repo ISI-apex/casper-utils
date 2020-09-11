@@ -26,21 +26,20 @@ then
 fi
 PPATH=$(realpath "${PPATH}")
 PROFILE=$2
-ARCH=$3
-if [[ -z "${PROFILE}" || -z "${ARCH}" ]]
+CLUSTER=$3
+ARCH=$4
+if [[ -z "${PROFILE}" || -z "${CLUSTER}" || -z "${ARCH}" ]]
 then
-	echo "ERROR: usage: $0 prefix_path profile arch" 1>&2
+	echo "ERROR: usage: $0 prefix_path profile cluster arch" 1>&2
 	exit 1
 fi
 
 LOGDIR="${PPATH}/var/log/prefix"
 mkdir -p "${LOGDIR}"
 
-# Constrain to Infiniband nodes, because Myrinet nodes hang on /scratch
-# Note that this is not limiting to 12 threads; the job uses nproc;
-# we could pass 1 here, but be nice and declare resources ("at least N").
 # Memory limit of 0 means use all avaialable memory on the node.
-ARGS+=(--nodes=1 --ntasks=12 --mem=0 --constraint=$(constraint ${ARCH}))
+node_info "${CLUSTER}" "${ARCH}"
+ARGS+=(--nodes=1 --mem=0 --ntasks=${MIN_CORES} "--constraint=${FEAT}")
 
 # Split jobs because on USC HPCC max limit for a single job is 24h
 

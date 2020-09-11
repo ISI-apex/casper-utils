@@ -82,7 +82,7 @@ Step 2. Run build job
 ---------------------
 To build Gentoo Prefix on USC HPPC: `jobs/gpref.job.sh`
 
-    $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-hpcc-ARCH ARCH
+    $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-hpcc-ARCH CLUSTER ARCH
 
 To build Gentoo Prefix on other hosts:
 
@@ -97,7 +97,9 @@ where
   family for which to optimize via the `-march,-mtune` compiler flags (for the
   generic unoptimized use `amd64`; for supported families see
  `ebuilds/profiles/casper-usc-hpcc-*`),
-* the third argument (for USC HPCC only) ARCH again, but cannot be `amd64`;
+* the third argument (for USC HPCC only) is the cluster name: either
+  `discovery` or `legacy`.
+* the fourth argument (for USC HPCC only) ARCH again, but cannot be `amd64`;
   even if you want a generic (unoptimized) build, you still have to choose a
   CPU family for the build host (`sandybridge` is a reasonable choice for
   building a generic prefix, see notes below).
@@ -196,11 +198,11 @@ To enter the prefix on a USC HPCC host (login or worker with interactive shell):
 
 To enqueue a job inside the prefix on a USC HPCC worker node:
 
-    $ psbatch PREFIX_PATH ARCH GPU:GPU_COUNT NUM_NODES NUM_TASKS TIME_LIMIT command arg arg...
+    $ psbatch PREFIX_PATH CLUSTER ARCH GPU:GPU_COUNT NUM_NODES NUM_TASKS TIME_LIMIT command arg arg...
 
 for example:
 
-    $ psbatch /scratch/me/myprefix sandybridge "k20:1" 1 1 00:10:00 python --version
+    $ psbatch /scratch/me/myprefix legacy sandybridge "k20:1" 1 1 00:10:00 python --version
 
 Generic Linux host
 ------------------

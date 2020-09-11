@@ -11,7 +11,27 @@ runexec() {
 }
 
 constraint() {
-	local ARCH=$1
+	local CLUSTER=$1
+	local ARCH=$2
+	node_info "${CLUSTER}" "${ARCH}"
+	echo "${FEAT}"
+}
+
+node_info() {
+	local CLUSTER=$1
+	local ARCH=$2
+
+	case "${CLUSTER}" in
+		legacy)
+			MIN_CORES=12 # TODO: might be underestimated
+			;;
+		discovery) ;;
+		*)
+			echo "ERROR: invalid CLUSTER: ${CLUSTER}" 1>&2
+			exit 1
+			;;
+	esac
+
 	case "$ARCH" in
 	harpertown)
 		FEAT="E5410"
@@ -26,13 +46,54 @@ constraint() {
 		FEAT="E5-2650v2"
 		;;
 	haswell) # k40
-		FEAT="E5-2640v3"
+		case "${CLUSTER}" in
+			legacy) FEAT="E5-2640v3";;
+			discovery)
+				FEAT="xeon-2640v3"
+				MIN_CORES=16
+				;;
+		esac
 		;;
 	broadwell) # p100
-		FEAT="E5-2640v4"
+		case "${CLUSTER}" in
+			legacy) FEAT="E5-2640v4";;
+			discovery)
+				FEAT="xeon-2640v4"
+				MIN_CORES=20
+				NODES_WITH_SMALL_TMPDISK="e16-0[1-6],e17-[19-20]"
+				;;
+		esac
 		;;
 	skylake) # v100
-		FEAT="gold-6130|silver-4116"
+		case "${CLUSTER}" in
+			legacy) FEAT="gold-6130|silver-4116";;
+			discovery)
+				FEAT="xeon-6130|xeon-4116"
+				MIN_CORES=24
+				;;
+		esac
+		;;
+	skylake-gold)
+		case "${CLUSTER}" in
+			legacy)
+				FEAT="gold-6130"
+				;;
+			discovery)
+				FEAT="xeon-6130"
+				MIN_CORES=32
+				;;
+		esac
+		;;
+	skylake-silver)
+		case "${CLUSTER}" in
+			legacy)
+				FEAT="silver-4116"
+				;;
+			discovery)
+				FEAT="xeon-4116"
+				MIN_CORES=24
+				;;
+		esac
 		;;
 	opteron) # Magny-Cours (no dedicated option); 'barcelona' ('amdfam10' is synonym) results in SIGILL
 		FEAT="AMD6176"
@@ -53,10 +114,13 @@ constraint() {
 	# with an AND/OR/XAND/XOR "modifier" attached to each feature. So, to
 	# achieve (f1|f2)&f3, passing 'f1|f2&f3' should work.
 	# See build_feature_list() in src/slurmctld/job_scheduler.c
-	if [[ "${ARCH}" == opteron ]]
+	if [[ "${CLUSTER}" = legacy ]]
 	then
-		echo "${FEAT}"
+		if [[ "${ARCH}" != opteron ]]
+		then
+			echo "${FEAT}&IB"
+		fi
 	else
-		echo "${FEAT}&IB"
+		echo "${FEAT}"
 	fi
 }
