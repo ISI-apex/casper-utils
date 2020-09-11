@@ -35,12 +35,6 @@ then
 	exit 1
 fi
 
-if ! which git 2>/dev/null 2>/dev/null
-then
-	echo "ERROR: git is required but was not found in PATH" 1>&2
-	exit 1
-fi
-
 PNAME=$(basename ${PPATH})
 export ROOT=$(realpath ${PPATH})
 

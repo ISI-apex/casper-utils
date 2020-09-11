@@ -30,13 +30,28 @@ step_done() {
 	touch "${STATUS_DIR}/$1"
 }
 
+run() {
+	echo "$@"
+	"$@"
+}
+
+prun() {
+	# prevent emerge alias (if any) from braking non-interactive script
+	run "$ROOT"/startprefix -c "command $1 </dev/null"
+}
+
+if ! step_is_done emerge_git
+then
+	prun "emerge dev-vcs/git"
+	step_done emerge_git
+fi
+
 REPO=casper
 REPO_PATH=var/db/repos/${REPO}
 
 if ! step_is_done clone_casper_ebuilds
 then
-	# "Upstream" repo: https://github.com/acolinisi/casper-ebuilds
-	git clone "${OVERLAY_PATH}" "$ROOT"/${REPO_PATH}
+	prun "git clone ${OVERLAY_PATH} $ROOT/${REPO_PATH}"
 	step_done clone_casper_ebuilds
 fi
 
@@ -50,16 +65,6 @@ then
 	EOF
 	step_done add_casper_repo
 fi
-
-run() {
-	echo "$@"
-	"$@"
-}
-
-prun() {
-	# prevent emerge alias (if any) from braking non-interactive script
-	run "$ROOT"/startprefix -c "command $1 </dev/null"
-}
 
 if ! step_is_done depclean_pre
 then
