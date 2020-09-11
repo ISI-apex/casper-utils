@@ -91,6 +91,7 @@ then
 	sed -i '$ i\RC=$?' "$ROOT"/startprefix
 	echo 'exit $RC' >> "$ROOT"/startprefix
 	patch -p1 "$ROOT"/startprefix ${FILES_PATH}/startprefix.patch
+	sed -i 's/\(Leaving .* exit status\) \$[?]/\1 $RC/' "$ROOT"/startprefix
 	step_done patch_startprefix
 fi
 
