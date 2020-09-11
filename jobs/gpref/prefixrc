@@ -37,7 +37,8 @@ fi
 
 echo TMPDIR "$TMPDIR"
 
-if [ -n "$TMPDIR" ]
+# /tmp is not good enough, it should be a dedicated subdir at least
+if [[ -n "${TMPDIR}" && "${TMPDIR}" != "/tmp" ]]
 then
 	portage_tmpdir="${TMPDIR}"
 else

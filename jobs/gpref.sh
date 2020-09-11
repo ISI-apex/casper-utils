@@ -6,7 +6,8 @@ set -e
 # configured with CASPER overlay, but do not want to build the numerical
 # libraries.
 
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+# export because the nested scripts called below need it
+export SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 CASPER_UTILS=$(realpath ${SELF_DIR}/..)
 
 export DIST_PATH=${CASPER_UTILS}/distfiles

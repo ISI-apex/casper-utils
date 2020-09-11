@@ -3,6 +3,13 @@
 set -e
 set -x
 
+if [[ ! -e "${SELF_DIR}" ]]
+then
+	echo "ERROR: caller did not set SELF_DIR to script's directory" 1>&2
+	exit 1
+fi
+source "${SELF_DIR}"/gpref-common.sh
+
 if [[ ! -e "${OVERLAY_PATH}" ]]
 then
 	echo "ERROR: OVERLAY_PATH var not pointing to ebuilds repo" 1>&2
@@ -30,6 +37,8 @@ step_is_done() {
 step_done() {
 	touch "${STATUS_DIR}/$1"
 }
+
+set_tmpdir # sets TMPDIR, needed by prun (via .prefixrc)
 
 run() {
 	echo "$@"

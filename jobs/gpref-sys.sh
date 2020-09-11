@@ -5,12 +5,15 @@ JOBS=$(nproc)
 set -e
 set -x
 
-if [[ ! -e "${TMPDIR}" ]]
+if [[ ! -e "${SELF_DIR}" ]]
 then
-	echo "ERROR: TMPDIR var not pointing to a temp dir" 1>&2
+	echo "ERROR: caller did not set SELF_DIR to script's directory" 1>&2
 	exit 1
 fi
-TMP_HOME=$TMPDIR
+source "${SELF_DIR}"/gpref-common.sh
+
+set_tmpdir
+TMP_HOME="${TMPDIR}" # name used in this script, to avoid confusion
 
 if [[ ! -e "${DIST_PATH}" ]]
 then
