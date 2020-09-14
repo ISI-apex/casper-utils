@@ -98,7 +98,7 @@ where
   generic unoptimized use `amd64`; for supported families see
  `ebuilds/profiles/casper-usc-hpcc-*`),
 * the third argument (for USC HPCC only) is the cluster name: either
-  `discovery` or `legacy`.
+  `discovery` or `hpcc`.
 * the fourth argument (for USC HPCC only) ARCH again, but cannot be `amd64`;
   even if you want a generic (unoptimized) build, you still have to choose a
   CPU family for the build host (`sandybridge` is a reasonable choice for

@@ -22,7 +22,7 @@ node_info() {
 	local ARCH=$2
 
 	case "${CLUSTER}" in
-		legacy)
+		hpcc)
 			# Keeping nodes that disappeared, for reference
 			local REMOVED=""
 			case "$ARCH" in
@@ -96,7 +96,7 @@ node_info() {
 			#
 			# Update: Myrinet (and Opteron) nodes have been removed.
 			# Keeping this here just for reference.
-			if [[ "${CLUSTER}" = legacy ]]
+			if [[ "${CLUSTER}" = hpcc ]]
 			then
 				if [[ "${ARCH}" != opteron ]]
 				then
