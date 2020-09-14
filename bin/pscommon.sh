@@ -202,7 +202,6 @@ function set_tmpdir
 				check_space_mb "${THE_TMPDIR}" "${min_space_mb}"
 			then
 				tmp_root="${THE_TMPDIR}"
-			fi
 			elif check_space_mb /tmp "${min_space_mb}"
 			then
 				tmp_root=/tmp
