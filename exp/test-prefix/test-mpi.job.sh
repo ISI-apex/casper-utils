@@ -22,4 +22,4 @@ cd "${WORK_DIR}"
 export LOG_DIR=${WORK_DIR}
 
 exec psbatch "${EPREFIX}" "${CLUSTER}" "${ARCH}" "" all 4 2 00:02:00 \
-	--job-name=test-mpi bash "${SELF_DIR}"/test-mpi.sh
+	--job-name=test-mpi bash "${SELF_DIR}"/test-mpi.sh 2

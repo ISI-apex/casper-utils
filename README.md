@@ -211,6 +211,9 @@ On a host (compatible with the ARCH for which the prefix was built):
     $ bash ../jobs/test-mpi.sh
     $ bash ../jobs/test-cfd.sh
 
+Note: As oppsoed on the cluster (see above), on a generic host, the `test-mpi`
+will only test one node. Modify the script if you want something different.
+
 Enter the prefix
 ================
 
