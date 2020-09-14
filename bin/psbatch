@@ -112,10 +112,19 @@ then
 	exit 0
 fi
 
+t_start=$(date +%s)
 while true # while job state is not 'running'
 do
 	cmd=(squeue -j ${jobid})
-	run "${cmd[@]}"
+
+	# print not as frequently as we check
+	t_now=$(date +%s)
+	t_elapsed=$((t_now - t_start))
+	if [[ "${t_elapsed}" -gt 5 ]]
+	then
+		run "${cmd[@]}"
+	fi
+
 	state=$(${cmd[@]} -o '%t' --noheader)
 	if [ -z "$state" ]
 	then
@@ -127,7 +136,7 @@ do
 	then
 		break
 	fi
-	sleep 60
+	sleep 2
 done
 
 if [ -z "$finished" ]
@@ -135,7 +144,7 @@ then
 	while ! test -f "${logs[0]}" -a -f "${logs[1]}"
 	do
 		echo "Waiting for log files to be created..."
-		sleep 10
+		sleep 2
 	done
 	cat "${logs[@]}"
 	run tail -f "${logs[@]}"
