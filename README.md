@@ -157,11 +157,9 @@ it should resume incrementally.
 
 ### Application test
 
-The are two tests performed by the `test-prefix` test (job + script):
-1. a hello-world MPI test on two nodes with two ranks on each
-2. a CFD benchmark in FEniCS and Firedrake with MPI and GPU.
-
-The tests can be run separately, by invoking the respective scripts.
+The are two tests available:
+1. `test-mpi`: a hello-world MPI test on two nodes with two ranks on each
+2. `test-cfd`: a CFD benchmark in FEniCS and Firedrake with MPI and GPU.
 
 First, build the `mpitest` application:
 
@@ -180,12 +178,14 @@ prefix path:
 To launch a job on USC HPCC worker node, run this launcher script
 on the login node:
 
-    $ bash exp/test-prefix/test-prefix.job.sh PREFIX_PATH CLUSTER ARCH GPU
+    $ bash exp/test-prefix/test-mpi.job.sh PREFIX_PATH CLUSTER ARCH GPU
+    $ bash exp/test-prefix/test-cfd.job.sh PREFIX_PATH CLUSTER ARCH GPU
 
-where `PREFIX_PATH` is the directory with the prefix, ARCH is the CPU Family
-(e.g. `sandybridge` see Step 2 above) with which the prefix is compatible and
-GPU is the GPU model (e.g.  `k20`; look in `bin/pscommon.sh` for which
-CPU families have which CPU models).
+where `PREFIX_PATH` is the directory with the prefix, CLUSTER is the
+name of the compute cluster (e.g. `discovery` see Step 2 above), ARCH is the
+CPU Family (e.g. `sandybridge` see Step 2 above) with which the prefix is
+compatible and GPU is the GPU model (e.g.  `k20`; look in `bin/pscommon.sh`
+for which CPU families have which CPU models -- TODO: that's out-of-date now).
 
 #### On a generic host
 
@@ -194,7 +194,8 @@ On a host (compatible with the ARCH for which the prefix was built):
     $ PREFIX_PATH/startprefix 
     $ mkdir -p casper-utils/exp/dat
     $ cd casper-utils/exp/dat
-    $ bash ../jobs/test-prefix.sh
+    $ bash ../jobs/test-mpi.sh
+    $ bash ../jobs/test-cfd.sh
 
 Enter the prefix
 ================
