@@ -187,6 +187,19 @@ CPU Family (e.g. `sandybridge` see Step 2 above) with which the prefix is
 compatible and GPU is the GPU model (e.g.  `k20`; look in `bin/pscommon.sh`
 for which CPU families have which CPU models -- TODO: that's out-of-date now).
 
+These scripts will keep running (watching the log files) even after the job
+completes (they do not detect job completion), so you have to Ctrl-C when you
+see that the job has finished. To check success, check the end of the log for
+(but also check for expected output and lack of any errors):
+
+    Leaving Gentoo Prefix with exit status 0
+
+Also, the script just watches the log file, after the job has launched, you
+can kill the script with Ctrl-C, and the job will keep running. You can then
+manually check the queue with `squeue` and monitor the job log files the
+paths to which where printed when the job was run (look for `--output` and
+`--error` arguments in the log).
+
 #### On a generic host
 
 On a host (compatible with the ARCH for which the prefix was built):
