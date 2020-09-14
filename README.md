@@ -178,7 +178,7 @@ prefix path:
 To launch a job on USC HPCC worker node, run this launcher script
 on the login node:
 
-    $ bash exp/test-prefix/test-mpi.job.sh PREFIX_PATH CLUSTER ARCH GPU
+    $ bash exp/test-prefix/test-mpi.job.sh PREFIX_PATH CLUSTER ARCH
     $ bash exp/test-prefix/test-cfd.job.sh PREFIX_PATH CLUSTER ARCH GPU
 
 where `PREFIX_PATH` is the directory with the prefix, CLUSTER is the
