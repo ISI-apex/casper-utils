@@ -8,7 +8,7 @@ then
 	echo "ERROR: caller did not set SELF_DIR to script's directory" 1>&2
 	exit 1
 fi
-source "${SELF_DIR}"/gpref-common.sh
+source "${SELF_DIR}"/../bin/pscommon.sh
 
 if [[ ! -e "${OVERLAY_PATH}" ]]
 then

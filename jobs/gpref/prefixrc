@@ -12,6 +12,13 @@
 # The .prefixrc file should be located in the root dir of the prefix tree
 EPREFIX="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+if [ ! -f "${EPREFIX}"/.prefixhelpers ]
+then
+	echo "ERROR: .prefixhelpers not found in prefix root dir" 1>&2
+	exit 1
+fi
+source "${EPREFIX}"/.prefixhelpers
+
 if [ ! -f "${EPREFIX}"/.prefixvars ]
 then
 	echo "ERROR: .prefixvars with variable definitions not found" 1>&2
@@ -35,11 +42,12 @@ then
 	exit 1
 fi
 
-echo TMPDIR "$TMPDIR"
+echo "requested TMPDIR: $TMPDIR"
 
-# /tmp is not good enough, it should be a dedicated subdir at least
-if [[ -n "${TMPDIR}" && "${TMPDIR}" != "/tmp" ]]
+if [[ -n "${TMPDIR}" ]]
 then
+	# We were given a temp dir, but don't take it as is...
+	set_tmpdir 16000 # MB of space; sets TMPDIR
 	portage_tmpdir="${TMPDIR}"
 else
 	portage_tmpdir="${EPREFIX}/var/tmp"

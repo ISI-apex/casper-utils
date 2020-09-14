@@ -8,7 +8,7 @@ then
 	echo "ERROR: caller did not set SELF_DIR to script's directory" 1>&2
 	exit 1
 fi
-source "${SELF_DIR}"/gpref-common.sh
+source "${SELF_DIR}"/../bin/pscommon.sh
 
 set_tmpdir 16000 # MB of free space
 TMP_HOME="${TMPDIR}" # name used in this script, to avoid confusion
@@ -128,6 +128,12 @@ fi
 
 if ! step_is_done prefixrc
 then
+	# It's not great to copy since updates to this code in casper-utils
+	# won't propagate to prefixes that were already built, but the greater
+	# evil is to introduce a dependency from prefix on casper-utils, we
+	# want the prefix to be standalone in this sense, with casper-utils
+	# having the role of a build tool.
+	cp "${SELF_DIR}"/../bin/pscommon.sh "$ROOT/.prefixhelpers"
 	cp "${FILES_PATH}"/prefixenv "$ROOT/.prefixenv"
 	sed "s:@__P_DISTDIR__@:${DISTDIR}:" "${FILES_PATH}"/prefixrc > "$ROOT"/.prefixrc
 
