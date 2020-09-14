@@ -68,4 +68,11 @@ stat -c "${P_GROUP}:x:%g:" "${EPREFIX}"  >> "${EPREFIX}"/etc/group
 sed -i "s/^${P_USER}:x:[0-9]\+:[0-9]\+:/${P_USER}:x:$(stat -c '%u' ${EPREFIX}):$(stat -c '%g' ${EPREFIX}):/" "${EPREFIX}"/etc/passwd
 
 source "${EPREFIX}"/etc/profile
-source $HOME/.bashrc
+
+# It is possible to load your favorite ~/.bashrc with all your favorite
+# aliases and settings, but you have be very careful: the ~/.bashrc must
+# not source any config files from the host, however, by default it does!
+# And, to use your host system, you need that default. One way to go is to
+# split your ~/.bashrc into ~/.bashrc.generic and have ~/.bashrc source
+# ~/.bashrc.generic), then you can uncomment the following:
+#source $HOME/.bashrc.generic
