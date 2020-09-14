@@ -82,21 +82,22 @@ Step 2. Run build job
 ---------------------
 To build Gentoo Prefix on USC HPPC: `jobs/gpref.job.sh`
 
-    $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-hpcc-ARCH CLUSTER ARCH
+    $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER ARCH
 
 To build Gentoo Prefix on other hosts:
 
-    $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-usc-hpcc-ARCH
+    $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-usc-CLUSTER-ARCH
 
 where
 * the first argument (`PREFIX_PATH`) is a relative or absolute folder where
   the prefix will be built (ensure several GB of space, and note that after
   prefix is built it cannot be relocated to another path), on USC HPCC you
   most likely want this to be under /scratch or /scratch2 filesystem;
-* the second argument is a Gentoo profile name where ARCH identifies the CPU
-  family for which to optimize via the `-march,-mtune` compiler flags (for the
-  generic unoptimized use `amd64`; for supported families see
- `ebuilds/profiles/casper-usc-hpcc-*`),
+* the second argument is a Gentoo profile name where CLUSTER identifies the
+  HPC cluster and ARCH identifies the CPU family for which to optimize via the
+  `-march,-mtune` compiler flags (for the generic unoptimized use `amd64`; for
+   supported clusters and cpu families see
+   `ebuilds/profiles/casper-usc-*-*`),
 * the third argument (for USC HPCC only) is the cluster name: either
   `discovery` or `hpcc`.
 * the fourth argument (for USC HPCC only) ARCH again, but cannot be `amd64`;

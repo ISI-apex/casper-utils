@@ -96,10 +96,17 @@ then
 	#   store them in the profiles directory tree to keep stuff together)
 	# NOTE: only depth 1 is supported, no nested dirs
 	ETC_FILES=(
-		usc-hpcc/etc/portage/package.provided
 		casper/etc/portage/package.license
 		casper/etc/portage/package.env
 	)
+	# TODO: scan 'parent' files and pick up etc subfolders if exist
+	if [[ "${PROFILE}" =~ usc-hpcc ]]
+	then
+		ETC_FILES+=(usc-hpcc/etc/portage/package.provided)
+	elif [[ "${PROFILE}" =~ usc-discovery ]]
+	then
+		ETC_FILES+=(usc-discovery/etc/portage/package.provided)
+	fi
 	ETC_DIRS=(
 		casper/etc/portage/sets
 		casper/etc/portage/env
