@@ -157,15 +157,30 @@ it should resume incrementally.
 
 ### Application test
 
-The `test-prefix.sh` runs a CFD benchmark in FEniCS and Firedrake
-with MPI and GPU.
+The are two tests performed by the `test-prefix` test (job + script):
+1. a hello-world MPI test on two nodes with two ranks on each
+2. a CFD benchmark in FEniCS and Firedrake with MPI and GPU.
+
+The tests can be run separately, by invoking the respective scripts.
+
+First, build the `mpitest` application:
+
+    $ cd casper-utils/exp/apps/mpitest
+    $ PREFIX_PATH/startprefix
+    $ make
+
+Check that it was linked correctly against libraries strictly only within the
+prefix path:
+
+    $ ldd ./mpitest
+
 
 #### On USC HPCC
 
 To launch a job on USC HPCC worker node, run this launcher script
 on the login node:
 
-    $ bash exp/test-prefix/test-prefix.job.sh PREFIX_PATH ARCH GPU
+    $ bash exp/test-prefix/test-prefix.job.sh PREFIX_PATH CLUSTER ARCH GPU
 
 where `PREFIX_PATH` is the directory with the prefix, ARCH is the CPU Family
 (e.g. `sandybridge` see Step 2 above) with which the prefix is compatible and
