@@ -184,8 +184,9 @@ on the login node:
 where `PREFIX_PATH` is the directory with the prefix, CLUSTER is the
 name of the compute cluster (e.g. `discovery` see Step 2 above), ARCH is the
 CPU Family (e.g. `sandybridge` see Step 2 above) with which the prefix is
-compatible and GPU is the GPU model (e.g.  `k20`; look in `bin/pscommon.sh`
-for which CPU families have which CPU models -- TODO: that's out-of-date now).
+compatible and GPU is the GPU model (e.g.  `p100`), run `psfeat` tool from
+`casper-utils/bin/` to see the nodes and their GPU resources (do not include
+the `gpu:` prefix, but you can include the `:N` count suffix.
 
 These scripts will keep running (watching the log files) even after the job
 completes (they do not detect job completion), so you have to Ctrl-C when you
