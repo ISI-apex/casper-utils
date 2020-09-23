@@ -198,7 +198,7 @@ function set_tmpdir
 			fi
 		fi
 	}
-	if [[ -z "${THE_TMPDIR}" || "${THE_TMPDIR}" =~ ^/tmp|/dev/shm$ ]]
+	if [[ -z "${THE_TMPDIR}" || "${THE_TMPDIR}" =~ ^(/tmp|/dev/shm)$ ]]
 	then
 		local tmp_root
 		if [[ -n "${min_space_mb}" ]]
