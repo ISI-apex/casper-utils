@@ -3,6 +3,9 @@ SLURM config file on USC HPCC:
 
 mpirun -mca plm_base_verbose 9  -n 2 -N 1 ./mpitest
 mpirun -mca oob_base_verbose 9 -n 2 -N 1 ./mpitest
+for node allocation detection (ALPS and SLURM):
+--mca ras_base_verbose 100
+--mca plm_base_verbose 100
 
 # # To run htop
 #	export SCREEN_DIR=screen/$(hostname)
