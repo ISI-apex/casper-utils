@@ -190,7 +190,12 @@ function set_tmpdir
 	function cleanup_tmp {
 		if [[ -n "${THE_TMPDIR}" && -e "${THE_TMPDIR}" ]]
 		then
-			rm -rf "${THE_TMPDIR}"
+			if [[ -z "${KEEP_TMPDIR}" ]]
+			then
+				rm -rf "${THE_TMPDIR}"
+			else
+				echo "NOTICE: work dir ${THE_TMPDIR} kept, remove manually"
+			fi
 		fi
 	}
 	if [[ -z "${THE_TMPDIR}" || "${THE_TMPDIR}" =~ ^/tmp|/dev/shm$ ]]

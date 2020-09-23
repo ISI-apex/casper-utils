@@ -132,6 +132,11 @@ Some notes:
   should mostly work on newer CPU families too.
 * Builds of numerical libraries on AMD Opteron node appear to be broken
   when optimized for opteron CPU family (even with `-march=native`).
+* By default the temporary work directory is removed automatically
+  (including when job fails). To keep the dir, set `KEEP_TMPDIR` env
+  var to a non-empty value. This is not useful when the build runs on
+  a worker node (because not easy to get to the local file system of
+  that node after job exists), as is the case on USC HPCC.
 
 Step 3. Test the prefix
 ------------------------
