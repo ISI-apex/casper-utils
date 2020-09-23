@@ -214,7 +214,12 @@ On a host (compatible with the ARCH for which the prefix was built):
     $ mkdir -p casper-utils/exp/dat
     $ cd casper-utils/exp/dat
     $ bash ../jobs/test-mpi.sh
-    $ bash ../jobs/test-cfd.sh
+
+The `test-cfd.sh` script takes one optional argument that enables
+the test on GPU (besides the non-GPU tests) when non-empty:
+
+    $ bash ../jobs/test-cfd.sh 1
+
 
 Note: As oppsoed on the cluster (see above), on a generic host, the `test-mpi`
 will only test one node. Modify the script if you want something different.

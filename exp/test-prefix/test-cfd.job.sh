@@ -23,4 +23,4 @@ cd "${WORK_DIR}"
 export LOG_DIR=${WORK_DIR}
 
 exec psbatch "${EPREFIX}" "${CLUSTER}" "${ARCH}" "${GPU}:1" all 2 1 00:30:00 \
-	--job-name=test-cfd bash "${SELF_DIR}"/test-cfd.sh
+	--job-name=test-cfd bash "${SELF_DIR}"/test-cfd.sh ${GPU}
