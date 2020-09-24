@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -o pipefail
 
 # set env var BARE to non-zero value if you just want a prefix
 # configured with CASPER overlay, but do not want to build the numerical
