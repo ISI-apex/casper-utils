@@ -62,7 +62,10 @@ export SNAPSHOT_DATE=20200604
 
 # This variable may be set on some hosts that use lmod system, but having
 # this variable set breaks the normal GCC shipped with the system.
+# TODO: there are probably many like these... so maybe just run the
+# whole script in a clean environment (env -i)?
 unset GCC_ROOT
+unset COMPILER_PATH
 
 ## Workaround for failure to create a symlink at end of stage1
 mkdir -p $ROOT/tmp/var/db/repos/
