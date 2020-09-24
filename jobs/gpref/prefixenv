@@ -1,4 +1,5 @@
-# env | grep '\(TMPDIR\|SCRATCHDIR\|SLURM\|PMI\)' | cut -d'=' -f1
+# env | grep '\(NPROC\|TMPDIR\|SCRATCHDIR\|SLURM\|PMI\)' | cut -d'=' -f1
+NPROC
 TMPDIR
 SCRATCHDIR
 
