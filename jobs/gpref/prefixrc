@@ -59,9 +59,9 @@ else # replace
 	sed -i "s@^PORTAGE_TMPDIR=.*@PORTAGE_TMPDIR=\"${portage_tmpdir}\"@" "${EPREFIX}"/etc/portage/make.conf
 fi
 unset portage_tmpdir
-cat  "${EPREFIX}"/etc/portage/make.conf
 sed -i "s@DISTDIR=.*@DISTDIR=${P_DISTDIR}@" "${EPREFIX}"/etc/portage/make.conf
 sed -i "s@MAKEOPTS=\"\(.*\)-j[0-9]\+\(.*\)\"@MAKEOPTS=\"\1-j$(nproc)\2\"@" "${EPREFIX}"/etc/portage/make.conf
+cat  "${EPREFIX}"/etc/portage/make.conf
 
 sed -i "/^${P_GROUP}:/d" "${EPREFIX}"/etc/group
 stat -c "${P_GROUP}:x:%g:" "${EPREFIX}"  >> "${EPREFIX}"/etc/group
