@@ -139,6 +139,18 @@ node_info() {
 				;;
 			esac
 			;;
+		theta)
+			case "${ARCH}" in
+			knl)
+				FEAT="" # not using SLURM...
+				MIN_CORES=64
+				;;
+			*)
+				echo "ERROR: arch ${ARCH} not in cluster ${CLUSTER}" 1>&2
+				exit 1
+				;;
+			esac
+			;;
 		*)
 			echo "ERROR: invalid cluster: ${CLUSTER}" 1>&2
 			exit 1
