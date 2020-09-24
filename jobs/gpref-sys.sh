@@ -148,20 +148,112 @@ then
 	step_done prefixrc
 fi
 
+kern_info()
+{
+	local srcdir=$1
+	local rc=0
+	if [[ ! -e "$srcdir" ]]
+	then
+		echo "notice: kernel src not found at: $srcdir" 1>&2
+		echo "$rc"
+		return
+	fi
+	if [[ ! -f "$srcdir"/.config ]]
+	then
+		echo "notice: no .config in kernel src at: $srcdir" 1>&2
+		rc=$((rc | 0x2))
+	fi
+	if [[ ! -f "$srcdir"/Module.symvers ]]
+	then
+		echo "notice: no Module.symvers in kernel src at: $srcdir" 1>&2
+		rc=$((rc | 0x4))
+	fi
+	# Try to figure out version of kernel sources to see if we need PIE patch
+	if [[ -f "$srcdir"/Makefile ]]
+	then
+		local ver=$(sed -n 's/^VERSION\s*=\s*\(.*\)/\1/p' \
+			"$srcdir"/Makefile)
+		if [[ -n "$ver" ]]
+		then
+			if [[ "$ver" -le 3 ]]
+			then
+				echo "notice: need PIE patch for kern src at: $srcdir" 1>&2
+				rc=$((rc | 0x8))
+			fi
+		else
+			echo "notice: can't parse kern version from: $srcdir/Makefile" 1>&2
+			rc=$((rc | 0x10))
+		fi
+	else
+			rc=$((rc | 0x10))
+	fi
+	if [[ "$((rc & 0x10))" -ne 0 ]]
+	then
+		echo "notice: won't apply PIE patch because can't determine kernel version in: $srcdir" 1>&2
+	fi
+	# return would be nicer, but triggers set -e
+	echo "$rc"
+}
+
 if ! step_is_done kernel
 then
-	# Setup kernel sources
-	# What follows is specific to CentOS host
-	kver="$(uname -r)"
-	## If it weren't for the patch, a symlink would suffice
-	##mkdir -p "$ROOT"/usr/src
-	##ln -sf /usr/src/kernels/$(uname -r) "$ROOT"/usr/src/linux
-	## ... when patch is needed
-	mkdir -p "$ROOT"/usr/src/kernels
-	rsync -aq  /usr/src/kernels/${kver} "$ROOT"/usr/src/kernels/
-	ln -sf kernels/${kver} "$ROOT"/usr/src/linux
-	pushd "$ROOT"/usr/src/linux
-	patch -p1 < "${FILES_PATH}"/kernel-no-pie.patch
-	popd
+	mkdir -p "$ROOT"/usr/src
+
+	ksrcpath=/usr/src/linux
+	rc=$(kern_info "$ksrcpath")
+	if [[ "$rc" -eq 1 ]] # path not found
+	then
+		ksrcpath=/usr/src/kernels/$(uname -r)
+		rc=$(kern_info "$ksrcpath")
+		if [[ "$rc" -eq 1 ]] # path not found
+		then
+			echo "ERROR: kernel src not found at /usr/src/{linux,kernels/*}" 1>&2
+			exit 1
+		fi
+	fi
+	if  [[ "$rc" -eq 0 ]]
+	then
+		# In the best case, a symlink suffices
+		ln -sf $ksrcpath "$ROOT"/usr/src/linux
+	else # in all other cases, we'll need a copy
+		# indirect via a symlink, although not strictly necessary
+		kver="$(uname -r)"
+		mkdir -p "$ROOT"/usr/src/kernels
+		cp -a ${ksrcpath}/ "$ROOT"/usr/src/kernels/${kver}
+		ln -sf kernels/${kver} "$ROOT"/usr/src/linux
+
+		if [[ "$((rc & 0x2))" -ne 0 ]] # no .config
+		then
+			proc_config=/proc/config.gz
+			if [[ -e "${proc_config}" ]]
+			then
+				zcat "${proc_config}" > "$ROOT"/usr/src/linux/.config
+			else
+				echo "ERROR: .config not found in kern src dir nor /proc" 1>&2
+				exit 1
+			fi
+		fi
+
+		if [[ "$((rc & 0x4))" -ne 0 ]] # no Module.symvers
+		then
+			mod_symvers=/usr/src/linux-headers-$(uname -r)/Module.symvers
+			if [[ -e "${mod_symvers}" ]]
+			then
+				cp -a "${mod_symvers}" "$ROOT"/usr/src/linux/Module.symvers
+			else
+				echo "WARNING: Module.symvers not found in kern src dir nor elsewhere" 1>&2
+				echo "Will rely on x11-drivers/nvidia-drivers to set IGNORE_MISSING_MODULE_SYMVERS=1" 1>&2
+			fi
+		fi
+
+		if [[ "$((rc & 0x8))" -ne 0 ]] # need PIE patch
+		then
+			pushd "$ROOT"/usr/src/linux
+			patch -p1 < "${FILES_PATH}"/kernel-no-pie.patch
+			popd
+		fi
+
+		# NOTE: any error not handled above, is assumed benign
+	fi
 	step_done kernel
 fi
