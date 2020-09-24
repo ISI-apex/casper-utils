@@ -84,7 +84,14 @@ To build Gentoo Prefix on USC HPPC: `jobs/gpref.job.sh`
 
     $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER ARCH
 
-To build Gentoo Prefix on other hosts:
+To build Gentoo Prefix on other hosts, you might need to override the
+default for number of processors to use (the default is what `nproc`
+returns); this is required on the ANL Theta login machines since they are
+shared but do not enforce a limit:
+
+    $ export NPROC=12
+
+Then run the build script directly:
 
     $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-usc-CLUSTER-ARCH
 
