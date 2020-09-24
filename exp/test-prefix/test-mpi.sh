@@ -1,4 +1,4 @@
-# no hashbang on purpose, because need to use shell from within prefix
+# no hashbang on purpose, b/c in some cases, must use shell from within prefix
 
 set -e
 
