@@ -69,6 +69,9 @@ sed -i "s/^${P_USER}:x:[0-9]\+:[0-9]\+:/${P_USER}:x:$(stat -c '%u' ${EPREFIX}):$
 
 source "${EPREFIX}"/etc/profile
 
+# The default prompt in Gentoo shows full path, override to shorten
+PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \W \$\[\033[00m\] "
+
 # It is possible to load your favorite ~/.bashrc with all your favorite
 # aliases and settings, but you have be very careful: the ~/.bashrc must
 # not source any config files from the host, however, by default it does!
