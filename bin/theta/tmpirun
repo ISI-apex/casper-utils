@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+set -x
+
+prefix=/lus/theta-fs0/projects/CASPER/acolin/gpref/gp-knl/usr
+
+# mpirun needs to talk to ALPS, so it neds to load its libs at runtime
+alps_libs=(cray-alps cray-pmi cray-xpmem cray-ugni cray-wlm_detect cray-udreg)
+alps_libs_paths="$(/usr/bin/pkg-config ${alps_libs[@]} --libs-only-L | sed 's/ \?-L/:/g' | cut -d':' -f2- )"
+
+# By default mpirun adds Prefix to LD_LIBRARY_PATH, which breaks loading
+# of host's /bin/bash by aprun (when launching orted -- aprun executes
+# the command given to it via the host's shell). The value for the prefix that
+# mpirun chooses is either the prefix from the path to the mpirun binary OR the
+# --prefix argument when given.
+#
+# So, we have to pass --prefix and point it to a non-existant path. However
+# when passing --prefix, mpirun cannot be invoked by a full path, because then
+# mpirun autodetects this as a conflict between --prefix and the full path
+# (instead of just taking --prefix as the overriding one). So, we invoke mpirun
+# via the executable name by appending Prefix to PATH.
+#
+PATH=${prefix}/bin:$PATH LD_LIBRARY_PATH="${alps_libs_paths}" \
+	exec mpirun --prefix /dev/null "$@"
