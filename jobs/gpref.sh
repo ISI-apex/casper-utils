@@ -33,5 +33,14 @@ LOGDIR="${PPATH}/var/log/prefix"
 mkdir -p "${LOGDIR}"
 tstamp=$(date +%Y%m%d%H%M%S)
 
-${SELF_DIR}/gpref-sys.sh "${PPATH}" 2>&1 | tee ${LOGDIR}/gpref-sys-${tstamp}.log
-${SELF_DIR}/gpref-profile.sh "${PPATH}" "${PROFILE}" 2>&1 | tee ${LOGDIR}/gpref-profile-${tstamp}.log
+if type -p nice 2>/dev/null 1>/dev/null
+then
+	NICE="nice -n 19"
+else
+	NICE=""
+fi
+
+${NICE} ${SELF_DIR}/gpref-sys.sh "${PPATH}" 2>&1 | tee ${LOGDIR}/gpref-sys-${tstamp}.log
+echo "gpref-sys RC: $?"
+${NICE} ${SELF_DIR}/gpref-profile.sh "${PPATH}" "${PROFILE}" 2>&1 | tee ${LOGDIR}/gpref-profile-${tstamp}.log
+echo "gpref-profile RC: $?"
