@@ -1,0 +1,7 @@
+*.cobaltlog
+*.error
+*.output
+
+*.tar.gz
+osu-micro-benchmarks-*/
+osu-micro-benchmarks-*-prefix/

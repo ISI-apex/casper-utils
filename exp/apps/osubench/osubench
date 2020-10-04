@@ -1,0 +1,74 @@
+#!/bin/bash
+
+#set -e
+shopt -s globstar
+
+usage()
+{
+	echo "USAGE: $0 [regexp [command [arg...]]]"
+	echo "  Executes given command with args followed by the "
+	echo "  path to benchmark executable for each benchmark "
+	echo "  whose path matches the given regexp."
+	echo
+	echo "  If command not given, then list matching benchmarks."
+	echo "  If regexp not given, then list all benchmarks."
+}
+
+run() {
+	#set +e
+	echo "$@"
+	#set -e
+
+	"$@"
+}
+
+if [[ -z "${DIR}" ]]
+then
+	echo "ERROR: DIR is not set to installation directory" 1>&2
+	usage
+	exit 1
+fi
+
+if [[ "$1" = "-h" ||  "$1" = "--help" ]]
+then
+	usage
+	exit 0
+fi
+
+LIST=
+if [[ "$#" = 0 ]]
+then
+	LIST=1
+elif [[ "$#" -ge 1 ]]
+then
+	RE=$1
+	shift
+	if [[ "$#" = 0 ]]
+	then
+		LIST=1
+	fi
+fi
+
+if [ -z "${RE}" ]
+then
+	RE=".*"
+fi
+
+# Don't use find because it swallows return code
+# find "${DIR}" -type f -executable -path "${RE}" -execdir "$@" {} \;
+
+NUM=0
+for bench in ${DIR}/**/*
+do
+	if [[ -f "${bench}" && -x "${bench}" && "${bench}" =~ ${RE} ]]
+	then
+		if [[ -z "${LIST}" ]]
+		then
+			run "$@" "${bench}"
+		else
+			echo "${bench}"
+		fi
+		NUM=$((NUM + 1))
+	fi
+done
+echo "Successfully processed ${NUM} benchmarks."
