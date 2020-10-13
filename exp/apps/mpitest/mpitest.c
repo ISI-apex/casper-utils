@@ -54,12 +54,20 @@ int main (int argc, char *argv[])
 	MPI_Comm_rank (MPI_COMM_WORLD, &rank);
 	MPI_Get_processor_name (name, &namelen);
 
-
-	printf ("Hello World from rank %d running on %s (hostname %s)!\n", rank, name, hostname);
-
 	if (rank == 0 )
 		printf ("MPI World size = %d processes\n", size);
 
-	MPI_Finalize ();
+	printf ("Hello World from rank %d running on %s (hostname %s)!\n", rank, name, hostname);
 
+	static int data[1] = {0};
+	if (rank == 0) {
+		data[0] = 42;
+		printf("rank %u: broadcasting data %d!\n", rank, data[0]);
+	}
+	MPI_Bcast(data, 1, MPI_INT, 0, MPI_COMM_WORLD);
+	if (rank != 0) {
+		printf("rank %u: received bcast data %d!\n", rank, data[0]);
+	}
+
+	MPI_Finalize ();
 }
