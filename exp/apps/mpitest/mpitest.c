@@ -14,6 +14,18 @@ int main (int argc, char *argv[])
 	size_t rc;
 	size_t len = 0;
 
+#ifdef WAIT_FOR_DEBUGGER
+	{
+		volatile int i = 0;
+		char hostname[256];
+		gethostname(hostname, sizeof(hostname));
+		printf("PID %d on %s ready for attach\n", getpid(), hostname);
+		fflush(stdout);
+		while (0 == i)
+			sleep(5);
+	}
+#endif
+
 	//val=getenv("hostname");
 	FILE* fhost = popen("hostname",  "r");
 	if ((rc = fread(hostname, sizeof(hostname) - 1, 1, fhost)) == 0) {

@@ -3,3 +3,4 @@
 
 *.o
 mpitest
+mpitest_dbg
