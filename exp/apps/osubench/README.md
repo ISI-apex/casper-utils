@@ -1,8 +1,7 @@
 Recipe for building and running OSU Micro-Benchmarks for MPI on ANL Theta
 
 Note: to run inside the CASPER Prefix, don't use this folder at all,
-instead use the `app-benchmarks/osu-micro-benchmarks` package (and its
-`osubench` script) installed within the prefix.
+instead see `casper-utils/exp/osubench`.
 
 Build
 -----
@@ -31,6 +30,8 @@ To run selective subset of benchmarks, set `PATTERN`, which will filter tests
 by a Bash regexp pattern applied to the path to each benchmark executable:
 
     make PATTERN=hello job
+
+Log files with the output of the executed commands will be in `bench-*.log.*`.
 
 To open an interactive job and invoke the `run` target manually:
 
