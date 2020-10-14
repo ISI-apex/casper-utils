@@ -105,12 +105,19 @@ prun() {
 
 if ! step_is_done patch_startprefix
 then
-	# Temporary patch to allow prun; later patched package re-installed
-	sed -i 's:\(env. -i $RETAIN $SHELL\) -l:\1 --rcfile "${EPREFIX}"/.prefixrc -i "$@":' "$ROOT"/startprefix
+	# Temporary patch to allow prun; in gpref-profile job the patched
+	# version of app-portage/prefix-toolkit reinstalls this script.
+	# Note: P1, P2 are not in a .patch because the script has the
+	# explicit path to prefix, which would require generating .patch.
+	#
+	# P1: Load .prefixrc file in interactive and non-inter. mode.
+	sed -i 's:\(env. -i $RETAIN\) -l:\1 BASH_ENV="${EPREFIX}/.prefixrc" $SHELL --rcfile "${EPREFIX}"/.prefixrc "$@":' "$ROOT"/startprefix
+	# P2: Do propagate the exit code to caller
 	sed -i '$ i\RC=$?' "$ROOT"/startprefix
 	echo 'exit $RC' >> "$ROOT"/startprefix
-	patch -p1 "$ROOT"/startprefix ${FILES_PATH}/startprefix.patch
 	sed -i 's/\(Leaving .* exit status\) \$[?]/\1 $RC/' "$ROOT"/startprefix
+	# P3: Read env vars to preserve from .prefixenv file
+	patch -p1 "$ROOT"/startprefix ${FILES_PATH}/startprefix.patch
 	step_done patch_startprefix
 fi
 
