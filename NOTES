@@ -46,3 +46,107 @@ configure: WARNING:     /usr/lib64
 configure: WARNING: Specified path: /usr
 configure: error: Aborting
 
+
+UCX
+
+[nid03831:97476:0:97476] ugni_udt_ep.c:204  Assertion `msg_length <= 128' failed: msg_length=148
+
+/lus/theta-fs0/projects/CASPER/acolin/gpref/gp-knl/var/tmp/portage/sys-cluster/ucx-1.9.0/work/ucx-1.9.0/src/uct/ugni/udt/ugni_udt_ep.c: [ uct_ugni_udt_ep_am_common_send() ]
+      ...
+      201     sheader->type  = UCT_UGNI_UDT_PAYLOAD;
+      202
+      203     ucs_assertv(msg_length <= GNI_DATAGRAM_MAXSIZE, "msg_length=%u", msg_length);
+==>   204
+      205     uct_ugni_cdm_lock(&iface->super.cdm);
+      206     ugni_rc = GNI_EpPostDataWId(ep->super.ep,
+      207                                 sheader, msg_length,
+
+
+
+if use cray_pmi; then
+	local host_pc_path="/usr/$(get_libdir)/pkgconfig"
+	local pmi_path=$($(tc-getPKG_CONFIG) \
+		--with-path="${host_pc_path}" --cflags-only-I \
+		cray-pmi | sed 's/.*-I\(\S*pmi\S*\).*/\1/g')
+	local pmi_libdir=$($(tc-getPKG_CONFIG) \
+		--with-path="${host_pc_path}" --libs-only-L \
+		cray-pmi | sed 's/-L//g')
+elif use pmi; then
+	local pmi_path="${EPREFIX}/usr/include"
+	local pmi_libdir="${EPREFIX}/usr/$(get_libdir)"
+fi
+
+if use pmi; then
+	local pmi_path pmi_libdir
+	# If have pmi.pc, then use it, otherwise, default location.
+	# The .pc files may point to outside of EPREFIX in the case
+	# when using proprietary binary libs installed in the host.
+	if $(tc-getPKG_CONFIG) --exists pmi; then
+		# ./configure wants one include path and one
+		# library path but pkg-config gives a set of
+		# include/link flags. If we do get many paths,
+		# then, pick the one with 'pmi' (this is the case
+		# for sys-cluster/cray-libs), otherwise, just grab
+		# the first one.
+		local pmi_incs pmi_lds
+		pmi_incs="$($(tc-getPKG_CONFIG) --cflags-only-I pmi)"
+		pmi_lds="$($(tc-getPKG_CONFIG) --libs-only-L pmi)"
+
+		if [[ "${pmi_incs}" =~ pmi ]]; then
+			pmi_path="$(echo "${pmi_incs}" \
+				| sed 's/.*-I\(\S*pmi\S*\).*/\1/g')"
+			pmi_path="$(echo "${pmi_lds}" \
+				| sed 's/.*-L\(\S*pmi\S*\).*/\1/g')"
+		else
+			pmi_path="$(echo "${pmi_incs}" \
+				| sed 's/\s*-I\(\S\+\)\s*/\1/')"
+			pmi_libdir=$(echo "${pmi_incs}" \
+				| sed 's/\s*-L\(\S\+\)\s*/\1/')
+		fi
+	else
+		pmi_path="${EPREFIX}/usr/include"
+		pmi_libdir="${EPREFIX}/usr/lib64"
+	fi
+fi
+
+	# TODO: libfabric linked against these, but when we link
+	# against libfabric, we fail. Use 'rpath' when building libfabric?
+	if use openmpi_fabrics_ofi; then
+		local gni_libs=(cray-ugni cray-xpmem cray-alpsutil cray-alpslli
+				cray-udreg cray-wlm_detect)
+		$(tc-getPKG_CONFIG) --exists ${gni_libs[@]} || die
+		# TODO: the -L is extra-workaround... somehow the build
+		# is not looking for -lpmi in path passed to
+		# --with-pmi-libdir
+		local gni_ldflags="$($(tc-getPKG_CONFIG) \
+			--libs-only-L ${gni_libs[@]} \
+			| sed 's/-L\(\S\+\)/-L\1 -Wl,-rpath-link -Wl,\1/g')"
+		local gni_cflags="$($(tc-getPKG_CONFIG) \
+			--cflags-only-I ${gni_libs[@]})"
+	fi
+
+Closing of FDs in OpenMPI's ODLS breaks OFI-with-uGNI transport
+
+[nid03833:216246] mca:base:select: Auto-selecting mtl components
+[nid03833:216246] mca:base:select:(  mtl) Querying component [ofi]
+[nid03833:216246] mca:base:select:(  mtl) Query of component [ofi] set priority to 25
+[nid03833:216246] mca:base:select:(  mtl) Selected component [ofi]
+[nid03833:216246] select: initializing mtl component ofi
+[nid03838:156776] /tmp/acolin-gp-knl/portage/sys-cluster/openmpi-4.0.3-r1/work/openmpi-4.0.3/ompi/mca/mtl/ofi/mtl_ofi_component.c:315: mtl:ofi:provider_include = "(null)"
+[nid03838:156776] /tmp/acolin-gp-knl/portage/sys-cluster/openmpi-4.0.3-r1/work/openmpi-4.0.3/ompi/mca/mtl/ofi/mtl_ofi_component.c:318: mtl:ofi:provider_exclude = "shm,sockets,tcp,udp,rstream"
+[nid03838:156776] /tmp/acolin-gp-knl/portage/sys-cluster/openmpi-4.0.3-r1/work/openmpi-4.0.3/ompi/mca/mtl/ofi/mtl_ofi_component.c:347: mtl:ofi:prov: gni
+[nid03833:216246] /tmp/acolin-gp-knl/portage/sys-cluster/openmpi-4.0.3-r1/work/openmpi-4.0.3/ompi/mca/mtl/ofi/mtl_ofi_component.c:315: mtl:ofi:provider_include = "(null)"
+[nid03833:216246] /tmp/acolin-gp-knl/portage/sys-cluster/openmpi-4.0.3-r1/work/openmpi-4.0.3/ompi/mca/mtl/ofi/mtl_ofi_component.c:318: mtl:ofi:provider_exclude = "shm,sockets,tcp,udp,rstream"
+[nid03833:216246] /tmp/acolin-gp-knl/portage/sys-cluster/openmpi-4.0.3-r1/work/openmpi-4.0.3/ompi/mca/mtl/ofi/mtl_ofi_component.c:347: mtl:ofi:prov: gni
+--------------------------------------------------------------------------
+Open MPI failed an OFI Libfabric library call (fi_endpoint).  This is highly
+unusual; your job may behave unpredictably (and/or abort) after this.
+
+  Local host: nid03838
+  Location: /tmp/acolin-gp-knl/portage/sys-cluster/openmpi-4.0.3-r1/work/openmpi-4.0.3/ompi/mca/mtl/ofi/mtl_ofi_component.c:629
+  Error: Invalid argument (22)
+--------------------------------------------------------------------------
+[nid03838:156776] select: init returned failure for component ofi
+[nid03838:156776] select: no component selected
+[nid03838:156776] select: init returned failure for component cm
+[
