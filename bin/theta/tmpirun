@@ -6,7 +6,8 @@ set -e
 prefix=/lus/theta-fs0/projects/CASPER/acolin/gpref/gp-knl/usr
 
 # mpirun needs to talk to ALPS, so it neds to load its libs at runtime
-alps_libs=(cray-alps cray-pmi cray-xpmem cray-ugni cray-wlm_detect cray-udreg)
+# TODO: list duplicated in crayrun
+alps_libs=(cray-alps cray-pmi cray-xpmem cray-ugni cray-wlm_detect cray-udreg cray-sysutils)
 alps_libs_paths="$(/usr/bin/pkg-config ${alps_libs[@]} --libs-only-L | sed 's/ \?-L/:/g' | cut -d':' -f2- )"
 
 # By default mpirun adds Prefix to LD_LIBRARY_PATH, which breaks loading
