@@ -7,7 +7,7 @@ source "${self_dir}"/pscommon.sh
 
 if [[ "$#" -lt 7 ]]
 then
-	echo "Usage: $0 prefix arch mem_per_cpu nodes num_tasks max_time command arg..." 1>&2
+	echo "Usage: $0 prefix cluster arch gpu mem_per_cpu nodes tasks_per_node max_time command arg..." 1>&2
 	exit 1
 fi
 
