@@ -213,6 +213,21 @@ manually check the queue with `squeue` and monitor the job log files the
 paths to which where printed when the job was run (look for `--output` and
 `--error` arguments in the log).
 
+#### On Argonne Theta
+
+Enqueue a job (in this example, in interactive mode):
+
+    qsub -A CASPER -n 2 -t 10 -I
+
+In the job's shell on the "MOM" node, first add the special wrapper scripts to
+`PATH`:
+
+    $ export EPREFIX=/absolute/path/to/prefix
+    $ export PATH=/absolute/path/to/casper-utils/bin/theta:$PATH
+
+Then procede to run the `test-*.job.sh` test scripts as in the instructions for
+USC HPCC above.
+
 #### On a generic host
 
 On a host (compatible with the ARCH for which the prefix was built):
