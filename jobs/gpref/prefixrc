@@ -42,8 +42,6 @@ then
 	exit 1
 fi
 
-echo "requested TMPDIR: $TMPDIR"
-
 if [[ -n "${TMPDIR}" ]]
 then
 	# We were given a temp dir, but don't take it as is...
@@ -65,7 +63,6 @@ then
 fi
 sed -i "s@DISTDIR=.*@DISTDIR=${P_DISTDIR}@" "${EPREFIX}"/etc/portage/make.conf
 sed -i "s@MAKEOPTS=\"\(.*\)-j[0-9]\+\(.*\)\"@MAKEOPTS=\"\1-j${NPROC}\2\"@" "${EPREFIX}"/etc/portage/make.conf
-cat  "${EPREFIX}"/etc/portage/make.conf
 
 sed -i "/^${P_GROUP}:/d" "${EPREFIX}"/etc/group
 stat -c "${P_GROUP}:x:%g:" "${EPREFIX}"  >> "${EPREFIX}"/etc/group
