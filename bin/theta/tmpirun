@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-set -x
+#set -x
 
 prefix=/lus/theta-fs0/projects/CASPER/acolin/gpref/gp-knl/usr
 

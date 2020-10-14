@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-set -x
+#set -x
 
 #if [[ "$#" -lt 4 ]]
 #then
