@@ -105,6 +105,7 @@ out=$(${cmd[@]})
 echo "$out"
 jobid=$(echo "$out" | sed 's/^Submitted batch job \([0-9]\+\)$/\1/')
 echo "Job ID: $jobid"
+echo "${jobid}" > "${logdir}/${log_name}.job"
 
 if [ -n "${NONBLOCK}" ]
 then
