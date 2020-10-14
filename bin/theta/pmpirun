@@ -3,13 +3,6 @@
 set -e
 #set -x
 
-#if [[ "$#" -lt 4 ]]
-#then
-#	echo "ERROR: invalid arguments" 1>&2
-#	echo "USAGE: $0 prefix nodes tasks_per_node" 1>&2
-#	exit 1
-#fi
-
 usage() {
 	echo "USAGE: $0 prefix_path args_to_mpirun... command program args..." 1>&2
 	echo "      'command' is a keyword (also effectively a no-op in bash)" 1>&2
@@ -21,12 +14,8 @@ then
 	exit 1
 fi
 
-
 prefix=$1
 shift 1
-#nodes=$2
-#tasks_per_node=$3
-#shift 3
 
 mpirun_args=()
 while [[ "$#" -gt 0 && "$1" != "command" ]]
@@ -43,15 +32,63 @@ fi
 shift # command
 
 mpirun_args+=(
-	-v
-	--mca ras_base_verbose 100
-	--mca plm_alps_debug 100
-	--mca plm_base_framework.framework_output 100
+	#-v
+	--mca pml_base_verbose 100
+	#--mca odls_base_verbose 100
+	--mca opal_verbose 100
+	--mca opal_base_verbose 100
+	#--mca ras_base_verbose 100
+	--mca plm_base_verbose 100
+	--mca plm_alps_debug 1
+
+	# Select transport: built-in uGNI
+	--mca pml_ob1_priority 100
+	--mca btl_base_verbose 100
+	#--mca btl_ugni_verbose 100
+
+
+	# Select transport: UCX
+	#--mca pml ucx
+	#--mca pml_ucx_priority 100
+	#--mca pml_ucx_verbose 100
+
+	# Select transport: OFI libfabric
+	#
+	# Requires patch to odls ('default', or any other odls) to not close
+	# file descriptors in forked child, because ofi's uGNI backend needs
+	# to query alpslli for credentials (unlike built-in uGNI transport,
+	# OFI does not rely on PMI_GNI_PTAG variables set by alps odls).
+	#
+	#--mca mtl ofi
+	#--mca mtl_ofi_priority 100
+	#--mca mtl_ofi_verbose 100
+	#--mca mtl_base_verbose 100
+	#--mca pml_ucx_priority 0
+
+	#--mca shmem_base_verbose 100
+	#--mca shmem mmap
+
+	# We want alps odls, but can't explicitly select it here, because
+	# mpirun loads odls too (on service node, and alps odls fails there);
+	# so have to rely on priority to select alps.
+	# NOTE: The hardcoded priorities are broken in OpenMPI <5.x (alps odls
+	# not selected); needs patch
+	#--mca odls alps
 )
 
-#extra_args+=(-n ${nodes} --map-by ppr:${tasks_per_node}:node)
+# Can't set via --mca, since need to be applied to "projects" other than OMPI
+# Don't have --prmca (yet?): https://github.com/open-mpi/ompi/issues/7285
+# NOTE: these need to also be listed in .prefixenv to be forwarded
+mca_vars+=(
+	#PRTE_MCA_prte_base_verbose=100
+	#PRTE_MCA_prte_pmix_verbose=100
+	#PRTE_MCA_pmix_base_verbose=100
+	#PRTE_MCA_pmix_server_verbose=100
+
+	# very important: otherwise, big jobs fail with timeout SPAWN PMIx request
+	PRTE_MCA_pmix_server_max_wait=8000
+)
 
 # this is the tmpirun from casper-utils/bin/theta
-exec tmpirun ${mpirun_args[@]} ${prefix}/startprefix -c "bash -x -c \"$(echo $@)\""
-#exec tmpirun ${mpirun_args[@]} ${prefix}/bin/bash -x -c "$(echo $@)"
-#exec tmpirun ${mpirun_args[@]} env > ${prefix}/job.env2
+exec env ${mca_vars[@]} tmpirun ${mpirun_args[@]} ${prefix}/startprefix -c "crayrun bash -c \"$(echo $@)\""
+#exec tmpirun ${mpirun_args[@]} /usr/bin/env
