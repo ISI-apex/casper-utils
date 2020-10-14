@@ -1,9 +1,9 @@
 [submodule "prefix"]
 	path = prefix
-	url = git@github.com:acolinisi/gentoo-prefix.git
+	url = https://github.com/acolinisi/gentoo-prefix.git
 [submodule "casper-ebuilds"]
 	path = ebuilds
-	url = git@github.com:acolinisi/casper-ebuilds.git
+	url = https://github.com/acolinisi/casper-ebuilds.git
 [submodule "compiler"]
 	path = compiler
-	url = git@github.com:acolinisi/casper-compiler.git
+	url = https://github.com/acolinisi/casper-compiler.git
