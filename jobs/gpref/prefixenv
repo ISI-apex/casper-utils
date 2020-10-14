@@ -82,9 +82,6 @@ COBALT_NODEFILE
 ALPS_APP_DEPTH
 ALPS_APP_ID
 ALPS_APP_PE
-ALPS_APP_DEPTH
-ALPS_APP_ID
-ALPS_APP_PE
 
 OMPI_COMM_WORLD_SIZE
 OMPI_COMM_WORLD_LOCAL_SIZE
@@ -96,6 +93,32 @@ OMPI_APP_CTX_NUM_PROCS
 OMPI_FILE_LOCATION
 
 OMPI_MCA_ras_base_verbose
+OMPI_MCA_btl_base_verbose
+OMPI_MCA_mtl_base_verbose
+OMPI_MCA_pml_base_verbose
+OMPI_MCA_plm_base_verbose
+OMPI_MCA_shmem_base_verbose
+PRTE_MCA_prte_base_verbose
+PRTE_MCA_prte_pmix_verbose
+PRTE_MCA_pmix_base_verbose
+PRTE_MCA_pmix_server_verbose
+PRTE_MCA_pmix_server_max_wait
+OMPI_MCA_plm_alps_debug
+OMPI_MCA_odls_base_verbose
+OMPI_MCA_opal_base_verbose
+OMPI_MCA_opal_verbose
+OMPI_MCA_pml_ucx_verbose
+OMPI_MCA_pml_ucx_priority
+OMPI_MCA_pml_ob1_priority
+OMPI_MCA_mtl_ofi_verbose
+OMPI_MCA_mtl_ofi_priority
+OMPI_MCA_btl
+OMPI_MCA_mtl
+OMPI_MCA_pml
+OMPI_MCA_pmix
+OMPI_MCA_shmem
+OMPI_MCA_odls
+OMPI_MCA_btl_ugni_verbose
 OMPI_MCA_rmaps_base_mapping_policy
 OMPI_MCA_pmix
 OMPI_MCA_orte_precondition_transports
@@ -138,3 +161,8 @@ PMIX_DSTORE_ESH_BASE_PATH
 PMIX_HOSTNAME
 PMIX_VERSION
 PMIX_ID
+
+PMI_GNI_DEV_ID
+PMI_GNI_LOC_ADDR
+PMI_GNI_COOKIE
+PMI_GNI_PTAG
