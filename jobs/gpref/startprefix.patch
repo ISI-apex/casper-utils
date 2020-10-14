@@ -1,22 +1,49 @@
---- startprefix.orig	2020-05-30 14:44:24.000000000 -0700
-+++ startprefix	2020-05-30 14:45:00.000000000 -0700
-@@ -68,6 +68,19 @@
+--- a/startprefix	2020-10-14 01:04:52.000000000 +0000
++++ b/startprefix	2020-10-14 01:05:17.000000000 +0000
+@@ -52,21 +52,39 @@
+ # give a small notice
+ echo "Entering Gentoo Prefix ${EPREFIX}"
+ # start the login shell, clean the entire environment but what's needed
+-RETAIN="HOME=$HOME TERM=$TERM USER=$USER SHELL=$SHELL"
++RETAIN=(HOME=$HOME TERM=$TERM USER=$USER SHELL=$SHELL)
+ # PROFILEREAD is necessary on SUSE not to wipe the env on shell start
+-[[ -n ${PROFILEREAD} ]] && RETAIN+=" PROFILEREAD=$PROFILEREAD"
++[[ -n ${PROFILEREAD} ]] && RETAIN+=(PROFILEREAD=$PROFILEREAD)
+ # ssh-agent is handy to keep, of if set, inherit it
+-[[ -n ${SSH_AUTH_SOCK} ]] && RETAIN+=" SSH_AUTH_SOCK=$SSH_AUTH_SOCK"
++[[ -n ${SSH_AUTH_SOCK} ]] && RETAIN+=(SSH_AUTH_SOCK=$SSH_AUTH_SOCK)
+ # if we're on some X terminal, makes sense to inherit that too
+-[[ -n ${DISPLAY} ]] && RETAIN+=" DISPLAY=$DISPLAY"
++[[ -n ${DISPLAY} ]] && RETAIN+=(DISPLAY=$DISPLAY)
+ if [[ -d /proc/registry ]]; then # we're on Cygwin
+ 	# crucial to Windows but cannot be restored, see
+ 	# https://cygwin.com/ml/cygwin/2019-08/msg00072.html
+-	[[ -n ${SYSTEMDRIVE} ]] && RETAIN+=" SYSTEMDRIVE=$SYSTEMDRIVE"
++	[[ -n ${SYSTEMDRIVE} ]] && RETAIN+=(SYSTEMDRIVE=$SYSTEMDRIVE)
+ 	# COMSPEC is to native Windows what SHELL is to *nix
+-	[[ -n ${COMSPEC} ]] && RETAIN+=" COMSPEC=$COMSPEC"
++	[[ -n ${COMSPEC} ]] && RETAIN+=(COMSPEC=$COMSPEC)
  	# some Windows programs (e.g. devenv.exe) need TMP or TEMP
- 	[[ -n ${TEMP} ]] && RETAIN+=" TEMP=$TEMP"
- fi
+-	[[ -n ${TEMP} ]] && RETAIN+=" TEMP=$TEMP"
++	[[ -n ${TEMP} ]] && RETAIN+=(TEMP=$TEMP)
++fi
 +# retain variables optinally listed in a file
 +ENV_FILE="${ENV_FILE:-${EPREFIX}/.prefixenv}"
 +if [[ -f "${ENV_FILE}" ]]
 +then
-+       VAR_NAMES=( $(cat "${ENV_FILE}" | sed -e '/^#.*/d' -e '/^\s*$/d') )
-+       ENV_VARS=()
-+       for var in ${VAR_NAMES[@]}
-+       do
-+               [[ -v "${var}" ]] && ENV_VARS+=(${var}="${!var}")
-+       done
-+       RETAIN+=" ${ENV_VARS[@]}"
-+fi
-+echo RETAIN "${RETAIN}"
++	SET_VARS=( $(env | cut -d'=' -f1) )
++	RETAIN_PATTERNS=( $(cat "${ENV_FILE}" | sed -e '/^#.*/d' -e '/^\s*$/d') )
++
++	for var in ${SET_VARS[@]}
++	do
++		for retain_pattern in "${RETAIN_PATTERNS[@]}"
++		do
++			if [[ "${var}" =~ ${retain_pattern} ]]
++			then
++				RETAIN+=("${var}=${!var}")
++			fi
++		done
++	done
+ fi
  # do it!
  if [[ ${SHELL#${EPREFIX}} != ${SHELL} ]] ; then
- 	'/scratch/acolin/casper/gpref/gp-skylake/usr/bin/env' -i $RETAIN $SHELL --rcfile "${EPREFIX}"/.prefixrc -i "$@"

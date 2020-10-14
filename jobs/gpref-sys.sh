@@ -118,6 +118,7 @@ then
 	sed -i 's/\(Leaving .* exit status\) \$[?]/\1 $RC/' "$ROOT"/startprefix
 	# P3: Read env vars to preserve from .prefixenv file
 	patch -p1 "$ROOT"/startprefix ${FILES_PATH}/startprefix.patch
+	sed -i 's/$RETAIN/"${RETAIN[@]}"/g' "$ROOT"/startprefix # part of the above .patch
 	step_done patch_startprefix
 fi
 
