@@ -1,3 +1,6 @@
+Discovery: mpirun args for tcp over Infiniband IP interface
+psbatch ~/ca2/casper/gpref/gp-broadwell discovery broadwell "" all 2 16 00:15:00 mpirun -n 2 --map-by node --mca btl_base_verbose 100 --mca pml_base_verbose 100 --mca pml_ucx_verbose 100 --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 python $PWD/fch.py 32 test.csv
+
 SLURM config file on USC HPCC:
 /var/spool/slurm/slurm.conf
 
