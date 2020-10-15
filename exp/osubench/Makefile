@@ -21,7 +21,7 @@ all:
 run:
 	PATH=$(abspath ../../bin/theta):$${PATH} \
 	     bash $(EPREFIX)/usr/bin/osubench "$(PATTERN)" \
-		mpirun -n "$(NODES)" --map-by "$(MAP_BY)" command
+		mpirun -n "$(NODES)" --map-by "$(MAP_BY)" $(MPIRUN_ARGS) command
 .PHONY: run
 
 DEBUG_Q=debug-cache-quad
