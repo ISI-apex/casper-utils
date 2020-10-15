@@ -21,11 +21,13 @@ $(DIR): $(TARBALL)
 # Use fake --build and --host to trick the build system into cross-compiling
 # (Cray toolchain wrappers set tune flags, and make even conftest binaries
 # generated during ./configure unrunnable on the build host.
+ifneq ($(CROSS_COMPILE),)
+CROSS_COMPILE_ARGS=--build=powerpc64-unknown-linux-gnu --host=x86_64-unknown-linux-gnu
+endif
 config: $(DIR)/config.status
 $(DIR)/config.status: | $(DIR)
 	cd $(DIR) && env CC=cc CXX=cc ./configure --prefix=$(abspath $(PREFIX)) \
-		--build=powerpc64-unknown-linux-gnu --host=x86_64-unknown-linux-gnu \
-		--disable-cuda --disable-openacc
+		$(CROSS_COMPILE_ARGS) --disable-cuda --disable-openacc
 
 ARTIFACT=mpi/startup/osu_hello
 build: $(ARTIFACT) 
