@@ -1,6 +1,15 @@
 Discovery: mpirun args for tcp over Infiniband IP interface
 psbatch ~/ca2/casper/gpref/gp-broadwell discovery broadwell "" all 2 16 00:15:00 mpirun -n 2 --map-by node --mca btl_base_verbose 100 --mca pml_base_verbose 100 --mca pml_ucx_verbose 100 --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 python $PWD/fch.py 32 test.csv
 
+OpenMPI OSU benchmarks: TCP (within prefix) vs native (uGNI):
+(NOTE: similar results with openmpi built with --debug and without)
+Profiled on debug queue for 2 nodes
+ latency: 3-5x slower
+ bandwidth: 5-10x less (tcp: ~1000 MB/s max)
+uGNI (within prefix) vs native (uGNI):
+ latency: prefix is up to 40% lower (good) for smaller msg sizes
+ bandwidth: prefix is up to 20% less (bad) for smaller msg sizes
+
 SLURM config file on USC HPCC:
 /var/spool/slurm/slurm.conf
 
