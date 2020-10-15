@@ -7,7 +7,7 @@ source "${self_dir}"/pscommon.sh
 
 if [[ "$#" -lt 6 ]]
 then
-	echo "Usage: $0 prefix arch mem_per_cpu nodes num_tasks max_max_time" 1>&2
+	echo "Usage: $0 prefix cluster arch gpu mem_per_cpu nodes tasks_per_node max_max_time" 1>&2
 	exit 1
 fi
 
@@ -21,20 +21,26 @@ tasks_per_node=$7
 max_time=$8
 shift 8
 
-gpu_args() {
-	if [[ -n "${gpu}" ]]
-	then
-		echo --gres=gpu:${gpu}
-	fi
-}
+args=()
+if [[ -n "${gpu}" ]]
+then
+	args+=(--gres=gpu:${gpu})
+fi
+
+if [[ "${mem_per_cpu}" = "all" ]]
+then
+	args+=(--mem 0)
+else
+	args+=(--mem-per-cpu "${mem_per_cpu}")
+fi
 
 # /var/spool/slurm/slurm.conf
 # SallocDefaultCommand="exec env PATH=/usr/bin:/bin srun -n1 -N1
 # 	--export=HOME,PATH,TERM,USER --mem-per-cpu=0 --gres=gpu:0 --cpu_bind=no
 # 	--pty --preserve-env --mpi=pmi2 ${DISPLAY:+--x11=first} $SHELL -l"
 runexec salloc --nodes "${nodes}" --ntasks-per-node "${tasks_per_node}" \
-	--constraint "$(constraint "${cluster}" "${arch}")"  $(gpu_args) --mem-per-cpu "${mem_per_cpu}" \
+	--constraint "$(constraint "${cluster}" "${arch}")"  ${args[@]} \
 	--time "${max_time}" \
 	env PATH=/usr/bin:/bin srun -n1 -N1 \
-	--export=HOME,PATH,TERM,USER --mem-per-cpu=${mem_per_cpu} $(gpu_args) --cpu_bind=no \
+	--export=HOME,PATH,TERM,USER ${args[@]} --cpu_bind=no \
  	--pty --preserve-env $SHELL "${eprefix}"/startprefix -c "exec \"${eprefix}/bin/bash\" --rcfile \"${eprefix}\"/${RCFILE} -i"
