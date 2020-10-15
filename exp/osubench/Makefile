@@ -33,7 +33,9 @@ job:
 	qsub -O "$(LOG)" -n "$(NODES)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
 		$$([[ "$(NODES)" -lt 128 ]] && echo -q $(DEBUG_Q)) \
 		$$(which make) -C $${PWD} EPREFIX=$(EPREFIX) \
-		NODES="$(NODES)" MAP_BY="$(MAP_BY)" PATTERN="$(PATTERN)" run
+		NODES="$(NODES)" MAP_BY="$(MAP_BY)" PATTERN="$(PATTERN)" \
+		MPIRUN_ARGS="$(MPIRUN_ARGS)" \
+		run
 	tail -f $(LOGS)
 .PHONY: job
 
