@@ -42,31 +42,34 @@ then
 	exit 1
 fi
 
-if [[ -n "${TMPDIR}" ]]
+if [[ -n "${UPDATE_MAKE_CONF}" ]]
 then
-	# We were given a temp dir, but don't take it as is...
-	set_tmpdir 16000 # MB of space; sets TMPDIR
-	portage_tmpdir="${TMPDIR}"
-else
-	portage_tmpdir="${EPREFIX}/var/tmp"
-fi
-if ! grep -q '^PORTAGE_TMPDIR=' "${EPREFIX}"/etc/portage/make.conf
-then # add
-	echo "PORTAGE_TMPDIR=\"${portage_tmpdir}\"" >> "${EPREFIX}"/etc/portage/make.conf
-else # replace
-	sed -i "s@^PORTAGE_TMPDIR=.*@PORTAGE_TMPDIR=\"${portage_tmpdir}\"@" "${EPREFIX}"/etc/portage/make.conf
-fi
-unset portage_tmpdir
-if [[ -z "${NPROC}" ]]
-then
-	NPROC=$(nproc)
-fi
-sed -i "s@DISTDIR=.*@DISTDIR=${P_DISTDIR}@" "${EPREFIX}"/etc/portage/make.conf
-sed -i "s@MAKEOPTS=\"\(.*\)-j[0-9]\+\(.*\)\"@MAKEOPTS=\"\1-j${NPROC}\2\"@" "${EPREFIX}"/etc/portage/make.conf
+	if [[ -n "${TMPDIR}" ]]
+	then
+		# We were given a temp dir, but don't take it as is...
+		set_tmpdir 16000 # MB of space; sets TMPDIR
+		portage_tmpdir="${TMPDIR}"
+	else
+		portage_tmpdir="${EPREFIX}/var/tmp"
+	fi
+	if ! grep -q '^PORTAGE_TMPDIR=' "${EPREFIX}"/etc/portage/make.conf
+	then # add
+		echo "PORTAGE_TMPDIR=\"${portage_tmpdir}\"" >> "${EPREFIX}"/etc/portage/make.conf
+	else # replace
+		sed -i "s@^PORTAGE_TMPDIR=.*@PORTAGE_TMPDIR=\"${portage_tmpdir}\"@" "${EPREFIX}"/etc/portage/make.conf
+	fi
+	unset portage_tmpdir
+	if [[ -z "${NPROC}" ]]
+	then
+		NPROC=$(nproc)
+	fi
+	sed -i "s@DISTDIR=.*@DISTDIR=${P_DISTDIR}@" "${EPREFIX}"/etc/portage/make.conf
+	sed -i "s@MAKEOPTS=\"\(.*\)-j[0-9]\+\(.*\)\"@MAKEOPTS=\"\1-j${NPROC}\2\"@" "${EPREFIX}"/etc/portage/make.conf
 
-sed -i "/^${P_GROUP}:/d" "${EPREFIX}"/etc/group
-stat -c "${P_GROUP}:x:%g:" "${EPREFIX}"  >> "${EPREFIX}"/etc/group
-sed -i "s/^${P_USER}:x:[0-9]\+:[0-9]\+:/${P_USER}:x:$(stat -c '%u' ${EPREFIX}):$(stat -c '%g' ${EPREFIX}):/" "${EPREFIX}"/etc/passwd
+	sed -i "/^${P_GROUP}:/d" "${EPREFIX}"/etc/group
+	stat -c "${P_GROUP}:x:%g:" "${EPREFIX}"  >> "${EPREFIX}"/etc/group
+	sed -i "s/^${P_USER}:x:[0-9]\+:[0-9]\+:/${P_USER}:x:$(stat -c '%u' ${EPREFIX}):$(stat -c '%g' ${EPREFIX}):/" "${EPREFIX}"/etc/passwd
+fi
 
 source "${EPREFIX}"/etc/profile
 
