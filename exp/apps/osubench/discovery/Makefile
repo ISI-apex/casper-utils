@@ -1,7 +1,17 @@
-#%:
-#	$(MAKE) -f ../Makefile CC=mpicc CXX=mpic++ $*
-
 include ../Makefile
+
+CC=mpicc
+CXX=mpic++
+
+# Workaround for errors from runtime loader about incompatible
+# libstdc++, which without this -rpath flag gets pulled in
+# from /usr/lib64 instead of from /spack/.... (LD_LIBRARY_PATH
+# does not help, loading gcc module does not help).
+CC_VER:=8.3.0
+ifeq ($(shell $(CC) --version | grep $(CC_VER)),)
+$(error Compiler version assumed in Makefile $(CC_VER) differs from actual: update the Makefile)
+endif
+LDFLAGS+=-Wl,-rpath=/spack/apps/gcc/$(CC_VER)/lib64
 
 PATTERN?=.*
 

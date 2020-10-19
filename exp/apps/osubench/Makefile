@@ -26,13 +26,14 @@ CROSS_COMPILE_ARGS=--build=powerpc64-unknown-linux-gnu --host=x86_64-unknown-lin
 endif
 config: $(DIR)/config.status
 $(DIR)/config.status: | $(DIR)
-	cd $(DIR) && env CC=$(CC) CXX=$(CXX) ./configure --prefix=$(abspath $(PREFIX)) \
-		$(CROSS_COMPILE_ARGS) --disable-cuda --disable-openacc
+	cd $(DIR) && env CC=$(CC) CXX=$(CXX) LDFLAGS+=$(LDFLAGS) \
+		./configure --prefix=$(abspath $(PREFIX)) \
+			$(CROSS_COMPILE_ARGS) --disable-cuda --disable-openacc
 
 ARTIFACT=mpi/startup/osu_hello
-build: $(ARTIFACT) 
-$(ARTIFACT): $(DIR)/config.status
-	$(MAKE) -C $(DIR)
+build: $(DIR)/$(ARTIFACT)
+$(DIR)/$(ARTIFACT): $(DIR)/config.status
+	$(MAKE) -C $(DIR) LDFLAGS+=$(LDFLAGS)
 
 install: $(INSTALL_PATH)/$(ARTIFACT)
 $(INSTALL_PATH)/$(ARTIFACT): $(DIR)/$(ARTIFACT)
