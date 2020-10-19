@@ -10,6 +10,50 @@ uGNI (within prefix) vs native (uGNI):
  latency: prefix is up to 40% lower (good) for smaller msg sizes
  bandwidth: prefix is up to 20% less (bad) for smaller msg sizes
 
+About SLURM + OpenMPI:
+----------------------
+
+There are two very different ways of launching an MPI binary (i.e. binary linked against libopenmpi.so):
+A. srun ./mybinary
+B. mpirun ./mybinary
+
+Case A is when SLURM is in charge of loading and managing the processes, and
+establishes a channel between the manager and the libopenmpi.so inside the
+binary, which is used by a process (one of the loaded binaries) to query the
+manager about the platform; the protocol of this channel is PMI{1,2,x}, and
+HPCC's SLURM is built only with PMI{1,2} enabled (although its version is new
+enough to enable PMIx, it's just not enabled). To make this channel, the
+libopenmpi.so needs to be built/linked against libpmi{,2}.so provided by the
+respective manager (SLURM, in this case). I did all that, and srun ./mybinary
+does work on hello world, and does start fenics (the later segfault in fenics
+is somehow related to this MPI infrastructure (because doesn't happen in case
+B), but it's not because of the channel not working at all; it might be because
+SLURM and my build of libpmi2.so (from same SLURM versions) were built with
+very different GCC versions. In any case, we don't care about this segfault,
+nor about case A beyond curiousity, because there is case B.
+
+Case B is when the 'orted" runtime system provided by OpenMPI (invoked by
+mpirun tool) is in charge of launching and managing the processes from MPI
+binaries. So, the big question was: is SLURM still involved and if so, is
+libopenmpi.so talking to SLURM via PMI? The answers are YES to first, but NO to
+second. SLURM is (and has to) be involved (beyond just passing a nodelist in
+environment) because it's the only daemon running on remote nodes (SSH is
+running but is not accessible/usable), so without SLURM there is no way to
+request that anything at all happens on a remote node. So, libopenmpi.so reads
+the hostlist from environment (passed by SLURM) and then launches its own orted
+deamon on each remote hosts by invoking via fork+exec essentially: srun
+--nodelist /usr/bin/orted callback-ip=MY_IP' . So, openmpi bootstraps a cluster
+managed by itself (still respecting SLURM's allocation, because srun would
+refuse a request outside of the allocation); and this boostraping is what
+--with-slurm in openmpi build config controls (utterly undocumented), and how
+it relates to --with-pmi=libpmi2(slurm).so. Once bootstrapped, the MPI binary
+(application) talks to mpirun(orted) not to SLURM -- that's the essential
+difference from Case A. The protocol happens to be PMIx, and libopenmpi.so has
+to be (and is by default) linked with libpmix.so, but this is orthogonal to
+linking libopenmpi.so with libpmi2.so as needed in Case A; the PMI channel in
+case B doesn't involve SLURM: it's a channel between the app binary and
+mpirun(orted), so the PMI version that SLURM supports is not relevant.
+
 SLURM config file on USC HPCC:
 /var/spool/slurm/slurm.conf
 
@@ -161,4 +205,3 @@ unusual; your job may behave unpredictably (and/or abort) after this.
 [nid03838:156776] select: init returned failure for component ofi
 [nid03838:156776] select: no component selected
 [nid03838:156776] select: init returned failure for component cm
-[
