@@ -41,10 +41,11 @@ NODES?=2
 NTASKS_PER_NODE?=16
 
 %/job:
+	rm -f $*.{out,err}
 	touch $*.{out,err}
 	sbatch --output $*.out --error $*.err \
 		--constraint "$(CONSTRAINT)" --mem 0 \
-		--time 00:$(MAX_TIME_MIN):00  \
+		--time 00:$(MAX_TIME_MIN):00 \
 		$$(echo $* | sed \
 			's@\s*dat/bench-n-\([0-9]\+\)-N-\([0-9]\+\).log\s*@--nodes \1 --ntasks-per-node \2@') \
 		exec.sh make PATTERN="$(PATTERN)" $*
@@ -54,5 +55,5 @@ job:
 	salloc --nodes "$(NODES)" \
 		--ntasks-per-node "$(NTASKS_PER_NODE)" \
 		--constraint "$(CONSTRAINT)" --mem 0 \
-	--time 00:$(MAX_TIME_MIN):00
+		--time 00:$(MAX_TIME_MIN):00
 .PHONY: job
