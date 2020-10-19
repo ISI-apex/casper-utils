@@ -26,7 +26,8 @@ all: | dat/ \
 define run-rule
 dat/bench-n-%-N-$(1).log: | dat/
 	DIR="$(abspath $(INSTALL_PATH))" ../osubench "$(PATTERN)" \
-	srun -n "$$*" -N "$(1)" --mem 0 --cpu_bind=no 2>&1 | tee "$$@"
+	srun --ntasks "$$*" --ntasks-per-node "$(1)" --mem 0 --cpu_bind=no \
+		--export=ALL 2>&1 | tee "$$@"
 endef
 
 $(foreach ranks_per_node,1 16,\
