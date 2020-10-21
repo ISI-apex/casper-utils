@@ -111,7 +111,7 @@ then
 	# explicit path to prefix, which would require generating .patch.
 	#
 	# P1: Load .prefixrc file in interactive and non-inter. mode.
-	sed -i 's:\(env. -i $RETAIN\) -l:\1 BASH_ENV="${EPREFIX}/.prefixrc" $SHELL --rcfile "${EPREFIX}"/.prefixrc "$@":' "$ROOT"/startprefix
+	sed -i 's:\(env. -i \$RETAIN\) \$SHELL -l:\1 BASH_ENV="${EPREFIX}/.prefixrc" $SHELL --rcfile "${EPREFIX}"/.prefixrc "$@":' "$ROOT"/startprefix
 	# P2: Do propagate the exit code to caller
 	sed -i '$ i\RC=$?' "$ROOT"/startprefix
 	echo 'exit $RC' >> "$ROOT"/startprefix
