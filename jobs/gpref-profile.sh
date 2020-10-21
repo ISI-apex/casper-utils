@@ -111,7 +111,6 @@ then
 		casper/etc/portage/sets
 		casper/etc/portage/env
 	)
-	mkdir -p "$ROOT"/etc/portage/
 	for f in ${ETC_FILES[@]}
 	do
 		cat "$ROOT"/${REPO_PATH}/profiles/${f} \
