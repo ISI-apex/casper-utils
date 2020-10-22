@@ -14,6 +14,7 @@ endif
 LDFLAGS+=-Wl,-rpath=/spack/apps/gcc/$(CC_VER)/lib64
 
 PATTERN?=.*
+PATTERN_EXCLUDE?=^$$
 
 dat/:
 	mkdir -p $@
@@ -25,7 +26,8 @@ all: | dat/ \
 # run-rule(ranks-per-node)
 define run-rule
 dat/bench-n-%-N-$(1).log: | dat/
-	DIR="$(abspath $(INSTALL_PATH))" ../osubench "$(PATTERN)" \
+	DIR="$(abspath $(INSTALL_PATH))" ../osubench \
+		"$(PATTERN)" "$(PATTERN_EXCLUDE)" \
 	srun --ntasks "$$*" --ntasks-per-node "$(1)" --mem 0 --cpu_bind=no \
 		--export=ALL 2>&1 | tee "$$@"
 endef
@@ -48,7 +50,7 @@ NTASKS_PER_NODE?=16
 		--time 00:$(MAX_TIME_MIN):00 \
 		$$(echo $* | sed \
 			's@\s*dat/bench-n-\([0-9]\+\)-N-\([0-9]\+\).log\s*@--ntasks \1 --ntasks-per-node \2@') \
-		exec.sh make PATTERN="$(PATTERN)" $*
+		exec.sh env "PATTERN='$(PATTERN)'" "PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)'" make $*
 	tail -f $*.{out,err}
 
 job:
