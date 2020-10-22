@@ -49,10 +49,14 @@ prun() {
 	# prevent emerge alias (if any) from braking non-interactive script
 	run "$ROOT"/startprefix -c "command $1 </dev/null"
 }
+portrun() {
+	# TMPDIR set by set_tmpdir above
+	prun "env PORTAGE_TMPDIR=${TMPDIR} MAKEOPTS=-j$(nproc) $@"
+}
 
 if ! step_is_done emerge_git
 then
-	prun "emerge dev-vcs/git"
+	portrun "emerge dev-vcs/git"
 	step_done emerge_git
 fi
 
@@ -79,13 +83,13 @@ fi
 if ! step_is_done depclean_pre
 then
 	# Remove old python versions and potentially other unnecessary leftovers
-	prun "emerge --depclean"
+	portrun "emerge --depclean"
 	step_done depclean_pre
 fi
 
 if ! step_is_done select_profile
 then
-	prun "eselect profile set ${REPO}:${PROFILE}"
+	portrun "eselect profile set ${REPO}:${PROFILE}"
 	step_done select_profile
 fi
 
@@ -143,19 +147,19 @@ then
 		sets+=("@casper-libs")
 	fi
 	# Apply use flags, overrides from the newly added repo, install sets
-	prun "emerge -v --deep --complete-graph --update --newuse --newrepo @world ${sets[@]}"
+	portrun "emerge -v --deep --complete-graph --update --newuse --newrepo @world ${sets[@]}"
 	step_done emerge_profile
 fi
 
 if ! step_is_done select_python
 then
-	prun "eselect python set python3.8"
+	portrun "eselect python set python3.8"
 	step_done select_python
 fi
 
 if ! step_is_done depclean_post
 then
 	# Remove old python versions and potentially other unnecessary leftovers
-	prun "emerge --depclean"
+	portrun "emerge --depclean"
 	step_done depclean_post
 fi
