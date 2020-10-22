@@ -64,7 +64,8 @@ done
 
 if [ -z "${name}" ]
 then
-	name="$(echo "$@" | sed -e 's/\s\+/_/g' -e 's@/@-@g' | cut -c1-128)"
+	name="$(echo "$@" | sed -e 's/\s\+/_/g' \
+		-e 's@/@-@g' -e 's@[^A-Za-z0-9]@-@g' | cut -c1-128)"
 fi
 log_name="$(basename ${eprefix})_${name}_$(date +%Y%m%d%H%M%S)_$$"
 if [ -z "${output_file}" ]
