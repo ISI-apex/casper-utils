@@ -100,7 +100,10 @@ then
 		casper/etc/portage/package.env
 	)
 	# TODO: scan 'parent' files and pick up etc subfolders if exist
-	if [[ "${PROFILE}" =~ usc-hpcc ]]
+	if [[ "${PROFILE}" =~ generic ]]
+	then
+		ETC_FILES+=(generic/etc/portage/package.provided)
+	elif [[ "${PROFILE}" =~ usc-hpcc ]]
 	then
 		ETC_FILES+=(usc-hpcc/etc/portage/package.provided)
 	elif [[ "${PROFILE}" =~ usc-discovery ]]
