@@ -1,12 +1,12 @@
 [submodule "prefix"]
 	path = prefix
-	url = ./casper-prefix.git
+	url = ../casper-prefix.git
 [submodule "casper-ebuilds"]
 	path = ebuilds
-	url = ./casper-ebuilds.git
+	url = ../casper-ebuilds.git
 [submodule "compiler"]
 	path = compiler
-	url = ./casper-compiler.git
+	url = ../casper-compiler.git
 [submodule "exp/apps/firedrake-bench"]
 	path = exp/apps/firedrake-bench
-	url = ./firedrake-bench.git
+	url = ../firedrake-bench.git
