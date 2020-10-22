@@ -62,23 +62,32 @@ then
 	exit 1
 fi
 
-pkgname=$(basename ${pkg})
 
-vers=()
-for ebl in ${pkg}/*.ebuild
-do
-	ebl_ver=$(echo "${ebl}" | sed 's/.*-\([0-9.]\+\(_[0-9a-z]\+\)\?\(-r[0-9]\+\)\?\).ebuild/\1/')
-	vers+=(${ebl_ver})
-done
-if [[ "${#vers[@]}" -eq 0 ]]
+if [[ "${pkg}" =~ \.ebuild$ ]]
 then
-	echo "ERROR: no .ebuild files found" 1>&2
-	exit 1
-fi
+	pkg_ebuild="${pkg}"
+	pkgname=$(basename "${pkg_ebuild}" | sed 's/\(.*\)-\([0-9.]\+\(_[0-9a-z]\+\)\?\(-r[0-9]\+\)\?\).ebuild/\1/')
+	pkgver=$(echo "${pkg}" | sed 's/.*-\([0-9.]\+\(_[0-9a-z]\+\)\?\(-r[0-9]\+\)\?\).ebuild/\1/')
+else
+	pkgname=$(basename ${pkg})
+	vers=()
+	for ebl in ${pkg}/*.ebuild
+	do
+		ebl_ver=$(echo "${ebl}" | sed 's/.*-\([0-9.]\+\(_[0-9a-z]\+\)\?\(-r[0-9]\+\)\?\).ebuild/\1/')
+		vers+=(${ebl_ver})
+	done
+	if [[ "${#vers[@]}" -eq 0 ]]
+	then
+		echo "ERROR: no .ebuild files found" 1>&2
+		exit 1
+	fi
 
-vers_sorted=($(echo ${vers[@]} | xargs -n 1 | sort -V -r))
-pkgver="${vers_sorted[0]}"
-pkg_ebuild="${pkg}/${pkgname}-${pkgver}.ebuild"
+	vers_sorted=($(echo ${vers[@]} | xargs -n 1 | sort -V -r))
+	pkgver="${vers_sorted[0]}"
+	pkg_ebuild="${pkg}/${pkgname}-${pkgver}.ebuild"
+fi
+pkgcat=$(basename $(dirname $(dirname ${pkg_ebuild})))
+pkgfullname=${pkgcat}/${pkgname}
 
 if [[ ! -f "${pkg_ebuild}" ]]
 then
@@ -99,16 +108,16 @@ em*k)
 	;&
 em*)
 	run ebuild "${pkg_ebuild}" manifest
-	rune emerge --ask "${pkg}" "$@"
+	rune emerge --ask "${pkgfullname}" "$@"
 	;;
 fi*)
-	rune equery files "$@" "${pkg}"
+	rune equery files "$@" "${pkgfullname}"
 	;;
 l*)
-	rune equery list "$@" "${pkg}"
+	rune equery list "$@" "${pkgfullname}"
 	;;
 eq*)
-	rune equery "$@" "${pkg}"
+	rune equery "$@" "${pkgfullname}"
 	;;
 im*)
 	cd "${bld_dir}/image"
