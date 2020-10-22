@@ -4,6 +4,10 @@ endif
 
 MCA_ARGS:=--mca btl self,ugni --mca btl_tcp_if_include 10.128.0.0/16
 
+# only one job allowed in the debug queue.
+# TODO: serialize only debug queue targets, not production queue targets
+.NOTPARALLEL:
+
 all: dat/test-2-2-node.csv
 
 dat/:
