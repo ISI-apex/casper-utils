@@ -34,11 +34,34 @@ times-core: | dat/ \
 	dat/times-1024-48-core.csv \
 	dat/times-1024-64-core.csv \
 	dat/times-1536-128-core.csv \
-	dat/times-1536-192-core.csv
+	dat/times-1536-192-core.csv \
+	dat/times-1536-256-core.csv
 
-times-ppr-32-node: | dat/ \
+times-max: \
+	dat/times-2048-256-core.csv \
+	dat/times-2048-320-core.csv
+
+times-ppr-node: | dat/ \
 	dat/times-512-64-ppr-32-node.csv \
+	dat/times-512-128-ppr-16-node.csv \
+	dat/times-512-128-ppr-32-node.csv \
+	dat/times-512-128-ppr-64-node.csv \
 	dat/times-1024-64-ppr-32-node.csv
+
+dat/times-512-%.csv/job: MAX_TIME_MIN=30
+dat/times-1024-%.csv/job: MAX_TIME_MIN=45
+dat/times-%-64-ppr-32-node.csv/job: NODES=2
+dat/times-%-128-ppr-16-node.csv/job: NODES=8
+dat/times-%-128-ppr-32-node.csv/job: NODES=4
+dat/times-%-128-ppr-64-node.csv/job: NODES=2
+dat/times-%-256-ppr-64-node.csv/job: NODES=4
+dat/times-%-512-ppr-64-node.csv/job: NODES=8
+dat/times-%-128-core.csv/job: NODES=2
+dat/times-%-192-core.csv/job: NODES=3
+dat/times-%-256-core.csv/job: NODES=4
+dat/times-%-320-core.csv/job: NODES=5
+dat/times-%-384-core.csv/job: NODES=6
+dat/times-%-512-core.csv/job: NODES=8
 
 define run
 	PATH=$(PWD)/../../../bin/theta::$$$$PATH \
@@ -52,7 +75,7 @@ dat/times-%-$(1)-$(2).csv: | dat/
 	$(call run,$$*,$(1),$(2))
 endef
 
-$(foreach rank,2 4 8 16 32 48 64 128 192,\
+$(foreach rank,2 4 8 16 32 48 64 128 192 256 320 384 512,\
 	$(eval $(call run-rule,$(rank),node))\
 	$(eval $(call run-rule,$(rank),core))\
 	$(eval $(call run-rule,$(rank),ppr-16-node))\
