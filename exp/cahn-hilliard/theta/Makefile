@@ -42,7 +42,7 @@ times-ppr-32-node: | dat/ \
 
 define run
 	PATH=$(PWD)/../../../bin/theta::$$$$PATH \
-	     mpirun -n "$(2)" --map-by "$(3):NOLOCAL" $(MCA_ARGS) \
+	     mpirun -n "$(2)" --map-by "$(subst -,:,$(3)):NOLOCAL" $(MCA_ARGS) \
 	     command bash $(PWD)/fch.sh "$(1)" --elapsed-out "$$@"
 endef
 
@@ -55,7 +55,9 @@ endef
 $(foreach rank,2 4 8 16 32 48 64 128 192,\
 	$(eval $(call run-rule,$(rank),node))\
 	$(eval $(call run-rule,$(rank),core))\
-	$(eval $(call run-rule,$(rank),ppr\:32\:node))\
+	$(eval $(call run-rule,$(rank),ppr-16-node))\
+	$(eval $(call run-rule,$(rank),ppr-32-node))\
+	$(eval $(call run-rule,$(rank),ppr-64-node))\
 )
 
 NODES?=2
