@@ -7,7 +7,7 @@ source "${self_dir}"/pscommon.sh
 
 if [[ "$#" -lt 6 ]]
 then
-	echo "Usage: $0 prefix cluster arch gpu mem_per_cpu nodes tasks_per_node max_max_time" 1>&2
+	echo "Usage: $0 prefix cluster arch gpu mem_per_cpu nodes tasks_per_node max_max_time [salloc_arg...]" 1>&2
 	exit 1
 fi
 
@@ -40,7 +40,7 @@ fi
 # 	--pty --preserve-env --mpi=pmi2 ${DISPLAY:+--x11=first} $SHELL -l"
 runexec salloc --nodes "${nodes}" --ntasks-per-node "${tasks_per_node}" \
 	--constraint "$(constraint "${cluster}" "${arch}")"  ${args[@]} \
-	--time "${max_time}" \
+	--time "${max_time}" "$@" \
 	env PATH=/usr/bin:/bin srun -n1 -N1 \
 	--export=HOME,PATH,TERM,USER ${args[@]} --cpu_bind=no \
 	--pty --preserve-env \
