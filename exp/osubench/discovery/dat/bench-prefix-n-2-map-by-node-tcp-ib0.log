@@ -1,0 +1,795 @@
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgather
+
+# OSU MPI Allgather Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      20.52
+2                      19.34
+4                      19.53
+8                      19.46
+16                     19.48
+32                     19.17
+64                     19.27
+128                    19.49
+256                    19.22
+512                    20.28
+1024                   19.77
+2048                   31.94
+4096                   34.37
+8192                   39.69
+16384                  50.76
+32768                  69.11
+65536                 141.00
+131072                221.79
+262144                360.04
+524288                610.00
+1048576              1255.62
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgatherv
+
+# OSU MPI Allgatherv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      21.46
+2                      21.09
+4                      20.21
+8                      19.33
+16                     20.32
+32                     20.15
+64                     19.10
+128                    19.69
+256                    19.30
+512                    19.64
+1024                   19.55
+2048                   32.80
+4096                   34.19
+8192                   39.01
+16384                  49.23
+32768                  64.09
+65536                 160.67
+131072                220.38
+262144                356.60
+524288                608.27
+1048576              1227.33
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allreduce
+
+# OSU MPI Allreduce Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                      21.40
+8                      20.13
+16                     19.24
+32                     20.29
+64                     19.52
+128                    19.29
+256                    20.48
+512                    19.61
+1024                   19.95
+2048                   33.76
+4096                   68.73
+8192                   41.47
+16384                  88.86
+32768                 110.26
+65536                 152.94
+131072                296.85
+262144                463.56
+524288                755.24
+1048576              1302.93
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
+
+# OSU MPI All-to-All Personalized Exchange Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      19.52
+2                      19.23
+4                      19.99
+8                      19.20
+16                     19.10
+32                     18.62
+64                     18.72
+128                    19.25
+256                    19.10
+512                    19.01
+1024                   19.06
+2048                   31.79
+4096                   34.26
+8192                   39.44
+16384                  50.74
+32768                  71.86
+65536                 143.23
+131072                228.29
+262144                368.16
+524288                628.08
+1048576              1267.17
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoallv
+
+# OSU MPI All-to-Allv Personalized Exchange Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      20.56
+2                      20.05
+4                      19.43
+8                      19.28
+16                     19.46
+32                     19.18
+64                     20.13
+128                    19.74
+256                    19.81
+512                    19.78
+1024                   19.87
+2048                   32.74
+4096                   35.61
+8192                   41.21
+16384                  52.96
+32768                  67.91
+65536                 146.13
+131072                226.80
+262144                367.00
+524288                620.12
+1048576              1162.51
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_barrier
+
+# OSU MPI Barrier Latency Test v5.6.3
+# Avg Latency(us)
+            22.67
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_bcast
+
+# OSU MPI Broadcast Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      21.54
+2                      21.31
+4                      24.52
+8                      21.14
+16                     21.64
+32                     21.65
+64                     21.35
+128                    21.66
+256                    21.31
+512                    21.03
+1024                   20.84
+2048                   21.82
+4096                   22.36
+8192                   24.53
+16384                  27.34
+32768                  36.94
+65536                  93.97
+131072                121.79
+262144                174.08
+524288                283.58
+1048576               503.41
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gather
+
+# OSU MPI Gather Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      33.82
+2                      21.13
+4                      21.58
+8                      21.07
+16                     21.10
+32                     21.06
+64                     21.08
+128                    20.97
+256                    20.78
+512                    20.49
+1024                   20.37
+2048                   22.27
+4096                   22.99
+8192                   24.98
+16384                  29.34
+32768                  42.40
+65536                  97.82
+131072                152.74
+262144                194.91
+524288                315.89
+1048576               561.69
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gatherv
+
+# OSU MPI Gatherv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      22.43
+2                      21.67
+4                      20.54
+8                      20.83
+16                     20.69
+32                     21.01
+64                     20.40
+128                    20.46
+256                    20.22
+512                    20.06
+1024                   20.33
+2048                   21.81
+4096                   22.46
+8192                   24.68
+16384                  28.57
+32768                  42.06
+65536                  96.76
+131072                140.11
+262144                191.45
+524288                318.30
+1048576               577.44
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgather
+
+# OSU MPI Non-blocking Allgather Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      44.32             25.58             23.66             20.81
+2                      44.01             25.41             23.22             19.88
+4                      44.07             25.19             22.64             16.60
+8                      43.42             25.25             22.79             20.26
+16                     43.34             25.12             22.91             20.44
+32                     43.27             25.13             22.88             20.75
+64                     42.87             25.10             22.84             22.23
+128                    43.87             25.36             23.24             20.37
+256                    44.18             25.52             23.06             19.08
+512                    43.55             25.22             23.13             20.75
+1024                   38.32             23.98             22.03             34.94
+2048                   51.19             31.02             29.17             30.87
+4096                   52.67             31.73             30.00             30.19
+8192                   61.27             37.38             35.28             32.27
+16384                  70.21             42.55             40.30             31.35
+32768                  98.79             58.87             56.20             28.98
+65536                 248.91            125.07            119.96              0.00
+131072                363.37            187.69            180.40              2.61
+262144                583.38            296.71            285.58              0.00
+524288                978.85            493.81            476.39              0.00
+1048576              1816.83            923.30            891.59              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgatherv
+
+# OSU MPI Non-blocking Allgatherv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      44.63             25.99             24.07             22.52
+2                      44.27             25.42             23.17             18.64
+4                      44.49             25.38             23.11             17.32
+8                      43.64             25.47             23.23             21.78
+16                     43.32             24.99             22.85             19.77
+32                     43.49             25.45             23.05             21.74
+64                     43.56             24.79             22.72             17.36
+128                    44.29             25.45             22.97             17.98
+256                    48.57             26.56             23.56              6.56
+512                    47.03             26.70             24.49             16.96
+1024                   47.24             27.08             24.63             18.11
+2048                   68.27             40.79             38.04             27.79
+4096                   64.17             40.21             37.09             35.41
+8192                   73.58             45.33             42.31             33.23
+16384                  84.43             52.08             49.06             34.06
+32768                 127.07             78.54             74.33             34.70
+65536                 305.82            153.27            147.60              0.00
+131072                440.28            218.00            209.97              0.00
+262144                700.43            343.62            331.15              0.00
+524288               1163.34            586.08            564.93              0.00
+1048576              1806.18            913.21            881.69              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallreduce
+
+# OSU MPI Non-blocking Allreduce Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+4                      67.89             42.86             40.46             38.15
+8                      67.79             40.54             37.98             28.24
+16                     68.13             40.71             38.62             29.02
+32                     67.57             40.71             38.49             30.23
+64                     67.78             40.92             38.79             30.75
+128                    68.48             42.21             40.13             34.53
+256                    67.86             42.99             40.85             39.12
+512                    60.27             38.74             36.30             40.68
+1024                   58.18             35.43             33.70             32.52
+2048                   63.77             39.84             37.42             36.04
+4096                   65.11             41.58             38.74             39.27
+8192                   73.03             47.44             43.78             41.55
+16384                  81.91             55.86             53.04             50.89
+32768                 113.51             79.48             74.11             54.07
+65536                 375.78            186.71            179.88              0.00
+131072                509.21            249.23            240.30              0.00
+262144                748.54            362.09            349.18              0.00
+524288               1270.35            597.91            577.16              0.00
+1048576              2319.99           1081.77           1044.66              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoall
+
+# OSU MPI Non-blocking All-to-All Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      44.88             26.32             24.03             22.78
+2                      44.78             25.36             23.35             16.78
+4                      44.21             25.98             24.05             24.21
+8                      44.06             25.81             23.71             23.01
+16                     43.78             25.24             22.87             18.94
+32                     43.95             25.14             22.82             17.56
+64                     44.23             25.34             22.98             17.76
+128                    44.21             25.57             23.34             20.14
+256                    44.05             25.57             23.31             20.71
+512                    37.14             21.98             19.43             22.01
+1024                   35.92             20.19             18.54             15.19
+2048                   52.58             31.81             29.80             30.32
+4096                   56.01             33.90             32.16             31.26
+8192                   62.40             37.64             35.64             30.55
+16384                  77.31             45.46             43.25             26.36
+32768                 100.20             59.64             56.64             28.39
+65536                 259.07            132.92            127.85              1.33
+131072                365.06            188.23            180.96              2.28
+262144                578.99            296.91            285.65              1.25
+524288                968.74            497.20            479.63              1.69
+1048576              1827.86            915.00            883.23              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallv
+
+# OSU MPI Non-blocking All-to-Allv Personalized Exchange Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      46.04             27.04             25.37             25.09
+2                      45.39             26.29             24.35             21.55
+4                      44.42             25.23             23.39             17.94
+8                      44.15             25.31             23.55             20.00
+16                     44.17             25.17             23.10             17.76
+32                     44.42             25.23             23.31             17.67
+64                     44.31             25.24             23.23             17.93
+128                    44.93             25.44             23.63             17.53
+256                    45.48             25.82             23.87             17.63
+512                    43.63             23.93             21.94             10.20
+1024                   41.71             23.94             22.36             20.49
+2048                   55.09             32.80             30.59             27.13
+4096                   54.90             33.42             31.64             32.11
+8192                   63.40             38.90             36.05             32.03
+16384                  71.61             42.32             39.95             26.69
+32768                  97.83             57.03             54.30             24.87
+65536                 247.91            121.89            116.08              0.00
+131072                359.42            183.00            176.14              0.00
+262144                579.77            295.04            284.45              0.00
+524288                969.05            494.75            476.83              0.53
+1048576              1833.11            918.53            886.77              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallw
+
+# OSU MPI Non-blocking All-to-Allw Personalized Exchange Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      46.56             26.56             24.61             18.74
+2                      45.47             26.29             24.37             21.28
+4                      45.17             25.74             23.82             18.42
+8                      44.23             25.47             23.72             20.92
+16                     44.58             25.68             23.72             20.32
+32                     44.39             25.41             23.55             19.40
+64                     44.51             25.50             23.63             19.60
+128                    45.39             25.52             23.70             16.17
+256                    45.48             25.76             23.83             17.26
+512                    45.63             25.77             23.89             16.86
+1024                   42.51             24.61             22.91             21.91
+2048                   54.34             32.65             30.39             28.60
+4096                   56.09             34.90             31.71             33.18
+8192                   63.72             38.60             36.48             31.13
+16384                  79.22             45.64             43.23             22.31
+32768                  98.44             57.54             54.55             25.01
+65536                 274.30            143.26            137.75              4.87
+131072                360.65            181.55            174.65              0.00
+262144                590.25            305.84            294.69              3.49
+524288                976.51            499.69            482.28              1.13
+1048576              1853.68            924.85            891.16              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibarrier
+
+# OSU MPI Non-blocking Barrier Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+       Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+             51.42             32.42             28.63             33.62
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibcast
+
+# OSU MPI Non-Blocking Broadcast Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      40.94             27.88             26.12             49.98
+2                      41.78             28.78             26.76             51.43
+4                      40.44             27.61             25.80             50.26
+8                      40.65             27.75             26.01             50.41
+16                     40.66             27.60             25.56             48.89
+32                     40.94             27.60             25.75             48.22
+64                     40.74             27.64             25.75             49.11
+128                    41.02             27.94             26.24             50.16
+256                    41.39             28.12             26.19             49.33
+512                    41.75             27.84             26.05             46.59
+1024                   42.04             28.84             27.02             51.12
+2048                   44.14             30.24             27.66             49.77
+4096                   43.97             30.43             28.18             51.93
+8192                   45.15             31.40             29.80             53.84
+16384                  45.24             31.89             29.96             55.44
+32768                  56.36             39.49             36.09             53.26
+65536                 168.17             80.03             76.23              0.00
+131072                228.03            104.09             99.60              0.00
+262144                329.88            144.95            139.11              0.00
+524288                545.27            230.42            221.78              0.00
+1048576               967.82            401.46            387.44              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igather
+
+# OSU MPI Non-blocking Gather Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      40.50             27.26             25.54             48.14
+2                      40.94             27.17             25.42             45.85
+4                      40.68             27.43             25.75             48.55
+8                      41.20             27.94             25.96             48.90
+16                     40.46             27.16             25.64             48.12
+32                     40.30             27.23             25.51             48.73
+64                     39.91             26.75             25.19             47.73
+128                    40.02             26.79             25.42             47.93
+256                    40.25             26.92             25.42             47.54
+512                    38.88             27.08             25.68             54.03
+1024                   34.13             22.67             21.23             46.05
+2048                   33.44             23.13             21.89             52.89
+4096                   33.80             23.04             21.70             50.41
+8192                   34.02             24.07             22.74             56.25
+16384                  38.09             26.68             25.07             54.46
+32768                  51.45             34.29             32.42             47.07
+65536                 181.78             86.34             82.07              0.00
+131072                242.06            116.53            111.20              0.00
+262144                362.00            154.43            147.69              0.00
+524288                609.02            257.18            247.20              0.00
+1048576              1094.60            462.44            445.87              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igatherv
+
+# OSU MPI Non-blocking Gatherv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      42.90             29.04             27.32             49.29
+2                      42.34             28.87             26.95             50.01
+4                      41.53             28.00             25.93             47.80
+8                      41.65             27.91             26.03             47.21
+16                     41.52             27.79             25.94             47.05
+32                     41.36             27.77             26.08             47.90
+64                     41.20             27.73             25.81             47.81
+128                    41.62             27.78             25.89             46.55
+256                    41.58             27.88             26.15             47.58
+512                    41.62             27.98             26.32             48.19
+1024                   35.21             25.48             24.05             59.56
+2048                   33.19             22.87             21.67             52.37
+4096                   33.94             23.13             21.92             50.67
+8192                   36.87             24.89             23.43             48.86
+16384                  39.31             27.39             25.78             53.78
+32768                  52.10             34.45             32.76             46.13
+65536                 184.73             87.93             83.70              0.00
+131072                241.95            115.40            110.25              0.00
+262144                364.76            155.24            148.75              0.00
+524288                622.56            261.04            249.96              0.00
+1048576              1104.24            466.48            449.14              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ireduce
+
+# OSU MPI Non-blocking Reduce Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+4                      44.22             29.95             28.08             49.20
+8                      42.67             28.69             26.82             47.90
+16                     41.92             28.06             26.23             47.17
+32                     41.94             28.01             26.36             47.16
+64                     42.05             28.11             26.31             47.02
+128                    42.06             28.28             26.55             48.08
+256                    42.03             27.93             26.11             45.99
+512                    42.41             28.28             26.77             47.22
+1024                   42.97             28.71             27.15             47.46
+2048                   39.55             28.53             26.95             59.10
+4096                   35.95             24.46             23.10             50.26
+8192                   38.66             26.09             24.84             49.40
+16384                  45.54             30.13             28.45             45.84
+32768                  65.78             46.60             43.25             55.65
+65536                 197.78            120.91            112.76             31.83
+131072                363.02            212.55            197.25             23.71
+262144                684.42            376.39            357.36             13.80
+524288               1353.00            737.68            705.04             12.72
+1048576              2394.51           1361.65           1303.52             20.76
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatter
+
+# OSU MPI Non-blocking Scatter Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      41.75             28.25             26.72             49.49
+2                      41.40             28.04             26.42             49.42
+4                      41.18             27.72             26.04             48.29
+8                      41.30             27.89             26.15             48.72
+16                     41.16             27.68             26.12             48.41
+32                     41.11             27.76             26.11             48.88
+64                     41.14             27.71             26.11             48.57
+128                    41.59             28.15             26.60             49.48
+256                    41.36             27.81             26.30             48.50
+512                    36.55             26.74             24.76             60.37
+1024                   32.34             22.65             21.27             54.43
+2048                   34.80             24.17             22.82             53.43
+4096                   35.01             24.16             22.91             52.61
+8192                   38.45             26.19             24.72             50.42
+16384                  44.84             32.04             28.46             55.01
+32768                  60.06             41.94             39.03             53.58
+65536                 178.98             88.27             84.67              0.00
+131072                238.23            114.17            109.89              0.00
+262144                353.18            167.23            161.02              0.00
+524288                581.55            267.83            258.31              0.00
+1048576              1042.97            471.87            455.55              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatterv
+
+# OSU MPI Non-blocking Scatterv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      43.52             30.13             28.40             52.85
+2                      42.12             28.89             26.69             50.45
+4                      41.43             28.04             26.48             49.44
+8                      41.79             28.22             26.23             48.24
+16                     41.67             28.27             26.61             49.65
+32                     41.23             28.04             26.09             49.44
+64                     41.52             28.13             26.15             48.79
+128                    41.56             28.12             26.18             48.67
+256                    41.32             27.97             26.36             49.34
+512                    41.39             28.01             26.34             49.19
+1024                   39.22             28.30             26.87             59.34
+2048                   34.06             23.78             22.47             54.25
+4096                   34.27             23.78             22.56             53.52
+8192                   37.62             25.97             24.52             52.49
+16384                  40.79             28.59             26.81             54.51
+32768                  58.53             41.10             37.24             53.17
+65536                 178.35             88.10             84.46              0.00
+131072                234.98            113.48            109.20              0.00
+262144                356.41            171.85            165.44              0.00
+524288                581.32            267.15            257.67              0.00
+1048576              1054.71            476.27            459.59              0.00
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce
+
+# OSU MPI Reduce Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                      21.48
+8                      21.38
+16                     21.10
+32                     20.47
+64                     20.51
+128                    20.33
+256                    20.38
+512                    20.01
+1024                   20.37
+2048                   21.96
+4096                   22.85
+8192                   25.22
+16384                  29.06
+32768                  39.16
+65536                 101.51
+131072                145.22
+262144                188.92
+524288                309.58
+1048576               553.35
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce_scatter
+
+# OSU MPI Reduce_scatter Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                      20.97
+8                      19.83
+16                     19.90
+32                     19.95
+64                     19.59
+128                    19.54
+256                    19.87
+512                    20.54
+1024                   20.52
+2048                   21.33
+4096                   35.54
+8192                   39.20
+16384                  43.27
+32768                  56.11
+65536                  80.17
+131072                163.24
+262144                265.27
+524288                435.37
+1048576               772.64
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatter
+
+# OSU MPI Scatter Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      23.10
+2                      21.80
+4                      21.50
+8                      21.58
+16                     21.19
+32                     21.06
+64                     21.23
+128                    21.07
+256                    21.27
+512                    21.34
+1024                   20.67
+2048                   22.59
+4096                   23.65
+8192                   25.96
+16384                  33.06
+32768                  48.46
+65536                 102.59
+131072                135.82
+262144                199.83
+524288                329.58
+1048576               597.35
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatterv
+
+# OSU MPI Scatterv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      22.50
+2                      21.94
+4                      21.38
+8                      21.35
+16                     21.07
+32                     21.65
+64                     20.94
+128                    21.16
+256                    21.27
+512                    21.40
+1024                   20.80
+2048                   22.56
+4096                   23.00
+8192                   25.42
+16384                  28.83
+32768                  39.80
+65536                 100.93
+131072                135.14
+262144                202.67
+524288                329.07
+1048576               596.36
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bibw
+# OSU MPI Bi-Directional Bandwidth Test v5.6.3
+# Size      Bandwidth (MB/s)
+1                       0.17
+2                       0.34
+4                       0.68
+8                       1.38
+16                      2.77
+32                      5.52
+64                     11.02
+128                    21.74
+256                    42.65
+512                    80.85
+1024                  148.17
+2048                  241.54
+4096                  406.64
+8192                  685.04
+16384                1123.45
+32768                1065.69
+65536                1205.97
+131072                960.21
+262144                906.88
+524288               1691.88
+1048576              1876.21
+2097152              1906.98
+4194304              1872.78
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bw
+# OSU MPI Bandwidth Test v5.6.3
+# Size      Bandwidth (MB/s)
+1                       0.10
+2                       0.21
+4                       0.35
+8                       0.74
+16                      1.77
+32                      3.52
+64                      7.17
+128                    14.34
+256                    28.76
+512                    56.37
+1024                  112.50
+2048                  178.59
+4096                  352.34
+8192                  573.33
+16384                 837.22
+32768                 809.03
+65536                 979.45
+131072               1113.96
+262144               1321.03
+524288               1903.28
+1048576              1418.98
+2097152              1906.96
+4194304              1817.95
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency
+# OSU MPI Latency Test v5.6.3
+# Size          Latency (us)
+0                      16.05
+1                      16.46
+2                      16.40
+4                      14.91
+8                      12.90
+16                     12.86
+32                     12.83
+64                     12.82
+128                    13.02
+256                    14.11
+512                    13.43
+1024                   13.77
+2048                   18.05
+4096                   19.56
+8192                   23.23
+16384                  29.29
+32768                  42.12
+65536                  92.04
+131072                125.53
+262144                185.48
+524288                313.81
+1048576               567.79
+2097152              1109.12
+4194304              2490.37
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency_mp
+# OSU MPI Multi-process Latency Test v5.6.3
+# Number of forked processes in sender: 2
+# Number of forked processes in receiver: 2
+# Size          Latency (us)
+0                      16.46
+1                      16.70
+2                      16.75
+4                      14.62
+8                      12.95
+16                     13.06
+32                     13.16
+64                     13.03
+128                    13.24
+256                    13.40
+512                    14.02
+1024                   14.42
+2048                   18.32
+4096                   19.94
+8192                   23.23
+16384                  29.10
+32768                  41.83
+65536                  93.09
+131072                125.67
+262144                185.47
+524288                313.72
+1048576               565.81
+2097152              1098.06
+4194304              2699.79
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_mbw_mr
+# OSU MPI Multiple Bandwidth / Message Rate Test v5.6.3
+# [ pairs: 1 ] [ window size: 64 ]
+# Size                  MB/s        Messages/s
+1                       0.11         110240.42
+2                       0.22         111088.92
+4                       0.44         110678.84
+8                       0.90         111924.04
+16                      1.80         112665.63
+32                      3.56         111369.53
+64                      7.20         112559.69
+128                    14.43         112762.02
+256                    28.83         112598.25
+512                    57.71         112723.31
+1024                  113.61         110951.26
+2048                  180.64          88202.35
+4096                  350.53          85579.43
+8192                  569.56          69526.71
+16384                 888.29          54217.22
+32768                1067.02          32562.81
+65536                 716.78          10937.19
+131072                696.15           5311.20
+262144               1220.82           4657.05
+524288               1713.93           3269.06
+1048576              1735.32           1654.93
+2097152              1893.50            902.89
+4194304              1827.66            435.75
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_multi_lat
+# OSU MPI Multi Latency Test v5.6.3
+# Size          Latency (us)
+0                      16.61
+1                      16.89
+2                      16.69
+4                      16.43
+8                      13.87
+16                     12.91
+32                     12.92
+64                     12.96
+128                    13.15
+256                    13.29
+512                    13.30
+1024                   13.62
+2048                   18.32
+4096                   19.38
+8192                   23.10
+16384                  29.14
+32768                  42.67
+65536                  92.45
+131072                125.52
+262144                186.05
+524288                313.74
+1048576               554.02
+2097152              1098.39
+4194304              2488.40
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_hello
+# OSU MPI Hello World Test v5.6.3
+This is a test with 2 processes
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_init
+# OSU MPI Init Test v5.6.3
+nprocs: 2, min: 212 ms, max: 212 ms, avg: 212 ms
+Successfully processed 34 benchmarks.

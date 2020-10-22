@@ -1,0 +1,795 @@
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgather
+
+# OSU MPI Allgather Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.93
+2                       2.43
+4                       2.08
+8                       2.40
+16                      2.23
+32                      2.25
+64                      2.26
+128                     3.13
+256                     3.23
+512                     3.40
+1024                    3.86
+2048                    4.68
+4096                    5.00
+8192                    6.84
+16384                   8.98
+32768                  14.16
+65536                  22.03
+131072                 40.18
+262144                 75.44
+524288                148.58
+1048576               279.72
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgatherv
+
+# OSU MPI Allgatherv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.37
+2                       2.45
+4                       2.13
+8                       2.55
+16                      2.27
+32                      2.28
+64                      2.46
+128                     3.33
+256                     3.54
+512                     3.60
+1024                    3.58
+2048                    4.36
+4096                    5.18
+8192                    6.73
+16384                  10.42
+32768                  12.61
+65536                  20.52
+131072                 41.31
+262144                 78.70
+524288                148.27
+1048576               271.34
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allreduce
+
+# OSU MPI Allreduce Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                       2.44
+8                       2.54
+16                      2.19
+32                      2.22
+64                      2.37
+128                     3.27
+256                     3.54
+512                     3.56
+1024                    3.77
+2048                    4.96
+4096                    9.78
+8192                    7.27
+16384                  14.31
+32768                  20.24
+65536                  28.85
+131072                 50.06
+262144                 92.91
+524288                185.30
+1048576               341.30
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
+
+# OSU MPI All-to-All Personalized Exchange Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.52
+2                       2.47
+4                       2.12
+8                       2.13
+16                      2.12
+32                      2.31
+64                      2.61
+128                     3.34
+256                     3.28
+512                     3.76
+1024                    3.92
+2048                    4.59
+4096                    5.25
+8192                    6.71
+16384                   9.00
+32768                  13.05
+65536                  21.34
+131072                 42.00
+262144                 74.16
+524288                152.32
+1048576               277.09
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoallv
+
+# OSU MPI All-to-Allv Personalized Exchange Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.34
+2                       2.58
+4                       2.09
+8                       2.08
+16                      2.09
+32                      2.24
+64                      2.41
+128                     3.40
+256                     3.35
+512                     3.38
+1024                    3.88
+2048                    4.19
+4096                    4.93
+8192                    6.54
+16384                   9.00
+32768                  14.28
+65536                  21.13
+131072                 43.13
+262144                 78.76
+524288                155.89
+1048576               281.86
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_barrier
+
+# OSU MPI Barrier Latency Test v5.6.3
+# Avg Latency(us)
+             2.53
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_bcast
+
+# OSU MPI Broadcast Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.38
+2                       2.56
+4                       2.04
+8                       2.03
+16                      2.10
+32                      1.99
+64                      2.06
+128                     2.99
+256                     2.87
+512                     3.03
+1024                    2.94
+2048                    3.58
+4096                    3.62
+8192                    4.48
+16384                   6.99
+32768                   9.86
+65536                  16.77
+131072                 26.09
+262144                 48.85
+524288                 92.71
+1048576               181.27
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gather
+
+# OSU MPI Gather Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       3.14
+2                       2.30
+4                       2.11
+8                       2.03
+16                      2.04
+32                      2.04
+64                      2.26
+128                     2.44
+256                     2.55
+512                     3.02
+1024                    2.79
+2048                    3.09
+4096                    3.61
+8192                    4.59
+16384                   5.48
+32768                   7.57
+65536                  11.74
+131072                 26.94
+262144                 68.26
+524288                126.84
+1048576               229.53
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gatherv
+
+# OSU MPI Gatherv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.44
+2                       2.50
+4                       2.11
+8                       2.06
+16                      1.99
+32                      2.14
+64                      2.22
+128                     2.57
+256                     2.66
+512                     2.85
+1024                    3.05
+2048                    3.34
+4096                    3.43
+8192                    4.27
+16384                   5.43
+32768                   9.34
+65536                  13.15
+131072                 21.49
+262144                 75.92
+524288                142.22
+1048576               264.58
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgather
+
+# OSU MPI Non-blocking Allgather Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       6.21              4.59              3.59             54.75
+2                       5.87              4.03              3.04             39.46
+4                       5.70              4.02              3.20             47.68
+8                       5.30              3.47              2.87             36.55
+16                      6.13              4.17              3.35             41.40
+32                      5.97              4.02              3.21             39.15
+64                      6.00              4.02              3.18             37.55
+128                     6.79              5.15              4.07             59.49
+256                     6.54              4.74              4.01             55.06
+512                     7.48              5.29              4.38             50.16
+1024                    7.74              5.71              4.77             57.42
+2048                    8.23              6.29              5.01             61.18
+4096                    8.56              6.31              5.79             60.99
+8192                   11.01              8.00              7.14             57.90
+16384                  18.58             11.44             10.29             30.70
+32768                  24.82             15.91             14.48             38.45
+65536                  40.22             24.47             22.81             30.96
+131072                 76.68             45.53             42.12             26.05
+262144                162.10             81.34             77.76              0.00
+524288                289.94            147.20            141.23              0.00
+1048576               558.79            282.44            271.26              0.00
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgatherv
+
+# OSU MPI Non-blocking Allgatherv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       6.49              4.77              3.82             54.96
+2                       5.83              4.05              3.16             43.69
+4                       5.68              4.05              3.05             46.75
+8                       5.97              4.19              3.35             47.05
+16                      6.28              4.04              3.17             29.58
+32                      5.65              4.04              3.35             51.85
+64                      6.33              4.33              3.20             37.75
+128                     7.07              5.32              4.28             59.03
+256                     6.78              4.61              3.93             44.92
+512                     7.06              5.35              4.37             60.75
+1024                    7.61              5.76              5.15             64.16
+2048                    8.25              6.32              5.34             63.74
+4096                    9.04              6.49              5.65             54.81
+8192                   11.17              8.19              7.26             58.95
+16384                  16.98             11.44             10.40             46.69
+32768                  24.16             15.41             14.38             39.18
+65536                  39.84             24.24             22.79             31.56
+131072                 80.56             44.97             42.36             15.98
+262144                163.55             81.06             76.24              0.00
+524288                291.19            146.34            140.75              0.00
+1048576               554.38            281.44            268.83              0.00
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallreduce
+
+# OSU MPI Non-blocking Allreduce Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+4                       6.67              4.58              3.76             44.49
+8                       6.14              4.01              3.31             35.57
+16                      6.02              4.16              3.36             44.59
+32                      6.00              4.02              3.62             45.11
+64                      6.57              4.58              3.92             49.16
+128                     7.95              5.72              5.11             56.37
+256                     8.28              5.86              5.16             53.07
+512                     9.86              6.88              5.48             45.49
+1024                    8.63              6.43              5.66             61.16
+2048                   10.64              7.98              7.28             63.52
+4096                   12.09              9.11              8.12             63.31
+8192                   15.48             11.93             10.56             66.44
+16384                  32.90             20.42             18.94             34.09
+32768                  46.79             26.78             25.10             20.25
+65536                  72.73             41.30             39.37             20.15
+131072                127.62             71.82             68.73             18.81
+262144                270.84            138.40            133.20              0.57
+524288                492.95            251.79            242.56              0.58
+1048576               942.37            479.75            461.48              0.00
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoall
+
+# OSU MPI Non-blocking All-to-All Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       5.99              4.32              3.60             53.79
+2                       5.03              3.47              2.96             47.41
+4                       5.18              3.47              2.93             41.85
+8                       5.34              3.62              2.96             41.82
+16                      5.74              4.20              3.08             49.85
+32                      5.87              4.02              2.99             38.23
+64                      5.60              4.03              3.10             49.33
+128                     6.60              4.74              3.94             53.01
+256                     6.79              4.62              4.07             46.60
+512                     7.09              5.16              4.24             54.39
+1024                    7.74              5.74              4.66             57.24
+2048                    8.48              6.31              5.37             59.56
+4096                    9.74              7.17              6.04             57.42
+8192                   11.47              8.17              7.44             55.69
+16384                  18.85             13.14             12.05             52.61
+32768                  26.23             17.43             14.46             39.14
+65536                  41.78             25.90             23.13             31.29
+131072                 77.68             46.12             42.77             26.21
+262144                163.02             84.42             81.08              3.06
+524288                296.50            149.80            142.82              0.00
+1048576               565.93            290.99            280.58              2.01
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallv
+
+# OSU MPI Non-blocking All-to-Allv Personalized Exchange Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       6.39              4.33              3.22             35.99
+2                       5.08              3.47              2.86             43.68
+4                       5.53              3.61              2.84             32.19
+8                       5.24              3.47              2.86             38.29
+16                      6.10              4.47              3.26             50.18
+32                      6.83              4.75              3.59             41.98
+64                      5.66              4.03              3.02             46.11
+128                     6.44              4.60              4.02             54.18
+256                     6.77              4.91              3.95             52.80
+512                     7.24              5.17              4.28             51.61
+1024                    8.62              6.20              4.60             47.26
+2048                    8.05              5.89              5.12             57.74
+4096                    9.42              6.87              6.27             59.31
+8192                   11.91              8.59              7.83             57.67
+16384                  17.15             11.41             10.21             43.80
+32768                  24.30             15.38             14.27             37.46
+65536                  44.02             24.43             23.00             14.87
+131072                 80.61             46.07             42.61             18.93
+262144                164.97             85.47             80.71              1.51
+524288                297.21            153.64            147.82              2.87
+1048576               564.92            287.73            277.29              0.03
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallw
+
+# OSU MPI Non-blocking All-to-Allw Personalized Exchange Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       6.38              4.41              3.30             40.17
+2                       5.56              3.46              2.88             27.03
+4                       5.27              3.45              3.06             40.60
+8                       6.27              4.16              3.02             30.00
+16                      5.74              3.46              3.06             25.62
+32                      5.58              3.62              3.05             35.83
+64                      6.00              4.02              3.23             38.89
+128                     6.68              4.60              4.23             51.07
+256                     6.86              4.90              4.01             51.34
+512                     7.46              5.47              4.34             54.16
+1024                    7.40              5.31              4.65             55.11
+2048                    8.70              6.31              5.61             57.31
+4096                   10.00              7.34              6.01             55.80
+8192                   11.99              8.60              7.60             55.40
+16384                  18.81             12.88             10.27             42.34
+32768                  25.02             15.93             14.44             37.04
+65536                  43.95             27.82             26.20             38.43
+131072                 79.23             46.07             42.60             22.16
+262144                159.30             80.79             77.28              0.00
+524288                303.60            154.94            147.61              0.00
+1048576               567.09            293.04            282.45              2.97
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibarrier
+
+# OSU MPI Non-blocking Barrier Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+       Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+              9.42              3.53              2.82              0.00
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibcast
+
+# OSU MPI Non-Blocking Broadcast Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       4.71              3.32              2.67             48.07
+2                       3.93              2.90              2.66             61.17
+4                       4.86              3.60              2.71             53.50
+8                       4.55              3.45              2.72             59.64
+16                      4.85              3.45              2.71             48.31
+32                      3.92              2.89              2.58             60.00
+64                      4.73              3.45              2.99             57.21
+128                     5.92              4.59              3.57             62.90
+256                     5.18              4.04              3.30             65.52
+512                     5.89              4.60              3.39             61.98
+1024                    5.36              4.03              3.57             62.79
+2048                    5.83              4.61              3.94             68.93
+4096                    6.65              5.17              4.39             66.37
+8192                    7.46              5.74              4.91             64.95
+16384                  12.33             10.02              7.76             70.15
+32768                  14.78             11.53             10.53             69.11
+65536                  22.21             17.06             15.94             67.71
+131072                 43.00             33.50             28.54             66.69
+262144                100.82             54.30             51.69             10.01
+524288                193.02            103.79             98.71              9.60
+1048576               357.77            184.29            177.53              2.28
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igather
+
+# OSU MPI Non-blocking Gather Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       4.91              3.44              2.83             48.10
+2                       4.78              3.59              2.67             55.33
+4                       4.35              3.18              2.40             51.12
+8                       4.34              3.18              2.41             51.93
+16                      4.56              3.05              2.42             37.41
+32                      4.77              3.44              2.57             48.33
+64                      4.19              3.04              2.53             54.37
+128                     5.59              4.32              3.21             60.71
+256                     5.70              4.43              3.43             62.94
+512                     5.56              4.16              3.49             59.77
+1024                    5.45              4.17              3.40             62.36
+2048                    5.53              4.17              3.62             62.35
+4096                    6.25              4.58              3.93             57.52
+8192                    7.96              6.03              4.80             59.81
+16384                  11.40              8.56              7.82             63.64
+32768                  17.92             13.64             12.13             64.73
+65536                  25.93             17.09             15.96             44.61
+131072                 44.85             29.88             27.02             44.59
+262144                156.91             84.22             79.52              8.60
+524288                276.01            141.12            135.66              0.57
+1048576               537.72            276.45            265.96              1.76
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igatherv
+
+# OSU MPI Non-blocking Gatherv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       4.94              3.45              2.84             47.51
+2                       4.66              3.35              2.49             47.36
+4                       4.95              3.58              2.55             46.35
+8                       4.54              3.32              2.38             48.93
+16                      5.26              3.60              2.68             38.02
+32                      4.39              3.03              2.39             43.60
+64                      4.66              3.45              2.65             54.14
+128                     5.65              4.18              3.27             54.79
+256                     5.66              4.16              3.36             55.58
+512                     5.53              4.17              3.34             59.24
+1024                    5.71              4.32              3.56             60.76
+2048                    6.15              4.72              3.93             63.67
+4096                    6.17              4.59              3.96             60.18
+8192                    7.89              5.74              4.80             55.32
+16384                  11.52              8.61              7.74             62.42
+32768                  17.56             13.21             12.12             64.06
+65536                  26.14             18.51             15.96             52.22
+131072                 46.44             31.30             27.06             44.03
+262144                150.80             78.58             75.28              4.07
+524288                294.49            147.65            139.14              0.00
+1048576               533.04            271.55            261.79              0.11
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ireduce
+
+# OSU MPI Non-blocking Reduce Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+4                       6.75              4.91              3.99             53.75
+8                       5.00              3.59              2.69             47.67
+16                      5.15              3.44              2.77             38.10
+32                      4.58              3.04              2.59             40.55
+64                      5.17              3.60              2.85             44.85
+128                     5.50              4.01              3.44             56.83
+256                     5.67              4.16              3.51             56.89
+512                     5.49              4.01              3.46             57.29
+1024                    6.22              4.58              3.84             57.37
+2048                    7.70              5.87              4.45             58.90
+4096                    7.71              5.71              4.50             55.65
+8192                    8.62              6.28              5.27             55.54
+16384                  14.19             10.78              9.43             63.84
+32768                  19.32             14.32             13.13             61.88
+65536                  26.18             15.35             13.93             22.19
+131072                 47.95             26.09             24.38             10.35
+262144                 94.12             49.72             47.03              5.57
+524288                182.32             93.23             89.45              0.41
+1048576               359.25            181.68            174.81              0.00
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatter
+
+# OSU MPI Non-blocking Scatter Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       4.73              3.44              2.71             52.09
+2                       4.67              3.45              2.76             55.78
+4                       5.65              4.17              2.74             46.08
+8                       5.36              4.01              2.76             51.12
+16                      5.64              4.30              2.73             50.89
+32                      5.15              4.01              2.87             60.22
+64                      4.83              3.44              2.78             50.19
+128                     5.86              4.57              3.51             63.15
+256                     6.04              4.73              3.77             65.20
+512                     6.21              4.72              3.56             58.19
+1024                    6.68              5.29              4.02             65.63
+2048                    6.59              5.15              4.24             65.93
+4096                    7.30              5.71              4.95             67.92
+8192                    9.00              6.87              6.25             65.84
+16384                  12.65              9.68              8.94             66.82
+32768                  17.97             13.69             12.57             65.91
+65536                  29.62             22.42             19.78             63.58
+131072                 52.28             38.45             36.77             62.38
+262144                126.86             77.41             71.43             30.76
+524288                236.27            148.90            143.46             39.09
+1048576               443.41            271.89            261.62             34.44
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatterv
+
+# OSU MPI Non-blocking Scatterv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       5.53              4.35              3.03             61.08
+2                       5.57              4.20              3.00             54.38
+4                       5.86              4.36              3.21             53.41
+8                       5.99              4.20              3.07             41.96
+16                      5.54              4.20              2.92             54.06
+32                      5.55              4.05              3.11             51.73
+64                      5.72              4.21              3.04             50.17
+128                     6.32              4.79              3.55             56.69
+256                     6.18              4.63              3.78             58.76
+512                     6.19              4.64              3.79             59.18
+1024                    6.95              5.35              4.30             62.87
+2048                    7.18              5.35              4.36             58.07
+4096                    7.43              5.78              4.78             65.47
+8192                    9.25              6.90              5.89             60.16
+16384                  13.29             10.28              9.17             67.16
+32768                  19.83             15.35             14.08             68.22
+65536                  31.75             24.43             22.95             68.11
+131072                 51.32             37.49             35.48             61.02
+262144                124.98             78.13             73.50             36.26
+524288                237.13            147.50            140.81             36.35
+1048576               448.79            276.58            266.64             35.42
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce
+
+# OSU MPI Reduce Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                       2.25
+8                       2.38
+16                      2.28
+32                      2.19
+64                      2.65
+128                     2.60
+256                     2.77
+512                     2.91
+1024                    2.83
+2048                    3.53
+4096                    3.60
+8192                    4.55
+16384                   6.40
+32768                   8.74
+65536                  13.97
+131072                 25.45
+262144                 70.43
+524288                125.99
+1048576               235.55
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce_scatter
+
+# OSU MPI Reduce_scatter Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                       2.80
+8                       2.59
+16                      2.58
+32                      2.71
+64                      2.60
+128                     2.75
+256                     3.34
+512                     3.64
+1024                    3.81
+2048                    4.81
+4096                    5.05
+8192                    6.33
+16384                   8.53
+32768                  12.35
+65536                  19.89
+131072                 38.48
+262144                 77.74
+524288                159.54
+1048576               284.44
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatter
+
+# OSU MPI Scatter Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.48
+2                       2.48
+4                       2.19
+8                       2.01
+16                      1.92
+32                      2.23
+64                      2.17
+128                     3.05
+256                     3.12
+512                     2.89
+1024                    2.92
+2048                    3.41
+4096                    3.96
+8192                    4.92
+16384                   6.42
+32768                  10.97
+65536                  15.47
+131072                 33.89
+262144                 71.83
+524288                139.05
+1048576               268.92
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatterv
+
+# OSU MPI Scatterv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.56
+2                       2.64
+4                       2.40
+8                       2.23
+16                      1.87
+32                      1.87
+64                      2.57
+128                     2.60
+256                     3.01
+512                     2.90
+1024                    3.24
+2048                    3.59
+4096                    3.89
+8192                    4.95
+16384                   6.21
+32768                   9.23
+65536                  18.46
+131072                 30.37
+262144                 70.27
+524288                147.24
+1048576               268.23
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bibw
+# OSU MPI Bi-Directional Bandwidth Test v5.6.3
+# Size      Bandwidth (MB/s)
+1                       4.31
+2                       7.79
+4                      15.79
+8                      45.09
+16                     78.77
+32                    180.19
+64                    299.61
+128                   579.30
+256                  1125.76
+512                  1894.95
+1024                 3323.52
+2048                 5239.89
+4096                 7903.60
+8192                 8901.83
+16384                8852.28
+32768                9127.57
+65536                9012.10
+131072               9503.66
+262144              12138.39
+524288              12234.10
+1048576             12295.86
+2097152             12317.01
+4194304             12284.60
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bw
+# OSU MPI Bandwidth Test v5.6.3
+# Size      Bandwidth (MB/s)
+1                       3.24
+2                       8.19
+4                      11.42
+8                      32.32
+16                     64.34
+32                    128.23
+64                    241.25
+128                   329.19
+256                   669.95
+512                  1478.89
+1024                 2692.71
+2048                 4224.96
+4096                 4292.97
+8192                 5283.97
+16384                5196.42
+32768                5750.61
+65536                5799.75
+131072               6057.23
+262144               6328.04
+524288               6355.55
+1048576              6365.37
+2097152              6375.89
+4194304              6377.28
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency
+# OSU MPI Latency Test v5.6.3
+# Size          Latency (us)
+0                       2.15
+1                       1.94
+2                       1.96
+4                       1.90
+8                       2.26
+16                      1.95
+32                      1.96
+64                      2.08
+128                     2.82
+256                     2.87
+512                     3.04
+1024                    3.41
+2048                    3.96
+4096                    4.60
+8192                    5.90
+16384                   7.64
+32768                  10.64
+65536                  16.16
+131072                 26.53
+262144                 49.27
+524288                 90.04
+1048576               172.36
+2097152               338.16
+4194304               667.64
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency_mp
+# OSU MPI Multi-process Latency Test v5.6.3
+# Number of forked processes in sender: 2
+# Number of forked processes in receiver: 2
+# Size          Latency (us)
+0                       2.01
+1                       1.91
+2                       1.97
+4                       1.92
+8                       1.94
+16                      1.97
+32                      1.96
+64                      2.07
+128                     2.75
+256                     2.85
+512                     3.02
+1024                    3.32
+2048                    3.94
+4096                    4.60
+8192                    5.88
+16384                   7.64
+32768                  10.45
+65536                  16.19
+131072                 26.47
+262144                 48.88
+524288                 89.98
+1048576               172.18
+2097152               338.58
+4194304               667.75
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_mbw_mr
+# OSU MPI Multiple Bandwidth / Message Rate Test v5.6.3
+# [ pairs: 1 ] [ window size: 64 ]
+# Size                  MB/s        Messages/s
+1                       3.70        3697718.45
+2                       7.88        3942250.95
+4                      15.98        3994258.25
+8                      27.02        3377574.28
+16                     65.39        4086952.47
+32                    110.83        3463300.92
+64                    243.71        3807939.43
+128                   409.44        3198717.31
+256                   704.82        2753185.52
+512                  1362.07        2660297.47
+1024                 2776.90        2711811.55
+2048                 4128.37        2015805.17
+4096                 4785.17        1168253.94
+8192                 5631.83         687479.76
+16384                5242.00         319946.17
+32768                5865.88         179012.51
+65536                5928.89          90467.66
+131072               6062.67          46254.52
+262144               6339.76          24184.26
+524288               6364.66          12139.63
+1048576              6375.01           6079.69
+2097152              6375.45           3040.05
+4194304              6375.37           1520.01
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_multi_lat
+# OSU MPI Multi Latency Test v5.6.3
+# Size          Latency (us)
+0                       2.15
+1                       2.16
+2                       1.97
+4                       1.91
+8                       1.93
+16                      1.95
+32                      1.95
+64                      2.06
+128                     2.76
+256                     2.85
+512                     3.01
+1024                    3.35
+2048                    3.89
+4096                    4.60
+8192                    5.87
+16384                   7.68
+32768                  10.64
+65536                  15.84
+131072                 27.87
+262144                 49.51
+524288                 90.40
+1048576               173.72
+2097152               338.74
+4194304               669.84
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_hello
+# OSU MPI Hello World Test v5.6.3
+This is a test with 2 processes
+mpirun -n 2 --map-by node /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_init
+# OSU MPI Init Test v5.6.3
+nprocs: 2, min: 244 ms, max: 245 ms, avg: 244 ms
+Successfully processed 34 benchmarks.
