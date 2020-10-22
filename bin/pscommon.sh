@@ -223,12 +223,12 @@ function set_tmpdir
 				check_space_mb "${THE_TMPDIR}" "${min_space_mb}"
 			then
 				tmp_root="${THE_TMPDIR}"
-			elif check_space_mb /tmp "${min_space_mb}"
-			then
-				tmp_root=/tmp
 			elif check_space_mb /dev/shm "${min_space_mb}"
 			then
 				tmp_root=/dev/shm
+			elif check_space_mb /tmp "${min_space_mb}"
+			then
+				tmp_root=/tmp
 			else
 				echo "ERROR: no temp dir has ${min_space_mb} MB of space" 1>&2
 				exit 1
