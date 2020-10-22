@@ -158,15 +158,24 @@ then
 	# having the role of a build tool.
 	cp "${SELF_DIR}"/../bin/pscommon.sh "$ROOT/.prefixhelpers"
 	cp "${FILES_PATH}"/prefixenv "$ROOT/.prefixenv"
+	step_done prefixrc
+fi
 
-	# The user/group names don't strictly matter, the UID/GID is taken from
-	# the prefix dir anyway, but set them to match the host so that ls output
-	# is consistent.
-	cat <<-EOF > "$ROOT"/.prefixvars
+if ! step_is_done passwd
+then
+	# Take user/group UID/GID and names from owner of prefix directory. The
+	# names don't strictly matter, the UID/GID do, but set the names to
+	# match the host so that ls output is consistent.
 	P_GROUP=$(stat -c '%G' "$ROOT")
 	P_USER=$(stat -c '%U' "$ROOT")
-	EOF
-	step_done prefixrc
+	P_UID=$(stat -c '%u' "${ROOT}")
+	P_GID=$(stat -c '%g' "${ROOT}")
+
+	sed -i "/^${P_GROUP}:/d" "${ROOT}"/etc/group
+	echo "${P_GROUP}:x:${P_GID}:" >> "${ROOT}"/etc/group
+	sed -i "s/^${P_USER}:x:[0-9]\+:[0-9]\+:/${P_USER}:x:${P_UID}:${P_GID}:/" \
+		"${ROOT}"/etc/passwd
+	step_done passwd
 fi
 
 kern_info()
