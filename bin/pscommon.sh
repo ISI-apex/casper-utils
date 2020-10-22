@@ -109,6 +109,10 @@ node_info() {
 		discovery)
 			# TODO: label these with what GPUs are hooked up to each
 			case "$ARCH" in
+			ivybridge)
+				FEAT="xeon-2640v2"
+				MIN_CORES=16
+				;;
 			haswell)
 				FEAT="xeon-2640v3"
 				MIN_CORES=16
