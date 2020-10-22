@@ -275,3 +275,31 @@ function set_tmpdir
 	export TMPDIR="${THE_TMPDIR}"
 	echo "TMPDIR=${TMPDIR}"
 }
+
+# This is a function only in order to delay expansion of $TMPDIR
+function with_portage_tmpdir {
+	run env PORTAGE_TMPDIR=$TMPDIR $@
+}
+
+# parametrized by env vars: SPACE_MB and KEEP_TMPDIR
+function wptmp {
+	if [[ -z "${SPACE_MB}" ]]
+	then
+		local SPACE_MB=1024
+	fi
+	(set_tmpdir "${SPACE_MB}" && with_portage_tmpdir "$@")
+}
+
+function port {
+	echo MAKEOPTS="${MAKEOPTS}"
+	run wptmp "$@"
+}
+function sport {
+	MAKEOPTS="-j1" port "$@"
+}
+function pport {
+	MAKEOPTS="-j$(nproc)" port "$@"
+}
+function p4port { # useful on USC Discovery (usage capped at 4 cores @ 100%)
+	MAKEOPTS="-j4" port "$@"
+}
