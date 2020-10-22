@@ -1,1 +1,7 @@
-sinfo -p main -O nodes:6,cpus:5,sockets:8,cores:6,threads:8,features_act:32,memory:8,Gres:24,statecompact  "$@"
+cols=nodes:6,cpus:5,sockets:8,cores:6,threads:8,features_act:32,memory:8,Gres:24,statecompact
+
+for part in main oneweek debug
+do
+	echo "Partition: ${part}"
+	sinfo -p "${part}" -O "${cols}"  "$@"
+done
