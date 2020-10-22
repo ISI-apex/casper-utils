@@ -158,13 +158,11 @@ then
 	# having the role of a build tool.
 	cp "${SELF_DIR}"/../bin/pscommon.sh "$ROOT/.prefixhelpers"
 	cp "${FILES_PATH}"/prefixenv "$ROOT/.prefixenv"
-	sed "s:@__P_DISTDIR__@:${DISTDIR}:" "${FILES_PATH}"/prefixrc > "$ROOT"/.prefixrc
 
 	# The user/group names don't strictly matter, the UID/GID is taken from
 	# the prefix dir anyway, but set them to match the host so that ls output
 	# is consistent.
 	cat <<-EOF > "$ROOT"/.prefixvars
-	P_DISTDIR="${DISTDIR}"
 	P_GROUP=$(stat -c '%G' "$ROOT")
 	P_USER=$(stat -c '%U' "$ROOT")
 	EOF

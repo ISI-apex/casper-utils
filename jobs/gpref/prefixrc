@@ -26,11 +26,6 @@ then
 fi
 source "${EPREFIX}"/.prefixvars
 
-if [ -z "${P_DISTDIR}" ]
-then
-	echo "ERROR: P_DISTDIR not set in .prefixvars" 1>&2
-	exit 1
-fi
 if [ -z "${P_USER}" ]
 then
 	echo "ERROR: P_USER not set in .prefixvars" 1>&2
@@ -44,8 +39,6 @@ fi
 
 if [[ -n "${UPDATE_MAKE_CONF}" ]]
 then
-	sed -i "s@DISTDIR=.*@DISTDIR=${P_DISTDIR}@" "${EPREFIX}"/etc/portage/make.conf
-
 	sed -i "/^${P_GROUP}:/d" "${EPREFIX}"/etc/group
 	stat -c "${P_GROUP}:x:%g:" "${EPREFIX}"  >> "${EPREFIX}"/etc/group
 	sed -i "s/^${P_USER}:x:[0-9]\+:[0-9]\+:/${P_USER}:x:$(stat -c '%u' ${EPREFIX}):$(stat -c '%g' ${EPREFIX}):/" "${EPREFIX}"/etc/passwd
