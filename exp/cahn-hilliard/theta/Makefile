@@ -59,6 +59,7 @@ MAP_BY?=node
 PATTERN?=.*
 MAX_TIME_MIN?=59
 ACCOUNT?=CASPER
+SSH=
 
 DEBUG_Q=debug-cache-quad
 
@@ -66,6 +67,7 @@ DEBUG_Q=debug-cache-quad
 	rm -f $*.log.{cobaltlog,output,error}
 	touch $*.log.{cobaltlog,output,error}
 	qsub -O "$*.log" -n "$(NODES)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
+		$(if $(SSH),--attr enable_ssh=1) \
 		$$([[ "$(NODES)" -lt 128 ]] && echo -q $(DEBUG_Q)) \
 		$$(which make) -C $${PWD} EPREFIX=$(EPREFIX) \
 		NODES="$(NODES)" MAP_BY="$(MAP_BY)" PATTERN="$(PATTERN)" \
