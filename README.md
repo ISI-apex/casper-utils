@@ -191,7 +191,7 @@ To launch a job on USC HPCC worker node, run this launcher script
 on the login node:
 
     $ bash exp/test-prefix/test-mpi.job.sh PREFIX_PATH CLUSTER ARCH
-    $ bash exp/test-prefix/test-cfd.job.sh PREFIX_PATH CLUSTER ARCH GPU
+    $ bash exp/test-prefix/test-cfd.job.sh PREFIX_PATH CLUSTER ARCH:GPU
 
 where `PREFIX_PATH` is the directory with the prefix, CLUSTER is the
 name of the compute cluster (e.g. `discovery` see Step 2 above), ARCH is the
@@ -264,11 +264,12 @@ To enter the prefix on a USC HPCC host (login or worker with interactive shell):
 
 To enqueue a job inside the prefix on a USC HPCC worker node:
 
-    $ psbatch PREFIX_PATH CLUSTER ARCH GPU:GPU_COUNT MAX_MEM_PER_TASK NUM_NODES NUM_TASKS_PER_NODE TIME_LIMIT command arg arg...
+    $ psbatch PREFIX_PATH CLUSTER[:PARTITION] ARCH[:GPU:GPU_COUNT] MAX_MEM_PER_TASK \
+	NUM_NODES NUM_TASKS_PER_NODE TIME_LIMIT command arg arg...
 
 for example:
 
-    $ psbatch /scratch/me/myprefix legacy sandybridge "k20:1" all 1 1 00:10:00 python --version
+    $ psbatch /scratch/me/myprefix legacy sandybridge:k20:1 all 1 1 00:10:00 python --version
 
 The keyword 'all' for `MAX_MEM_PER_TASK` grants all memory on the node
 ("per task" does not apply anymore).

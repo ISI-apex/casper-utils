@@ -5,23 +5,45 @@ set -e
 self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "${self_dir}"/pscommon.sh
 
-if [[ "$#" -lt 6 ]]
+if [[ "$#" -lt 7 ]]
 then
-	echo "Usage: $0 prefix cluster arch gpu mem_per_cpu nodes tasks_per_node max_max_time [salloc_arg...]" 1>&2
+	echo "Usage: $0 prefix cluster[:part] arch[:gpu] mem_per_cpu nodes tasks_per_node max_max_time [salloc_arg...]" 1>&2
 	exit 1
 fi
 
 eprefix=$(cd -- "$1"/ && pwd)
+cluster_part=$2
 cluster=$2
-arch=$3
-gpu=$4
-mem_per_cpu=$5
-nodes=$6
-tasks_per_node=$7
-max_time=$8
-shift 8
+arch_gpu=$3
+mem_per_cpu=$4
+nodes=$5
+tasks_per_node=$6
+max_time=$7
+
+shift 7
+if [[ "${cluster_part}" =~ : ]]
+then
+	cluster="$(echo ${cluster_part} | cut -d':' -f1)"
+	part="$(echo ${cluster_part} | cut -d':' -f2)"
+else
+	cluster="${cluster_part}"
+	part=""
+fi
+
+if [[ "${arch_gpu}" =~ : ]]
+then
+	arch="$(echo ${arch_gpu} | cut -d':' -f1)"
+	gpu="$(echo ${arch_gpu} | cut -d':' -f2-)"
+else
+	arch="${arch_gpu}"
+	gpu=""
+fi
 
 args=()
+if [[ -n "${part}" ]]
+then
+	args+=(--partition "${part}")
+fi
 if [[ -n "${gpu}" ]]
 then
 	args+=(--gres=gpu:${gpu})
