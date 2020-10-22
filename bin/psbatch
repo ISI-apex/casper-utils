@@ -95,7 +95,7 @@ tmpscr="${logdir}"/${log_name}.sh
 cat <<EOF > $tmpscr
 #!/bin/bash
 # When bash invoked with -c, it does not load rcfile
-"${eprefix}"/startprefix -c "source "${eprefix}"/${RCFILE} && $PCMD"
+"${eprefix}"/startprefix -c "$PCMD"
 EOF
 chmod +x "${tmpscr}"
 echo "${tmpscr}": && cat "${tmpscr}"
