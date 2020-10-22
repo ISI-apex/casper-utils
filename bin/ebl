@@ -86,8 +86,12 @@ then
 	exit 1
 fi
 
-TMPDIR=$(bash -c "source ${EP}/etc/portage/make.conf && echo \$PORTAGE_TMPDIR")
-bld_dir="${TMPDIR}/portage/${pkg}-${pkgver}"
+if [[ -z "${PORTAGE_TMPDIR}" ]]
+then
+	PORTAGE_TMPDIR=$(bash -c "source ${EP}/etc/portage/make.conf && echo \$PORTAGE_TMPDIR")
+fi
+bld_dir="${PORTAGE_TMPDIR}/portage/${pkgfullname}-${pkgver}"
+
 
 case "$cmd_abv" in
 em*k)
