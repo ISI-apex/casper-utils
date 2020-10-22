@@ -209,6 +209,7 @@ function set_tmpdir
 			if [[ -z "${KEEP_TMPDIR}" ]]
 			then
 				rm -rf "${THE_TMPDIR}"
+				echo "cleaned up TMPDIR=${THE_TMPDIR}"
 			else
 				echo "NOTICE: work dir ${THE_TMPDIR} kept, remove manually"
 			fi
@@ -243,6 +244,14 @@ function set_tmpdir
 		fi
 		unset TMPDIR # otherwise mktemp ignores -p
 		THE_TMPDIR=$(mktemp -p "${tmp_root}" -d -t $(whoami)-gpref-XXX)
+		local TMPDIR_ACTION
+		if [[ -z "${KEEP_TMPDIR}" ]]
+		then
+			TMPDIR_ACTION="cleanup"
+		else
+			TMPDIR_ACTION="keep"
+		fi
+		echo "created TMPDIR=${THE_TMPDIR} (will ${TMPDIR_ACTION})"
 		# This cleanup is imprefect: if job is killed by resource
 		# manager, the trash will remain. If we get to this case, then
 		# we rely on the user to manually clean up. So, ideally, we
