@@ -231,7 +231,7 @@ function set_tmpdir
 				tmp_root=/tmp
 			else
 				echo "ERROR: no temp dir has ${min_space_mb} MB of space" 1>&2
-				exit 1
+				return 1
 			fi
 		else
 			if [ -n "${THE_TMPDIR}" ]
@@ -256,11 +256,11 @@ function set_tmpdir
 	if [[ ! -e "${THE_TMPDIR}" ]]
 	then
 		echo "ERROR: temp directory '${THE_TMPDIR}' does not exist" 1>&2
-		exit 1
+		return 2
 	elif ! touch ${THE_TMPDIR}/test_tmp
 	then
 		echo "ERROR: temp directory '${THE_TMPDIR}' not writable" 1>&2
-		exit 1
+		return 3
 	fi
 
 	export TMPDIR="${THE_TMPDIR}"
