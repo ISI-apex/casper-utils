@@ -50,7 +50,8 @@ NTASKS_PER_NODE?=16
 		--time 00:$(MAX_TIME_MIN):00 \
 		$$(echo $* | sed \
 			's@\s*dat/bench-n-\([0-9]\+\)-N-\([0-9]\+\).log\s*@--ntasks \1 --ntasks-per-node \2@') \
-		exec.sh env "PATTERN='$(PATTERN)'" "PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)'" make $*
+		exec.sh env "PATTERN='$(PATTERN)'" "PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)'" \
+		$$(which make) $*
 	tail -f $*.{out,err}
 
 job:
