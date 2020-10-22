@@ -55,8 +55,6 @@ $(foreach rank,2 4 8 16 32 48 64 128 192,\
 )
 
 NODES?=2
-MAP_BY?=node
-PATTERN?=.*
 MAX_TIME_MIN?=59
 ACCOUNT?=CASPER
 SSH=
@@ -70,8 +68,7 @@ DEBUG_Q=debug-cache-quad
 		$(if $(SSH),--attr enable_ssh=1) \
 		$$([[ "$(NODES)" -lt 128 ]] && echo -q $(DEBUG_Q)) \
 		$$(which make) -C $${PWD} EPREFIX=$(EPREFIX) \
-		NODES="$(NODES)" MAP_BY="$(MAP_BY)" PATTERN="$(PATTERN)" \
-		MCA_ARGS="$(MCA_ARGS)" MPIRUN_ARGS="$(MPIRUN_ARGS)" \
+		NODES="$(NODES)" MCA_ARGS="$(MCA_ARGS)" MPIRUN_ARGS="$(MPIRUN_ARGS)" \
 		$*
 	tail -f $*.log.{cobaltlog,output,error}
 
