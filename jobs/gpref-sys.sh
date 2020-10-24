@@ -158,6 +158,7 @@ then
 	# having the role of a build tool.
 	cp "${SELF_DIR}"/../bin/pscommon.sh "$ROOT/.prefixhelpers"
 	cp "${FILES_PATH}"/prefixenv "$ROOT/.prefixenv"
+	cp "${FILES_PATH}"/prefixrc "$ROOT/.prefixrc"
 	step_done prefixrc
 fi
 
