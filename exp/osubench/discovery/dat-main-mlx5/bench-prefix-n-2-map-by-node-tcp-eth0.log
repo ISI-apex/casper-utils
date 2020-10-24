@@ -1,0 +1,931 @@
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgather
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgather
+created TMPDIR=/dev/shm/acolin-gpref-5Wq (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-5Wq
+
+# OSU MPI Allgather Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      81.13
+2                      81.29
+4                      81.40
+8                      81.81
+16                     81.50
+32                     81.67
+64                     83.14
+128                    84.31
+256                    87.18
+512                    93.26
+1024                  104.07
+2048                   93.47
+4096                  141.61
+8192                  235.10
+16384                 309.68
+32768                 445.94
+65536                 854.61
+131072               1402.79
+262144               2632.14
+524288               4870.29
+1048576              8954.19
+cleaned up TMPDIR=/dev/shm/acolin-gpref-5Wq
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgatherv
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgatherv
+created TMPDIR=/dev/shm/acolin-gpref-Esl (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-Esl
+
+# OSU MPI Allgatherv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      81.43
+2                      81.08
+4                      81.18
+8                      80.78
+16                     81.06
+32                     81.59
+64                     83.12
+128                    84.31
+256                    87.62
+512                    93.34
+1024                  104.20
+2048                   93.88
+4096                  141.66
+8192                  235.73
+16384                 309.83
+32768                 446.07
+65536                 856.87
+131072               1403.06
+262144               2635.72
+524288               4945.02
+1048576              8955.91
+cleaned up TMPDIR=/dev/shm/acolin-gpref-Esl
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allreduce
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allreduce
+created TMPDIR=/dev/shm/acolin-gpref-A6X (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-A6X
+
+# OSU MPI Allreduce Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                      81.35
+8                      81.21
+16                     81.42
+32                     81.33
+64                     83.29
+128                    84.72
+256                    87.39
+512                    93.29
+1024                  104.37
+2048                   94.04
+4096                  186.89
+8192                  236.29
+16384                 469.70
+32768                 618.42
+65536                 894.07
+131072               1684.38
+262144               2772.08
+524288               5362.45
+1048576              9902.72
+cleaned up TMPDIR=/dev/shm/acolin-gpref-A6X
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
+created TMPDIR=/dev/shm/acolin-gpref-oW5 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-oW5
+
+# OSU MPI All-to-All Personalized Exchange Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      80.93
+2                      81.86
+4                      81.66
+8                      81.52
+16                     81.56
+32                     81.54
+64                     83.02
+128                    84.24
+256                    87.24
+512                    93.72
+1024                  104.12
+2048                   93.39
+4096                  140.77
+8192                  234.73
+16384                 308.75
+32768                 445.92
+65536                 851.57
+131072               1387.56
+262144               2631.85
+524288               4982.02
+1048576              8953.56
+cleaned up TMPDIR=/dev/shm/acolin-gpref-oW5
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoallv
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoallv
+created TMPDIR=/dev/shm/acolin-gpref-noU (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-noU
+
+# OSU MPI All-to-Allv Personalized Exchange Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      81.50
+2                      81.46
+4                      81.06
+8                      81.07
+16                     81.09
+32                     81.52
+64                     83.17
+128                    84.55
+256                    87.38
+512                    93.52
+1024                  104.32
+2048                   93.97
+4096                  142.28
+8192                  235.66
+16384                 309.61
+32768                 446.25
+65536                 851.59
+131072               1387.91
+262144               2610.05
+524288               4812.12
+1048576              8917.19
+cleaned up TMPDIR=/dev/shm/acolin-gpref-noU
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_barrier
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_barrier
+created TMPDIR=/dev/shm/acolin-gpref-hJU (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-hJU
+
+# OSU MPI Barrier Latency Test v5.6.3
+# Avg Latency(us)
+            81.36
+cleaned up TMPDIR=/dev/shm/acolin-gpref-hJU
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_bcast
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_bcast
+created TMPDIR=/dev/shm/acolin-gpref-6C3 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-6C3
+
+# OSU MPI Broadcast Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      42.81
+2                      42.74
+4                      42.78
+8                      42.82
+16                     43.12
+32                     43.21
+64                     43.87
+128                    44.52
+256                    45.96
+512                    48.78
+1024                   54.32
+2048                   50.23
+4096                   92.22
+8192                  139.48
+16384                 175.78
+32768                 241.60
+65536                 466.25
+131072                735.91
+262144               1275.78
+524288               2350.58
+1048576              4502.54
+cleaned up TMPDIR=/dev/shm/acolin-gpref-6C3
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gather
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gather
+created TMPDIR=/dev/shm/acolin-gpref-iZu (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-iZu
+
+# OSU MPI Gather Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                     165.59
+2                      42.64
+4                      42.81
+8                      42.82
+16                     43.23
+32                     43.48
+64                     44.18
+128                    44.78
+256                    46.37
+512                    49.06
+1024                   54.78
+2048                   51.06
+4096                   92.80
+8192                  140.34
+16384                 176.95
+32768                 241.97
+65536                 469.55
+131072                828.91
+262144               1375.64
+524288               2460.97
+1048576              4641.65
+cleaned up TMPDIR=/dev/shm/acolin-gpref-iZu
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gatherv
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gatherv
+created TMPDIR=/dev/shm/acolin-gpref-CIU (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-CIU
+
+# OSU MPI Gatherv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      42.68
+2                      42.42
+4                      42.58
+8                      42.65
+16                     42.98
+32                     43.11
+64                     43.71
+128                    44.32
+256                    45.96
+512                    48.56
+1024                   54.40
+2048                   50.55
+4096                   92.33
+8192                  139.55
+16384                 176.49
+32768                 241.92
+65536                 466.98
+131072                738.30
+262144               1279.37
+524288               2356.40
+1048576              4535.99
+cleaned up TMPDIR=/dev/shm/acolin-gpref-CIU
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgather
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgather
+created TMPDIR=/dev/shm/acolin-gpref-2xw (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-2xw
+
+# OSU MPI Non-blocking Allgather Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      92.85             85.30             82.02             90.80
+2                      92.51             85.00             81.81             90.83
+4                      92.99             85.16             82.00             90.46
+8                      92.72             85.21             82.04             90.85
+16                     92.72             85.25             82.07             90.90
+32                     93.06             85.62             82.33             90.97
+64                     94.82             87.35             84.09             91.12
+128                    96.37             88.83             85.47             91.18
+256                    99.48             91.83             88.42             91.34
+512                   105.45             97.67             94.08             91.73
+1024                  117.34            109.37            105.27             92.43
+2048                  109.26             99.29             95.50             89.56
+4096                  161.06            149.81            144.35             92.20
+8192                  259.42            246.20            237.65             94.44
+16384                 342.10            323.27            311.86             93.96
+32768                 496.67            463.77            448.00             92.66
+65536                1628.27            879.70            850.41             11.98
+131072               2729.63           1435.87           1388.43              6.82
+262144               5346.29           2700.42           2611.67              0.00
+524288               9840.37           5101.25           4934.11              3.95
+1048576             18078.67           9220.56           8918.33              0.68
+cleaned up TMPDIR=/dev/shm/acolin-gpref-2xw
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgatherv
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgatherv
+created TMPDIR=/dev/shm/acolin-gpref-riw (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-riw
+
+# OSU MPI Non-blocking Allgatherv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      93.26             85.50             82.18             90.56
+2                      93.49             85.65             82.38             90.48
+4                      93.57             85.63             82.23             90.33
+8                      93.20             85.49             82.19             90.63
+16                     93.24             85.53             82.38             90.64
+32                     93.47             85.94             82.62             90.89
+64                     95.38             87.81             84.27             91.01
+128                    96.80             88.93             85.62             90.81
+256                    99.86             92.11             88.65             91.25
+512                   106.32             98.24             94.55             91.46
+1024                  117.58            109.47            105.35             92.30
+2048                  109.70             99.45             95.56             89.27
+4096                  161.67            150.06            144.55             91.97
+8192                  260.33            246.94            237.94             94.37
+16384                 342.98            323.66            311.94             93.80
+32768                 497.83            463.76            447.80             92.39
+65536                1631.65            881.07            851.59             11.86
+131072               2729.02           1434.69           1387.10              6.69
+262144               5305.48           2700.54           2611.32              0.24
+524288              10050.20           5088.17           4919.95              0.00
+1048576             18078.57           9225.74           8922.17              0.78
+cleaned up TMPDIR=/dev/shm/acolin-gpref-riw
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallreduce
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallreduce
+created TMPDIR=/dev/shm/acolin-gpref-9D3 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-9D3
+
+# OSU MPI Non-blocking Allreduce Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+4                     105.34             95.42             91.33             89.14
+8                     105.34             95.55             91.41             89.29
+16                    106.16             96.25             91.82             89.21
+32                    106.21             96.42             91.90             89.35
+64                    109.46             99.45             94.72             89.42
+128                   112.69            102.27             97.44             89.31
+256                   118.17            108.02            103.12             90.15
+512                   130.06            119.77            114.45             91.01
+1024                  150.17            139.29            133.88             91.87
+2048                  158.64            146.17            140.65             91.13
+4096                  213.84            200.10            193.02             92.88
+8192                  361.58            346.16            334.42             95.39
+16384                 478.94            459.09            443.57             95.52
+32768                 695.90            664.62            642.19             95.13
+65536                2884.38           1355.61           1310.75              0.00
+131072               4794.84           2189.77           2117.83              0.00
+262144               8623.27           3860.99           3734.25              0.00
+524288              16251.70           7191.54           6956.05              0.00
+1048576             31549.32          13868.42          13414.81              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-9D3
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoall
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoall
+created TMPDIR=/dev/shm/acolin-gpref-3ho (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-3ho
+
+# OSU MPI Non-blocking All-to-All Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      93.15             85.48             82.32             90.68
+2                      92.85             85.27             82.07             90.77
+4                      92.96             85.23             82.00             90.58
+8                      92.91             85.32             82.13             90.77
+16                     93.14             85.52             82.29             90.74
+32                     93.34             85.75             82.44             90.79
+64                     95.33             87.71             84.35             90.97
+128                    97.57             89.54             85.85             90.64
+256                   100.74             92.88             88.79             91.14
+512                   106.27             98.27             94.63             91.54
+1024                  117.46            109.27            105.35             92.23
+2048                  109.40             99.16             95.42             89.27
+4096                  161.06            149.70            144.29             92.12
+8192                  259.45            246.20            237.65             94.42
+16384                 342.43            323.48            311.81             93.92
+32768                 498.11            464.78            448.77             92.57
+65536                1630.35            879.51            850.14             11.68
+131072               2728.65           1434.55           1387.15              6.71
+262144               5344.74           2700.09           2611.49              0.00
+524288              10063.51           5091.25           4924.58              0.00
+1048576             18076.00           9220.03           8917.96              0.70
+cleaned up TMPDIR=/dev/shm/acolin-gpref-3ho
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallv
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallv
+created TMPDIR=/dev/shm/acolin-gpref-1Bp (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-1Bp
+
+# OSU MPI Non-blocking All-to-Allv Personalized Exchange Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      93.71             86.17             82.79             90.90
+2                      93.04             85.61             82.41             90.98
+4                      93.25             85.56             82.38             90.67
+8                      93.02             85.58             82.42             90.97
+16                     93.44             86.11             82.82             91.15
+32                     93.61             86.17             82.83             91.03
+64                     95.17             87.76             84.38             91.22
+128                    96.66             89.08             85.70             91.16
+256                    99.66             92.03             88.68             91.39
+512                   105.99             98.17             94.56             91.73
+1024                  117.67            109.70            105.58             92.45
+2048                  108.99             99.06             95.42             89.59
+4096                  161.40            149.99            144.49             92.10
+8192                  259.47            246.29            237.85             94.46
+16384                 341.59            322.94            311.54             94.01
+32768                 497.98            464.05            448.32             92.43
+65536                1634.66            882.84            853.77             11.94
+131072               2729.60           1434.93           1387.78              6.71
+262144               5308.54           2701.44           2613.11              0.23
+524288              10101.97           5100.27           4934.02              0.00
+1048576             18074.49           9219.96           8919.60              0.73
+cleaned up TMPDIR=/dev/shm/acolin-gpref-1Bp
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallw
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallw
+created TMPDIR=/dev/shm/acolin-gpref-vvq (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-vvq
+
+# OSU MPI Non-blocking All-to-Allw Personalized Exchange Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      93.79             85.88             82.59             90.42
+2                      93.40             85.59             82.28             90.51
+4                      93.61             85.62             82.21             90.29
+8                      93.39             85.59             82.27             90.52
+16                     93.65             85.76             82.50             90.44
+32                     93.96             86.10             82.74             90.50
+64                     95.67             87.76             84.30             90.62
+128                    97.11             89.21             85.77             90.79
+256                   100.27             92.07             88.55             90.74
+512                   106.29             97.97             94.31             91.18
+1024                  118.00            109.51            105.39             91.94
+2048                  110.41             99.86             95.93             89.01
+4096                  162.34            150.22            144.80             91.63
+8192                  259.86            246.27            237.29             94.27
+16384                 343.90            324.36            312.57             93.75
+32768                 499.16            465.33            449.39             92.47
+65536                1636.60            884.20            854.65             11.96
+131072               2732.33           1436.72           1388.90              6.72
+262144               5312.94           2702.26           2612.76              0.08
+524288              10026.52           5096.32           4928.06              0.00
+1048576             18075.67           9222.29           8918.70              0.73
+cleaned up TMPDIR=/dev/shm/acolin-gpref-vvq
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibarrier
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibarrier
+created TMPDIR=/dev/shm/acolin-gpref-lgx (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-lgx
+
+# OSU MPI Non-blocking Barrier Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+       Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+             91.28             84.00             80.92             91.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-lgx
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibcast
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibcast
+created TMPDIR=/dev/shm/acolin-gpref-eot (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-eot
+
+# OSU MPI Non-Blocking Broadcast Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      51.18             46.13             44.31             88.61
+2                      51.11             46.12             44.23             88.72
+4                      51.16             46.14             44.27             88.66
+8                      51.36             46.31             44.42             88.62
+16                     51.65             46.59             44.67             88.67
+32                     51.70             46.67             44.78             88.78
+64                     52.29             47.26             45.30             88.90
+128                    53.10             48.04             46.07             89.02
+256                    54.84             49.56             47.47             88.88
+512                    57.52             52.37             50.28             89.75
+1024                   63.55             58.22             55.97             90.48
+2048                   61.73             55.35             53.13             88.00
+4096                  105.06             98.29             94.47             92.84
+8192                  154.33            146.79            141.65             94.68
+16384                 193.52            184.34            177.78             94.83
+32768                 266.76            252.62            243.85             94.20
+65536                1250.63            484.94            468.60              0.00
+131072               2068.94            764.06            738.74              0.00
+262144               3706.13           1322.43           1278.74              0.00
+524288               6967.21           2432.71           2352.79              0.00
+1048576             13508.58           4658.37           4505.89              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-eot
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igather
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igather
+created TMPDIR=/dev/shm/acolin-gpref-cXP (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-cXP
+
+# OSU MPI Non-blocking Gather Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      50.97             46.03             44.19             88.81
+2                      50.95             45.99             44.10             88.76
+4                      51.06             46.13             44.31             88.87
+8                      51.08             46.15             44.34             88.89
+16                     51.31             46.39             44.52             88.95
+32                     51.36             46.46             44.61             89.02
+64                     52.11             47.19             45.33             89.16
+128                    52.92             47.97             46.04             89.24
+256                    54.43             49.39             47.45             89.38
+512                    57.41             52.32             50.29             89.88
+1024                   63.60             58.39             56.17             90.73
+2048                   61.12             55.00             52.79             88.40
+4096                  104.67             97.97             94.24             92.89
+8192                  154.26            146.53            141.43             94.53
+16384                 194.86            184.82            178.24             94.36
+32768                 268.22            252.63            243.76             93.61
+65536                1259.70            486.78            470.45              0.00
+131072               2085.35            765.95            740.61              0.00
+262144               3738.20           1325.73           1281.89              0.00
+524288               7026.55           2436.46           2356.37              0.00
+1048576             13659.86           4692.02           4538.30              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-cXP
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igatherv
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igatherv
+created TMPDIR=/dev/shm/acolin-gpref-MWT (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-MWT
+
+# OSU MPI Non-blocking Gatherv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      53.04             47.33             45.50             87.46
+2                      53.07             47.36             45.42             87.44
+4                      52.76             47.05             45.26             87.38
+8                      53.00             47.28             45.40             87.40
+16                     53.32             47.66             45.78             87.63
+32                     53.42             47.75             45.96             87.67
+64                     54.04             48.35             46.42             87.75
+128                    54.68             48.99             47.14             87.95
+256                    56.48             50.68             48.78             88.11
+512                    59.22             53.63             51.59             89.15
+1024                   65.23             59.42             57.18             89.85
+2048                   65.09             57.17             54.61             85.49
+4096                  107.74             99.94             96.28             91.90
+8192                  157.50            148.83            143.37             93.95
+16384                 197.22            186.33            179.79             93.94
+32768                 271.34            254.22            245.37             93.03
+65536                1267.39            491.31            474.62              0.00
+131072               2092.95            770.72            745.15              0.00
+262144               3746.19           1330.76           1286.79              0.00
+524288               7035.96           2443.48           2363.31              0.00
+1048576             13668.58           4697.49           4543.41              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-MWT
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ireduce
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ireduce
+created TMPDIR=/dev/shm/acolin-gpref-uxf (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-uxf
+
+# OSU MPI Non-blocking Reduce Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+4                      52.47             46.98             44.97             87.79
+8                      52.58             47.06             44.92             87.72
+16                     53.03             47.55             45.39             87.93
+32                     53.09             47.58             45.43             87.86
+64                     53.13             47.65             45.85             88.05
+128                    54.29             48.77             46.67             88.18
+256                    56.03             50.41             48.20             88.33
+512                    58.95             53.27             51.00             88.87
+1024                   65.17             59.31             56.83             89.69
+2048                   66.84             57.50             54.87             82.98
+4096                  107.32             99.45             95.87             91.79
+8192                  157.32            148.47            143.22             93.82
+16384                 197.89            186.73            180.24             93.81
+32768                 271.86            254.64            246.04             93.00
+65536                 436.16            401.22            387.64             90.99
+131072                868.75            685.61            662.88             72.37
+262144               1901.76           1259.25           1217.93             47.25
+524288               3654.73           2391.17           2313.62             45.39
+1048576              6558.74           4669.54           4518.09             58.19
+cleaned up TMPDIR=/dev/shm/acolin-gpref-uxf
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatter
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatter
+created TMPDIR=/dev/shm/acolin-gpref-N9q (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-N9q
+
+# OSU MPI Non-blocking Scatter Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      51.66             46.51             44.39             88.41
+2                      51.54             46.42             44.27             88.43
+4                      51.56             46.42             44.29             88.41
+8                      51.69             46.53             44.48             88.41
+16                     51.96             46.79             44.67             88.43
+32                     51.84             46.75             44.78             88.62
+64                     52.49             47.31             45.28             88.56
+128                    53.41             48.19             45.99             88.66
+256                    54.91             49.72             47.51             89.07
+512                    57.94             52.68             50.38             89.56
+1024                   63.91             58.54             56.08             90.42
+2048                   61.50             55.26             52.77             88.18
+4096                  105.45             98.48             94.96             92.66
+8192                  155.44            147.52            142.32             94.44
+16384                 196.45            186.38            179.72             94.40
+32768                 272.54            256.44            247.14             93.48
+65536                1262.44            495.60            478.72              0.00
+131072               2089.64            782.96            756.94              0.00
+262144               3739.07           1354.48           1309.64              0.00
+524288               7026.85           2491.38           2409.49              0.00
+1048576             13622.70           4771.62           4615.38              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-N9q
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatterv
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatterv
+created TMPDIR=/dev/shm/acolin-gpref-fmj (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-fmj
+
+# OSU MPI Non-blocking Scatterv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                      51.40             46.20             44.30             88.25
+2                      51.33             46.16             44.27             88.34
+4                      51.27             46.13             44.27             88.40
+8                      51.21             45.97             44.10             88.11
+16                     51.53             46.43             44.59             88.57
+32                     51.76             46.64             44.75             88.58
+64                     52.39             47.26             45.36             88.70
+128                    53.13             48.01             46.09             88.90
+256                    54.74             49.57             47.60             89.14
+512                    57.71             52.47             50.37             89.59
+1024                   64.12             58.66             56.05             90.26
+2048                   62.13             55.39             52.88             87.26
+4096                  105.44             98.47             94.89             92.65
+8192                  155.18            147.38            142.05             94.51
+16384                 196.19            186.24            179.66             94.46
+32768                 271.57            255.90            246.89             93.65
+65536                1259.70            493.48            476.65              0.00
+131072               2088.00            781.59            755.66              0.00
+262144               3739.34           1354.82           1310.06              0.00
+524288               7030.98           2495.25           2413.17              0.00
+1048576             13622.41           4771.09           4614.66              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-fmj
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce
+created TMPDIR=/dev/shm/acolin-gpref-c1r (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-c1r
+
+# OSU MPI Reduce Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                      42.92
+8                      42.89
+16                     43.15
+32                     43.23
+64                     43.89
+128                    44.55
+256                    46.22
+512                    48.70
+1024                   54.50
+2048                   51.09
+4096                   93.09
+8192                  139.95
+16384                 176.67
+32768                 242.67
+65536                 471.68
+131072                745.40
+262144               1292.73
+524288               2383.13
+1048576              4565.68
+cleaned up TMPDIR=/dev/shm/acolin-gpref-c1r
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce_scatter
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce_scatter
+created TMPDIR=/dev/shm/acolin-gpref-K81 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-K81
+
+# OSU MPI Reduce_scatter Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                      80.68
+8                      80.72
+16                     80.92
+32                     80.97
+64                     81.19
+128                    83.05
+256                    84.27
+512                    87.51
+1024                   93.62
+2048                  104.34
+4096                   94.27
+8192                  142.71
+16384                 237.82
+32768                 313.87
+65536                 458.01
+131072                862.48
+262144               1430.29
+524288               2699.63
+1048576              4986.51
+cleaned up TMPDIR=/dev/shm/acolin-gpref-K81
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatter
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatter
+created TMPDIR=/dev/shm/acolin-gpref-Eup (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-Eup
+
+# OSU MPI Scatter Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      42.86
+2                      42.96
+4                      42.82
+8                      42.84
+16                     43.27
+32                     43.38
+64                     44.09
+128                    44.64
+256                    46.06
+512                    48.93
+1024                   54.73
+2048                   50.84
+4096                   93.04
+8192                  140.30
+16384                 177.88
+32768                 244.69
+65536                 475.68
+131072                753.59
+262144               1307.98
+524288               2411.66
+1048576              4613.22
+cleaned up TMPDIR=/dev/shm/acolin-gpref-Eup
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatterv
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatterv
+created TMPDIR=/dev/shm/acolin-gpref-XEC (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-XEC
+
+# OSU MPI Scatterv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                      42.86
+2                      42.76
+4                      42.54
+8                      42.67
+16                     43.06
+32                     43.13
+64                     44.13
+128                    44.62
+256                    46.11
+512                    48.71
+1024                   54.55
+2048                   50.71
+4096                   93.08
+8192                  140.21
+16384                 177.43
+32768                 244.18
+65536                 474.19
+131072                752.92
+262144               1307.09
+524288               2411.61
+1048576              4611.95
+cleaned up TMPDIR=/dev/shm/acolin-gpref-XEC
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bibw
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bibw
+created TMPDIR=/dev/shm/acolin-gpref-V78 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-V78
+# OSU MPI Bi-Directional Bandwidth Test v5.6.3
+# Size      Bandwidth (MB/s)
+1                       0.56
+2                       1.08
+4                       1.95
+8                       3.96
+16                      8.13
+32                     16.14
+64                     33.78
+128                    57.01
+256                    92.07
+512                   131.89
+1024                  190.04
+2048                  208.02
+4096                  205.24
+8192                  234.85
+16384                 240.93
+32768                 243.65
+65536                 149.45
+131072                123.25
+262144                123.50
+524288                123.62
+1048576               123.69
+2097152               123.73
+4194304               123.74
+cleaned up TMPDIR=/dev/shm/acolin-gpref-V78
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bw
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bw
+created TMPDIR=/dev/shm/acolin-gpref-gYf (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-gYf
+# OSU MPI Bandwidth Test v5.6.3
+# Size      Bandwidth (MB/s)
+1                       0.31
+2                       0.62
+4                       1.03
+8                       2.09
+16                      4.14
+32                      7.91
+64                     15.76
+128                    26.06
+256                    42.77
+512                    65.94
+1024                   89.46
+2048                  104.03
+4096                  112.78
+8192                  117.52
+16384                 120.41
+32768                 122.04
+65536                 122.46
+131072                123.11
+262144                123.42
+524288                123.59
+1048576               123.67
+2097152               123.71
+4194304               123.73
+cleaned up TMPDIR=/dev/shm/acolin-gpref-gYf
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency
+created TMPDIR=/dev/shm/acolin-gpref-4El (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-4El
+# OSU MPI Latency Test v5.6.3
+# Size          Latency (us)
+0                      43.37
+1                      43.54
+2                      43.54
+4                      43.53
+8                      43.56
+16                     43.68
+32                     43.80
+64                     45.06
+128                    46.58
+256                    49.40
+512                    55.19
+1024                   66.42
+2048                   91.59
+4096                  137.03
+8192                  231.18
+16384                 304.25
+32768                 435.16
+65536                 791.29
+131072               1320.37
+262144               2382.63
+524288               4498.38
+1048576              8744.16
+2097152             17208.93
+4194304             34160.69
+cleaned up TMPDIR=/dev/shm/acolin-gpref-4El
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency_mp
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency_mp
+created TMPDIR=/dev/shm/acolin-gpref-Gno (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-Gno
+# OSU MPI Multi-process Latency Test v5.6.3
+# Number of forked processes in sender: 2
+# Number of forked processes in receiver: 2
+# Size          Latency (us)
+0                      43.55
+1                      43.69
+2                      43.87
+4                      43.73
+8                      43.74
+16                     43.85
+32                     43.98
+64                     45.23
+128                    46.79
+256                    49.53
+512                    55.24
+1024                   66.60
+2048                   91.64
+4096                  137.11
+8192                  231.29
+16384                 304.03
+32768                 435.51
+65536                 791.75
+131072               1321.45
+262144               2383.67
+524288               4499.64
+1048576              8745.19
+2097152             17209.95
+4194304             34161.44
+cleaned up TMPDIR=/dev/shm/acolin-gpref-Gno
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_mbw_mr
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_mbw_mr
+created TMPDIR=/dev/shm/acolin-gpref-5Zs (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-5Zs
+# OSU MPI Multiple Bandwidth / Message Rate Test v5.6.3
+# [ pairs: 1 ] [ window size: 64 ]
+# Size                  MB/s        Messages/s
+1                       0.31         307141.74
+2                       0.61         303007.88
+4                       1.04         258912.85
+8                       2.09         261816.89
+16                      4.14         258682.64
+32                      7.92         247646.68
+64                     15.75         246100.19
+128                    25.99         203062.80
+256                    42.81         167233.23
+512                    65.69         128309.09
+1024                   89.33          87236.83
+2048                  103.98          50771.14
+4096                  112.74          27525.63
+8192                  117.49          14342.47
+16384                 120.40           7348.53
+32768                 122.03           3724.03
+65536                 122.46           1868.61
+131072                123.11            939.22
+262144                123.42            470.81
+524288                123.59            235.73
+1048576               123.67            117.94
+2097152               123.71             58.99
+4194304               123.73             29.50
+cleaned up TMPDIR=/dev/shm/acolin-gpref-5Zs
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_multi_lat
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_multi_lat
+created TMPDIR=/dev/shm/acolin-gpref-oJg (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-oJg
+# OSU MPI Multi Latency Test v5.6.3
+# Size          Latency (us)
+0                      43.50
+1                      43.68
+2                      43.64
+4                      43.76
+8                      43.74
+16                     43.88
+32                     44.02
+64                     45.22
+128                    46.71
+256                    49.64
+512                    55.43
+1024                   66.72
+2048                   91.97
+4096                  137.34
+8192                  231.34
+16384                 304.37
+32768                 435.04
+65536                 791.65
+131072               1321.28
+262144               2382.77
+524288               4498.32
+1048576              8744.51
+2097152             17209.51
+4194304             34159.93
+cleaned up TMPDIR=/dev/shm/acolin-gpref-oJg
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_hello
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_hello
+created TMPDIR=/dev/shm/acolin-gpref-i4C (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-i4C
+# OSU MPI Hello World Test v5.6.3
+This is a test with 2 processes
+cleaned up TMPDIR=/dev/shm/acolin-gpref-i4C
+mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_init
+wtmp /scratch2/acolin/casper/gpref/gp-broadwell/usr/bin/mpirun -n 2 --map-by node --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include eth0 /scratch2/acolin/casper/gpref/gp-broadwell/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_init
+created TMPDIR=/dev/shm/acolin-gpref-Tc8 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-Tc8
+# OSU MPI Init Test v5.6.3
+nprocs: 2, min: 245 ms, max: 246 ms, avg: 245 ms
+cleaned up TMPDIR=/dev/shm/acolin-gpref-Tc8
+Successfully processed 34 benchmarks.
