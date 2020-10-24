@@ -157,7 +157,7 @@ then
 	echo 'exit $RC' >> "$ROOT"/startprefix
 	sed -i 's/\(Leaving .* exit status\) \$[?]/\1 $RC/' "$ROOT"/startprefix
 	# P3: Read env vars to preserve from .prefixenv file
-	patch -p1 "$ROOT"/startprefix ${FILES_PATH}/startprefix.patch
+	patch -b -p1 "$ROOT"/startprefix ${FILES_PATH}/startprefix.patch
 	sed -i 's/$RETAIN/"${RETAIN[@]}"/g' "$ROOT"/startprefix # part of the above .patch
 	step_done patch_startprefix
 fi
@@ -307,7 +307,7 @@ then
 		if [[ "$((rc & 0x8))" -ne 0 ]] # need PIE patch
 		then
 			pushd "$ROOT"/usr/src/linux
-			patch -p1 < "${FILES_PATH}"/kernel-no-pie.patch
+			patch -b -p1 < "${FILES_PATH}"/kernel-no-pie.patch
 			popd
 		fi
 
