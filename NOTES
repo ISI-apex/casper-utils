@@ -1,3 +1,10 @@
+USC Discovery cluster usage snapshot showing slowdown in prefix build job:
+https://snapshot.raintank.io/dashboard/snapshot/cEAWF2Rs3iqrI5HZd7oS96b12fINZqR9
+
+enable debug output in PMIX:
+PMIX_DEBUG=5
+(and set --enable-debug, i.e. debug use flag)
+
 Discovery: mpirun args for tcp over Infiniband IP interface
 psbatch ~/ca2/casper/gpref/gp-broadwell discovery broadwell "" all 2 16 00:15:00 mpirun -n 2 --map-by node --mca btl_base_verbose 100 --mca pml_base_verbose 100 --mca pml_ucx_verbose 100 --mca btl self,tcp --mca pml_ucx_priority 0 --mca btl_tcp_if_include ib0 python $PWD/fch.py 32 test.csv
 
