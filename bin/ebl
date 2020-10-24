@@ -73,12 +73,13 @@ else
 	vers=()
 	for ebl in ${pkg}/*.ebuild
 	do
+		[[ "${ebl}" != "${pkg}/*.ebuild" ]] || break
 		ebl_ver=$(echo "${ebl}" | sed 's/.*-\([0-9.]\+\(_[0-9a-z]\+\)\?\(-r[0-9]\+\)\?\).ebuild/\1/')
 		vers+=(${ebl_ver})
 	done
 	if [[ "${#vers[@]}" -eq 0 ]]
 	then
-		echo "ERROR: no .ebuild files found" 1>&2
+		echo "ERROR: no .ebuild files found at ${pkg}" 1>&2
 		exit 1
 	fi
 
