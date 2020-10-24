@@ -80,9 +80,9 @@ the provided distfiles archive and directory, the format is `tar.gz`.
 
 Step 2. Run build job
 ---------------------
-To build Gentoo Prefix on USC HPPC: `jobs/gpref.job.sh`
+To build Gentoo Prefix on USC HPPC or Discovery:
 
-    $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER ARCH
+    $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER[:PARTITION] ARCH
 
 To build Gentoo Prefix on other hosts, you might need to override the
 default for number of processors to use (the default is what `nproc`

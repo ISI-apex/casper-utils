@@ -26,12 +26,21 @@ then
 fi
 PPATH=$(realpath "${PPATH}")
 PROFILE=$2
-CLUSTER=$3
+CLUSTER_PART=$3
 ARCH=$4
-if [[ -z "${PROFILE}" || -z "${CLUSTER}" || -z "${ARCH}" ]]
+if [[ -z "${PROFILE}" || -z "${CLUSTER_PART}" || -z "${ARCH}" ]]
 then
-	echo "ERROR: usage: $0 prefix_path profile cluster arch" 1>&2
+	echo "ERROR: usage: $0 prefix_path profile cluster[:part] arch" 1>&2
 	exit 1
+fi
+
+if [[ "${CLUSTER_PART}" =~ : ]]
+then
+	CLUSTER="$(echo ${CLUSTER_PART} | cut -d':' -f1)"
+	PART="$(echo ${CLUSTER_PART} | cut -d':' -f2)"
+else
+	CLUSTER="${CLUSTER_PART}"
+	PART=""
 fi
 
 LOGDIR="${PPATH}/var/log/prefix"
@@ -40,6 +49,10 @@ mkdir -p "${LOGDIR}"
 # Memory limit of 0 means use all avaialable memory on the node.
 node_info "${CLUSTER}" "${ARCH}"
 ARGS+=(--nodes=1 --mem=0 --ntasks=${MIN_CORES} "--constraint=${FEAT}")
+if [[ -n "${PART}" ]]
+then
+	ARGS+=(--partition "${PART}")
+fi
 
 # Split jobs because on USC HPCC max limit for a single job is 24h
 
