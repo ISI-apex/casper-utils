@@ -1,5 +1,3 @@
-RCFILE=.prefixrc
-
 run() {
 	echo "$@"
 	"$@"

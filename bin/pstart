@@ -11,5 +11,11 @@ then
 	exit 1
 fi
 
-eprefix="$(cd -- "$1"/ && pwd)"
-run "${eprefix}"/startprefix -c "bash --rcfile \"${eprefix}/${RCFILE}\" -i"
+EPREFIX="$(cd -- "$1"/ && pwd)"
+shift
+if [[ "$#" -gt 0 ]]
+then
+	exec "${EPREFIX}"/startprefix -c "$*"
+else
+	exec "${EPREFIX}"/startprefix
+fi
