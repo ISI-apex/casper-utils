@@ -4,13 +4,30 @@
 # The .prefixrc file should be located in the root dir of the prefix tree
 EPREFIX="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+# Should not repeatedly load EPREFIX/etc/profile, but should load it in the
+# first parent shell open by startprefix (currently loading for non-interactive
+# shells and for interactive shells -- this is not standard and may need revisit).
+# The one way repeated loading causes trouble is that ${EPREFIX}/etc/profile
+# overrides PATH, losing the setting set in the parent (wihtin-prefix) shell.
+
+if [[ -z "${EPREFIX_ETC_PROFILE_SOURCED}" ]]
+then
+	source "${EPREFIX}"/etc/profile
+
+	# The default prompt in Gentoo shows full path, override to shorten
+	PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \W \$\[\033[00m\] "
+
+	export EPREFIX_ETC_PROFILE_SOURCED=1
+fi
+
+# The following we do want to load into every shell
+
 if [ ! -f "${EPREFIX}"/.prefixhelpers ]
 then
 	echo "ERROR: .prefixhelpers not found in prefix root dir" 1>&2
 	exit 1
 fi
 source "${EPREFIX}"/.prefixhelpers
-source "${EPREFIX}"/etc/profile
 
 # The default prompt in Gentoo shows full path, override to shorten
 PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \W \$\[\033[00m\] "
