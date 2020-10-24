@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Wraps mpirun with a wrapper that creates and cleans up temp dir (TMPDIR)
+
+if ! type wtmp 1>/dev/null 2>/dev/null
+then
+	echo "wtmp command not found (.prefixrc was not sourced?)" 1>&2
+	exit 1
+fi
+
+run() {
+	echo "$@"
+	"$@"
+}
+
+# careful to not invoke via any other name than 'mpirun',
+# since the underlying binary may be sensitive to argv[0]
+
+which --all mpirun | while read line
+do
+	if [[ $(realpath "${line}") != "$(realpath "${BASH_SOURCE[0]}")" ]]
+	then
+		SPACE_MB=16 run wtmp "${line}" "$@"
+	fi
+done
