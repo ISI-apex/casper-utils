@@ -188,7 +188,13 @@ function check_space_mb
 # want to use this function and use EXIT trap handler from your script.
 function set_tmpdir
 {
-	local min_space_mb=$1
+	local min_space_mb
+	if [[ -n "${SPACE_MB}" ]]
+	then
+		min_space_mb="${SPACE_MB}"
+	else
+		min_space_mb=1024
+	fi
 
 	if [[ -z "${THE_TMPDIR}" ]]
 	then
@@ -273,7 +279,7 @@ function set_tmpdir
 	fi
 
 	export TMPDIR="${THE_TMPDIR}"
-	echo "TMPDIR=${TMPDIR}"
+	echo "TMPDIR=${TMPDIR} (free space >= ${min_space_mb} MB)"
 }
 
 # This is a function only in order to delay expansion of $TMPDIR
@@ -282,17 +288,12 @@ function with_portage_tmpdir {
 }
 
 # parametrized by env vars: SPACE_MB and KEEP_TMPDIR
-function wptmp {
-	if [[ -z "${SPACE_MB}" ]]
-	then
-		local SPACE_MB=1024
-	fi
-	(set_tmpdir "${SPACE_MB}" && with_portage_tmpdir "$@")
+function wtmp {
+	(set_tmpdir && "$@")
 }
-
 function port {
 	echo MAKEOPTS="${MAKEOPTS}"
-	run wptmp "$@"
+	(set_tmpdir && with_portage_tmpdir "$@")
 }
 function sport {
 	MAKEOPTS="-j1" port "$@"
