@@ -61,7 +61,7 @@ then
 fi
 
 # Env vars read by bootstrap-prefix.sh
-export USE_CPU_CORES=${JOBS}
+export USE_CPU_CORES=${NPROC}
 export TODO=noninteractive
 export OFFLINE_MODE=$OFFLINE_MODE
 export SNAPSHOT_DATE=20200604
