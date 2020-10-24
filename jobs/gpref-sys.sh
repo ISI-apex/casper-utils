@@ -111,18 +111,7 @@ prun() {
 
 if ! step_is_done prefixrc
 then
-	# It's not great to copy since updates to this code in casper-utils
-	# won't propagate to prefixes that were already built, but the greater
-	# evil is to introduce a dependency from prefix on casper-utils, we
-	# want the prefix to be standalone in this sense, with casper-utils
-	# having the role of a build tool.
-	mkdir -p "$ROOT/${ETC_PTOOLS}"
-	sed -e "s:@__EPREFIX__@:${EPREFIX}:g" \
-		-e "s:@__ETC_PTOOLS__@:${ETC_PTOOLS}:g" \
-		"${PTOOLS_DIR}"/etc/prefixrc > "$ROOT/${ETC_PTOOLS}/prefixrc"
-	cp "${PTOOLS_DIR}"/etc/prefixhelpers "$ROOT/${ETC_PTOOLS}/prefixhelpers"
-	# referenced by startprefix script
-	cp "${PTOOLS_DIR}"/etc/prefixenv "$ROOT/${ETC_PTOOLS}/prefixenv"
+	# NOTE: actual prefixrc installed by app-portage/prefix-tools
 
 	cat > "$ROOT/.prefixrc" <- EOF
 	# This file is sourced after $EPREFIX/etc/etc/prefix-tools/prefixrc
@@ -160,9 +149,8 @@ then
 	# Note: P1, P2 are not in a .patch because the script has the
 	# explicit path to prefix, which would require generating .patch.
 	#
-	# P1: Load prefixrc file in interactive and non-inter. mode.
-	sed -i -e 's:\(env. -i \$RETAIN\) \$SHELL -l:\1 BASH_ENV="${EPREFIX}/@__PREFIXRC__@" $SHELL --rcfile "${EPREFIX}"/@__PREFIXRC__@ "$@":' \
-		-e "s:@__PREFIXRC__@:${ETC_PTOOLS}/prefixrc:g" \
+	# P1: Load /etc/profile in interactive and non-inter. mode.
+	sed -i -e 's:\(env. -i \$RETAIN\) \$SHELL -l:\1 BASH_ENV="${EPREFIX}/etc/profile " $SHELL --rcfile "${EPREFIX}"/etc/profile "$@":' \
 		"$ROOT"/startprefix
 	# P2: Do propagate the exit code to caller
 	sed -i '$ i\RC=$?' "$ROOT"/startprefix
