@@ -1,6 +1,6 @@
---- a/startprefix	2020-10-14 01:04:52.000000000 +0000
-+++ b/startprefix	2020-10-14 01:05:17.000000000 +0000
-@@ -52,21 +52,39 @@
+--- a/startprefix	2020-10-24 20:01:30.000000000 -0000
++++ b/startprefix	2020-10-24 20:08:31.000000000 -0000
+@@ -52,22 +52,47 @@
  # give a small notice
  echo "Entering Gentoo Prefix ${EPREFIX}"
  # start the login shell, clean the entire environment but what's needed
@@ -26,11 +26,18 @@
  	# some Windows programs (e.g. devenv.exe) need TMP or TEMP
 -	[[ -n ${TEMP} ]] && RETAIN+=" TEMP=$TEMP"
 +	[[ -n ${TEMP} ]] && RETAIN+=(TEMP=$TEMP)
-+fi
-+# retain variables optinally listed in a file
-+ENV_FILE="${ENV_FILE:-${EPREFIX}/.prefixenv}"
-+if [[ -f "${ENV_FILE}" ]]
-+then
+ fi
++# retain variables whose names match patterns listed in a file
++ENV_FILES=(
++	"${EPREFIX}/etc/prefix-tools/prefixenv"
++	"${EPREFIX}/.prefixenv"
++)
++for ENV_FILE in ${ENV_FILES[@]}
++do
++	if [[ ! -f "${ENV_FILE}" ]]
++	then
++		continue
++	fi
 +	SET_VARS=( $(env | cut -d'=' -f1) )
 +	RETAIN_PATTERNS=( $(cat "${ENV_FILE}" | sed -e '/^#.*/d' -e '/^\s*$/d') )
 +
@@ -44,6 +51,7 @@
 +			fi
 +		done
 +	done
- fi
++done
  # do it!
  if [[ ${SHELL#${EPREFIX}} != ${SHELL} ]] ; then
+ 	# interactive if no '-c command' args in $@ (so set --rcfile) and

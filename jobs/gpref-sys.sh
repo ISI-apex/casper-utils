@@ -10,6 +10,8 @@ then
 fi
 source "${SELF_DIR}"/../bin/pscommon.sh
 
+PTOOLS_DIR="${SELF_DIR}"/../prefix-tools
+
 set_tmpdir 16000 # MB of free space
 TMP_HOME="${TMPDIR}" # name used in this script, to avoid confusion
 
@@ -47,6 +49,10 @@ export PATH="${TMP_HOME}/bin:$PATH"
 echo '/bin/bash --noprofile "$@"' > "${TMP_HOME}"/bin/bash
 chmod +x "${TMP_HOME}"/bin/bash
 export SHELL="${TMP_HOME}/bin/bash"
+
+# Note: if you edit this path, also edit in startprefix.patch and
+# in app-portage/prefix-toolkit ebuild.
+ETC_PTOOLS="etc/prefix-tools"
 
 export PORTAGE_TMPDIR="${TMP_HOME}"
 export DISTDIR="${DIST_PATH}"
@@ -103,6 +109,50 @@ prun() {
 	run "$ROOT"/startprefix -c "command $1 </dev/null"
 }
 
+if ! step_is_done prefixrc
+then
+	# It's not great to copy since updates to this code in casper-utils
+	# won't propagate to prefixes that were already built, but the greater
+	# evil is to introduce a dependency from prefix on casper-utils, we
+	# want the prefix to be standalone in this sense, with casper-utils
+	# having the role of a build tool.
+	mkdir -p "$ROOT/${ETC_PTOOLS}"
+	sed -e "s:@__EPREFIX__@:${EPREFIX}:g" \
+		-e "s:@__ETC_PTOOLS__@:${ETC_PTOOLS}:g" \
+		"${PTOOLS_DIR}"/etc/prefixrc > "$ROOT/${ETC_PTOOLS}/prefixrc"
+	cp "${PTOOLS_DIR}"/etc/prefixhelpers "$ROOT/${ETC_PTOOLS}/prefixhelpers"
+	# referenced by startprefix script
+	cp "${PTOOLS_DIR}"/etc/prefixenv "$ROOT/${ETC_PTOOLS}/prefixenv"
+
+	cat > "$ROOT/.prefixrc" <- EOF
+	# This file is sourced after $EPREFIX/etc/etc/prefix-tools/prefixrc
+	# into every shell (including in non-interactive mode). Add
+	# your favoriete aliases and shell prompt config here.
+	#
+	# The default prompt in Gentoo shows full path, override to shorten
+	PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \W \$\[\033[00m\] "
+
+	# It is possible to load your favorite ~/.bashrc with all your
+	# favorite aliases and settings, but you have be very careful:
+	# the ~/.bashrc must not source any config files from the host,
+	# however, by default it does!  And, to use your host system, you
+	# need that default. One way to go is to split your ~/.bashrc
+	# into ~/.bashrc.generic and have ~/.bashrc source
+	# ~/.bashrc.generic), then you can uncomment the following:
+	#source $HOME/.bashrc.generic
+	EOF
+
+	cat > "$ROOT/.prefixenv" <- EOF
+	# To retain env variables when entering prefix via startprefix
+	# script, add patterns to match against variable names in
+	# Bash regexp format one per line, to this file, e.g.
+	# ^MY_ENV_VAR$
+	# ^MY_ENV_FAMILY_.*
+	EOF
+
+	step_done prefixrc
+fi
+
 if ! step_is_done patch_startprefix
 then
 	# Temporary patch to allow prun; in gpref-profile job the patched
@@ -110,8 +160,10 @@ then
 	# Note: P1, P2 are not in a .patch because the script has the
 	# explicit path to prefix, which would require generating .patch.
 	#
-	# P1: Load .prefixrc file in interactive and non-inter. mode.
-	sed -i 's:\(env. -i \$RETAIN\) \$SHELL -l:\1 BASH_ENV="${EPREFIX}/.prefixrc" $SHELL --rcfile "${EPREFIX}"/.prefixrc "$@":' "$ROOT"/startprefix
+	# P1: Load prefixrc file in interactive and non-inter. mode.
+	sed -i -e 's:\(env. -i \$RETAIN\) \$SHELL -l:\1 BASH_ENV="${EPREFIX}/@__PREFIXRC__@" $SHELL --rcfile "${EPREFIX}"/@__PREFIXRC__@ "$@":' \
+		-e "s:@__PREFIXRC__@:${ETC_PTOOLS}/prefixrc:g" \
+		"$ROOT"/startprefix
 	# P2: Do propagate the exit code to caller
 	sed -i '$ i\RC=$?' "$ROOT"/startprefix
 	echo 'exit $RC' >> "$ROOT"/startprefix
@@ -147,19 +199,6 @@ then
 	prun "locale-gen"
 	echo -e "LANG=en_US.UTF-8\nLC_CTYPE=en_US.UTF-8\n" > "$ROOT"/etc/locale.conf
 	step_done locale
-fi
-
-if ! step_is_done prefixrc
-then
-	# It's not great to copy since updates to this code in casper-utils
-	# won't propagate to prefixes that were already built, but the greater
-	# evil is to introduce a dependency from prefix on casper-utils, we
-	# want the prefix to be standalone in this sense, with casper-utils
-	# having the role of a build tool.
-	cp "${SELF_DIR}"/../bin/pscommon.sh "$ROOT/.prefixhelpers"
-	cp "${FILES_PATH}"/prefixenv "$ROOT/.prefixenv"
-	cp "${FILES_PATH}"/prefixrc "$ROOT/.prefixrc"
-	step_done prefixrc
 fi
 
 if ! step_is_done passwd
