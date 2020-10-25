@@ -26,9 +26,8 @@ dat/:
 #
 # TODO: try to eliminate the PATH setting (it's for the mpirun wrappers)
 dat/bench-prefix-n-$(NODES)-map-by-$(MAP_BY).log: | dat/
-	PATH=$(CASPER_UTILS_ROOT)/bin/theta:$${PATH} \
-	     bash $(EPREFIX)/usr/bin/osubench "$(PATTERN)" "$(PATTERN_EXCLUDE)" \
-		mpirun -n "$(NODES)" --map-by "$(MAP_BY)" $(MPIRUN_ARGS) command
+	$(EPREFIX)/usr/bin/osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
+		mpirun -n "$(NODES)" --map-by "$(MAP_BY)" $(MPIRUN_ARGS)
 .PHONY: run
 
 DEBUG_Q=debug-cache-quad
