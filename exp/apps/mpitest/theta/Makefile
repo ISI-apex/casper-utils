@@ -11,8 +11,7 @@ all:
 	$(MAKE) -C ..
 
 run:
-	PATH=$(CASPER_UTILS_ROOT)/bin/theta:$${PATH} \
-	mpirun -n "$(NODES)" --map-by node command ../mpitest
+	mpirun -n "$(NODES)" --map-by node ../mpitest
 
 job:
 	qsub -n "$(NODES)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \

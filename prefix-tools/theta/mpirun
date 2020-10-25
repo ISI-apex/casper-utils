@@ -1,37 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
-#set -x
-
-usage() {
-	echo "USAGE: $0 prefix_path args_to_mpirun... command program args..." 1>&2
-	echo "      'command' is a keyword (also effectively a no-op in bash)" 1>&2
-}
+set -x
 
 if [[ "$#" -lt 1 ]]
 then
-	echo "ERROR: invalid arguments" 1>&2
+	echo "ERROR: invalid arguments: mpirun cmd [arg...]" 1>&2
 	exit 1
 fi
 
-prefix=$1
-shift 1
-
-mpirun_args=()
-while [[ "$#" -gt 0 && "$1" != "command" ]]
-do
-	mpirun_args+=($1)
-	shift
-done
-if [[ "$#" = 0 || "$1" != "command" ]]
+if [[ -z "$EPREFIX" ]]
 then
-	echo "ERROR: invalid arguments: no command"
-	usage
-	exit 1
+	echo "ERROR: env var EPREFIX not set to root dir of prefix" 1>&2
+	echo "       (was script run not from within prefix?)" 1>&2
+	exit 2
 fi
-shift # command
 
-mpirun_args+=(
+mpirun_args=(
 	#-v
 	--mca pml_base_verbose 100
 	#--mca odls_base_verbose 100
@@ -79,7 +64,7 @@ mpirun_args+=(
 # Can't set via --mca, since need to be applied to "projects" other than OMPI
 # Don't have --prmca (yet?): https://github.com/open-mpi/ompi/issues/7285
 # NOTE: these need to also be listed in .prefixenv to be forwarded
-mca_vars+=(
+mca_vars=(
 	#PRTE_MCA_prte_base_verbose=100
 	#PRTE_MCA_prte_pmix_verbose=100
 	#PRTE_MCA_pmix_base_verbose=100
@@ -89,6 +74,27 @@ mca_vars+=(
 	PRTE_MCA_pmix_server_max_wait=8000
 )
 
-# this is the tmpirun from casper-utils/bin/theta
-exec env ${mca_vars[@]} tmpirun ${mpirun_args[@]} ${prefix}/startprefix -c "crayrun bash -c \"$(echo $@)\""
-#exec tmpirun ${mpirun_args[@]} /usr/bin/env
+# mpirun needs to talk to ALPS, so it neds to load its libs at runtime
+alps_libs=(cray-alps cray-pmi cray-xpmem cray-ugni cray-wlm_detect
+		cray-udreg cray-sysutils)
+
+alps_libs_paths="$(PATH=$HOST_PATH pkg-config ${alps_libs[@]} --libs-only-L | \
+	sed 's/ \?-L/:/g' | cut -d':' -f2- )"
+
+# By default mpirun adds Prefix to LD_LIBRARY_PATH, which breaks loading
+# of host's /bin/bash by aprun (when launching orted -- aprun executes the
+# command given to it via the host's shell). The value for the prefix that
+# mpirun chooses is either the prefix from the path to the mpirun binary
+# OR the --prefix argument when given.
+#
+# So, we have to pass --prefix and point it to a non-existant path.
+# However when passing --prefix, mpirun cannot be invoked by a full path,
+# because then mpirun autodetects this as a conflict between --prefix and
+# the full path (instead of just taking --prefix as the overriding one).
+# So, we invoke mpirun via the executable name by appending Prefix to
+# PATH.
+#
+# Host PATH needed for apstat which is invoked downstream of this cmd
+PATH=$PATH:$HOST_PATH LD_LIBRARY_PATH="${alps_libs_paths}" \
+	exec env ${mca_vars[@]} ${EPREFIX}/usr/bin/mpirun \
+		--prefix /dev/null ${mpirun_args[@]} "$@"
