@@ -12,7 +12,12 @@ LOG=
 MAX_TIME_MIN?=30
 ACCOUNT?=CASPER
 
-all: dat/bench-prefix-n-2-map-by-node.log/job
+DATS=\
+     dat/bench-prefix-n-2-map-by-node.log
+
+all: $(patsubst %,%/job,$(DATS))
+
+dat: $(DATS)
 
 dat/:
 	mkdir -p "$@"
