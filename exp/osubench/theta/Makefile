@@ -13,7 +13,7 @@ MAX_TIME_MIN?=30
 ACCOUNT?=CASPER
 
 DATS=\
-     dat/bench-prefix-n-2-map-by-node.log
+     dat/bench-prefix-n-$(NODES)-map-by-$(MAP_BY).log
 
 all: $(patsubst %,%/job,$(DATS))
 
