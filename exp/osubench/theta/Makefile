@@ -42,11 +42,11 @@ DEBUG_Q=debug-cache-quad
 	touch $*.{cobaltlog,output,error}
 	qsub -O "$*" -n "$(NODES)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
 		$$([[ "$(NODES)" -lt 128 ]] && echo -q $(DEBUG_Q)) \
-		$$(which make) -C $${PWD} EPREFIX=$(EPREFIX) \
-		NODES="$(NODES)" MAP_BY="$(MAP_BY)" \
-		PATTERN="$(PATTERN)" PATTERN_EXCLUDE="$(PATTERN_EXCLUDE)" \
-		MPIRUN_ARGS="$(MPIRUN_ARGS)" \
-		$*
+		$(EPREFIX)/startprefix -c "env \
+		PATTERN='$(PATTERN)' PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)' \
+		make -C $${PWD} NODES=$(NODES) MAP_BY=$(MAP_BY) \
+		MPIRUN_ARGS='$(MPIRUN_ARGS)' \
+		$*"
 	tail -f $*.{cobaltlog,output,error}
 
 job:
