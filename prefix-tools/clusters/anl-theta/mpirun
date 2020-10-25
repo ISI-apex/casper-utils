@@ -18,18 +18,18 @@ fi
 
 mpirun_args=(
 	#-v
-	--mca pml_base_verbose 100
-	#--mca odls_base_verbose 100
-	--mca opal_verbose 100
-	--mca opal_base_verbose 100
-	#--mca ras_base_verbose 100
-	--mca plm_base_verbose 100
-	--mca plm_alps_debug 1
+	#--mca pml_base_verbose 100
+	##--mca odls_base_verbose 100
+	#--mca opal_verbose 100
+	#--mca opal_base_verbose 100
+	##--mca ras_base_verbose 100
+	#--mca plm_base_verbose 100
+	#--mca plm_alps_debug 1
 
 	# Select transport: built-in uGNI
-	--mca pml_ob1_priority 100
-	--mca btl_base_verbose 100
-	#--mca btl_ugni_verbose 100
+	#--mca pml_ob1_priority 100
+	#--mca btl_base_verbose 100
+	##--mca btl_ugni_verbose 100
 
 
 	# Select transport: UCX
@@ -70,8 +70,7 @@ mca_vars=(
 	#PRTE_MCA_pmix_base_verbose=100
 	#PRTE_MCA_pmix_server_verbose=100
 
-	# very important: otherwise, big jobs fail with timeout SPAWN PMIx request
-	PRTE_MCA_pmix_server_max_wait=8000
+	# PRTE_MCA_pmix_server_max_wait=8000
 )
 
 # mpirun needs to talk to ALPS, so it neds to load its libs at runtime
