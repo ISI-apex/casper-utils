@@ -9,7 +9,7 @@ MAP_BY?=node
 PATTERN?=.*
 PATTERN_EXCLUDE?=^\$
 LOG=
-MAX_TIME_MIN?=180
+MAX_TIME_MIN?=30
 ACCOUNT?=CASPER
 
 all: dat/bench-prefix-n-2-map-by-node.log/job
