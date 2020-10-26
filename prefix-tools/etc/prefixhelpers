@@ -1,10 +1,25 @@
+print_args() {
+	for i
+	do
+		if [[ -z "$i" ]]
+		then
+			echo -n "\"\" "
+		elif [[ "$i" =~ ' ' ]]
+		then
+			echo -n "\"$i\" "
+		else
+			echo -n "$i "
+		fi
+	done
+}
+
 run() {
-	echo "$@"
+	print_args "$@"
 	"$@"
 }
 
 runexec() {
-	echo "$@"
+	print_args exec "$@"
 	exec "$@"
 }
 
