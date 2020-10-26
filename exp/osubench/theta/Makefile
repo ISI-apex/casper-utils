@@ -92,7 +92,7 @@ DEBUG_Q=debug-cache-quad
 		$(EPREFIX)/startprefix -c "env \
 		PATTERN='$(PATTERN)' PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)' \
 		make -C $${PWD} NODES=$(NODES) MAP_BY=$(MAP_BY) \
-		MPIRUN_ARGS='$(MPIRUN_ARGS)' VEBOSE=$(VERBOSE) \
+		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
 		$*"
 	$(if $(BLOCK),,exit 0 &&) tail -f $*.{cobaltlog,output,error}
 
