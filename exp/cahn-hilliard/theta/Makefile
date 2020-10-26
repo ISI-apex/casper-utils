@@ -64,9 +64,8 @@ dat/times-%-384-core.csv/job: NODES=6
 dat/times-%-512-core.csv/job: NODES=8
 
 define run
-	PATH=$(PWD)/../../../bin/theta::$$$$PATH \
-	     mpirun -n "$(2)" --map-by "$(subst -,:,$(3)):NOLOCAL" $(MCA_ARGS) \
-	     command bash $(PWD)/fch.sh "$(1)" --elapsed-out "$$@"
+	mpirun -n "$(2)" --map-by "$(subst -,:,$(3)):NOLOCAL" $(MCA_ARGS) \
+		bash $(PWD)/fch.sh "$(1)" --elapsed-out "$$@"
 endef
 
 

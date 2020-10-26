@@ -5,6 +5,7 @@ $(error EPREFIX env var not set to Gentoo Prefix)
 endif
 
 CASPER_UTILS_ROOT:=$(abspath ../../..)
+PTOOLS=$(EPREFIX)/ptools
 
 CLUSTER?=discovery:debug
 ARCH?=ivybridge
@@ -78,9 +79,8 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 
 # pass regexp pattern args via env because may contain $
 %/job: | $(DATA_DIR)/
-	PATH=$(CASPER_UTILS_ROOT)/bin:$${PATH} \
 	NONBLOCK=$(if $(BLOCK),,1) \
-	psbatch "$(EPREFIX)" "$(CLUSTER)" "$(ARCH)" all \
+	$(PTOOLS)/psbatch "$(CLUSTER)" "$(ARCH)" all \
 		"$(NODES)" "$(TASKS_PER_NODE)" "00:$(MAX_TIME_MIN):00" \
 		env "PATTERN='$(PATTERN)'" \
 		"PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)'" \
@@ -90,7 +90,6 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 		$*
 
 job: | $(DATA_DIR)/
-	PATH=$(CASPER_UTILS_ROOT)/bin:$${PATH} \
-	psalloc "$(EPREFIX)" "$(CLUSTER)" "$(ARCH)" all \
+	$(PTOOLS)/psalloc "$(CLUSTER)" "$(ARCH)" all \
 		"$(NODES)" "$(TASKS_PER_NODE)" "00:$(MAX_TIME_MIN):00" $*
 .PHONY: job
