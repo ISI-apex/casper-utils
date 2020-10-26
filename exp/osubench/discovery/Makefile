@@ -31,10 +31,10 @@ DATA_DIR?=dat
 MPIRUN_ARGS?=
 
 ifneq ($(VERBOSE),)
-	MPIRUN_TP_ARGS+=\
-		--mca btl_base_verbose 100 \
-		--mca pml_base_verbose 100 \
-		--mca pml_ucx_verbose 100
+MPIRUN_TP_ARGS+=\
+	--mca btl_base_verbose 100 \
+	--mca pml_base_verbose 100 \
+	--mca pml_ucx_verbose 100
 endif
 
 all: \
