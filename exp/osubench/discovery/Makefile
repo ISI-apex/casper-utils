@@ -15,6 +15,7 @@ ARCH?=ivybridge
 NODES?=2
 TASKS_PER_NODE?=1
 MAP_BY?=node
+NOLOCAL?=
 BLOCK?=
 
 # By default, include all except one-sided benchmarks (observed hang from
@@ -25,7 +26,6 @@ PATTERN?=pt2pt|collective|startup
 PATTERN_EXCLUDE?=_mt$$
 
 MAX_TIME_MIN?=30
-ACCOUNT?=CASPER
 
 DATA_DIR?=dat
 
@@ -37,6 +37,10 @@ MPIRUN_TP_ARGS+=\
 	--mca pml_base_verbose 100 \
 	--mca pml_ucx_verbose 100
 endif
+
+define gen-map-by
+$(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)
+endef
 
 all: \
 	$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp-ib0.log/job \
@@ -73,7 +77,8 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-default.log: \
 # To be run from within EPREFIX
 $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 	osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
-		mpirun -n "$(NODES)" --map-by "$(MAP_BY)" \
+		mpirun -n "$(NODES)" \
+		--map-by "$(call gen-map-by,$(MAP_BY))" \
 		$(MPIRUN_ARGS) $(MPIRUN_TP_ARGS) \
 		2>&1 | tee $@
 

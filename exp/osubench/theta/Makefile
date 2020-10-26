@@ -5,7 +5,8 @@ endif
 CASPER_UTILS_ROOT:=$(abspath ../../..)
 
 NODES?=2
-MAP_BY?=node-NOLOCAL
+MAP_BY?=node
+NOLOCAL?=1
 
 # By default, include all except one-sided benchmarks (observed hang from
 # within prefix, although need to retest), and exclude multi-threaded
@@ -33,6 +34,10 @@ dat: $(DATS)
 ifneq ($(filter 1 2 3 4 5 6 7 8,$(NODES)),)
 .NOTPARALLEL:
 endif
+
+define gen-map-by
+$(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)
+endef
 
 $(DATA_DIR)/:
 	mkdir -p "$@"
@@ -78,7 +83,8 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp.log: \
 
 $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 	$(EPREFIX)/usr/bin/osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
-		mpirun -n "$(NODES)" --map-by "$(subst -,:,$(MAP_BY))" \
+		mpirun -n "$(NODES)" \
+		--map-by "$(call gen-map-by,$(MAP_BY))" \
 		$(MPIRUN_ARGS) $(MPIRUN_TP_ARGS)
 .PHONY: run
 
