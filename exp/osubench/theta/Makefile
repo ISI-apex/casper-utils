@@ -93,6 +93,7 @@ DEBUG_Q=debug-cache-quad
 		PATTERN='$(PATTERN)' PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)' \
 		make -C $${PWD} NODES=$(NODES) MAP_BY=$(MAP_BY) \
 		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
+		DATA_DIR=$(DATA_DIR) \
 		$*"
 	$(if $(BLOCK),,exit 0 &&) tail -f $*.{cobaltlog,output,error}
 

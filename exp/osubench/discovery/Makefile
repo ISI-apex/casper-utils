@@ -87,6 +87,7 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 		$$(which make) -C $${PWD} EPREFIX=$(EPREFIX) \
 		NODES="$(NODES)" MAP_BY="$(MAP_BY)" \
 		MPIRUN_ARGS="'$(MPIRUN_ARGS)'" VERBOSE="$(VERBOSE)" \
+		DATA_DIR="$(DATA_DIR)" \
 		$*
 
 job: | $(DATA_DIR)/
