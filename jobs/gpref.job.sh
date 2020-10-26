@@ -16,7 +16,8 @@ export FILES_PATH=${CASPER_UTILS}/jobs/gpref
 export OFFLINE_MODE=1
 
 # for constraint() function
-source ${CASPER_UTILS}/bin/pscommon.sh
+# TODO: move constraint (and funcs for host tools) out of prefixhelpers
+source ${CASPER_UTILS}/prefix-tools/etc/prefixhelpers
 
 PPATH=$1
 if [ -z "${PPATH}" ]

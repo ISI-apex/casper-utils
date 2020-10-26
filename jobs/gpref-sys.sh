@@ -8,7 +8,8 @@ then
 	echo "ERROR: caller did not set SELF_DIR to script's directory" 1>&2
 	exit 1
 fi
-source "${SELF_DIR}"/../bin/pscommon.sh
+CASPER_UTILS=$(realpath ${SELF_DIR}/..)
+source ${CASPER_UTILS}/prefix-tools/etc/prefixhelpers
 
 PTOOLS_DIR="${SELF_DIR}"/../prefix-tools
 
