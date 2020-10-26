@@ -150,7 +150,7 @@ then
 	# explicit path to prefix, which would require generating .patch.
 	#
 	# P1: Load /etc/profile in interactive and non-inter. mode.
-	sed -i -e 's:\(env. -i \$RETAIN\) \$SHELL -l:\1 BASH_ENV="${EPREFIX}/etc/profile " $SHELL --rcfile "${EPREFIX}"/etc/profile "$@":' \
+	sed -i -e 's:\(env. -i \$RETAIN\) \$SHELL -l:\1 BASH_ENV="${EPREFIX}/etc/profile" $SHELL --rcfile "${EPREFIX}"/etc/profile "$@":' \
 		"$ROOT"/startprefix
 	# P2: Do propagate the exit code to caller
 	sed -i '$ i\RC=$?' "$ROOT"/startprefix
