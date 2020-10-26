@@ -3,16 +3,15 @@
 set -e
 
 self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+EPREFIX=$(cd -- "$(dirname ${self_dir})"/ && pwd)
+source "${self_dir}"/pscommon.sh
 
-if [[ "$#" -lt 1 ]]
+if [[ "$1" = "-h" ]]
 then
-	echo "Usage: $0 prefix" 1>&2
+	echo "Usage: $0 [command [arg...]]" 1>&2
 	exit 1
 fi
 
-EPREFIX="$(cd -- "$1"/ && pwd)"
-source "${self_dir}"/pscommon.sh
-shift
 if [[ "$#" -gt 0 ]]
 then
 	exec "${EPREFIX}"/startprefix -c "$*"

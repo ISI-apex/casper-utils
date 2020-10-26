@@ -3,25 +3,23 @@
 set -e
 
 self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+EPREFIX=$(cd -- "$(dirname ${self_dir})"/ && pwd)
+source "${self_dir}"/pscommon.sh
 
-if [[ "$#" -lt 7 ]]
+if [[ "$#" -lt 6 ]]
 then
-	echo "Usage: $0 prefix cluster[:part] arch[:gpu] mem_per_cpu nodes tasks_per_node max_max_time [salloc_arg...]" 1>&2
+	echo "Usage: $0 cluster[:part] arch[:gpu] mem_per_cpu nodes tasks_per_node max_max_time [salloc_arg...]" 1>&2
 	exit 1
 fi
 
-EPREFIX=$(cd -- "$1"/ && pwd)
-source "${self_dir}"/pscommon.sh
+cluster_part=$1
+arch_gpu=$2
+mem_per_cpu=$3
+nodes=$4
+tasks_per_node=$5
+max_time=$6
 
-cluster_part=$2
-cluster=$2
-arch_gpu=$3
-mem_per_cpu=$4
-nodes=$5
-tasks_per_node=$6
-max_time=$7
-
-shift 7
+shift 6
 if [[ "${cluster_part}" =~ : ]]
 then
 	cluster="$(echo ${cluster_part} | cut -d':' -f1)"

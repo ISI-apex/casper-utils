@@ -259,17 +259,16 @@ USC HPCC
 
 To enter the prefix on a USC HPCC host (login or worker with interactive shell):
 
-    $ export PATH=ABSOLUTE_PATH_TO/casper-utils/bin:$PATH
-    $ pstart PREFIX_PATH
+    $ PREFIX_PATH/ptools/pstart
 
 To enqueue a job inside the prefix on a USC HPCC worker node:
 
-    $ psbatch PREFIX_PATH CLUSTER[:PARTITION] ARCH[:GPU:GPU_COUNT] MAX_MEM_PER_TASK \
+    $ PREFIX_PATH/ptools/psbatch CLUSTER[:PARTITION] ARCH[:GPU:GPU_COUNT] MAX_MEM_PER_TASK \
 	NUM_NODES NUM_TASKS_PER_NODE TIME_LIMIT command arg arg...
 
 for example:
 
-    $ psbatch /scratch/me/myprefix legacy sandybridge:k20:1 all 1 1 00:10:00 python --version
+    $ PREFIX_PATH/ptools/psbatch hpcc sandybridge:k20:1 all 1 1 00:10:00 python --version
 
 The keyword 'all' for `MAX_MEM_PER_TASK` grants all memory on the node
 ("per task" does not apply anymore).
