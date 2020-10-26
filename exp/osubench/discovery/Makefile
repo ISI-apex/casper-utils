@@ -47,6 +47,15 @@ all: \
 	$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp-eth0.log/job \
 	$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-default.log/job
 
+# A shortcut for convenience
+TEST_DIR=dat-test
+TEST_ARGS=NODES=2 MAP_BY=node PATTERN=hello BLOCK=1 DATA_DIR=$(TEST_DIR)
+TEST_TGT=$(TEST_DIR)/bench-prefix-n-2-map-by-node-default.log
+test:
+	$(MAKE) $(TEST_ARGS) $(TEST_TGT)
+test/job:
+	$(MAKE) $(TEST_ARGS) $(TEST_TGT)/job
+
 .NOTPARALLEL:
 
 $(DATA_DIR)/:
