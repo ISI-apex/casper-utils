@@ -113,7 +113,7 @@ if ! step_is_done prefixrc
 then
 	# NOTE: actual prefixrc installed by app-portage/prefix-tools
 
-	cat > "$ROOT/.prefixrc" <- EOF
+	cat > "$ROOT/.prefixrc" <<- 'EOF'
 	# This file is sourced after $EPREFIX/etc/etc/prefix-tools/prefixrc
 	# into every shell (including in non-interactive mode). Add
 	# your favoriete aliases and shell prompt config here.
@@ -131,7 +131,7 @@ then
 	#source $HOME/.bashrc.generic
 	EOF
 
-	cat > "$ROOT/.prefixenv" <- EOF
+	cat > "$ROOT/.prefixenv" <<- 'EOF'
 	# To retain env variables when entering prefix via startprefix
 	# script, add patterns to match against variable names in
 	# Bash regexp format one per line, to this file, e.g.
