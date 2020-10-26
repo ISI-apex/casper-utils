@@ -49,6 +49,11 @@ mpirun_args=(
 	#--mca mtl_base_verbose 100
 	#--mca pml_ucx_priority 0
 
+	# Select transport: TCP
+	#--mca btl self,tcp
+	#--mca btl_tcp_if_include ipogif0
+	# Also works: --mca btl_tcp_if_include 10.128.0.0/14
+
 	#--mca shmem_base_verbose 100
 	#--mca shmem mmap
 
