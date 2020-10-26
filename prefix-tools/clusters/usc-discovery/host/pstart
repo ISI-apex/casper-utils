@@ -3,7 +3,6 @@
 set -e
 
 self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source "${self_dir}"/pscommon.sh
 
 if [[ "$#" -lt 1 ]]
 then
@@ -12,6 +11,7 @@ then
 fi
 
 EPREFIX="$(cd -- "$1"/ && pwd)"
+source "${self_dir}"/pscommon.sh
 shift
 if [[ "$#" -gt 0 ]]
 then

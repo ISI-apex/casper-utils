@@ -3,7 +3,6 @@
 set -e
 
 self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source "${self_dir}"/pscommon.sh
 
 if [[ "$#" -lt 7 ]]
 then
@@ -11,7 +10,9 @@ then
 	exit 1
 fi
 
-eprefix=$(cd -- "$1"/ && pwd)
+EPREFIX=$(cd -- "$1"/ && pwd)
+source "${self_dir}"/pscommon.sh
+
 cluster_part=$2
 cluster=$2
 arch_gpu=$3
@@ -66,4 +67,4 @@ runexec salloc --nodes "${nodes}" --ntasks-per-node "${tasks_per_node}" \
 	env PATH=/usr/bin:/bin srun -n1 -N1 \
 	--export=HOME,PATH,TERM,USER ${args[@]} --cpu_bind=no \
 	--pty --preserve-env \
-	$SHELL "${eprefix}"/startprefix
+	$SHELL "${EPREFIX}"/startprefix

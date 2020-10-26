@@ -3,7 +3,6 @@
 set -e
 
 self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-source "${self_dir}"/pscommon.sh
 
 if [[ "$#" -lt 8 ]]
 then
@@ -11,7 +10,9 @@ then
 	exit 1
 fi
 
-eprefix=$1
+EPREFIX=$1
+source "${self_dir}"/pscommon.sh
+
 cluster_part=$2
 arch_gpu=$3
 mem_per_cpu=$4
@@ -45,7 +46,7 @@ do
 	shift
 done
 
-logdir=${LOG_DIR:-"${eprefix}"/var/log/sjobs}
+logdir=${LOG_DIR:-"${EPREFIX}"/var/log/sjobs}
 mkdir -p "${logdir}"
 
 args=(--nodes "${nodes}" --ntasks-per-node "${tasks_per_node}"
@@ -89,7 +90,7 @@ then
 	name="$(echo "$@" | sed -e 's/\s\+/_/g' \
 		-e 's@/@-@g' -e 's@[^A-Za-z0-9]@-@g' | cut -c1-128)"
 fi
-log_name="$(basename ${eprefix})_${name}_$(date +%Y%m%d%H%M%S)_$$"
+log_name="$(basename ${EPREFIX})_${name}_$(date +%Y%m%d%H%M%S)_$$"
 if [ -z "${output_file}" ]
 then
 	output_file="${logdir}/${log_name}.out"
@@ -118,7 +119,7 @@ tmpscr="${logdir}"/${log_name}.sh
 cat <<EOF > $tmpscr
 #!/bin/bash
 # When bash invoked with -c, it does not load rcfile
-"${eprefix}"/startprefix -c "$PCMD"
+"${EPREFIX}"/startprefix -c "$PCMD"
 EOF
 chmod +x "${tmpscr}"
 echo "${tmpscr}": && cat "${tmpscr}"
