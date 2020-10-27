@@ -18,7 +18,10 @@ DATA_DIR?=dat
 # This is only used for interactive job
 NODES?=2
 
-MPIRUN_ARGS_INTERNAL:=
+# Binding to core is very important (at least when using --map-by ppr),
+# so.. at least in v5, --bind-to does NOT default to core when not given
+# (while the man page does say that)
+MPIRUN_ARGS_INTERNAL:=--bind-to core
 
 ifeq ($(CLUSTER),discovery:debug)
 # only one job allowed in the debug queue.
@@ -122,7 +125,7 @@ $(strip $(if $(findstring mapby-ppr-,$(1)),\
 endef
 
 define gen-map-by
-$(strip $(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL))
+$(strip $(subst -,:,$(1)):DISPLAY:DISPLAYALLOC$(if $(NOLOCAL),:NOLOCAL))
 endef
 
 # tgt-map-by(target_name) -> value of --map-by arg for mpirun
