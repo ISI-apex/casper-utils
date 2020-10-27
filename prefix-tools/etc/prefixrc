@@ -1,7 +1,8 @@
 # Initialize prefix environment for a shell.
 # This file is sourced by every shell (including non-interactive).
 
-EPREFIX=@__EPREFIX__@
+# export for descendent processes (at expense of slight env pollution)
+export EPREFIX=@__EPREFIX__@
 
 # Should not repeatedly load EPREFIX/etc/profile, but should load it in the
 # first parent shell open by startprefix (currently loading for non-interactive
