@@ -47,27 +47,27 @@ endif
 
 DATS_CORE?=\
 	times_mesh-512_ranks-16_mapby-core.csv \
-	times_ranks-512_ranks-32_mapby-core.csv \
-	times_ranks-512_ranks-64_mapby-core.csv \
-	times_ranks-1024_ranks-16_mapby-core.csv \
-	times_ranks-1024_ranks-32_mapby-core.csv \
-	times_ranks-1024_ranks-64_mapby-core.csv \
-	times_ranks-1024_ranks-128_mapby-core.csv \
-	times_ranks-2048_ranks-64_mapby-core.csv \
-	times_ranks-2048_ranks-128_mapby-core.csv \
-	times_ranks-2048_ranks-192_mapby-core.csv \
-	times_ranks-2048_ranks-256_mapby-core.csv \
-	times_ranks-3072_ranks-64_mapby-core.csv \
-	times_ranks-3072_ranks-128_mapby-core.csv \
-	times_ranks-3072_ranks-192_mapby-core.csv \
-	times_ranks-3072_ranks-256_mapby-core.csv \
-	times_ranks-4096_ranks-192_mapby-core.csv \
-	times_ranks-4096_ranks-256_mapby-core.csv \
-	times_ranks-4096_ranks-320_mapby-core.csv \
-	times_ranks-4096_ranks-384_mapby-core.csv \
-	times_ranks-6144_ranks-256_mapby-core.csv \
-	times_ranks-6144_ranks-384_mapby-core.csv \
-	times_ranks-6144_ranks-512_mapby-core.csv \
+	times_mesh-512_ranks-32_mapby-core.csv \
+	times_mesh-512_ranks-64_mapby-core.csv \
+	times_mesh-1024_ranks-16_mapby-core.csv \
+	times_mesh-1024_ranks-32_mapby-core.csv \
+	times_mesh-1024_ranks-64_mapby-core.csv \
+	times_mesh-1024_ranks-128_mapby-core.csv \
+	times_mesh-2048_ranks-64_mapby-core.csv \
+	times_mesh-2048_ranks-128_mapby-core.csv \
+	times_mesh-2048_ranks-192_mapby-core.csv \
+	times_mesh-2048_ranks-256_mapby-core.csv \
+	times_mesh-3072_ranks-64_mapby-core.csv \
+	times_mesh-3072_ranks-128_mapby-core.csv \
+	times_mesh-3072_ranks-192_mapby-core.csv \
+	times_mesh-3072_ranks-256_mapby-core.csv \
+	times_mesh-4096_ranks-192_mapby-core.csv \
+	times_mesh-4096_ranks-256_mapby-core.csv \
+	times_mesh-4096_ranks-320_mapby-core.csv \
+	times_mesh-4096_ranks-384_mapby-core.csv \
+	times_mesh-6144_ranks-256_mapby-core.csv \
+	times_mesh-6144_ranks-384_mapby-core.csv \
+	times_mesh-6144_ranks-512_mapby-core.csv \
 
 DATS_PPR?=\
 	times_mesh-1024_ranks-32_mapby-ppr-2-node.csv \
