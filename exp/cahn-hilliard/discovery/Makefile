@@ -103,12 +103,12 @@ $(DATA_DIR)/:
 	mkdir -p $@
 
 # This is optional info... could just rely on default that's max
-$(DATA_DIR)/times_mesh-512_%.csv: MAX_TIME_MIN=20
-$(DATA_DIR)/times_mesh-1024_%.csv: MAX_TIME_MIN=30
-$(DATA_DIR)/times_mesh-2048_%.csv: MAX_TIME_MIN=60
-$(DATA_DIR)/times_mesh-3072_%.csv: MAX_TIME_MIN=90
-$(DATA_DIR)/times_mesh-4096_%.csv: MAX_TIME_MIN=120
-$(DATA_DIR)/times_mesh-6144_%.csv: MAX_TIME_MIN=180
+$(DATA_DIR)/times_mesh-512_%.csv: MAX_TIME_MIN=30
+$(DATA_DIR)/times_mesh-1024_%.csv: MAX_TIME_MIN=60
+$(DATA_DIR)/times_mesh-2048_%.csv: MAX_TIME_MIN=90
+$(DATA_DIR)/times_mesh-3072_%.csv: MAX_TIME_MIN=120
+$(DATA_DIR)/times_mesh-4096_%.csv: MAX_TIME_MIN=180
+$(DATA_DIR)/times_mesh-6144_%.csv: MAX_TIME_MIN=240
 
 # tgt-extract(key, target_name) -> value
 define tgt-extract
