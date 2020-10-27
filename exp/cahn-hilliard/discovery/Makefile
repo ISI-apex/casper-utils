@@ -13,6 +13,7 @@ CLUSTER?=discovery
 ARCH?=any
 NOLOCAL?=
 MONITOR?=0
+DATA_DIR?=dat
 
 # This is only used for interactive job
 NODES?=2
