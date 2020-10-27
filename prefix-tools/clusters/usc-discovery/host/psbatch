@@ -136,17 +136,29 @@ then
 	exit 0
 fi
 
+# External interface: by default monitoring enabled, to disable set to 0
+if [[ "${MONITOR}" = "0" ]]
+then
+	MONITOR=
+elif [[ -z "${MONITOR}" ]]
+then
+	MONITOR=1
+fi
+
 t_start=$(date +%s)
 while true # while job state is not 'running'
 do
 	cmd=(squeue -j ${jobid})
 
 	# print not as frequently as we check
-	t_now=$(date +%s)
-	t_elapsed=$((t_now - t_start))
-	if [[ "${t_elapsed}" -gt 5 ]]
+	if [[ -n "${MONITOR}" ]]
 	then
-		run "${cmd[@]}"
+		t_now=$(date +%s)
+		t_elapsed=$((t_now - t_start))
+		if [[ "${t_elapsed}" -gt 5 ]]
+		then
+			run "${cmd[@]}"
+		fi
 	fi
 
 	state=$(${cmd[@]} -o '%t' --noheader)
@@ -156,22 +168,30 @@ do
 		finished=1
 		break
 	fi
-	if [[ "$state" = "R" ]]
+	if [[ "$state" = "R" && -n "${MONITOR}" ]]
 	then
 		break
 	fi
-	sleep 2
+	if [[ -n "${MONITOR}" ]]
+	then
+		sleep 2
+	else
+		sleep 30
+	fi
 done
 
-if [ -z "$finished" ]
+if [[ -n "${MONITOR}" ]]
 then
-	while ! test -f "${logs[0]}" -a -f "${logs[1]}"
-	do
-		echo "Waiting for log files to be created..."
-		sleep 2
-	done
-	cat "${logs[@]}"
-	run tail -f "${logs[@]}"
-else
-	cat "${logs[@]}"
+	if [ -z "$finished" ]
+	then
+		while ! test -f "${logs[0]}" -a -f "${logs[1]}"
+		do
+			echo "Waiting for log files to be created..."
+			sleep 2
+		done
+		cat "${logs[@]}"
+		run tail -f "${logs[@]}"
+	else
+		cat "${logs[@]}"
+	fi
 fi
