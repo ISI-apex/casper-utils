@@ -45,6 +45,15 @@ do
 	shift
 done
 
+# External interface: by default monitoring enabled, to disable set to 0
+if [[ "${MONITOR}" = "0" ]]
+then
+	MONITOR=
+elif [[ -z "${MONITOR}" ]]
+then
+	MONITOR=1
+fi
+
 logdir=${LOG_DIR:-"${EPREFIX}"/var/log/sjobs}
 mkdir -p "${logdir}"
 
@@ -111,6 +120,15 @@ if [ -n "${gpu}" ]
 then
 	args+=(--gres "gpu:${gpu}")
 fi
+
+if [[ -n "${MONITOR}" ]]
+then
+	rm -f ${logs[@]}
+	touch ${logs[@]}
+	tail -f ${logs[@]} &
+	TAIL_PID=$!
+fi
+
 PCMD=$@
 # sbatch's CLI parsing doesn't support quoting, so can't pass command strings
 #cmd=(sbatch "${args[@]}" ./startprefix -c \'$PCMD\')
@@ -136,30 +154,10 @@ then
 	exit 0
 fi
 
-# External interface: by default monitoring enabled, to disable set to 0
-if [[ "${MONITOR}" = "0" ]]
-then
-	MONITOR=
-elif [[ -z "${MONITOR}" ]]
-then
-	MONITOR=1
-fi
-
 t_start=$(date +%s)
 while true # while job state is not 'running'
 do
 	cmd=(squeue -j ${jobid})
-
-	# print not as frequently as we check
-	if [[ -n "${MONITOR}" ]]
-	then
-		t_now=$(date +%s)
-		t_elapsed=$((t_now - t_start))
-		if [[ "${t_elapsed}" -gt 5 ]]
-		then
-			run "${cmd[@]}"
-		fi
-	fi
 
 	state=$(${cmd[@]} -o '%t' --noheader)
 	if [ -z "$state" ]
@@ -168,30 +166,25 @@ do
 		finished=1
 		break
 	fi
-	if [[ "$state" = "R" && -n "${MONITOR}" ]]
+	if [[ "$state" != "R" && -n "${MONITOR}" ]]
 	then
-		break
-	fi
-	if [[ -n "${MONITOR}" ]]
-	then
+		# print not as frequently as we check
+		t_now=$(date +%s)
+		t_elapsed=$((t_now - t_start))
+		if [[ "${t_elapsed}" -gt 5 ]]
+		then
+			run "${cmd[@]}"
+		fi
 		sleep 2
 	else
 		sleep 30
 	fi
 done
 
-if [[ -n "${MONITOR}" ]]
+if  [[ -n "${TAIL_PID}" ]]
 then
-	if [ -z "$finished" ]
-	then
-		while ! test -f "${logs[0]}" -a -f "${logs[1]}"
-		do
-			echo "Waiting for log files to be created..."
-			sleep 2
-		done
-		cat "${logs[@]}"
-		run tail -f "${logs[@]}"
-	else
-		cat "${logs[@]}"
-	fi
+	kill ${TAIL_PID}
+	set +e
+	wait ${TAIL_PID} 2>/dev/null
+	set -e
 fi
