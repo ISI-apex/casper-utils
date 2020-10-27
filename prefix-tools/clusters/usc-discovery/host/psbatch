@@ -188,3 +188,19 @@ then
 	wait ${TAIL_PID} 2>/dev/null
 	set -e
 fi
+
+# note: at this point, the job is no longer in the queue
+state_exitcode=($(sacct -n --delimiter=" " -p --format="JobId,State,ExitCode" -j "${jobid}" | grep -v "${jobid}\." ))
+echo "State,Exitcode: ${state_exitcode[@]}"
+state=${state_exitcode[1]}
+exitcode=$(echo ${state_exitcode[2]})
+if [[ "${state}" != "COMPLETED" || "${exitcode}" != "0:0" ]]
+then
+	rc=$(echo ${exitcode} | cut -d':' -f1)
+	# guard against inconsistent exit code, just in case
+	if [[ -z "${rc}" || "${rc}" -eq 0 ]]
+	then
+		rc=1
+	fi
+	exit ${rc}
+fi
