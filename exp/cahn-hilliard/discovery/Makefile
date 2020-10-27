@@ -27,6 +27,9 @@ ifeq ($(CLUSTER),discovery:debug)
 TASKS_PER_NODE?=12
 MAX_TIME_MIN?=30
 else
+# unlimited parallelism is important, since each recipe blocks on SLURM
+# NOTE: requires make >=4.3, for other have to specify -j on cmdline
+MAKEFLAGS := -j
 # note: this is a tricky param, it's for slurm job allocation, it
 # is not clear whether '--map-by core' takes it into account to
 # determine how many cores does each node have, but the setting
