@@ -34,6 +34,13 @@ NODES?=2
 # despite the 'Bind to: NONE' in the error message above.
 MPIRUN_ARGS_INTERNAL:=--bind-to none
 
+ifneq ($(VERBOSE),)
+MPIRUN_ARGS_INTERNAL+=\
+	--mca btl_base_verbose 100 \
+	--mca pml_base_verbose 100 \
+	--mca pml_ucx_verbose 100
+endif
+
 ifeq ($(CLUSTER),discovery:debug)
 # only one job allowed in the debug queue.
 .NOTPARALLEL:
