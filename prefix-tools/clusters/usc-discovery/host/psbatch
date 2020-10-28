@@ -98,7 +98,12 @@ then
 	name="$(echo "$@" | sed -e 's/\s\+/_/g' \
 		-e 's@/@-@g' -e 's@[^A-Za-z0-9]@-@g' | cut -c1-128)"
 fi
-log_name="$(basename ${EPREFIX})_${name}_$(date +%Y%m%d%H%M%S)_$$"
+if [ -z "${LOG_NAME}" ]
+then
+	log_name="$(basename ${EPREFIX})_${name}_$(date +%Y%m%d%H%M%S)_$$"
+else
+	log_name="${LOG_NAME}"
+fi
 if [ -z "${output_file}" ]
 then
 	output_file="${logdir}/${log_name}.out"
