@@ -123,6 +123,17 @@ fi
 
 if [[ -n "${MONITOR}" ]]
 then
+	function terminate_tail() {
+		if  [[ -n "${TAIL_PID}" ]]
+		then
+			echo "Terminating tail process..."
+			run kill ${TAIL_PID}
+			set +e
+			run wait ${TAIL_PID} 2>/dev/null
+			set -e
+		fi
+	}
+	trap terminate_tail EXIT
 	rm -f ${logs[@]}
 	touch ${logs[@]}
 	tail -f ${logs[@]} &
@@ -180,15 +191,6 @@ do
 		sleep 30
 	fi
 done
-
-if  [[ -n "${TAIL_PID}" ]]
-then
-	kill ${TAIL_PID}
-	set +e
-	wait ${TAIL_PID} 2>/dev/null
-	set -e
-fi
-
 # note: at this point, the job is no longer in the queue
 state_exitcode=($(sacct -n --delimiter=" " -p --format="JobId,State,ExitCode" -j "${jobid}" | grep -v "${jobid}\." ))
 echo "State,Exitcode: ${state_exitcode[@]}"
