@@ -90,11 +90,9 @@ DATS_PPR?=\
 	times_mesh-1024_ranks-32_mapby-ppr-16-node.csv \
 	times_mesh-1024_ranks-32_mapby-ppr-32-node.csv \
 
-define append-dir
-$(patsubst %,$(DATA_DIR)/%,$(1))
-endef
+include ../Makefile
 
-all: $(DATA_DIR)/times_mapby-core.csv $(DATA_DIR)/times_mapby-ppr.csv
+all: $(DATA_DIR)/times_mapby-core_all.csv $(DATA_DIR)/times_mapby-ppr-node_all.csv
 .PHONY: all
 
 core: $(call append-dir,$(DATS_CORE))
@@ -176,13 +174,3 @@ job: | $(DATA_DIR)/
 		"$(NODES)" "$(TASKS_PER_NODE)" "00:$(MAX_TIME_MIN):00" $*
 .PHONY: job
 endif
-
-$(DATA_DIR)/times_mapby-core.csv: $(call append-dir,$(DATS_CORE))
-	sed -n '1p' $(DATA_DIR)/$(firstword $(DATS_CORE)) > $@
-	echo $(patsubst %,$(DATA_DIR)/%,$(DATS_CORE)) | \
-		xargs -n 1 sed -n '2p' >> $@
-
-# TODO: aggregation target for PPR (not as easy since ppr value
-# is only in filename, not inside the CSV file)
-$(DATA_DIR)/times_mapby-ppr.csv: $(call append-dir,$(DATS_PPR))
-	echo "NOT IMPLEMENTED: $@"
