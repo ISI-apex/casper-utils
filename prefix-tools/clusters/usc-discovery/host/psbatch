@@ -165,16 +165,23 @@ then
 	exit 0
 fi
 
+function get_queued_job_state() {
+	rund squeue -j "$1" -o '%t' --noheader
+}
+function get_finished_job_state() {
+	# note: the grep is to drop the lines for JOBID.x "steps"
+	rund sacct -n --delimiter=" " -p \
+		--format="JobId,State,ExitCode,Elapsed" -j "$1" \
+		| grep -v "${jobid}\."
+}
+
 t_start=$(date +%s)
 while true # while job state is not 'running'
 do
-	cmd=(squeue -j ${jobid})
-
-	state=$(${cmd[@]} -o '%t' --noheader)
+	DRY=1 get_queued_job_state "${jobid}"
+	state=$(runeq get_queued_job_state "${jobid}")
 	if [ -z "$state" ]
 	then
-		echo "Job finished"
-		finished=1
 		break
 	fi
 	if [[ "$state" != "R" && -n "${MONITOR}" ]]
@@ -184,7 +191,7 @@ do
 		t_elapsed=$((t_now - t_start))
 		if [[ "${t_elapsed}" -gt 5 ]]
 		then
-			run "${cmd[@]}"
+			rune squeue -j "${jobid}"
 		fi
 		sleep 2
 	else
@@ -192,8 +199,10 @@ do
 	fi
 done
 # note: at this point, the job is no longer in the queue
-state_exitcode=($(sacct -n --delimiter=" " -p --format="JobId,State,ExitCode" -j "${jobid}" | grep -v "${jobid}\." ))
-echo "State,Exitcode: ${state_exitcode[@]}"
+
+DRY=1 get_finished_job_state "${jobid}"
+state_exitcode=($(runeq get_finished_job_state "${jobid}"))
+echo "JobId State Exitcode Elapsed: ${state_exitcode[@]}"
 state=${state_exitcode[1]}
 exitcode=$(echo ${state_exitcode[2]})
 if [[ "${state}" != "COMPLETED" || "${exitcode}" != "0:0" ]]

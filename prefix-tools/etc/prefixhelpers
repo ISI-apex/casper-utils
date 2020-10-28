@@ -17,6 +17,41 @@ run() {
 	print_args "$@"
 	"$@"
 }
+rune() {
+	print_args "$@"
+	runeq "$@"
+}
+runeq() {
+	local flags=$-
+	set +e
+	"$@"
+	if [[ "$flags" =~ e ]]
+	then set -e
+	else set +e
+	fi
+}
+
+# This is for printing the commands run in a capture statement.
+# The use case is as follows:
+#
+#   function get_output() {
+#       rund somecommand --with complicated args that produces output
+#   }
+#   DRY=1 get_output
+#   the_output=$(get_output)
+#
+# The point is to not have to duplicate the command, and to not
+# have to pass the command through arrays or strings (which is
+# fragile due to the complicated quoting).
+function rund() {
+	local echo_prog
+	if [[ -n "${DRY}" ]]
+	then echo_prog=echo
+	else echo_prog=""
+	fi
+	${echo_prog} "$@"
+}
+
 
 runexec() {
 	print_args exec "$@"
