@@ -21,10 +21,18 @@ DATA_DIR?=dat
 # This is only used for interactive job
 NODES?=2
 
-# Binding to core is very important (at least when using --map-by ppr),
-# so.. at least in v5, --bind-to does NOT default to core when not given
-# (while the man page does say that)
-MPIRUN_ARGS_INTERNAL:=--bind-to core
+# TODO: Setting --bind-to none seems necessary for --map-by
+# ppr:N:node, since otherwise getting error:
+#  A request was made to bind to that would result in binding more
+#  processes than cpus on a resource:
+#
+#     Bind to:     NONE
+#     Node:        d11-20
+#     #processes:  5
+#     #cpus:       4
+# Presumably this is because the default is to bind to core,
+# despite the 'Bind to: NONE' in the error message above.
+MPIRUN_ARGS_INTERNAL:=--bind-to none
 
 ifeq ($(CLUSTER),discovery:debug)
 # only one job allowed in the debug queue.
