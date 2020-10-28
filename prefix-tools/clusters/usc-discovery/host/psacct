@@ -1,2 +1,2 @@
 #!/bin/bash
-sacct --user=$(whoami) --format='JobID,JobName,Submit,State,ExitCode,Elapsed,MaxVMSize,MaxRSS,Nodelist' "$@" | grep -v '^[0-9]\+\.'
+sacct --user=$(whoami) --format='JobID,JobName,Submit,State,ExitCode,Elapsed,MaxVMSize,MaxRSS,Nodelist%48' "$@" | grep -v '^[0-9]\+\.'
