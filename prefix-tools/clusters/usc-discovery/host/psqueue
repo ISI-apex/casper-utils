@@ -2,7 +2,7 @@
 
 while true
 do
-	squeue --user=$(whoami) --format="%.18i %.9P %.48j %.2t %.10M %.6D %R" "$@"
+	squeue --user=$(whoami) --format="%.10i %.9P %.48j %.2t %.10M %.10l %.10L %.6D %R" "$@"
 	sleep 20
 done
 
