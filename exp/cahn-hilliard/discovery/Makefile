@@ -16,7 +16,8 @@ ARCH?=any
 OMP_NUM_THREADS?=1
 NOLOCAL?=
 MONITOR?=0
-DATA_DIR?=dat
+TRANSPORT?=ib
+DATA_DIR?=dat-$(TRANSPORT)
 
 # This is only used for interactive job
 NODES?=2
@@ -39,6 +40,11 @@ MPIRUN_ARGS_INTERNAL+=\
 	--mca btl_base_verbose 100 \
 	--mca pml_base_verbose 100 \
 	--mca pml_ucx_verbose 100
+endif
+
+ifeq ($(TRANSPORT),tcp)
+MPIRUN_ARGS_INTERNAL+=\
+	--mca btl self,tcp --mca pml_ucx_priority 0
 endif
 
 ifeq ($(CLUSTER),discovery:debug)
@@ -179,6 +185,7 @@ $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
 		--job-name=ch_$* \
 		$$(which make) -C $(CURDIR) IN=1 EPREFIX=$(EPREFIX) \
 		MPIRUN_ARGS="'$(MPIRUN_ARGS)'" VERBOSE="$(VERBOSE)" \
+		TRANSPORT="$(TRANSPORT)" \
 		DATA_DIR="$(DATA_DIR)" \
 		$@
 
