@@ -20,6 +20,7 @@ mpi_args=(
 mca_vars=(
 	PRTE_MCA_pmix_server_max_wait=60
 )
+#UCX_TLS=ud,shm
 
 # careful to not invoke via any other name than 'mpirun',
 # since the underlying binary may be sensitive to argv[0]
