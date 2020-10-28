@@ -90,10 +90,10 @@ DATS_PPR?=\
 	times_mesh-1024_ranks-32_mapby-ppr-16-node.csv \
 	times_mesh-1024_ranks-32_mapby-ppr-32-node.csv \
 
-include ../Makefile
-
 all: $(DATA_DIR)/times_mapby-core_all.csv $(DATA_DIR)/times_mapby-ppr-node_all.csv
 .PHONY: all
+
+include ../Makefile
 
 core: $(call append-dir,$(DATS_CORE))
 ppr: $(call append-dir,$(DATS_PPR))
