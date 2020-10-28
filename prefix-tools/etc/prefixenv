@@ -2,7 +2,21 @@
 # entering the prefix
 
 ^NPROC$
-^TMPDIR$
+
+# NOTE: Until SLURM on USC Discovery starts allocating
+# a temp directory that has non-zero free space, instead
+# of just setting TMPDIR=/tmp while /tmp is full, we
+# cannot let TMPDIR be set. This is because in prefixhelpers
+# set_tmpdir() does trust TMPDIR, at least to the extent
+# of the parent filesystem, so if TMPDIR is set to /tmp,
+# then set_tmpdir will create (and cleanup) a temp dir under
+# /tmp. By not forwarding TMPDIR, here, we force set_tmpdir
+# to use its own default, which is /dev/shm, which so far
+# has not bee observed to go out of space.
+# Re SLURM no longer allocating TMPDIR, see USC HPC ARC Ticket:
+# https://uschpc.atlassian.net/servicedesk/customer/portal/7/ARC-240
+#^TMPDIR$
+
 ^SCRATCHDIR$
 
 # For USC HPCC Cluster (SLURM resource manager)
