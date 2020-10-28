@@ -202,7 +202,9 @@ done
 
 DRY=1 get_finished_job_state "${jobid}"
 state_exitcode=($(runeq get_finished_job_state "${jobid}"))
-echo "JobId State Exitcode Elapsed: ${state_exitcode[@]}"
+entries=(JobId State Exitcode Elapsed)
+echo "${entries[@]}: ${state_exitcode[@]}"
+echo "${entries[@]}: ${state_exitcode[@]}" >> "${logdir}/${log_name}.job"
 state=${state_exitcode[1]}
 exitcode=$(echo ${state_exitcode[2]})
 if [[ "${state}" != "COMPLETED" || "${exitcode}" != "0:0" ]]
