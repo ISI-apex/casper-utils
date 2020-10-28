@@ -39,7 +39,7 @@ ifeq ($(CLUSTER),discovery:debug)
 .NOTPARALLEL:
 # note: debug queue limited to 24 CPUs total per job, so to allow
 # running with 2 nodes, divide by 2. See note about this param below.
-TASKS_PER_NODE?=12
+MAX_SLOTS_PER_NODE?=12
 MAX_TIME_MIN?=30
 else
 # unlimited parallelism is important, since each recipe blocks on SLURM
@@ -55,7 +55,7 @@ MAKEFLAGS := -j
 # The value of this variable is ignored by *-ppr-N-* targets, which
 # set the param to N. For other targets, this value is passed only
 # to SLURM for job allocation, it's not passed to mpirun.
-TASKS_PER_NODE?=16
+MAX_SLOTS_PER_NODE?=16
 MAX_TIME_MIN?=180
 endif
 
@@ -102,7 +102,7 @@ ppr: $(call append-dir,$(DATS_PPR))
 # A shortcut target for a smoketest for convenience
 TEST_DIR=dat-test
 TEST_ARGS=CLUSTER=discovery:debug MONITOR=1 DATA_DIR=$(TEST_DIR)
-TEST_TGT=$(TEST_DIR)/times_mesh-32_ranks-12_mapby-core.csv
+TEST_TGT=$(TEST_DIR)/times_mesh-64_ranks-2_mapby-node.csv
 test:
 	rm -r $(TEST_DIR)
 	$(MAKE) $(TEST_ARGS) $(TEST_TGT)
@@ -119,6 +119,10 @@ $(DATA_DIR)/times_mesh-3072_%.csv: MAX_TIME_MIN=120
 $(DATA_DIR)/times_mesh-4096_%.csv: MAX_TIME_MIN=180
 $(DATA_DIR)/times_mesh-6144_%.csv: MAX_TIME_MIN=240
 
+define calc
+$(strip $(shell echo $(1) | bc))
+endef
+
 # tgt-extract(key, target_name) -> value
 define tgt-extract
 $(strip $(subst $(1)-,,$(filter $(1)-%,$(subst _, ,$(subst ., ,$(2))))))
@@ -126,11 +130,14 @@ endef
 
 # tgt-tasks-per-node(target_name)
 # Extracts N from ppr-N within the target name
-# NOTE: won't work for ppr-N-core
 define tgt-tasks-per-node
 $(strip $(if $(findstring mapby-ppr-,$(1)),\
 	$(word 2,$(subst -, ,$(call tgt-extract,mapby,$(1)))),\
-	$(TASKS_PER_NODE)))
+	$(if $(findstring mapby-node,$(1)),\
+		1,\
+		$(if $(findstring mapby-core,$(1)),\
+			$(MAX_SLOTS_PER_NODE),\
+			$(error Cannot determine tasks-per-node from mapby for $(1))))))
 endef
 
 define gen-map-by
@@ -144,9 +151,7 @@ endef
 
 # tgt-nodes(target_name) -> node count (from: ranks/tasks_per_node)
 define tgt-nodes
-$(strip $(shell echo \
-	$(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1))\
-	| bc))
+$(call calc,$(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1)))
 endef
 
 ifeq ($(IN),1)
@@ -171,6 +176,6 @@ $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
 
 job: | $(DATA_DIR)/
 	$(PTOOLS)/psalloc "$(CLUSTER)" "$(ARCH)" all \
-		"$(NODES)" "$(TASKS_PER_NODE)" "00:$(MAX_TIME_MIN):00" $*
+		"$(NODES)" "$(MAX_SLOTS_PER_NODE)" "00:$(MAX_TIME_MIN):00" $*
 .PHONY: job
 endif
