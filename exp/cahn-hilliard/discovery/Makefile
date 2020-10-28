@@ -164,12 +164,13 @@ $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
 			"$(call tgt-extract,mesh,$@)" --elapsed-out "$@"
 else
 $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
-	MONITOR=$(MONITOR) \
+	MONITOR=$(MONITOR) LOG_DIR="$(CURDIR)/$(DATA_DIR)" LOG_NAME="$(@F)" \
 	$(PTOOLS)/psbatch "$(CLUSTER)" "$(ARCH)" all \
 		"$(call tgt-nodes,$*)" \
 		"$(call tgt-tasks-per-node,$*)" \
 		"00:$(MAX_TIME_MIN):00" \
-		$$(which make) -C $${PWD} IN=1 EPREFIX=$(EPREFIX) \
+		--job-name=ch_$* \
+		$$(which make) -C $(CURDIR) IN=1 EPREFIX=$(EPREFIX) \
 		MPIRUN_ARGS="'$(MPIRUN_ARGS)'" VERBOSE="$(VERBOSE)" \
 		DATA_DIR="$(DATA_DIR)" \
 		$@
