@@ -63,10 +63,11 @@ dat/times-%-320-core.csv/job: NODES=5
 dat/times-%-384-core.csv/job: NODES=6
 dat/times-%-512-core.csv/job: NODES=8
 
+# TODO: tasks per node (third arg) is not set
 define run
 	mpirun -n "$(2)" --map-by "$(subst -,:,$(3)):NOLOCAL" $(MCA_ARGS) \
 		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
-		bash $(PWD)/fch.sh "$(1)" --elapsed-out "$$@"
+		bash $(PWD)/fch.sh "$(1)" "$(@)" "0" --elapsed-out "$$@"
 endef
 
 

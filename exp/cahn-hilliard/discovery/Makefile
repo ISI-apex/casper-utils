@@ -174,7 +174,10 @@ $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
 		--map-by "$(call tgt-map-by,$@)" \
 		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 		python $(BENCH_DIR)/cahn_hilliard/firedrake_cahn_hilliard_bare.py \
-			"$(call tgt-extract,mesh,$@)" --elapsed-out "$@"
+			 --elapsed-out "$@" \
+			"$(call tgt-extract,mesh,$@)" \
+			"$(call tgt-extract,ranks,$@)" \
+			"$(call tgt-tasks-per-node,$@)"
 else
 $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
 	MONITOR=$(MONITOR) LOG_DIR="$(CURDIR)/$(DATA_DIR)" LOG_NAME="$(@F)" \
