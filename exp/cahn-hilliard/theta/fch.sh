@@ -9,5 +9,5 @@ set -x
 BENCH_DIR=../../apps/firedrake-bench
 
 CXX=gcc CC=gcc CCVER=$(gcc -dumpversion | cut -d. -f-2) \
-	OMP_NUM_THREADS=1 \
+	OMP_NUM_THREADS=${OMP_NUM_THREADS} \
 	exec python $(realpath ${BENCH_DIR}/cahn_hilliard/firedrake_cahn_hilliard_bare.py) "$@"

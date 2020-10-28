@@ -65,6 +65,7 @@ dat/times-%-512-core.csv/job: NODES=8
 
 define run
 	mpirun -n "$(2)" --map-by "$(subst -,:,$(3)):NOLOCAL" $(MCA_ARGS) \
+		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 		bash $(PWD)/fch.sh "$(1)" --elapsed-out "$$@"
 endef
 
@@ -86,6 +87,9 @@ NODES?=2
 MAX_TIME_MIN?=59
 ACCOUNT?=CASPER
 SSH=
+# Very important to set OMP threads, otherwise it spawns way to many, and the
+# default also varies by rank count -- the default is a mess.
+OMP_NUM_THREADS?=1
 
 DEBUG_Q=debug-cache-quad
 

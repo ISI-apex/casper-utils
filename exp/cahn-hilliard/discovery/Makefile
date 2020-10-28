@@ -11,6 +11,9 @@ PTOOLS=$(EPREFIX)/ptools
 
 CLUSTER?=discovery
 ARCH?=any
+# Very important to set OMP threads, otherwise it spawns way to many, and the
+# default also varies by rank count -- the default is a mess.
+OMP_NUM_THREADS?=1
 NOLOCAL?=
 MONITOR?=0
 DATA_DIR?=dat
@@ -145,6 +148,7 @@ $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
 	mpirun $(MPIRUN_ARGS_INTERNAL) $(MPIRUN_ARGS) \
 		-n "$(call tgt-extract,ranks,$@)" \
 		--map-by "$(call tgt-map-by,$@)" \
+		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 		python $(BENCH_DIR)/cahn_hilliard/firedrake_cahn_hilliard_bare.py \
 			"$(call tgt-extract,mesh,$@)" --elapsed-out "$@"
 else
