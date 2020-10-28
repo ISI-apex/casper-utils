@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+
+import pandas as pd
+import sys
+import argparse
+
+parser = argparse.ArgumentParser(
+	description="Print a CSV dataset in pretty formatting")
+parser.add_argument('csv_file',
+	help='Path to CSV file with the dataset')
+parser.add_argument('-s', '--sort',
+	help='Comma-separated list of columns by which to sort')
+args = parser.parse_args()
+
+d = pd.read_csv(args.csv_file)
+
+if args.sort:
+	d = d.sort_values(args.sort.split(','))
+
+print(d)
