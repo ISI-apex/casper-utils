@@ -1,3 +1,8 @@
+(failed) attempt to disable atomics
++mpi_args=(
++       --mca osc_rdma_acc_use_amo false
++)
+
 USC Discovery cluster usage snapshot showing slowdown in prefix build job:
 https://snapshot.raintank.io/dashboard/snapshot/cEAWF2Rs3iqrI5HZd7oS96b12fINZqR9
 
