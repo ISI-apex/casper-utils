@@ -1,6 +1,10 @@
+ifeq ($(filter %.pdf %.svg,$(MAKECMDGOALS)),)
+
 ifeq ($(EPREFIX),)
 $(error EPREFIX env var not set to Prefix root directory)
 endif
+
+endif # MAKECMDGOALS
 
 MCA_ARGS:=--mca btl self,ugni --mca btl_tcp_if_include 10.128.0.0/16
 

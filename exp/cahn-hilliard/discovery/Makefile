@@ -1,3 +1,5 @@
+ifeq ($(filter %.pdf %.svg,$(MAKECMDGOALS)),)
+
 ifeq ($(EPREFIX),)
 $(error EPREFIX env var not set to Prefix root directory)
 endif
@@ -5,6 +7,8 @@ endif
 ifeq ($(shell which bc),)
 $(error The bc calculator app not found in PATH)
 endif
+
+endif # MAKECMDGOALS
 
 BENCH_DIR=../../apps/firedrake-bench
 PTOOLS=$(EPREFIX)/ptools

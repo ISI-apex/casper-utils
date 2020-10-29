@@ -16,3 +16,7 @@ $(DATA_DIR)/times_mapby-ppr-node_part.csv: $(wildcard $(DATA_DIR)/times_*-ppr-*-
 $(DATA_DIR)/times_mapby-%.csv:
 	sed -n '1p' $< > $@
 	echo $^ | xargs -n 1 sed -n '2p' | sort -n >> $@
+
+$(DATA_DIR)/times_mapby-core_%.pdf \
+$(DATA_DIR)/times_mapby-core_%.svg: $(DATA_DIR)/times_mapby-core_%.csv
+	$(if $(IN),,$(EPREFIX)/ptools/pstart) python ../plot.py $< $@
