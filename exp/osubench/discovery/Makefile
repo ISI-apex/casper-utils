@@ -7,8 +7,8 @@ endif
 CASPER_UTILS_ROOT:=$(abspath ../../..)
 PTOOLS=$(EPREFIX)/ptools
 
-CLUSTER?=discovery:debug
-ARCH?=ivybridge
+CLUSTER?=discovery
+ARCH?=any
 
 # Ideally these would be part of target name (and recipes would extract
 # them from the target name), but that's too complicated to implement.
@@ -49,13 +49,17 @@ all: \
 
 # A shortcut for convenience
 TEST_DIR=dat-test
-TEST_ARGS=NODES=2 MAP_BY=node PATTERN=hello BLOCK=1 DATA_DIR=$(TEST_DIR)
+TEST_ARGS=NODES=2 MAP_BY=node CLUSTER=discovery:debug PATTERN=hello \
+	BLOCK=1 DATA_DIR=$(TEST_DIR)
 TEST_TGT=$(TEST_DIR)/osu_nodes-2_mapby-node_tp-ucx-ud.log
 test:
 	rm -fr $(TEST_DIR)
 	$(MAKE) $(TEST_ARGS) $(TEST_TGT)
 
+ifeq ($(CLUSTER),discovery:debug)
+# only one job allowed in the debug queue.
 .NOTPARALLEL:
+endif
 
 $(DATA_DIR)/:
 	mkdir -p "$@"
