@@ -280,6 +280,103 @@ To enter the prefix on a generic Linux host:
 
     $ PREFIX_PATH/startprefix
 
+Tips for maintaining the Prefix
+===============================
+
+On a cluster, Portage (the package manager) tools (`emerge`, `equery`,
+`ebuild` `eix`) can be used from login machine if the prefix was built
+unoptimized for a particular architecture (i.e. the `*-amd64` profile), and
+if some care is taken as described below.
+
+On USC Discovery cluster, invoke portage tools through the wrapper `p4port` on
+the login machine and `pport` on the worker nodes, like so:
+
+    p4port emerge app-portage/prefix-tools
+
+The wrapper takes care of setting the build directory to a temporary
+directory in tmpfs (for speed and for working around inability to build
+on BeegFS due to lacking hard link support), and of setting number of
+parallel processes to use appropriately.
+
+Fetching sources
+----------------
+
+By default, online fetching is disabled (which is appropriate when running
+portage from . To enable it comment out `EVCS_OFFLINE=1` from
+`$EPREFIX/etc/portage/make.conf`.
+
+Updating
+--------
+
+Not that each Prefix directory is standalone and does not reference the
+`casper-utils` directory that was used to build the prefix. Updating an
+existing Prefix and pulling new commits to `casper-utils`repo are unrelated
+operations.
+
+To update the casper overlay, which involves rebuilding any packages that
+have changed (and their downstream dependencies requering a rebuild),
+enter the overlay directory:
+
+    cd $EPREFIX/var/db/repos/casper
+
+The first time, add the remote for convenience (note: the remote pointing
+into casper-utils/ebuilds is needed only for boostrap, and if you want
+to commit a new snapshot of ebuilds to casper-utils):
+
+    git remote add up git@github.com:ISI-apex/casper-ebuilds.git
+
+Pull the changes:
+
+    git pull --ff-only up master
+
+On a login machine, first enable online fetching (see subsection above), then
+tell portage to figure out what needs to be rebuilt and fetch the sources:
+
+    p4port emerge -f --ask -uDU --keep-going --with-bdeps=y @world
+
+On USC Discovery, the build should be done on a worker node, not on the
+shared login machine where CPU usage limits are enforced. To schedule
+a job:
+
+    $EPREFIX/ptools/psbatch discovery ARCH 1 16 02:00:00 \
+	pport emerge -uDU --keep-going --with-bdeps=y @world
+
+where ARCH is the architecture for which the prefix was built (or `any`
+for an unoptimized prefix). Partition may be specified by appending a suffix
+to the first argument like `discovery:oneweek`.
+
+The job will remain in SLURM queue even if the `psbatch` script is killed
+(including even if the login node is rebooted).
+
+If your prefix is not optimized for a particular architecture, and if when you
+do the first `emerge -f` on the login machine, you see that the packages
+that are being updated are quick to build (e.g. python packages without a
+compilation step at all, or small packages quick to compile), then you can
+just run the second `emerge` on the login machine too:
+
+    $EPREFIX/ptools/pstart p4port emerge -uDU --keep-going --with-bdeps=y @world
+
+Live package versions
+---------------------
+
+To enable "live" versions a package (master tip from VCS, which will change
+every time you re-emerge the package), which may be useful for some packages
+provided by the casper overlay, add to
+`$EPREFIX/etc/protage/package.accept_keywords` packages in the following
+format:
+
+    app-portage/prefix-tools **
+
+Troubleshooting: errors about manifests
+---------------------------------------
+
+If `emerge` complains about a manifest file (the warning is non-fatal, but do
+not ignore it, do not procede with the operation if get warning), this means
+that whoever committed a change to a package ebuild recipe did not regenerate
+the manifest (bad). To regenerate the manifest, run a command like so for the
+respective package:
+
+    p4port ebuild app-portage/prefix-tools/prefix-tools-9999.ebuild manifest
 
 Evaluate CASPER Auto-tuner
 ==========================
