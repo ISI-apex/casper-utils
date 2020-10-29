@@ -92,7 +92,7 @@ $(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-default.log: \
 ifeq ($(IN),1)
 $(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-%.log: | $(DATA_DIR)/
 	osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
-		mpirun -n "$(NODES)" \
+		$(if $(VERBOSE),env UCX_LOG_LEVEL=debug) mpirun -n "$(NODES)" \
 		--map-by "$(call gen-map-by,$(MAP_BY))" \
 		$(MPIRUN_ARGS) $(MPIRUN_TP_ARGS) \
 		2>&1 | tee $@
