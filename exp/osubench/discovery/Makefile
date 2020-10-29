@@ -93,11 +93,13 @@ else
 # pass regexp pattern args via env because may contain $
 $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 	NONBLOCK=$(if $(BLOCK),,1) \
+	LOG_DIR="$(CURDIR)/$(DATA_DIR)" LOG_NAME="$(@F)" \
 	$(PTOOLS)/psbatch "$(CLUSTER)" "$(ARCH)" all \
 		"$(NODES)" "$(TASKS_PER_NODE)" "00:$(MAX_TIME_MIN):00" \
+		--job-name=osu_$(@F) \
 		env "PATTERN='$(PATTERN)'" \
 		"PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)'" \
-		$$(which make) -C $${PWD} IN=1 EPREFIX=$(EPREFIX) \
+		$$(which make) -C "$(CURDIR)" IN=1 EPREFIX=$(EPREFIX) \
 		NODES="$(NODES)" MAP_BY="$(MAP_BY)" \
 		MPIRUN_ARGS="'$(MPIRUN_ARGS)'" VERBOSE="$(VERBOSE)" \
 		DATA_DIR="$(DATA_DIR)" \
