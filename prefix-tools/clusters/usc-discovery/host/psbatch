@@ -176,8 +176,8 @@ function get_queued_job_state() {
 function get_finished_job_state() {
 	# note: the grep is to drop the lines for JOBID.x "steps"
 	rund sacct -n --delimiter=" " -p \
-		--format="JobId,State,ExitCode,Elapsed" -j "$1" \
-		| grep -v "${jobid}\."
+		--format="JobId,State,ExitCode,Elapsed,MaxVMSize,MaxRSS" \
+		-j "$1" | grep -v "${jobid}\."
 }
 
 t_start=$(date +%s)
@@ -207,7 +207,7 @@ done
 
 DRY=1 get_finished_job_state "${jobid}"
 state_exitcode=($(runeq get_finished_job_state "${jobid}"))
-entries=(JobId State Exitcode Elapsed)
+entries=(JobId State Exitcode Elapsed MaxVMSize MaxRSS)
 echo "${entries[@]}: ${state_exitcode[@]}"
 echo "${entries[@]}: ${state_exitcode[@]}" >> "${logdir}/${log_name}.job"
 state=${state_exitcode[1]}
