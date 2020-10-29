@@ -183,7 +183,7 @@ function get_finished_job_state() {
 t_start=$(date +%s)
 while true # while job state is not 'running'
 do
-	DRY=1 get_queued_job_state "${jobid}"
+	#DRY=1 get_queued_job_state "${jobid}"
 	state=$(runeq get_queued_job_state "${jobid}")
 	if [ -z "$state" ]
 	then
@@ -200,7 +200,7 @@ do
 		fi
 		sleep 2
 	else
-		sleep 30
+		sleep 5
 	fi
 done
 # note: at this point, the job is no longer in the queue
