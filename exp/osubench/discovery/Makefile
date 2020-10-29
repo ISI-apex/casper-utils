@@ -18,10 +18,11 @@ MAP_BY?=node
 NOLOCAL?=
 MONITOR?=0
 
-# By default, include all except one-sided benchmarks (observed hang from
-# within prefix, although need to retest), and exclude multi-threaded
-# bechmarks because they either take very long or even hang in an infinite
-# loop/deadlock (unclear).
+# By default, include all except one-sided and multi-threaded bechmarks
+# because they either take very long or even hang in an infinite
+# loop/deadlock. Multi-threaded appear to work with tcp-ib0 but take
+# very long; one-sided appear to hang even with tcp-ib0; unclear with
+# ucx-rc/ud.
 PATTERN?=pt2pt|collective|startup
 PATTERN_EXCLUDE?=_mt$$
 
@@ -43,8 +44,7 @@ $(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)
 endef
 
 all: \
-	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-tcp-ib0.log/job \
-	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-tcp-eth0.log/job \
+	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-tcp-ib0.log/job \
 	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-default.log/job
 
 # A shortcut for convenience
@@ -75,12 +75,15 @@ $(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-tcp-ib0.log: \
 $(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-%.log: \
 	MPIRUN_TP_ARGS+=--mca pml ucx
 $(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-ud.log: \
-	MPIRUN_TP_ARGS+=-x UCX_TLS=sm,ud_verbs
-# NOTE: rc_verbs fails ("no auxiliary transport")
-# TODO: potentially this only happens without Connection Mgr (ucx_ib_cm)?
+	MPIRUN_TP_ARGS+=-x UCX_TLS=sm,ud
 $(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-rc.log: \
-	MPIRUN_TP_ARGS+=-x UCX_TLS=sm,rc_verbs
-# could add for experimentation: -x UCX_NET_DEVICES=mlx4_0:1
+	MPIRUN_TP_ARGS+=-x UCX_TLS=sm,rc
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-tcp-%.log: \
+	MPIRUN_TP_ARGS+=-x UCX_TLS=sm,tcp
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-tcp-eth0.log: \
+	MPIRUN_TP_ARGS+=-x UCX_NET_DEVICES=ib0
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-tcp-ib0.log: \
+	MPIRUN_TP_ARGS+=-x UCX_NET_DEVICES=eth0
 
 # should be the same as ucx-default (== ucx-ud?)
 $(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-default.log: \
