@@ -16,7 +16,7 @@ NODES?=2
 TASKS_PER_NODE?=1
 MAP_BY?=node
 NOLOCAL?=
-BLOCK?=
+MONITOR?=0
 
 # By default, include all except one-sided benchmarks (observed hang from
 # within prefix, although need to retest), and exclude multi-threaded
@@ -50,7 +50,7 @@ all: \
 # A shortcut for convenience
 TEST_DIR=dat-test
 TEST_ARGS=NODES=2 MAP_BY=node CLUSTER=discovery:debug PATTERN=hello \
-	BLOCK=1 DATA_DIR=$(TEST_DIR)
+	MONITOR=1 DATA_DIR=$(TEST_DIR)
 TEST_TGT=$(TEST_DIR)/osu_nodes-2_mapby-node_tp-ucx-ud.log
 test:
 	rm -fr $(TEST_DIR)
@@ -96,8 +96,7 @@ $(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-%.log: | $(DATA_DIR)/
 else
 # pass regexp pattern args via env because may contain $
 $(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-%.log: | $(DATA_DIR)/
-	NONBLOCK=$(if $(BLOCK),,1) \
-	LOG_DIR="$(CURDIR)/$(DATA_DIR)" LOG_NAME="$(@F)" \
+	MONITOR=$(MONITOR) LOG_DIR="$(CURDIR)/$(DATA_DIR)" LOG_NAME="$(@F)" \
 	$(PTOOLS)/psbatch "$(CLUSTER)" "$(ARCH)" all \
 		"$(NODES)" "$(TASKS_PER_NODE)" "00:$(MAX_TIME_MIN):00" \
 		--job-name=osu_$(@F) \
