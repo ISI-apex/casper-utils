@@ -1,0 +1,931 @@
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgather
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgather
+created TMPDIR=/dev/shm/acolin-gpref-xFE (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-xFE (free space >= 16 MB)
+
+# OSU MPI Allgather Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       6.48
+2                       2.39
+4                       2.37
+8                       2.34
+16                      2.44
+32                      2.43
+64                      2.52
+128                     2.75
+256                     3.50
+512                     3.66
+1024                    4.00
+2048                    4.79
+4096                    6.19
+8192                    7.47
+16384                  10.08
+32768                  14.67
+65536                  24.37
+131072                 46.28
+262144                 91.68
+524288                177.14
+1048576               348.71
+cleaned up TMPDIR=/dev/shm/acolin-gpref-xFE
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgatherv
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allgatherv
+created TMPDIR=/dev/shm/acolin-gpref-KGA (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-KGA (free space >= 16 MB)
+
+# OSU MPI Allgatherv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.44
+2                       2.36
+4                       2.32
+8                       2.34
+16                      2.44
+32                      2.43
+64                      2.50
+128                     2.61
+256                     3.75
+512                     3.64
+1024                    3.98
+2048                    4.64
+4096                    6.33
+8192                    7.37
+16384                  10.28
+32768                  14.53
+65536                  24.01
+131072                 44.91
+262144                 93.37
+524288                171.43
+1048576               340.90
+cleaned up TMPDIR=/dev/shm/acolin-gpref-KGA
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allreduce
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_allreduce
+created TMPDIR=/dev/shm/acolin-gpref-kLz (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-kLz (free space >= 16 MB)
+
+# OSU MPI Allreduce Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                       2.37
+8                       2.40
+16                      2.58
+32                      2.49
+64                      2.55
+128                     2.65
+256                     3.67
+512                     3.74
+1024                    4.40
+2048                    5.09
+4096                    9.68
+8192                    7.92
+16384                  15.75
+32768                  21.46
+65536                  33.03
+131072                 58.80
+262144                110.70
+524288                224.19
+1048576               401.06
+cleaned up TMPDIR=/dev/shm/acolin-gpref-kLz
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
+created TMPDIR=/dev/shm/acolin-gpref-Mv7 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-Mv7 (free space >= 16 MB)
+
+# OSU MPI All-to-All Personalized Exchange Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       6.96
+2                       2.54
+4                       2.44
+8                       2.48
+16                      2.51
+32                      2.55
+64                      2.61
+128                     2.73
+256                     3.65
+512                     3.94
+1024                    4.18
+2048                    4.85
+4096                    6.46
+8192                    7.74
+16384                  10.33
+32768                  19.60
+65536                  30.46
+131072                 52.25
+262144                 95.31
+524288                172.76
+1048576               334.84
+cleaned up TMPDIR=/dev/shm/acolin-gpref-Mv7
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoallv
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoallv
+created TMPDIR=/dev/shm/acolin-gpref-S8g (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-S8g (free space >= 16 MB)
+
+# OSU MPI All-to-Allv Personalized Exchange Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.35
+2                       2.32
+4                       2.35
+8                       2.31
+16                      2.44
+32                      2.42
+64                      2.63
+128                     2.60
+256                     3.49
+512                     3.61
+1024                    4.20
+2048                    4.64
+4096                    6.21
+8192                    7.68
+16384                  10.03
+32768                  14.75
+65536                  24.89
+131072                 46.33
+262144                 92.98
+524288                169.58
+1048576               354.02
+cleaned up TMPDIR=/dev/shm/acolin-gpref-S8g
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_barrier
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_barrier
+created TMPDIR=/dev/shm/acolin-gpref-5Ly (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-5Ly (free space >= 16 MB)
+
+# OSU MPI Barrier Latency Test v5.6.3
+# Avg Latency(us)
+             2.29
+cleaned up TMPDIR=/dev/shm/acolin-gpref-5Ly
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_bcast
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_bcast
+created TMPDIR=/dev/shm/acolin-gpref-jVB (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-jVB (free space >= 16 MB)
+
+# OSU MPI Broadcast Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.18
+2                       2.28
+4                       2.21
+8                       2.29
+16                      2.26
+32                      2.33
+64                      2.60
+128                     2.68
+256                     3.33
+512                     3.18
+1024                    3.44
+2048                    3.65
+4096                    4.59
+8192                    5.25
+16384                   9.83
+32768                  13.96
+65536                  20.80
+131072                 33.47
+262144                 66.31
+524288                112.67
+1048576               211.57
+cleaned up TMPDIR=/dev/shm/acolin-gpref-jVB
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gather
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gather
+created TMPDIR=/dev/shm/acolin-gpref-fMC (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-fMC (free space >= 16 MB)
+
+# OSU MPI Gather Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       2.97
+2                       2.10
+4                       2.08
+8                       2.21
+16                      2.13
+32                      2.34
+64                      2.37
+128                     2.51
+256                     2.84
+512                     3.38
+1024                    3.11
+2048                    3.44
+4096                    4.37
+8192                    5.08
+16384                   6.57
+32768                  10.45
+65536                  13.92
+131072                 28.71
+262144                 74.52
+524288                130.13
+1048576               246.33
+cleaned up TMPDIR=/dev/shm/acolin-gpref-fMC
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gatherv
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_gatherv
+created TMPDIR=/dev/shm/acolin-gpref-6HM (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-6HM (free space >= 16 MB)
+
+# OSU MPI Gatherv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       6.18
+2                       2.14
+4                       2.09
+8                       2.13
+16                      2.23
+32                      2.49
+64                      2.40
+128                     2.54
+256                     2.87
+512                     2.95
+1024                    3.15
+2048                    3.49
+4096                    4.46
+8192                    5.11
+16384                   6.60
+32768                   9.35
+65536                  14.52
+131072                 24.90
+262144                 81.59
+524288                143.03
+1048576               273.28
+cleaned up TMPDIR=/dev/shm/acolin-gpref-6HM
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgather
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgather
+created TMPDIR=/dev/shm/acolin-gpref-So2 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-So2 (free space >= 16 MB)
+
+# OSU MPI Non-blocking Allgather Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       8.47              7.28              6.76             82.36
+2                       4.35              3.26              2.71             59.48
+4                       4.37              3.25              2.65             57.88
+8                       4.48              3.36              2.67             58.10
+16                      4.43              3.25              2.79             57.62
+32                      4.44              3.26              2.84             58.31
+64                      4.78              3.57              2.90             57.99
+128                     4.90              3.66              3.00             58.73
+256                     5.89              4.49              3.92             64.27
+512                     6.14              4.87              4.09             68.89
+1024                    6.82              5.27              4.58             66.26
+2048                    7.39              5.68              5.12             66.51
+4096                   10.15              7.68              6.70             63.12
+8192                   12.62              8.83              7.95             52.28
+16384                  22.95             14.51             13.83             38.98
+32768                  36.18             20.94             19.61             22.27
+65536                  61.96             32.49             31.06              5.13
+131072                 98.87             54.20             51.92             13.97
+262144                195.83             99.48             94.93              0.00
+524288                358.08            181.10            174.20              0.00
+1048576               723.60            356.77            344.03              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-So2
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgatherv
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallgatherv
+created TMPDIR=/dev/shm/acolin-gpref-Jy9 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-Jy9 (free space >= 16 MB)
+
+# OSU MPI Non-blocking Allgatherv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       4.35              3.26              2.70             59.59
+2                       4.38              3.27              2.66             58.10
+4                       4.53              3.43              2.62             58.21
+8                       4.33              3.25              3.05             64.57
+16                      4.40              3.25              2.72             57.59
+32                      4.41              3.25              2.76             58.09
+64                      4.97              3.78              2.84             58.22
+128                     4.47              3.25              2.95             58.63
+256                     5.74              4.49              3.86             67.49
+512                     5.75              4.46              4.05             68.04
+1024                    6.67              5.26              4.52             68.80
+2048                    7.66              6.06              5.33             70.06
+4096                    9.75              7.27              6.70             62.97
+8192                   12.65              8.88              7.91             52.38
+16384                  23.03             14.49             13.82             38.19
+32768                  35.15             21.72             20.42             34.23
+65536                  63.09             36.84             35.04             25.07
+131072                 99.65             53.60             51.02              9.75
+262144                196.70             99.05             94.46              0.00
+524288                358.90            180.10            173.50              0.00
+1048576               726.50            354.90            341.77              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-Jy9
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallreduce
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iallreduce
+created TMPDIR=/dev/shm/acolin-gpref-bMc (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-bMc (free space >= 16 MB)
+
+# OSU MPI Non-blocking Allreduce Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+4                       9.92              8.47              7.77             81.42
+8                       5.09              3.65              3.24             55.65
+16                      5.43              4.06              3.41             59.85
+32                      5.43              4.06              3.43             59.81
+64                      5.64              4.10              3.55             56.56
+128                     5.54              4.06              3.72             60.17
+256                     6.96              5.33              4.99             67.29
+512                     7.71              6.06              5.44             69.59
+1024                    8.19              6.47              5.83             70.34
+2048                    9.75              7.67              7.01             70.22
+4096                   13.63             10.54              9.65             68.02
+8192                   16.92             12.61             11.56             62.69
+16384                  42.86             24.77             23.39             22.67
+32768                  62.50             34.94             33.20             16.99
+65536                  98.65             54.98             52.57             16.92
+131072                167.24             91.31             87.05             12.78
+262144                328.96            169.72            163.55              2.63
+524288                582.27            295.46            284.89              0.00
+1048576              1054.20            522.44            503.48              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-bMc
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoall
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoall
+created TMPDIR=/dev/shm/acolin-gpref-ir9 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-ir9 (free space >= 16 MB)
+
+# OSU MPI Non-blocking All-to-All Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       4.43              3.28              2.82             59.09
+2                       4.39              3.28              2.73             59.07
+4                       4.06              2.91              2.66             56.72
+8                       4.54              3.26              2.68             52.42
+16                      4.84              3.65              2.97             59.84
+32                      4.47              3.25              2.82             56.72
+64                      4.88              3.65              2.88             57.49
+128                     4.51              3.25              3.01             58.14
+256                     6.09              4.83              3.89             67.52
+512                     6.16              4.86              4.21             69.07
+1024                    6.78              5.33              4.49             67.73
+2048                    7.78              6.14              5.26             68.87
+4096                    9.85              7.34              6.74             62.81
+8192                   12.75              8.89              8.02             51.92
+16384                  23.21             14.54             13.74             36.86
+32768                  34.98             20.94             19.84             29.24
+65536                  57.80             32.98             31.33             20.78
+131072                 99.76             54.65             52.49             14.05
+262144                191.17             97.10             93.51              0.00
+524288                352.76            177.39            171.16              0.00
+1048576               719.48            357.13            344.89              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-ir9
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallv
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallv
+created TMPDIR=/dev/shm/acolin-gpref-w1p (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-w1p (free space >= 16 MB)
+
+# OSU MPI Non-blocking All-to-Allv Personalized Exchange Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       9.02              7.68              6.71             79.97
+2                       4.45              3.26              2.74             56.40
+4                       4.44              3.25              2.67             55.47
+8                       4.58              3.38              2.72             56.06
+16                      4.52              3.26              2.77             54.62
+32                      4.52              3.25              2.85             55.77
+64                      4.54              3.26              2.92             56.01
+128                     5.14              3.78              3.02             55.16
+256                     6.31              4.86              3.98             63.71
+512                     6.27              4.86              4.22             66.60
+1024                    6.39              4.87              4.51             66.21
+2048                    7.51              5.78              5.19             66.66
+4096                   10.28              7.67              6.78             61.50
+8192                   13.15              8.97              8.03             47.87
+16384                  23.86             14.94             13.97             36.19
+32768                  36.25             22.52             21.36             35.73
+65536                  60.60             32.97             31.48             12.25
+131072                 99.78             52.65             50.53              6.71
+262144                193.17             98.46             93.82              0.00
+524288                357.51            180.78            174.25              0.00
+1048576               725.02            358.37            345.90              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-w1p
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallw
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ialltoallw
+created TMPDIR=/dev/shm/acolin-gpref-34t (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-34t (free space >= 16 MB)
+
+# OSU MPI Non-blocking All-to-Allw Personalized Exchange Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       9.27              3.65              2.73              0.00
+2                       4.80              3.66              2.87             60.18
+4                       4.41              3.25              2.65             56.14
+8                       4.01              2.86              2.64             56.29
+16                      4.87              3.65              2.78             56.01
+32                      4.49              3.25              2.78             55.46
+64                      4.93              3.66              2.86             55.67
+128                     5.07              3.77              2.98             56.47
+256                     5.99              4.68              3.89             66.15
+512                     6.20              4.85              4.08             66.94
+1024                    6.46              4.96              4.47             66.40
+2048                    7.39              5.66              5.20             66.66
+4096                   10.36              7.79              6.77             62.12
+8192                   12.42              8.47              7.95             50.31
+16384                  23.84             15.28             14.21             39.79
+32768                  37.93             23.31             22.31             34.46
+65536                  57.07             32.59             31.06             21.18
+131072                101.18             56.84             54.11             18.05
+262144                199.09            103.16             99.38              3.47
+524288                362.58            179.72            172.42              0.00
+1048576               728.98            362.77            349.53              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-34t
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibarrier
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibarrier
+created TMPDIR=/dev/shm/acolin-gpref-DMf (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-DMf (free space >= 16 MB)
+
+# OSU MPI Non-blocking Barrier Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+       Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+              5.31              4.08              3.70             66.47
+cleaned up TMPDIR=/dev/shm/acolin-gpref-DMf
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibcast
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ibcast
+created TMPDIR=/dev/shm/acolin-gpref-ezr (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-ezr (free space >= 16 MB)
+
+# OSU MPI Non-Blocking Broadcast Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       3.68              2.86              2.40             65.65
+2                       3.71              2.86              2.52             66.50
+4                       3.68              2.85              2.39             65.21
+8                       3.84              2.85              2.39             58.46
+16                      3.69              2.85              2.53             66.93
+32                      3.70              2.85              2.56             66.57
+64                      3.68              2.84              2.50             66.39
+128                     4.12              3.25              2.71             67.68
+256                     4.52              3.65              3.25             73.17
+512                     4.53              3.65              3.32             73.64
+1024                    5.24              4.27              3.53             72.54
+2048                    5.49              4.45              3.95             73.76
+4096                    7.23              5.78              4.85             70.06
+8192                    8.17              6.07              5.63             62.70
+16384                  17.63             10.93             10.14             33.94
+32768                  22.84             14.93             13.73             42.39
+65536                  35.58             22.14             20.93             35.81
+131072                 62.25             37.40             35.68             30.37
+262144                136.00             68.48             65.61              0.00
+524288                239.65            121.56            116.99              0.00
+1048576               442.26            224.86            216.28              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-ezr
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igather
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igather
+created TMPDIR=/dev/shm/acolin-gpref-gXN (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-gXN (free space >= 16 MB)
+
+# OSU MPI Non-blocking Gather Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       3.77              2.85              2.41             61.62
+2                       3.82              2.86              2.48             61.11
+4                       3.77              2.85              2.54             63.74
+8                       3.77              2.85              2.41             61.97
+16                      3.98              3.04              2.45             61.84
+32                      3.78              2.85              2.48             62.26
+64                      3.79              2.85              2.57             63.38
+128                     4.18              3.24              2.82             66.72
+256                     4.65              3.66              3.42             71.08
+512                     4.63              3.65              3.41             71.24
+1024                    5.11              4.05              3.59             70.63
+2048                    5.59              4.45              4.21             72.85
+4096                    7.32              5.67              4.90             66.40
+8192                    8.40              6.07              5.62             58.61
+16384                  15.93             10.90             10.24             50.81
+32768                  23.03             14.88             13.81             41.04
+65536                  42.56             25.05             23.80             26.42
+131072                 71.45             39.83             37.95             16.67
+262144                163.59             84.45             81.23              2.57
+524288                296.94            150.85            145.61              0.00
+1048576               566.53            285.09            275.22              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-gXN
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igatherv
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_igatherv
+created TMPDIR=/dev/shm/acolin-gpref-PIG (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-PIG (free space >= 16 MB)
+
+# OSU MPI Non-blocking Gatherv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       8.58              7.67              7.07             87.04
+2                       3.75              2.85              2.44             63.04
+4                       3.74              2.85              2.39             62.91
+8                       3.73              2.85              2.41             63.21
+16                      3.73              2.85              2.45             64.07
+32                      3.88              2.98              2.61             65.37
+64                      3.74              2.85              2.52             64.62
+128                     4.18              3.25              2.82             66.88
+256                     4.50              3.65              3.24             73.66
+512                     4.53              3.65              3.31             73.44
+1024                    4.96              4.05              3.49             73.88
+2048                    5.55              4.53              3.85             73.34
+4096                    6.77              5.33              4.72             69.59
+8192                    8.13              6.07              5.44             62.19
+16384                  14.00             10.08              9.31             57.81
+32768                  21.47             14.09             13.37             44.83
+65536                  37.39             22.11             20.65             26.01
+131072                 66.62             35.18             33.74              6.79
+262144                160.17             83.32             79.64              3.50
+524288                285.21            145.57            140.60              0.69
+1048576               547.59            279.66            269.20              0.47
+cleaned up TMPDIR=/dev/shm/acolin-gpref-PIG
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ireduce
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_ireduce
+created TMPDIR=/dev/shm/acolin-gpref-djc (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-djc (free space >= 16 MB)
+
+# OSU MPI Non-blocking Reduce Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+4                       8.63              3.25              2.82              0.00
+8                       4.19              3.25              2.83             66.80
+16                      4.16              3.25              2.83             67.82
+32                      4.17              3.25              2.93             68.31
+64                      4.20              3.25              2.87             67.12
+128                     4.19              3.25              2.90             67.41
+256                     4.71              3.65              3.35             68.52
+512                     5.00              4.05              3.44             72.44
+1024                    5.14              4.05              3.70             70.66
+2048                    6.19              4.86              4.14             68.03
+4096                    7.63              5.87              5.17             66.06
+8192                    9.27              6.87              5.95             59.62
+16384                  16.77             11.69             10.80             53.00
+32768                  25.33             16.91             15.85             46.88
+65536                  37.90             20.91             19.56             13.14
+131072                 68.19             36.96             35.16             11.17
+262144                130.41             68.65             66.00              6.42
+524288                250.87            131.59            126.72              5.86
+1048576               477.23            242.60            234.04              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-djc
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatter
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatter
+created TMPDIR=/dev/shm/acolin-gpref-4vm (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-4vm (free space >= 16 MB)
+
+# OSU MPI Non-blocking Scatter Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       3.76              2.85              2.65             65.69
+2                       3.76              2.84              2.69             66.09
+4                       3.79              2.86              2.64             64.92
+8                       3.77              2.88              2.61             65.83
+16                      3.82              2.85              2.67             63.74
+32                      3.88              2.97              2.69             66.05
+64                      4.18              3.25              2.87             67.71
+128                     4.17              3.25              2.88             67.85
+256                     4.99              4.05              3.60             73.88
+512                     5.03              4.05              3.56             72.40
+1024                    5.16              4.14              3.73             72.83
+2048                    5.96              4.86              4.10             73.19
+4096                    7.39              5.66              5.26             67.05
+8192                    9.15              6.88              6.11             62.82
+16384                  15.78             11.71             11.08             63.22
+32768                  22.99             16.51             15.30             57.67
+65536                  39.58             25.36             24.27             41.42
+131072                 70.77             44.67             42.92             39.18
+262144                174.00             90.05             86.66              3.13
+524288                307.07            158.46            152.04              2.26
+1048576               572.99            290.56            280.51              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-4vm
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatterv
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_iscatterv
+created TMPDIR=/dev/shm/acolin-gpref-WlL (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-WlL (free space >= 16 MB)
+
+# OSU MPI Non-blocking Scatterv Latency Test v5.6.3
+# Overall = Coll. Init + Compute + MPI_Test + MPI_Wait
+
+# Size           Overall(us)       Compute(us)    Pure Comm.(us)        Overlap(%)
+1                       8.72              7.68              7.16             85.55
+2                       3.72              2.85              2.54             65.83
+4                       4.15              3.26              2.69             66.66
+8                       3.72              2.86              2.57             66.43
+16                      3.70              2.86              2.60             67.49
+32                      3.71              2.85              2.63             67.23
+64                      3.70              2.84              2.65             67.86
+128                     4.17              3.25              2.91             68.54
+256                     4.67              3.66              3.41             70.17
+512                     4.98              4.05              3.49             73.20
+1024                    5.17              4.12              3.69             71.55
+2048                    6.10              4.86              4.08             69.79
+4096                    7.27              5.67              5.15             68.91
+8192                    8.83              6.55              5.93             61.57
+16384                  15.61             11.97             11.22             67.50
+32768                  24.35             17.31             16.10             56.27
+65536                  39.04             25.47             24.36             44.26
+131072                 74.66             44.40             41.51             27.09
+262144                173.34             90.34             86.97              4.56
+524288                302.81            155.28            149.78              1.50
+1048576               574.97            288.58            278.50              0.00
+cleaned up TMPDIR=/dev/shm/acolin-gpref-WlL
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce
+created TMPDIR=/dev/shm/acolin-gpref-udC (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-udC (free space >= 16 MB)
+
+# OSU MPI Reduce Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                       2.20
+8                       2.19
+16                      2.26
+32                      2.29
+64                      2.49
+128                     2.53
+256                     2.94
+512                     3.01
+1024                    3.21
+2048                    3.72
+4096                    4.54
+8192                    5.33
+16384                   6.86
+32768                   9.91
+65536                  15.85
+131072                 29.46
+262144                 77.79
+524288                133.55
+1048576               248.87
+cleaned up TMPDIR=/dev/shm/acolin-gpref-udC
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce_scatter
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_reduce_scatter
+created TMPDIR=/dev/shm/acolin-gpref-Gt5 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-Gt5 (free space >= 16 MB)
+
+# OSU MPI Reduce_scatter Latency Test v5.6.3
+# Size       Avg Latency(us)
+4                       2.44
+8                       2.42
+16                      2.46
+32                      2.51
+64                      2.51
+128                     2.58
+256                     2.70
+512                     3.61
+1024                    3.81
+2048                    4.40
+4096                    5.09
+8192                    6.91
+16384                   8.74
+32768                  12.41
+65536                  19.15
+131072                 35.85
+262144                 73.29
+524288                150.83
+1048576               283.64
+cleaned up TMPDIR=/dev/shm/acolin-gpref-Gt5
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatter
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatter
+created TMPDIR=/dev/shm/acolin-gpref-XAO (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-XAO (free space >= 16 MB)
+
+# OSU MPI Scatter Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       6.43
+2                       2.13
+4                       2.15
+8                       2.11
+16                      2.15
+32                      2.36
+64                      2.41
+128                     2.54
+256                     2.87
+512                     3.09
+1024                    3.16
+2048                    3.52
+4096                    4.54
+8192                    5.48
+16384                   7.25
+32768                  10.58
+65536                  17.13
+131072                 40.06
+262144                 81.28
+524288                145.76
+1048576               276.76
+cleaned up TMPDIR=/dev/shm/acolin-gpref-XAO
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatterv
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/collective/osu_scatterv
+created TMPDIR=/dev/shm/acolin-gpref-Kv2 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-Kv2 (free space >= 16 MB)
+
+# OSU MPI Scatterv Latency Test v5.6.3
+# Size       Avg Latency(us)
+1                       6.17
+2                       2.13
+4                       2.10
+8                       2.13
+16                      2.12
+32                      2.37
+64                      2.37
+128                     2.53
+256                     2.86
+512                     2.95
+1024                    3.13
+2048                    3.62
+4096                    4.50
+8192                    5.39
+16384                   7.28
+32768                  10.60
+65536                  17.42
+131072                 31.77
+262144                 80.78
+524288                146.12
+1048576               273.24
+cleaned up TMPDIR=/dev/shm/acolin-gpref-Kv2
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bibw
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bibw
+created TMPDIR=/dev/shm/acolin-gpref-9qv (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-9qv (free space >= 16 MB)
+# OSU MPI Bi-Directional Bandwidth Test v5.6.3
+# Size      Bandwidth (MB/s)
+1                       3.83
+2                       2.12
+4                      15.63
+8                      31.34
+16                     62.41
+32                    124.24
+64                    242.74
+128                   439.67
+256                   917.76
+512                  1740.88
+1024                 2886.46
+2048                 4690.23
+4096                 4991.29
+8192                 5784.65
+16384                6377.21
+32768                6352.35
+65536                6049.04
+131072               5912.60
+262144               5934.31
+524288               5797.82
+1048576              5817.01
+2097152              5819.56
+4194304              5793.16
+cleaned up TMPDIR=/dev/shm/acolin-gpref-9qv
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bw
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bw
+created TMPDIR=/dev/shm/acolin-gpref-QLR (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-QLR (free space >= 16 MB)
+# OSU MPI Bandwidth Test v5.6.3
+# Size      Bandwidth (MB/s)
+1                       3.05
+2                       6.23
+4                      12.49
+8                      25.11
+16                     49.68
+32                     98.01
+64                    193.50
+128                   362.58
+256                   619.71
+512                  1301.48
+1024                 2103.51
+2048                 3349.40
+4096                 3914.24
+8192                 4592.37
+16384                4565.87
+32768                4778.42
+65536                4938.92
+131072               5271.93
+262144               5346.87
+524288               5465.66
+1048576              5430.66
+2097152              5410.89
+4194304              5413.92
+cleaned up TMPDIR=/dev/shm/acolin-gpref-QLR
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency
+created TMPDIR=/dev/shm/acolin-gpref-tt9 (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-tt9 (free space >= 16 MB)
+# OSU MPI Latency Test v5.6.3
+# Size          Latency (us)
+0                       2.66
+1                       2.25
+2                       2.26
+4                       2.27
+8                       2.28
+16                      2.40
+32                      2.42
+64                      2.50
+128                     2.57
+256                     3.54
+512                     3.69
+1024                    4.01
+2048                    4.70
+4096                    6.30
+8192                    7.32
+16384                   9.12
+32768                  13.01
+65536                  20.33
+131072                 35.21
+262144                 69.65
+524288                114.47
+1048576               212.33
+2097152               405.34
+4194304               792.08
+cleaned up TMPDIR=/dev/shm/acolin-gpref-tt9
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency_mp
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_latency_mp
+created TMPDIR=/dev/shm/acolin-gpref-lhc (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-lhc (free space >= 16 MB)
+# OSU MPI Multi-process Latency Test v5.6.3
+# Number of forked processes in sender: 2
+# Number of forked processes in receiver: 2
+# Size          Latency (us)
+0                       2.27
+1                       2.25
+2                       2.25
+4                       2.28
+8                       2.28
+16                      2.39
+32                      2.41
+64                      2.49
+128                     2.58
+256                     3.54
+512                     3.69
+1024                    4.02
+2048                    4.72
+4096                    6.30
+8192                    7.32
+16384                   9.31
+32768                  12.94
+65536                  20.40
+131072                 35.21
+262144                 69.61
+524288                114.52
+1048576               211.07
+2097152               404.55
+4194304               791.26
+cleaned up TMPDIR=/dev/shm/acolin-gpref-lhc
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_mbw_mr
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_mbw_mr
+created TMPDIR=/dev/shm/acolin-gpref-DVC (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-DVC (free space >= 16 MB)
+# OSU MPI Multiple Bandwidth / Message Rate Test v5.6.3
+# [ pairs: 1 ] [ window size: 64 ]
+# Size                  MB/s        Messages/s
+1                       3.06        3060407.18
+2                       6.22        3110749.49
+4                       2.37         592521.87
+8                      24.93        3116117.24
+16                     48.99        3061821.53
+32                     88.09        2752794.73
+64                    191.01        2984513.64
+128                   366.27        2861470.83
+256                   683.13        2668476.78
+512                  1282.75        2505375.79
+1024                 2067.26        2018812.81
+2048                 3349.08        1635294.14
+4096                 3864.07         943376.48
+8192                 4495.89         548815.13
+16384                4427.01         270203.07
+32768                4555.90         139035.04
+65536                4829.03          73685.21
+131072               5139.77          39213.30
+262144               5315.77          20278.05
+524288               5395.41          10290.92
+1048576              5405.35           5154.95
+2097152              5408.94           2579.18
+4194304              5409.62           1289.75
+cleaned up TMPDIR=/dev/shm/acolin-gpref-DVC
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_multi_lat
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_multi_lat
+created TMPDIR=/dev/shm/acolin-gpref-ARJ (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-ARJ (free space >= 16 MB)
+# OSU MPI Multi Latency Test v5.6.3
+# Size          Latency (us)
+0                       2.63
+1                       2.25
+2                       2.27
+4                       2.29
+8                       2.28
+16                      2.38
+32                      2.42
+64                      2.50
+128                     2.58
+256                     3.54
+512                     3.68
+1024                    4.03
+2048                    4.71
+4096                    6.31
+8192                    7.33
+16384                   9.25
+32768                  13.04
+65536                  20.50
+131072                 35.14
+262144                 69.57
+524288                114.53
+1048576               212.33
+2097152               405.38
+4194304               791.38
+cleaned up TMPDIR=/dev/shm/acolin-gpref-ARJ
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_hello
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_hello
+created TMPDIR=/dev/shm/acolin-gpref-EsH (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-EsH (free space >= 16 MB)
+# OSU MPI Hello World Test v5.6.3
+This is a test with 2 processes
+cleaned up TMPDIR=/dev/shm/acolin-gpref-EsH
+mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_init
+wtmp env PRTE_MCA_pmix_server_max_wait=60 /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/bin/mpirun -n 2 --map-by node --mca pml ucx -x UCX_TLS=sm,ud /project/jpwalter_356/acolin/gpref/gp-amd64-2/usr/libexec/osu-micro-benchmarks/mpi/startup/osu_init
+created TMPDIR=/dev/shm/acolin-gpref-V0f (will cleanup)
+TMPDIR=/dev/shm/acolin-gpref-V0f (free space >= 16 MB)
+# OSU MPI Init Test v5.6.3
+nprocs: 2, min: 157 ms, max: 157 ms, avg: 157 ms
+cleaned up TMPDIR=/dev/shm/acolin-gpref-V0f
+Successfully processed 34 benchmarks.
