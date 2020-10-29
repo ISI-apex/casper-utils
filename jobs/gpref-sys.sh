@@ -166,7 +166,7 @@ fi
 if ! step_is_done make_conf
 then
 	# When run in offline mode, bootstrap script disables fetching: re-enable
-	sed -i '/^FETCH_COMMAND=/d' "$ROOT/etc/portage/make.conf"
+	sed -i '/^FETCHCOMMAND=/d' "$ROOT/etc/portage/make.conf"
 
 	# ... but for live VCS packages (including ones that snapshot by date),
 	# the online fetch happens unconditionally, so we have to disable it
