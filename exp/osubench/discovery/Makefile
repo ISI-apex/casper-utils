@@ -43,16 +43,16 @@ $(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)
 endef
 
 all: \
-	$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp-ib0.log/job \
-	$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp-eth0.log/job \
-	$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-default.log/job
+	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-tcp-ib0.log/job \
+	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-tcp-eth0.log/job \
+	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-default.log/job
 
 # A shortcut for convenience
 TEST_DIR=dat-test
 TEST_ARGS=NODES=2 MAP_BY=node PATTERN=hello BLOCK=1 DATA_DIR=$(TEST_DIR)
-TEST_TGT=$(TEST_DIR)/bench-prefix-n-2-map-by-node-default.log
+TEST_TGT=$(TEST_DIR)/osu_nodes-2_mapby-node_tp-ucx-ud.log
 test:
-	rm -r $(TEST_DIR)
+	rm -fr $(TEST_DIR)
 	$(MAKE) $(TEST_ARGS) $(TEST_TGT)
 
 .NOTPARALLEL:
@@ -60,30 +60,30 @@ test:
 $(DATA_DIR)/:
 	mkdir -p "$@"
 
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp-%.log: \
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-tcp-%.log: \
 	MPIRUN_TP_ARGS+=--mca btl self,tcp --mca pml_ucx_priority 0
 
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp-eth0.log: \
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-tcp-eth0.log: \
 	MPIRUN_TP_ARGS+=--mca btl_tcp_if_include eth0
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp-ib0.log: \
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-tcp-ib0.log: \
 	MPIRUN_TP_ARGS+=--mca btl_tcp_if_include ib0
 
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-ucx-%.log: \
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-%.log: \
 	MPIRUN_TP_ARGS+=--mca pml ucx
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-ucx-ud.log: \
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-ud.log: \
 	MPIRUN_TP_ARGS+=-x UCX_TLS=sm,ud_verbs
 # NOTE: rc_verbs fails ("no auxiliary transport")
 # TODO: potentially this only happens without Connection Mgr (ucx_ib_cm)?
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-ucx-rc.log: \
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-rc.log: \
 	MPIRUN_TP_ARGS+=-x UCX_TLS=sm,rc_verbs
 # could add for experimentation: -x UCX_NET_DEVICES=mlx4_0:1
 
 # should be the same as ucx-default (== ucx-ud?)
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-default.log: \
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-default.log: \
 	MPIRUN_TP_ARGS+=
 
 ifeq ($(IN),1)
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-%.log: | $(DATA_DIR)/
 	osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
 		mpirun -n "$(NODES)" \
 		--map-by "$(call gen-map-by,$(MAP_BY))" \
@@ -91,7 +91,7 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 		2>&1 | tee $@
 else
 # pass regexp pattern args via env because may contain $
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
+$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-%.log: | $(DATA_DIR)/
 	NONBLOCK=$(if $(BLOCK),,1) \
 	LOG_DIR="$(CURDIR)/$(DATA_DIR)" LOG_NAME="$(@F)" \
 	$(PTOOLS)/psbatch "$(CLUSTER)" "$(ARCH)" all \
