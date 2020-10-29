@@ -52,9 +52,8 @@ TEST_DIR=dat-test
 TEST_ARGS=NODES=2 MAP_BY=node PATTERN=hello BLOCK=1 DATA_DIR=$(TEST_DIR)
 TEST_TGT=$(TEST_DIR)/bench-prefix-n-2-map-by-node-default.log
 test:
+	rm -r $(TEST_DIR)
 	$(MAKE) $(TEST_ARGS) $(TEST_TGT)
-test/job:
-	$(MAKE) $(TEST_ARGS) $(TEST_TGT)/job
 
 .NOTPARALLEL:
 
@@ -83,28 +82,29 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-ucx-rc.log: \
 $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-default.log: \
 	MPIRUN_TP_ARGS+=
 
-# To be run from within EPREFIX
+ifeq ($(IN),1)
 $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 	osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
 		mpirun -n "$(NODES)" \
 		--map-by "$(call gen-map-by,$(MAP_BY))" \
 		$(MPIRUN_ARGS) $(MPIRUN_TP_ARGS) \
 		2>&1 | tee $@
-
+else
 # pass regexp pattern args via env because may contain $
-%/job: | $(DATA_DIR)/
+$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 	NONBLOCK=$(if $(BLOCK),,1) \
 	$(PTOOLS)/psbatch "$(CLUSTER)" "$(ARCH)" all \
 		"$(NODES)" "$(TASKS_PER_NODE)" "00:$(MAX_TIME_MIN):00" \
 		env "PATTERN='$(PATTERN)'" \
 		"PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)'" \
-		$$(which make) -C $${PWD} EPREFIX=$(EPREFIX) \
+		$$(which make) -C $${PWD} IN=1 EPREFIX=$(EPREFIX) \
 		NODES="$(NODES)" MAP_BY="$(MAP_BY)" \
 		MPIRUN_ARGS="'$(MPIRUN_ARGS)'" VERBOSE="$(VERBOSE)" \
 		DATA_DIR="$(DATA_DIR)" \
-		$*
+		"$@"
 
 job: | $(DATA_DIR)/
 	$(PTOOLS)/psalloc "$(CLUSTER)" "$(ARCH)" all \
 		"$(NODES)" "$(TASKS_PER_NODE)" "00:$(MAX_TIME_MIN):00" $*
 .PHONY: job
+endif
