@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+
+# Utility to parse SLURM nodelists (d01-[02-04],e02-30,e10-10) into individual
+# node entries one per line. Reads from stdin, outputs to stdout.
+
+import sys
+import re
+
+for line in sys.stdin:
+	line = line.strip()
+	if len(line) == 0 or line.startswith('#'):
+		continue
+
+	for m in re.finditer(r'([^,\[\]]+)(\[([^\]]+)\]+)?(,|$)', line):
+		body = m.group(1)
+		mult = m.group(3)
+		if mult is not None:
+			for tok in mult.split(','):
+				m = re.match('^(\d+)-(\d+)$', tok)
+				if m:
+					fr, to = m.group(1), m.group(2)
+					if fr.startswith('0'):
+						pad = len(fr)
+					for n in range(int(fr), int(to) + 1):
+						print(body + ('{0:0' + str(pad) + '}').format(n))
+				else:
+					print(body + tok)
+
+		else:
+			print(body)
+
