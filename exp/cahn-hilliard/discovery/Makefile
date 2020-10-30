@@ -173,10 +173,10 @@ endef
 
 ifeq ($(IN),1)
 $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
+	OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 	mpirun $(MPIRUN_ARGS_INTERNAL) $(MPIRUN_ARGS) \
 		-n "$(call tgt-extract,ranks,$@)" \
 		--map-by "$(call tgt-map-by,$@)" \
-		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 		python $(BENCH_DIR)/cahn_hilliard/firedrake_cahn_hilliard_bare.py \
 			 --elapsed-out "$@" \
 			"$(call tgt-extract,mesh,$@)" \
