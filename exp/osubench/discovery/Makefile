@@ -44,8 +44,8 @@ $(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)
 endef
 
 all: \
-	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-ucx-tcp-ib0.log/job \
-	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-default.log/job
+	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-tcp-ib0.log \
+	$(DATA_DIR)/osu_nodes-$(NODES)_mapby-$(MAP_BY)_tp-default.log
 
 # A shortcut for convenience
 TEST_DIR=dat-test
