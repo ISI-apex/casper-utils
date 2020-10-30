@@ -157,12 +157,12 @@ EOF
 chmod +x "${tmpscr}"
 echo "${tmpscr}": && cat "${tmpscr}"
 cmd=(sbatch "${args[@]}" "${sbatch_args[@]}" "${tmpscr}")
-echo "${cmd[@]}"
+echo "${cmd[@]}" | tee -a "${logdir}/${log_name}.job"
 out=$(${cmd[@]})
 echo "$out"
 jobid=$(echo "$out" | sed 's/^Submitted batch job \([0-9]\+\)$/\1/')
 echo "Job ID: $jobid"
-echo "${jobid}" > "${logdir}/${log_name}.job"
+echo "${jobid}" >> "${logdir}/${log_name}.job"
 
 if [ -n "${NONBLOCK}" ]
 then
