@@ -58,7 +58,7 @@ logdir=${LOG_DIR:-"${EPREFIX}"/var/log/sjobs}
 mkdir -p "${logdir}"
 
 args=(--nodes "${nodes}" --ntasks-per-node "${tasks_per_node}"
-	--time "${max_time}")
+	--time "${max_time}" --exclusive)
 
 if [[ -n "${part}" ]]
 then
