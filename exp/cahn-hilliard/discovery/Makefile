@@ -206,7 +206,8 @@ $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
 			"$(call tgt-tasks-per-node,$@)"
 else
 $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
-	MONITOR=$(MONITOR) LOG_DIR="$(CURDIR)/$(DATA_DIR)" LOG_NAME="$(@F)" \
+	$(PTOOLS)/prun -l $@.job env MONITOR=$(MONITOR) \
+	LOG_DIR="$(CURDIR)/$(DATA_DIR)" LOG_NAME="$(@F)" \
 	$(PTOOLS)/psbatch "$(CLUSTER)" "$(ARCH)" all \
 		"$(call tgt-nodes,$*)" \
 		"$(call tgt-tasks-per-node,$*)" \
