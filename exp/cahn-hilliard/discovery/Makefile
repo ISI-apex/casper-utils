@@ -22,6 +22,7 @@ NOLOCAL?=
 MONITOR?=0
 TRANSPORT?=ib
 DATA_DIR?=dat-$(TRANSPORT)
+SBATCH_ARGS?=
 
 # This is only used for interactive job
 NODES?=2
@@ -190,6 +191,7 @@ $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
 		"$(call tgt-tasks-per-node,$*)" \
 		"00:$(MAX_TIME_MIN):00" \
 		--job-name=ch_$* \
+		$(SBATCH_ARGS) \
 		$$(which make) -C $(CURDIR) IN=1 EPREFIX=$(EPREFIX) \
 		MPIRUN_ARGS="'$(MPIRUN_ARGS)'" VERBOSE="$(VERBOSE)" \
 		TRANSPORT="$(TRANSPORT)" \
