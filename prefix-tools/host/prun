@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+
+self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+source "${self_dir}"/pscommon.sh
+
+while [[ "$1" = -* ]]
+do
+	arg="$1"
+	shift
+	if [[ "${arg}" = "-l" ]]
+	then
+		log_file="$1"
+		shift
+		print_args "$@" > "$log_file"
+	elif [[ "${arg}" = "-a" ]]
+	then
+		log_file="$1"
+		shift
+		print_args "$@" >> "$log_file"
+	fi
+done
+unset arg log_file
+
+exec "$@"
