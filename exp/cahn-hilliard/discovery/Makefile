@@ -47,9 +47,30 @@ MPIRUN_ARGS_INTERNAL+=\
 	--mca pml_ucx_verbose 100
 endif
 
-ifeq ($(TRANSPORT),tcp)
+ifeq ($(TRANSPORT),)
+MPIRUN_ARGS_INTERNAL+=
+else ifeq ($(TRANSPORT),ucx)
+MPIRUN_ARGS_INTERNAL+=--mca pml ucx
+else ifeq ($(TRANSPORT),ucx-rc)
+MPIRUN_ARGS_INTERNAL+=--mca pml ucx -x UCX_TLS=sm,rc
+else ifeq ($(TRANSPORT),ucx-ud)
+MPIRUN_ARGS_INTERNAL+=--mca pml ucx -x UCX_TLS=sm,ud
+else ifeq ($(TRANSPORT),ucx-tcp-ib)
+MPIRUN_ARGS_INTERNAL+=--mca pml ucx -x UCX_TLS=sm,tcp -x UCX_NET_DEVICES=ib0
+else ifeq ($(TRANSPORT),ucx-tcp-eth)
+MPIRUN_ARGS_INTERNAL+=--mca pml ucx -x UCX_TLS=sm,tcp -x UCX_NET_DEVICES=eth0
+else ifeq ($(TRANSPORT),tcp-ib)
 MPIRUN_ARGS_INTERNAL+=\
-	--mca btl self,tcp --mca pml_ucx_priority 0
+	--mca btl self,tcp \
+	--mca btl_tcp_if_include ib0 \
+	--mca pml_ucx_priority 0
+else ifeq ($(TRANSPORT),tcp-eth)
+MPIRUN_ARGS_INTERNAL+=\
+	--mca btl self,tcp \
+	--mca btl_tcp_if_include eth0 \
+	--mca pml_ucx_priority 0
+else
+$(error "Unsupported transport: $(TRANSPORT)")
 endif
 
 ifeq ($(CLUSTER),discovery:debug)
