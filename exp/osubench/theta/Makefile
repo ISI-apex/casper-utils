@@ -5,6 +5,7 @@ endif
 CASPER_UTILS_ROOT:=$(abspath ../../..)
 
 NODES?=2
+NODES_JOB?=$(NODES)
 MAP_BY?=node
 NOLOCAL?=1
 
@@ -89,12 +90,17 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 .PHONY: run
 
 DEBUG_Q=debug-cache-quad
+QUEUE?=
+
+define make-q-arg
+$(if $(1),-q $(1),$$([[ "$(NODES_JOB)" -lt 128 ]] && echo -q $(DEBUG_Q)))
+endef
 
 %/job: | $(DATA_DIR)/
 	rm -f $*.{cobaltlog,output,error}
 	touch $*.{cobaltlog,output,error}
-	qsub -O "$*" -n "$(NODES)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
-		$$([[ "$(NODES)" -lt 128 ]] && echo -q $(DEBUG_Q)) \
+	qsub -O "$*" -n "$(NODES_JOB)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
+		$(call make-q-arg,$(QUEUE)) \
 		$(EPREFIX)/startprefix -c "env \
 		PATTERN='$(PATTERN)' PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)' \
 		make -C $${PWD} NODES=$(NODES) MAP_BY=$(MAP_BY) \
@@ -104,6 +110,6 @@ DEBUG_Q=debug-cache-quad
 	$(if $(BLOCK),,exit 0 &&) tail -f $*.{cobaltlog,output,error}
 
 job:
-	qsub -n "$(NODES)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
-		-q "$(DEBUG_Q)" --attr enable_ssh=1 -I
+	qsub -n "$(NODES_JOB)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
+		$(call make-q-arg,$(QUEUE)) --attr enable_ssh=1 -I
 .PHONY: job
