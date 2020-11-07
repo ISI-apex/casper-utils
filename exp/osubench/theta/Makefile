@@ -27,9 +27,7 @@ DATS=\
 # TODO: multiple concurrent targets not supported, b/c need to block qsub
 #     $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp.log
 
-all: $(patsubst %,%/job,$(DATS))
-
-dat: $(DATS)
+all: $(DATS)
 
 # if NODES <= 8 (debug queue), then allow only one job at a time
 ifneq ($(filter 1 2 3 4 5 6 7 8,$(NODES)),)
@@ -84,13 +82,6 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp.log: \
 		--mca btl_tcp_if_exclude lo,10.237.0.0/16 \
 		--mca oob_tcp_if_exclude lo,10.237.0.0/16
 
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
-	$(EPREFIX)/usr/bin/osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
-		mpirun -n "$(NODES)" \
-		--map-by "$(call gen-map-by,$(MAP_BY))" \
-		$(MPIRUN_ARGS) $(MPIRUN_TP_ARGS)
-.PHONY: run
-
 DEBUG_Q=debug-cache-quad
 QUEUE?=
 
@@ -98,20 +89,30 @@ define make-q-arg
 $(if $(1),-q $(1),$$([[ "$(NODES_JOB)" -lt 128 ]] && echo -q $(DEBUG_Q)))
 endef
 
-%/job: | $(DATA_DIR)/
-	rm -f $*.{cobaltlog,output,error}
-	touch $*.{cobaltlog,output,error}
-	qsub -O "$*" -n "$(NODES_JOB)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
+ifeq ($(IN),1)
+$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
+	$(EPREFIX)/usr/bin/osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
+		mpirun -n "$(NODES)" \
+		--map-by "$(call gen-map-by,$(MAP_BY))" \
+		$(MPIRUN_ARGS) $(MPIRUN_TP_ARGS) | tee "$@"
+# within the job, must run each target sequentially (nodes are shared)
+.NOTPARALLEL:
+else # IN=0
+$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
+	rm -f $@.{cobaltlog,output,error}
+	touch $@.{cobaltlog,output,error}
+	qsub -O "$@" -n "$(NODES_JOB)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
 		$(call make-q-arg,$(QUEUE)) \
 		$(EPREFIX)/startprefix -c "env \
 		PATTERN='$(PATTERN)' PATTERN_EXCLUDE='$(PATTERN_EXCLUDE)' \
-		make -C $${PWD} NODES=$(NODES) MAP_BY=$(MAP_BY) \
+		make -C $(CURDIR) IN=1 NODES=$(NODES) MAP_BY=$(MAP_BY) \
 		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
 		DATA_DIR=$(DATA_DIR) \
-		$*"
-	$(if $(BLOCK),,exit 0 &&) tail -f $*.{cobaltlog,output,error}
+		$@"
+	$(if $(BLOCK),,exit 0 &&) tail -f $@.{cobaltlog,output,error}
 
 job:
 	qsub -n "$(NODES_JOB)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
-		$(call make-q-arg,$(QUEUE)) --attr enable_ssh=1 -I
+		$(call make-q-arg,$(QUEUE)) $(QSUB_ARGS) --attr enable_ssh=1 -I
 .PHONY: job
+endif # IN
