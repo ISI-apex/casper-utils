@@ -76,11 +76,13 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-ofi.log: \
 		--mca mtl ofi \
 		--mca mtl_ofi_priority 100 \
 		--mca pml_ucx_priority 0
-# Also works: --mca btl_tcp_if_include 10.128.0.0/14
+# NOTE: ipogif0 iface has two addresses and only 10.128.x.x/14 is pingable,
+# must use exclude directive (since 10.128.0.0/14 mask matches both)
 $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-tcp.log: \
 	MPIRUN_TP_ARGS+=\
 		--mca btl self,tcp \
-		--mca btl_tcp_if_include ipogif0
+		--mca btl_tcp_if_exclude lo,10.237.0.0/16 \
+		--mca oob_tcp_if_exclude lo,10.237.0.0/16
 
 $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 	$(EPREFIX)/usr/bin/osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
