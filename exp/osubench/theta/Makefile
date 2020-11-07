@@ -98,7 +98,8 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 # within the job, must run each target sequentially (nodes are shared)
 .NOTPARALLEL:
 else # IN=0
-$(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
+# Accepts multiple targets in a single job: make dat/foo.log+dat/bar.log
+$(DATA_DIR)/%: | $(DATA_DIR)/
 	rm -f $@.{cobaltlog,output,error}
 	touch $@.{cobaltlog,output,error}
 	qsub -O "$@" -n "$(NODES_JOB)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
@@ -108,7 +109,7 @@ $(DATA_DIR)/bench-prefix-n-$(NODES)-map-by-$(MAP_BY)-%.log: | $(DATA_DIR)/
 		make -C $(CURDIR) IN=1 NODES=$(NODES) MAP_BY=$(MAP_BY) \
 		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
 		DATA_DIR=$(DATA_DIR) \
-		$@"
+		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))"
 	$(if $(BLOCK),,exit 0 &&) tail -f $@.{cobaltlog,output,error}
 
 job:
