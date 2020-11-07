@@ -11,6 +11,8 @@ MAIN_Q_MIN_NODES:=128
 DEBUG_Q=debug-cache-quad
 QUEUE?=
 
+DATA_DIR?=$(firstword $(subst /, ,$(firstword $(MAKECMDGOALS))))
+
 ifeq ($(QUEUE),debug)
 QUEUE_ARG:=$(DEBUG_Q)
 else
