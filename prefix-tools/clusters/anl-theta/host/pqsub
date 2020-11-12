@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+
+set -e
+
+self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+EPREFIX=$(cd -- "$(dirname ${self_dir})"/ && pwd)
+source "${self_dir}"/pscommon.sh
+
+if [[ "$#" -lt 1 ]]
+then
+	echo "Usage: $0 qsub_arg..." 1>&2
+	exit 1
+fi
+
+QSUB_ARGS=()
+while true
+do
+	arg="$1"
+	if [[ "${arg}" = "--" ]]
+	then
+		shift
+		break
+	else
+		QSUB_ARGS+=("${arg}")
+		shift
+
+		if [[ "${arg}" =~ ^(-O|--outputprefix)$ ]]
+		then
+			log_prefix="$1" # the following arg
+			QSUB_ARGS+=("${1}")
+			shift
+		elif [[ "${arg}" =~ ^(-O|--outputprefix)= ]]
+		then
+			log_prefix="$(echo ${arg} | cut -d'=' -f2)"
+		fi
+	fi
+done
+
+# External interface: by default monitoring enabled, to disable set to 0
+if [[ "${MONITOR}" = "0" ]]
+then
+	MONITOR=
+elif [[ -z "${MONITOR}" ]]
+then
+	MONITOR=1
+fi
+
+if [[ -z "${log_prefix}" ]]
+then
+	log_prefix="job.$(date +%Y%m%d%H%M%S)_$$"
+fi
+
+logs=(${log_prefix}.{cobaltlog,output,error})
+
+if [[ -n "${MONITOR}" ]]
+then
+	function terminate_tail() {
+		if  [[ -n "${TAIL_PID}" ]]
+		then
+			echo "Terminating tail process..."
+			run kill ${TAIL_PID}
+			set +e
+			run wait ${TAIL_PID} 2>/dev/null
+			set -e
+		fi
+	}
+	trap terminate_tail EXIT
+	rm -f ${logs[@]}
+	touch ${logs[@]}
+	tail -f ${logs[@]} &
+	TAIL_PID=$!
+fi
+
+PCMD=$@
+# Need a wrapper script only to gain a way to check status of completed jobs
+jobstat_file="${log_prefix}.stat"
+tmpscr=${log_prefix}.sh
+cat <<EOF > $tmpscr
+#!/bin/bash
+"${EPREFIX}"/startprefix -c "${PCMD}"
+RC=\$?
+echo "ExitCode=\${RC}" > ${jobstat_file}_
+qstat -l -f \${COBALT_JOBID} >> ${jobstat_file}_
+mv ${jobstat_file}{_,}
+EOF
+chmod +x "${tmpscr}"
+run_qsub() {
+	rund qsub ${QSUB_ARGS[@]} "${tmpscr}"
+}
+rm -f ${jobstat_file} ${log_prefix}.job
+DRY=1 run_qsub > ${log_prefix}.job
+jobid=$(run_qsub)
+if [[ -z "${jobid}" || ! "${jobid}" =~ ^[0-9]+$ ]]
+then
+	echo "ERROR: failed to parse jobid from qsub output: '${jobid}'" 1>&2
+	exit 1
+fi
+echo "Job ID: $jobid"
+
+if [ -n "${NONBLOCK}" ]
+then
+	echo "EXITING: non-block mode enabled"
+	exit 0
+fi
+
+while [[ ! -f "${jobstat_file}" ]]
+do
+	sleep 10
+done
+cat "${jobstat_file}"
+RC=$(sed -n 's/^ExitCode=\(.*\)/\1/p' "${jobstat_file}")
+if [[ -z "${RC}" ]]
+then
+	echo "ERROR: no exit code found in job status file" 1>&2
+	exit 1
+fi
+exit ${RC}
