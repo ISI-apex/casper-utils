@@ -44,6 +44,7 @@ $(DATA_DIR)/:
 
 ifneq ($(VERBOSE),)
 MPIRUN_TP_ARGS+=\
+	-v \
 	--mca pml_base_verbose 100 \
 	--mca odls_base_verbose 100 \
 	--mca opal_verbose 100 \
@@ -55,6 +56,7 @@ MPIRUN_TP_ARGS+=\
 	--mca pml_ucx_verbose 100 \
 	--mca mtl_ofi_verbose 100 \
 	--mca mtl_base_verbose 100 \
+	--mca oob_base_verbose 100 \
 	--mca plm_alps_debug 1
 endif
 
