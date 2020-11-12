@@ -14,7 +14,7 @@ OMP_NUM_THREADS?=1
 
 MAX_TIME_MIN?=30
 ACCOUNT?=CASPER
-BLOCK?=
+MONITOR?=0
 SSH?=
 NOLOCAL?=1
 SEPARATE_JOBS?=
@@ -256,19 +256,15 @@ else # IN=0
 $(DATA_DIR)/%: | $(DATA_DIR)/
 	JOB_NAME="$(DATA_DIR)/job.$$(date +%Y%m%d%H%M%S).$$$$"
 	echo $@ > $${JOB_NAME}.tgt
-	rm -f $${JOB_NAME}.{cobaltlog,output,error}
-	touch $${JOB_NAME}.{cobaltlog,output,error}
-	qsub -O "$${JOB_NAME}" \
+	MONITOR=$(MONITOR) \
+	$(EPREFIX)/ptools/pqsub -O "$${JOB_NAME}" \
 		-n "$(or $(NODES),$(call job-nodes,$(or $(DEPS),$*)))" \
 		-t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
 		$(if $(SSH),--attr enable_ssh=1) \
 		$(if $(QUEUE_ARG),-q $(QUEUE_ARG)) \
-		$(EPREFIX)/startprefix -c \
-		"make -C $(CURDIR) IN=1 DATA_DIR=$(DATA_DIR) \
+		-- make -C $(CURDIR) IN=1 DATA_DIR=$(DATA_DIR) \
 		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
-		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))"
-	$(if $(BLOCK),,exit 0 &&) \
-		tail -f $${JOB_NAME}.{cobaltlog,output,error}
+		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))
 
 job:
 	qsub -n "$(or $(NODES),2)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
