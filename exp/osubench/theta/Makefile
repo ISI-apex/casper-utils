@@ -60,9 +60,6 @@ MPIRUN_TP_ARGS+=\
 	--mca plm_alps_debug 1
 endif
 
-# TODO: NODES (and similar vars) should be part of the target name,
-# and the recipe should extract it from there.
-
 # default should be equivalent to ugni
 $(DATA_DIR)/osubench_%_tp-default.log: \
 	MPIRUN_TP_ARGS+=
@@ -136,7 +133,7 @@ $(DATA_DIR)/osubench_%.log: | $(DATA_DIR)/
 # within the job, must run each target sequentially (nodes are shared)
 .NOTPARALLEL:
 else # IN=0
-# Accepts multiple targets in a single job: make dat/foo.log+dat/bar.log
+# Accepts multiple targets in a single job: make dat/foo.log+bar.log
 $(DATA_DIR)/%: | $(DATA_DIR)/
 	rm -f $@.{cobaltlog,output,error}
 	touch $@.{cobaltlog,output,error}
