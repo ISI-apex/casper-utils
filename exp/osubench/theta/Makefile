@@ -149,6 +149,7 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 
 job:
 	qsub -n "$(or $(NODES),2)" -t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
-		$(call make-q-arg,$(QUEUE)) $(QSUB_ARGS) --attr enable_ssh=1 -I
+		$(if $(QUEUE_ARG),-q $(QUEUE_ARG)) \
+		$(QSUB_ARGS) --attr enable_ssh=1 -I
 .PHONY: job
 endif # IN
