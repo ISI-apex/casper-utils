@@ -99,37 +99,37 @@ MAX_TIME_MIN?=180
 endif
 
 DATS_CORE?=\
-	times_mesh-512_ranks-16_mapby-core.csv \
-	times_mesh-512_ranks-32_mapby-core.csv \
-	times_mesh-512_ranks-64_mapby-core.csv \
-	times_mesh-1024_ranks-16_mapby-core.csv \
-	times_mesh-1024_ranks-32_mapby-core.csv \
-	times_mesh-1024_ranks-64_mapby-core.csv \
-	times_mesh-1024_ranks-128_mapby-core.csv \
-	times_mesh-2048_ranks-64_mapby-core.csv \
-	times_mesh-2048_ranks-128_mapby-core.csv \
-	times_mesh-2048_ranks-192_mapby-core.csv \
-	times_mesh-2048_ranks-256_mapby-core.csv \
-	times_mesh-3072_ranks-64_mapby-core.csv \
-	times_mesh-3072_ranks-128_mapby-core.csv \
-	times_mesh-3072_ranks-192_mapby-core.csv \
-	times_mesh-3072_ranks-256_mapby-core.csv \
-	times_mesh-4096_ranks-192_mapby-core.csv \
-	times_mesh-4096_ranks-256_mapby-core.csv \
-	times_mesh-4096_ranks-320_mapby-core.csv \
-	times_mesh-4096_ranks-384_mapby-core.csv \
-	times_mesh-6144_ranks-256_mapby-core.csv \
-	times_mesh-6144_ranks-384_mapby-core.csv \
-	times_mesh-6144_ranks-512_mapby-core.csv \
+	ch_mesh-512_ranks-16_mapby-core.csv \
+	ch_mesh-512_ranks-32_mapby-core.csv \
+	ch_mesh-512_ranks-64_mapby-core.csv \
+	ch_mesh-1024_ranks-16_mapby-core.csv \
+	ch_mesh-1024_ranks-32_mapby-core.csv \
+	ch_mesh-1024_ranks-64_mapby-core.csv \
+	ch_mesh-1024_ranks-128_mapby-core.csv \
+	ch_mesh-2048_ranks-64_mapby-core.csv \
+	ch_mesh-2048_ranks-128_mapby-core.csv \
+	ch_mesh-2048_ranks-192_mapby-core.csv \
+	ch_mesh-2048_ranks-256_mapby-core.csv \
+	ch_mesh-3072_ranks-64_mapby-core.csv \
+	ch_mesh-3072_ranks-128_mapby-core.csv \
+	ch_mesh-3072_ranks-192_mapby-core.csv \
+	ch_mesh-3072_ranks-256_mapby-core.csv \
+	ch_mesh-4096_ranks-192_mapby-core.csv \
+	ch_mesh-4096_ranks-256_mapby-core.csv \
+	ch_mesh-4096_ranks-320_mapby-core.csv \
+	ch_mesh-4096_ranks-384_mapby-core.csv \
+	ch_mesh-6144_ranks-256_mapby-core.csv \
+	ch_mesh-6144_ranks-384_mapby-core.csv \
+	ch_mesh-6144_ranks-512_mapby-core.csv \
 
 DATS_PPR?=\
-	times_mesh-1024_ranks-32_mapby-ppr-2-node.csv \
-	times_mesh-1024_ranks-32_mapby-ppr-4-node.csv \
-	times_mesh-1024_ranks-32_mapby-ppr-8-node.csv \
-	times_mesh-1024_ranks-32_mapby-ppr-16-node.csv \
-	times_mesh-1024_ranks-32_mapby-ppr-32-node.csv \
+	ch_mesh-1024_ranks-32_mapby-ppr-2-node.csv \
+	ch_mesh-1024_ranks-32_mapby-ppr-4-node.csv \
+	ch_mesh-1024_ranks-32_mapby-ppr-8-node.csv \
+	ch_mesh-1024_ranks-32_mapby-ppr-16-node.csv \
+	ch_mesh-1024_ranks-32_mapby-ppr-32-node.csv \
 
-all: $(DATA_DIR)/times_mapby-core_all.csv $(DATA_DIR)/times_mapby-ppr-node_all.csv
+all: $(DATA_DIR)/ch_mapby-core_all.csv $(DATA_DIR)/ch_mapby-ppr-node_all.csv
 .PHONY: all
 
 include ../Makefile
@@ -141,7 +141,7 @@ ppr: $(call append-dir,$(DATS_PPR))
 # A shortcut target for a smoketest for convenience
 TEST_DIR=dat-test
 TEST_ARGS=CLUSTER=discovery:debug MONITOR=1 DATA_DIR=$(TEST_DIR)
-TEST_TGT=$(TEST_DIR)/times_mesh-64_ranks-2_mapby-node.csv
+TEST_TGT=$(TEST_DIR)/ch_mesh-64_ranks-2_mapby-node.csv
 test:
 	rm -r $(TEST_DIR)
 	$(MAKE) $(TEST_ARGS) $(TEST_TGT)
@@ -151,12 +151,12 @@ $(DATA_DIR)/:
 	mkdir -p $@
 
 # This is optional info... could just rely on default that's max
-$(DATA_DIR)/times_mesh-512_%.csv: MAX_TIME_MIN=60
-$(DATA_DIR)/times_mesh-1024_%.csv: MAX_TIME_MIN=120
-$(DATA_DIR)/times_mesh-2048_%.csv: MAX_TIME_MIN=180
-$(DATA_DIR)/times_mesh-3072_%.csv: MAX_TIME_MIN=200
-$(DATA_DIR)/times_mesh-4096_%.csv: MAX_TIME_MIN=260
-$(DATA_DIR)/times_mesh-6144_%.csv: MAX_TIME_MIN=320
+$(DATA_DIR)/ch_mesh-512_%.csv: MAX_TIME_MIN=60
+$(DATA_DIR)/ch_mesh-1024_%.csv: MAX_TIME_MIN=120
+$(DATA_DIR)/ch_mesh-2048_%.csv: MAX_TIME_MIN=180
+$(DATA_DIR)/ch_mesh-3072_%.csv: MAX_TIME_MIN=200
+$(DATA_DIR)/ch_mesh-4096_%.csv: MAX_TIME_MIN=260
+$(DATA_DIR)/ch_mesh-6144_%.csv: MAX_TIME_MIN=320
 
 define calc
 $(strip $(shell echo $(1) | bc))
@@ -194,7 +194,7 @@ $(call calc,$(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1)))
 endef
 
 ifeq ($(IN),1)
-$(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
+$(DATA_DIR)/ch_%.csv: | $(DATA_DIR)/
 	OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 	mpirun $(MPIRUN_ARGS_INTERNAL) $(MPIRUN_ARGS) \
 		-n "$(call tgt-extract,ranks,$@)" \
@@ -205,7 +205,7 @@ $(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
 			"$(call tgt-extract,ranks,$@)" \
 			"$(call tgt-tasks-per-node,$@)"
 else
-$(DATA_DIR)/times_%.csv: | $(DATA_DIR)/
+$(DATA_DIR)/ch_%.csv: | $(DATA_DIR)/
 	$(PTOOLS)/prun -l $@.job env MONITOR=$(MONITOR) \
 	LOG_DIR="$(CURDIR)/$(DATA_DIR)" LOG_NAME="$(@F)" \
 	$(PTOOLS)/psbatch "$(CLUSTER)" "$(ARCH)" all \
