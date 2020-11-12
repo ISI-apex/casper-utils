@@ -82,8 +82,8 @@ $(DATA_DIR)/osubench_%_tp-ofi.log: \
 $(DATA_DIR)/osubench_%_tp-tcp.log: \
 	MPIRUN_TP_ARGS+=\
 		--mca btl self,tcp \
-		--mca btl_tcp_if_exclude lo,10.237.0.0/16 \
-		--mca oob_tcp_if_exclude lo,10.237.0.0/16
+		--mca btl_tcp_if_exclude lo,10.237.0.0/16,10.236.0.0/16 \
+		--mca oob_tcp_if_exclude lo,10.237.0.0/16,10.236.0.0/16
 
 define calc
 $(strip $(shell echo '$(1)' | bc))
