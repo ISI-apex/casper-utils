@@ -6,6 +6,8 @@ endif
 
 endif # MAKECMDGOALS
 
+MAKEFLAGS+=--keep-going
+
 # Very important to set OMP threads, otherwise it spawns way to many, and the
 # default also varies by rank count -- the default is a mess.
 OMP_NUM_THREADS?=1
