@@ -132,7 +132,7 @@ $(DATA_DIR)/osubench_%.log: | $(DATA_DIR)/
 	$(EPREFIX)/usr/bin/osubench '$(PATTERN)' '$(PATTERN_EXCLUDE)' \
 		mpirun -n "$(call tgt-extract,ranks,$*)" \
 		--map-by "$(call gen-map-by,$(call tgt-extract,mapby,$*))" \
-		$(MPIRUN_ARGS) $(MPIRUN_TP_ARGS) | tee "$@"
+		$(MPIRUN_ARGS) $(MPIRUN_TP_ARGS) 2>&1 | tee "$@"
 # within the job, must run each target sequentially (nodes are shared)
 .NOTPARALLEL:
 else # IN=0
