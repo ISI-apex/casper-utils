@@ -25,6 +25,11 @@ mpirun_args=(
 	#--mca plm_base_verbose 100
 	#--mca plm_alps_debug 1
 
+	# Required! Only 'direct' routed works on Theta, rest fail to spawn
+	--mca routed direct
+	#--mca routed binomial
+	#--mca routed radix
+
 	# Select transport: built-in uGNI
 	#--mca pml_ob1_priority 100
 	#--mca btl_base_verbose 100
