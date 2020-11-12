@@ -151,7 +151,6 @@ PCMD=$@
 tmpscr="${logdir}"/${log_name}.sh
 cat <<EOF > $tmpscr
 #!/bin/bash
-# When bash invoked with -c, it does not load rcfile
 "${EPREFIX}"/startprefix -c "$PCMD"
 EOF
 chmod +x "${tmpscr}"
