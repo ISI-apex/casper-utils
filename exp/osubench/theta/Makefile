@@ -2,7 +2,9 @@ ifeq ($(EPREFIX),)
 $(error EPREFIX env var not set to Gentoo Prefix)
 endif
 
-CASPER_UTILS_ROOT:=$(abspath ../../..)
+MAX_TIME_MIN?=30
+ACCOUNT?=CASPER
+BLOCK?=
 
 NOLOCAL?=1
 
@@ -11,13 +13,13 @@ MAIN_Q_MIN_NODES:=128
 DEBUG_Q=debug-cache-quad
 QUEUE?=
 
-DATA_DIR?=$(firstword $(subst /, ,$(firstword $(MAKECMDGOALS))))
-
 ifeq ($(QUEUE),debug)
 QUEUE_ARG:=$(DEBUG_Q)
 else
 QUEUE_ARG:=$(QUEUE)
 endif
+
+DATA_DIR?=$(or $(firstword $(subst /, ,$(firstword $(MAKECMDGOALS)))),dat)
 
 # By default, include all except one-sided benchmarks (observed hang from
 # within prefix, although need to retest), and exclude multi-threaded
@@ -26,18 +28,19 @@ endif
 PATTERN?=pt2pt|collective
 PATTERN_EXCLUDE?=_mt$$
 
-MAX_TIME_MIN?=30
-ACCOUNT?=CASPER
-DATA_DIR?=dat
-BLOCK?=
-
-# UCX and OFI don't work; builtin uGNI and builtin TCP do work
+# TODO: remove tpn, since determined by ranks and mapby
 DATS=\
-     $(DATA_DIR)/osubench_ranks-2_tpn-1_mapby-node_tp-default.log
-# TODO: concurrent job targets not supported, b/c need to block qsub
-#     $(DATA_DIR)/osubench_ranks-2_tpn-1_mapby-node_tp-tcp.log
+	osubench_ranks-2_tpn-1_mapby-node_tp-default.log \
+	osubench_ranks-2_tpn-1_mapby-node_tp-tcp.log
 
-all: $(DATS)
+EMPTY:=
+SPACE:= $(EMPTY) $(EMPTY)
+ifeq ($(IN),1)
+# Pack multiple targets into one job
+all: $(DATA_DIR)/$(subst $(SPACE),+,$(call strip,$(DATS)))
+else
+all: $(patsubst %,$(DATA_DIR)/%,$(DATS))
+endif
 
 $(DATA_DIR)/:
 	mkdir -p "$@"
