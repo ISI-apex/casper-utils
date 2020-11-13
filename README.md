@@ -89,7 +89,7 @@ the provided distfiles archive and directory, the format is `tar.gz`.
 Step 2. Run build job
 ---------------------
 
-### On USC HPCC or Discovery
+### USC HPCC or Discovery
 Use this wrapper script to launch the build job on worker nodes:
 
     $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER[:PARTITION] ARCH
@@ -127,7 +127,7 @@ Run the build script directly:
   prefix is built it cannot be relocated to another path)
 * the second argument is a Gentoo profile name, here, optimized for ANL Theta
 
-### ANL Theta and other Linux hosts
+### Other Linux hosts
 
 You might want to override the default for number of processors to use (the
 default is what `nproc` returns).
