@@ -263,6 +263,7 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		-t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
 		$(if $(SSH),--attr enable_ssh=1) \
 		$(if $(QUEUE_ARG),-q $(QUEUE_ARG)) \
+		$(QSUB_ARGS) \
 		-- make -C $(CURDIR) IN=1 DATA_DIR=$(DATA_DIR) \
 		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
 		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))
