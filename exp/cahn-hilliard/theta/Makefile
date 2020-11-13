@@ -12,7 +12,8 @@ MAKEFLAGS+=--keep-going
 # default also varies by rank count -- the default is a mess.
 OMP_NUM_THREADS?=1
 
-MAX_TIME_MIN?=30
+# 0 max time means maximum allowed
+MAX_TIME?=
 ACCOUNT?=CASPER
 MONITOR?=0
 SUPPRESS_RC?=
@@ -153,10 +154,6 @@ DATS_ch-ppr-node=\
 
 $(call target-set,ch-ppr-node,$(DATS_ch-ppr-node))
 
-# Hints
-$(DATA_DIR)/ch-mesh_512-%.csv: MAX_TIME_MIN=30
-$(DATA_DIR)/ch-mesh_1024-%.csv: MAX_TIME_MIN=45
-
 DEFINE:=define
 define BC_FUNCS
 $(DEFINE) ceil(x) {
@@ -171,6 +168,9 @@ $(strip $(shell echo '$(BC_FUNCS)' '$(1)' | bc))
 endef
 define max
 $(strip $(shell echo '$(1)' | xargs -n 1 echo | sort -nr | head -1))
+endef
+define greater-eq
+$(filter $(call calc,$(1) >= $(2)),1)
 endef
 
 define is-dbg-q
@@ -241,6 +241,28 @@ $(DATA_DIR)/ch_%.csv:
 			$(if $(TASKS),--tasks "$(TASKS)")
 		2>&1 | tee "$@.log"
 else # IN=0
+# max-time-for-nodes(nodes) -> max allowed job time limit
+# https://www.alcf.anl.gov/support-center/theta/job-scheduling-policy-theta
+# Note: qsub -t 0 (which supposed to mean 'max allowed') does not work.
+define max-time-for-nodes
+$(if $(call greater-eq,$(1),802),24:00:00,\
+$(if $(call greater-eq,$(1),640),12:00:00,\
+$(if $(call greater-eq,$(1),384),9:00:00,\
+$(if $(call greater-eq,$(1),256),6:00:00,\
+$(if $(call greater-eq,$(1),128),3:00:00,\
+$(if $(call is-dbg-q),01:00:00,\
+    $(error Nodes below min allocation and not on debug queue: $(1))))))))
+endef
+# job-nodes-arg(target_name)
+define job-nodes-arg
+$(strip $(or $(NODES),$(call job-nodes,$(or $(DATS),$(1)))))
+endef
+# max-time(target_name) -> max allowed job time limit
+define max-time-arg
+$(strip $(or $(MAX_TIME),\
+    $(call max-time-for-nodes,$(call job-nodes-arg,$(1)))))
+endef
+
 # Accepts multiple targets in a single job: make dat/foo.log+bar.log
 # Re JOB_NAME: Ideally we would just use the top-level target name, but
 # when multiple targets are combined into one job, the top-level target
@@ -251,9 +273,8 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 	echo JOB_NAME=$${JOB_NAME}
 	echo $@ > $${JOB_NAME}.tgt
 	MONITOR=$(MONITOR) SUPPRESS_RC=$(SUPPRESS_RC) \
-	$(EPREFIX)/ptools/pqsub -O "$${JOB_NAME}" \
-		-n "$(or $(NODES),$(call job-nodes,$(or $(DATS),$*)))" \
-		-t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
+	$(EPREFIX)/ptools/pqsub -O "$${JOB_NAME}" -A "$(ACCOUNT)" \
+		-n "$(call job-nodes-arg,$*)" -t "$(call max-time-arg,$*)" \
 		$(if $(SSH),--attr enable_ssh=1) \
 		$(if $(QUEUE_ARG),-q $(QUEUE_ARG)) \
 		$(QSUB_ARGS) \
