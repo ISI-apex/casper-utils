@@ -15,6 +15,7 @@ OMP_NUM_THREADS?=1
 MAX_TIME_MIN?=30
 ACCOUNT?=CASPER
 MONITOR?=0
+SUPPRESS_RC?=
 SSH?=
 NOLOCAL?=1
 SEPARATE_JOBS?=
@@ -256,7 +257,7 @@ else # IN=0
 $(DATA_DIR)/%: | $(DATA_DIR)/
 	JOB_NAME="$(DATA_DIR)/job.$$(date +%Y%m%d%H%M%S).$$$$"
 	echo $@ > $${JOB_NAME}.tgt
-	MONITOR=$(MONITOR) \
+	MONITOR=$(MONITOR) SUPPRESS_RC=$(SUPPRESS_RC) \
 	$(EPREFIX)/ptools/pqsub -O "$${JOB_NAME}" \
 		-n "$(or $(NODES),$(call job-nodes,$(or $(DEPS),$*)))" \
 		-t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
