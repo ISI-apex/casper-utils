@@ -79,7 +79,8 @@ mca_vars=(
 	#PRTE_MCA_pmix_base_verbose=100
 	#PRTE_MCA_pmix_server_verbose=100
 
-	# PRTE_MCA_pmix_server_max_wait=8000
+	# Default timeout (3sec) has been observed to expire even on debug q
+	PRTE_MCA_pmix_server_max_wait=60
 )
 
 # mpirun needs to talk to ALPS, so it neds to load its libs at runtime
