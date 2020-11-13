@@ -107,6 +107,12 @@ then
 	exit 0
 fi
 
+# Job lingers in the queue after job script exits
+while qstat "$jobid" 1>/dev/null 2>/dev/null
+do
+	sleep 10
+done
+
 while [[ ! -f "${jobstat_file}" ]]
 do
 	sleep 10
