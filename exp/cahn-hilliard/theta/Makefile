@@ -43,7 +43,7 @@ endif
 
 DATA_DIR?=$(firstword $(subst /, ,$(firstword $(MAKECMDGOALS))))
 
-all: ch-core-tiny ch-core-small ch-core-med ch-core-large
+all: ch-core-small ch-core-large
 
 $(DATA_DIR)/:
 	mkdir -p $@
@@ -80,68 +80,55 @@ DATS_ch-node=\
 $(call target-set,ch-node,$(DATS_ch-node))
 
 # < 1 hr total
-DATS_ch-core-tiny=\
-	ch_mesh-96_ranks-2_mapby-core.csv \
+DATS_ch-core-small=\
 	ch_mesh-96_ranks-4_mapby-core.csv \
 	ch_mesh-96_ranks-8_mapby-core.csv \
 	ch_mesh-96_ranks-16_mapby-core.csv \
 	ch_mesh-96_ranks-32_mapby-core.csv \
 	ch_mesh-96_ranks-64_mapby-core.csv \
-	ch_mesh-128_ranks-8_mapby-core.csv \
 	ch_mesh-128_ranks-16_mapby-core.csv \
 	ch_mesh-128_ranks-32_mapby-core.csv \
 	ch_mesh-128_ranks-48_mapby-core.csv \
 	ch_mesh-128_ranks-64_mapby-core.csv \
-
-$(call target-set,ch-core-tiny,$(DATS_ch-core-tiny))
-
-# < 1 hr total
-DATS_ch-core-small=\
-	ch_mesh-256_ranks-8_mapby-core.csv \
-	ch_mesh-256_ranks-16_mapby-core.csv \
 	ch_mesh-256_ranks-32_mapby-core.csv \
 	ch_mesh-256_ranks-48_mapby-core.csv \
 	ch_mesh-256_ranks-64_mapby-core.csv \
+	ch_mesh-512_ranks-48_mapby-core.csv \
+	ch_mesh-512_ranks-64_mapby-core.csv \
+	ch_mesh-512_ranks-96_mapby-core.csv \
+	ch_mesh-1024_ranks-96_mapby-core.csv \
+	ch_mesh-1024_ranks-128_mapby-core.csv \
+	ch_mesh-1024_ranks-192_mapby-core.csv \
 
 $(call target-set,ch-core-small,$(DATS_ch-core-small))
 
-# < 1 hr total
-DATS_ch-core-med=\
-	ch_mesh-512_ranks-16_mapby-core.csv \
-	ch_mesh-512_ranks-32_mapby-core.csv \
-	ch_mesh-512_ranks-48_mapby-core.csv \
-	ch_mesh-512_ranks-64_mapby-core.csv \
-
-$(call target-set,ch-core-med,$(DATS_ch-core-med))
-
-# for mesh=1024, each is < 1 hr
+# hypothesis: < 1 hr each (so run via the /split target)
 DATS_ch-core-large=\
-	ch_mesh-1024_ranks-32_mapby-core.csv \
-	ch_mesh-1024_ranks-48_mapby-core.csv \
-	ch_mesh-1024_ranks-64_mapby-core.csv \
-	ch_mesh-1536_ranks-128_mapby-core.csv \
-	ch_mesh-1536_ranks-192_mapby-core.csv \
-	ch_mesh-1536_ranks-256_mapby-core.csv \
+	ch_mesh-2048_ranks-192_mapby-core.csv \
 	ch_mesh-2048_ranks-256_mapby-core.csv \
 	ch_mesh-2048_ranks-320_mapby-core.csv \
-	ch_mesh-2048_ranks-384_mapby-core.csv \
-	ch_mesh-2048_ranks-512_mapby-core.csv \
-	ch_mesh-2048_ranks-1024_mapby-core.csv \
-	ch_mesh-2048_ranks-2048_mapby-core.csv \
+	ch_mesh-4096_ranks-384_mapby-core.csv \
+	ch_mesh-4096_ranks-448_mapby-core.csv \
 	ch_mesh-4096_ranks-512_mapby-core.csv \
-	ch_mesh-4096_ranks-1024_mapby-core.csv \
-	ch_mesh-4096_ranks-2048_mapby-core.csv \
-	ch_mesh-8192_ranks-1024_mapby-core.csv \
-	ch_mesh-8192_ranks-2048_mapby-core.csv \
-	ch_mesh-8192_ranks-4096_mapby-core.csv \
-	ch_mesh-8192_ranks-8192_mapby-core.csv \
-	ch_mesh-16384_ranks-8192_mapby-core.csv \
 
 $(call target-set,ch-core-large,$(DATS_ch-core-large))
 
-DATS_ch-core=\
-	$(DATS_ch-core-tiny) $(DATS_ch-core-small) \
-	$(DATS_ch-core-med) $(DATS_ch-core-large)
+# hypothesis: 8192 should take ~2hr (on ~16 nodes), 16384 ~4h (on ~32 nodes)
+DATS_ch-core-jumbo=\
+	ch_mesh-8192_ranks-768_mapby-core.csv \
+	ch_mesh-8192_ranks-1024_mapby-core.csv \
+	ch_mesh-8192_ranks-1280_mapby-core.csv \
+	ch_mesh-12288_ranks-1280_mapby-core.csv \
+	ch_mesh-12288_ranks-1536_mapby-core.csv \
+	ch_mesh-12288_ranks-1792_mapby-core.csv \
+
+#ch_mesh-16384_ranks-1536_mapby-core.csv \
+#ch_mesh-16384_ranks-2048_mapby-core.csv \
+#ch_mesh-16384_ranks-2560_mapby-core.csv \
+
+$(call target-set,ch-core-jumbo,$(DATS_ch-core-jumbo))
+
+DATS_ch-core=$(DATS_ch-core-small) $(DATS_ch-core-large)
 $(call target-set,ch-core,$(DATS_ch-core))
 
 # < 1 hr total
