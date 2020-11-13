@@ -1,0 +1,9 @@
+#/usr/bin/env bash
+
+while true
+do
+	echo
+	# sed to remove nasty whitespace
+	qstat -f | grep "$(whoami)" | sed 's/ \+/ /g'
+	sleep 20
+done
