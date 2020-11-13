@@ -18,6 +18,7 @@ MONITOR?=0
 SUPPRESS_RC?=
 SSH?=
 NOLOCAL?=1
+TASKS?=
 
 # It is not clear how '--map-by core' knows how many slots there
 # are per node, but the setting of MAX_SLOTS_PER_NODE must match
@@ -236,7 +237,8 @@ $(DATA_DIR)/ch_%.csv:
 		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 		bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
 			"$(call tgt-extract,ranks,$*)" \
-			"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@"
+			"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
+			$(if $(TASKS),--tasks "$(TASKS)")
 		2>&1 | tee "$@.log"
 else # IN=0
 # Accepts multiple targets in a single job: make dat/foo.log+bar.log
@@ -257,6 +259,7 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		$(QSUB_ARGS) \
 		-- make -C $(CURDIR) IN=1 DATA_DIR=$(DATA_DIR) \
 		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
+		TASKS=$(TASKS) \
 		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))
 
 job:
