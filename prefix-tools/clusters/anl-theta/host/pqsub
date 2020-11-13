@@ -113,12 +113,17 @@ do
 	sleep 10
 done
 
-while [[ ! -f "${jobstat_file}" ]]
-do
-	sleep 10
-done
+if [[ ! -f "${jobstat_file}" ]]
+then
+	echo "NOTICE: job did not create a stat file" 1>&2
+fi
+
 if [[ -z "${SUPPRESS_RC}" ]]
 then
+	if [[ ! -f "${jobstat_file}" ]]
+	then
+		exit 1
+	fi
 	RC=$(sed -n 's/^ExitCode=\(.*\)/\1/p' "${jobstat_file}")
 	if [[ -z "${RC}" ]]
 	then
