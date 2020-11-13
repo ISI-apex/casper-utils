@@ -245,7 +245,8 @@ else # IN=0
 # name gets too long.
 .ONESHELL:
 $(DATA_DIR)/%: | $(DATA_DIR)/
-	JOB_NAME="$(DATA_DIR)/job.$$(date +%Y%m%d%H%M%S).$$$$"
+	JOB_NAME="$(DATA_DIR)/ch.$$(date +%Y%m%d%H%M%S).$$$$"
+	echo JOB_NAME=$${JOB_NAME}
 	echo $@ > $${JOB_NAME}.tgt
 	MONITOR=$(MONITOR) SUPPRESS_RC=$(SUPPRESS_RC) \
 	$(EPREFIX)/ptools/pqsub -O "$${JOB_NAME}" \
