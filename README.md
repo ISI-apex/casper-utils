@@ -88,37 +88,66 @@ the provided distfiles archive and directory, the format is `tar.gz`.
 
 Step 2. Run build job
 ---------------------
-To build Gentoo Prefix on USC HPPC or Discovery:
+
+### On USC HPCC or Discovery
+Use this wrapper script to launch the build job on worker nodes:
 
     $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER[:PARTITION] ARCH
 
-To build Gentoo Prefix on other hosts, you might need to override the
-default for number of processors to use (the default is what `nproc`
-returns); this is required on the ANL Theta login machines since they are
-shared but do not enforce a limit:
+* the first argument (`PREFIX_PATH`) is a relative or absolute folder where
+  the prefix will be built (ensure several GB of space, and note that after
+  prefix is built it cannot be relocated to another path);
+* the second argument is a Gentoo profile name where CLUSTER identifies the
+  HPC cluster and ARCH identifies the CPU family for which to optimize via the
+  `-march,-mtune` compiler flags (for the generic unoptimized use `amd64`; for
+   supported clusters and cpu families see `ebuilds/profiles/casper-usc-*-*`),
+* the third argument is the cluster name: either `discovery` or `hpcc`,
+  optionally followed by colon and a partition name, e.g. `oneweek`.
+* the fourth argument ARCH again, but cannot be `amd64`;
+  even if you want a generic (unoptimized) build, you still have to choose a
+  CPU family for the build host (`sandybridge` is a reasonable choice for
+  building a generic prefix, see notes below).
+
+### ANL Theta
+
+On ANL Theta, the build can be done on a login machine.
+
+Override the default for number of processors to use (the default is what
+`nproc` returns), this is required on the ANL Theta login machines since they
+are shared but do not enforce a limit:
 
     $ export NPROC=12
 
-Then run the build script directly:
+Run the build script directly:
 
-    $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-usc-CLUSTER-ARCH
+    $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-anl-theta-knl
+
+* the first argument (`PREFIX_PATH`) is a relative or absolute folder where
+  the prefix will be built (ensure several GB of space, and note that after
+  prefix is built it cannot be relocated to another path)
+* the second argument is a Gentoo profile name, here, optimized for ANL Theta
+
+### ANL Theta and other Linux hosts
+
+You might want to override the default for number of processors to use (the
+default is what `nproc` returns).
+
+    $ export NPROC=16
+
+Run the build script directly:
+
+    $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-generic-ARCH
 
 where
 * the first argument (`PREFIX_PATH`) is a relative or absolute folder where
   the prefix will be built (ensure several GB of space, and note that after
-  prefix is built it cannot be relocated to another path), on USC HPCC you
-  most likely want this to be under /scratch or /scratch2 filesystem;
-* the second argument is a Gentoo profile name where CLUSTER identifies the
-  HPC cluster and ARCH identifies the CPU family for which to optimize via the
-  `-march,-mtune` compiler flags (for the generic unoptimized use `amd64`; for
-   supported clusters and cpu families see
-   `ebuilds/profiles/casper-usc-*-*`),
-* the third argument (for USC HPCC only) is the cluster name: either
-  `discovery` or `hpcc`.
-* the fourth argument (for USC HPCC only) ARCH again, but cannot be `amd64`;
-  even if you want a generic (unoptimized) build, you still have to choose a
-  CPU family for the build host (`sandybridge` is a reasonable choice for
-  building a generic prefix, see notes below).
+  prefix is built it cannot be relocated to another path)
+* the second argument is a Gentoo profile name where ARCH identifies the CPU
+  family for which to optimize via the `-march,-mtune` compiler flags (for the
+  generic unoptimized use `amd64`; for supported cpu families see
+  `ebuilds/profiles/casper-cpu-*`),
+
+### Tips and notes
 
 A useful oneliner for monitoring the log from the latest job invocation
 (especially useful when you have to re-invoke the job after fixing failures):
