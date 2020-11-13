@@ -9,6 +9,10 @@ source "${self_dir}"/pscommon.sh
 if [[ "$#" -lt 1 ]]
 then
 	echo "Usage: $0 qsub_arg..." 1>&2
+	echo "Environment vars:" 1>&2
+	echo "  SUPPRESS_RC: exit with return code 0 regardless of job" 1>&2
+	echo "  NONBLOCK: exit after submitting job, do not wait for job" 1>&2
+	echo "  MONITOR: dump the job log to stdout" 1>&2
 	exit 1
 fi
 
@@ -107,11 +111,15 @@ while [[ ! -f "${jobstat_file}" ]]
 do
 	sleep 10
 done
-cat "${jobstat_file}"
-RC=$(sed -n 's/^ExitCode=\(.*\)/\1/p' "${jobstat_file}")
-if [[ -z "${RC}" ]]
+if [[ -z "${SUPPRESS_RC}" ]]
 then
-	echo "ERROR: no exit code found in job status file" 1>&2
-	exit 1
+	RC=$(sed -n 's/^ExitCode=\(.*\)/\1/p' "${jobstat_file}")
+	if [[ -z "${RC}" ]]
+	then
+		echo "ERROR: no exit code found in job status file" 1>&2
+		exit 1
+	fi
+	exit ${RC}
+else
+	exit 0
 fi
-exit ${RC}
