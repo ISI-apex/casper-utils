@@ -143,9 +143,9 @@ where
   the prefix will be built (ensure several GB of space, and note that after
   prefix is built it cannot be relocated to another path)
 * the second argument is a Gentoo profile name where ARCH identifies the CPU
-  family for which to optimize via the `-march,-mtune` compiler flags (for the
-  generic unoptimized use `amd64`; for supported cpu families see
-  `ebuilds/profiles/casper-cpu-*`),
+  family for which to optimize via the `-march,-mtune` compiler flags. For the
+  generic unoptimized use `amd64`; for gpuk40 (Xeon E5-2670) use `sandybridge`;
+  for supported cpu families see `ebuilds/profiles/casper-generic-*`).
 
 ### Tips and notes
 
