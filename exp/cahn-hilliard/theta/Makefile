@@ -42,7 +42,7 @@ endif
 
 DATA_DIR?=$(firstword $(subst /, ,$(firstword $(MAKECMDGOALS))))
 
-all: ch-core-tiny ch-core-small ch-core-med ch-core-large ch-ppr-node
+all: ch-core-tiny ch-core-small ch-core-med ch-core-large
 
 $(DATA_DIR)/:
 	mkdir -p $@
@@ -123,6 +123,7 @@ DATS_ch-core-med=\
 
 $(call target-set,ch-core-med,$(DATS_ch-core-med))
 
+# for mesh=1024, each is < 1 hr
 DATS_ch-core-large=\
 	ch_mesh-1024_ranks-32_mapby-core.csv \
 	ch_mesh-1024_ranks-48_mapby-core.csv \
@@ -152,7 +153,7 @@ DATS_ch-core=\
 	$(DATS_ch-core-med) $(DATS_ch-core-large)
 $(call target-set,ch-core,$(DATS_ch-core))
 
-# TODO: 512 scales only up to 48 nodes, so might want to use mesh 1024
+# Each is < 1 hr (run this target with SEPARATE_JOBS=1)
 DATS_ch-ppr-node=\
 	ch_mesh-1024_ranks-64_mapby-ppr-8-node.csv \
 	ch_mesh-1024_ranks-64_mapby-ppr-16-node.csv \
