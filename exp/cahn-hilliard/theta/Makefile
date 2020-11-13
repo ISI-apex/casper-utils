@@ -153,7 +153,7 @@ DATS_ch-core=\
 	$(DATS_ch-core-med) $(DATS_ch-core-large)
 $(call target-set,ch-core,$(DATS_ch-core))
 
-# Each is < 1 hr (run this target with SEPARATE_JOBS=1)
+# < 1 hr total
 DATS_ch-ppr-node=\
 	ch_mesh-1024_ranks-64_mapby-ppr-8-node.csv \
 	ch_mesh-1024_ranks-64_mapby-ppr-16-node.csv \
