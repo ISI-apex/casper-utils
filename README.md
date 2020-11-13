@@ -39,20 +39,20 @@ On some supported HPC clusters, the `distfiles/` directory can be copied
 from a shared filesystem:
 * On USC HPCC/Discovery clusters:
 
-	$ rsync -aq /project/jpwalter_356/distfiles/ casper-utils/distfiles/
+        $ rsync -aq /project/jpwalter_356/distfiles/ casper-utils/distfiles/
 
 * On the ISI gpuk40 machine:
 
-	$ rsync -aq /home/casper/distfiles/ casper-utils/distfiles/
+        $ rsync -aq /home/casper/distfiles/ casper-utils/distfiles/
 
 * On other hosts, the same directory is available as a tar archive, which needs
 to be downloaded manually from the link below via a browser (or by using
 `gdown` tool, `curl`/`wget` likely will not work due to Google intricacies)
 and extracted at root of this repository:
 
-	$ cd casper-utils
-	$ gdown https://drive.google.com/uc?id=1nQqWsyeYBwCBA8gUdwSyjryr_OvSQFk1
-	$ tar xf distfiles-20200604.tar
+        $ cd casper-utils
+        $ gdown https://drive.google.com/uc?id=1nQqWsyeYBwCBA8gUdwSyjryr_OvSQFk1
+        $ tar xf distfiles-20200604.tar
 
 Then, make your copy writeable:
 
