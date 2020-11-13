@@ -18,7 +18,6 @@ MONITOR?=0
 SUPPRESS_RC?=
 SSH?=
 NOLOCAL?=1
-SEPARATE_JOBS?=
 
 # It is not clear how '--map-by core' knows how many slots there
 # are per node, but the setting of MAX_SLOTS_PER_NODE must match
@@ -58,21 +57,11 @@ define split-targets
 $(subst +,$(SPACE),$(patsubst $(DATA_DIR)/%,%,$(1)))
 endef
 
-ifeq ($(IN),1)
 define target-set-rule
-$(DATA_DIR)/$(1): $(patsubst %,$(DATA_DIR)/%,$(2))
+$(DATA_DIR)/$(1): DATS=$(2)
+$(DATA_DIR)/$(1): $(if $(IN),$(patsubst %,$(DATA_DIR)/%,$(2)))
+$(DATA_DIR)/$(1)/split: $(patsubst %,$(DATA_DIR)/%,$(2)) ;
 endef
-else # IN=0
-ifeq ($(SEPARATE_JOBS),1)
-define target-set-rule
-$(DATA_DIR)/$(1): $(patsubst %,$(DATA_DIR)/%,$(2)) ;
-endef
-else
-define target-set-rule
-$(DATA_DIR)/$(1): DEPS=$(call combine-targets,$(strip $(2)))
-endef
-endif # SEPARATE_JOBS
-endif # IN
 define target-set
 $(eval $(call target-set-rule,$(1),$(2)))
 endef
@@ -260,7 +249,7 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 	echo $@ > $${JOB_NAME}.tgt
 	MONITOR=$(MONITOR) SUPPRESS_RC=$(SUPPRESS_RC) \
 	$(EPREFIX)/ptools/pqsub -O "$${JOB_NAME}" \
-		-n "$(or $(NODES),$(call job-nodes,$(or $(DEPS),$*)))" \
+		-n "$(or $(NODES),$(call job-nodes,$(or $(DATS),$*)))" \
 		-t "$(MAX_TIME_MIN)" -A "$(ACCOUNT)" \
 		$(if $(SSH),--attr enable_ssh=1) \
 		$(if $(QUEUE_ARG),-q $(QUEUE_ARG)) \
