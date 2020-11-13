@@ -6,7 +6,7 @@ Step 0. Clone this repository recursively
 This repository contains references to other repositories as git
 submodules. To fetch the whole tree, clone recursively:
 
-    $ git --recursive https://github.com/ISI-apex/casper-utils
+    $ git clone --recursive https://github.com/ISI-apex/casper-utils
 
 If you already cloned non-recursively then simply do this:
 
