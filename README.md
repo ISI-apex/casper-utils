@@ -35,13 +35,17 @@ Step 1. Prepare source tarballs
 To build Gentoo Prefix need to pre-populate `distfiles/` directory
 with some special source tarballs (even if the build host is online).
 
-For building on USC HPCC/Discovery clusters, all source tarballs are on the
-shared filesystem, so you can copy from there:
+On some supported HPC clusters, the `distfiles/` directory can be copied
+from a shared filesystem:
+* On USC HPCC/Discovery clusters:
 
 	$ rsync -aq /project/jpwalter_356/distfiles/ casper-utils/distfiles/
-	$ chmod -R u+rw casper-utils/distfiles/
 
-On other hosts, the same directory is available as a tar archive, which needs
+* On the ISI gpuk40 machine:
+
+	$ rsync -aq /home/casper/distfiles/ casper-utils/distfiles/
+
+* On other hosts, the same directory is available as a tar archive, which needs
 to be downloaded manually from the link below via a browser (or by using
 `gdown` tool, `curl`/`wget` likely will not work due to Google intricacies)
 and extracted at root of this repository:
@@ -49,6 +53,10 @@ and extracted at root of this repository:
 	$ cd casper-utils
 	$ gdown https://drive.google.com/uc?id=1nQqWsyeYBwCBA8gUdwSyjryr_OvSQFk1
 	$ tar xf distfiles-20200604.tar
+
+Then, make your copy writeable:
+
+	$ chmod -R u+rw casper-utils/distfiles/
 
 Note: Online build hosts will automatically fetch tarballs from upstream (subject to
 broken links or server downtime), but some tarballs (listed below) cannot be
