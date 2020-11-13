@@ -4,8 +4,6 @@
 # from sniffing compiler version (which involves subprocess,
 # which forks, but fork breaks uGNI transport in OpenMPI).
 
-set -x
-
 BENCH_DIR=../../apps/firedrake-bench
 
 CXX=gcc CC=gcc CCVER=$(gcc -dumpversion | cut -d. -f-2) \
