@@ -219,6 +219,7 @@ endif
 
 ifeq ($(IN),1)
 $(DATA_DIR)/ch_%.csv:
+	set -o pipefail; \
 	mpirun -n "$(call tgt-extract,ranks,$*)" \
 		--map-by "$(call gen-map-by,$(call tgt-extract,mapby,$*))" \
 		$(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS) \
