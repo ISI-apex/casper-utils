@@ -20,6 +20,7 @@ SUPPRESS_RC?=
 SSH?=
 NOLOCAL?=1
 TASKS?=
+MPIRUN_INTERNAL_ARGS:=--bind-to none
 
 # It is not clear how '--map-by core' knows how many slots there
 # are per node, but the setting of MAX_SLOTS_PER_NODE must match
@@ -220,7 +221,7 @@ ifeq ($(IN),1)
 $(DATA_DIR)/ch_%.csv:
 	mpirun -n "$(call tgt-extract,ranks,$*)" \
 		--map-by "$(call gen-map-by,$(call tgt-extract,mapby,$*))" \
-		$(MPIRUN_ARGS) $(MPIRUN_TP_ARGS) \
+		$(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS) \
 		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 		bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
 			"$(call tgt-extract,ranks,$*)" \
