@@ -42,7 +42,10 @@ else
 QUEUE_ARG:=$(QUEUE)
 endif
 
-DATA_DIR?=$(firstword $(subst /, ,$(firstword $(MAKECMDGOALS))))
+DATA_DIR?=$(dir $(firstword $(MAKECMDGOALS)))
+# note: if DATA_DIR set externally, it must be terminated with /
+$(foreach t,$(MAKECMDGOALS),$(if $(filter $(DATA_DIR),$(dir $(t))),,\
+    $(error Targets have different data directory paths)))
 
 all: ch-core-small ch-core-large
 
