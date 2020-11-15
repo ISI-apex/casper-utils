@@ -201,6 +201,8 @@ endef
 define tgt-nodes
 $(call calc,ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1))))
 endef
+
+ifeq ($(IN),)
 define cap-job-nodes
 $(if $(call is-dbg-q),\
 	$(if $(filter 1,$(call calc,$(1) <= $(DBG_Q_MAX_NODES))),\
@@ -213,6 +215,19 @@ $(strip $(call cap-job-nodes,$(call sum,\
 		$(foreach t,$(call split-targets,$(1)),\
 			$(call tgt-nodes,$(t))))))
 endef
+# max-time-for-nodes(nodes) -> max allowed job time limit
+# https://www.alcf.anl.gov/support-center/theta/job-scheduling-policy-theta
+# Note: qsub -t 0 (which supposed to mean 'max allowed') does not work.
+define max-time-for-nodes
+$(if $(call greater-eq,$(1),802),24:00:00,\
+$(if $(call greater-eq,$(1),640),12:00:00,\
+$(if $(call greater-eq,$(1),384),9:00:00,\
+$(if $(call greater-eq,$(1),256),6:00:00,\
+$(if $(call greater-eq,$(1),128),3:00:00,\
+$(if $(call is-dbg-q),01:00:00,\
+    $(error Nodes below min allocation and not on debug queue: $(1))))))))
+endef
+endif # IN
 
 ifeq ($(IN),)
 # Only one job at a time allowed in debug queue
@@ -234,18 +249,6 @@ $(DATA_DIR)/ch_%.csv: | $(DATA_DIR)/
 			$(if $(TASKS),--tasks "$(TASKS)")
 		2>&1 | tee "$@.log"
 else # IN=0
-# max-time-for-nodes(nodes) -> max allowed job time limit
-# https://www.alcf.anl.gov/support-center/theta/job-scheduling-policy-theta
-# Note: qsub -t 0 (which supposed to mean 'max allowed') does not work.
-define max-time-for-nodes
-$(if $(call greater-eq,$(1),802),24:00:00,\
-$(if $(call greater-eq,$(1),640),12:00:00,\
-$(if $(call greater-eq,$(1),384),9:00:00,\
-$(if $(call greater-eq,$(1),256),6:00:00,\
-$(if $(call greater-eq,$(1),128),3:00:00,\
-$(if $(call is-dbg-q),01:00:00,\
-    $(error Nodes below min allocation and not on debug queue: $(1))))))))
-endef
 # job-nodes-arg(target_name)
 define job-nodes-arg
 $(strip $(or $(NODES),$(call job-nodes,$(or $(DATS),$(1)))))
