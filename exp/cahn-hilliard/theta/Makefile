@@ -291,7 +291,7 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		$(QSUB_ARGS) \
 		-- \
 		prte --daemonize \&\& trap pterm EXIT \&\& \
-		make -j -C $(CURDIR) IN=1 DATA_DIR=$(DATA_DIR) \
+		make -j -k -C $(CURDIR) IN=1 DATA_DIR=$(DATA_DIR) \
 		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
 		TASKS=$(TASKS) \
 		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))
