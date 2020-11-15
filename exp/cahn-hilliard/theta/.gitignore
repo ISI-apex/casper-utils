@@ -1,0 +1,6 @@
+*.cobaltlog
+*.output
+*.error
+
+# Even though we might commit some datasets, ignore the dir
+dat/
