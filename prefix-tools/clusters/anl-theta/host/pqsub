@@ -17,7 +17,7 @@ then
 fi
 
 QSUB_ARGS=()
-while true
+while [[ "$#" -gt 0 ]]
 do
 	arg="$1"
 	if [[ "${arg}" = "--" ]]
