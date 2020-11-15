@@ -264,9 +264,9 @@ $(strip $(or $(NODES),$(call job-nodes,$(call expanded-targets,$(1)))))
 endef
 # job-nodes-arg(target_name)
 define job-nodes-arg
-$(info Nodes required for $(1): \
+$(strip $(info Nodes required for $(1): \
   $(call required-nodes,$(call expanded-targets,$(1))))\
-$(call job-nodes-ovr,$(1))
+$(call job-nodes-ovr,$(1)))
 endef
 # max-time(target_name) -> max allowed job time limit
 define max-time-arg
