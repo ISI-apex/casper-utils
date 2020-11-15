@@ -92,17 +92,22 @@ DATS_ch-node=\
 
 $(call target-set,ch-node,$(DATS_ch-node))
 
-# < 1 hr total
-DATS_ch-core-small=\
-	ch_mesh-96_ranks-4_mapby-$(MAPBY).csv \
-	ch_mesh-96_ranks-8_mapby-$(MAPBY).csv \
-	ch_mesh-96_ranks-16_mapby-$(MAPBY).csv \
-	ch_mesh-96_ranks-32_mapby-$(MAPBY).csv \
-	ch_mesh-96_ranks-64_mapby-$(MAPBY).csv \
+# Fits on 8 nodes of debug q in parallel
+DATS_ch-core-tiny=\
 	ch_mesh-128_ranks-16_mapby-$(MAPBY).csv \
 	ch_mesh-128_ranks-32_mapby-$(MAPBY).csv \
 	ch_mesh-128_ranks-48_mapby-$(MAPBY).csv \
 	ch_mesh-128_ranks-64_mapby-$(MAPBY).csv \
+
+$(call target-set,ch-core-tiny,$(DATS_ch-core-tiny))
+
+# Together with ch-core-tiny, < 1 hr total (fits on dbg q in sequence)
+DATS_ch-core-small=\
+	ch_mesh-96_ranks-8_mapby-$(MAPBY).csv \
+	ch_mesh-96_ranks-16_mapby-$(MAPBY).csv \
+	ch_mesh-96_ranks-32_mapby-$(MAPBY).csv \
+	ch_mesh-96_ranks-64_mapby-$(MAPBY).csv \
+	ch_mesh-96_ranks-4_mapby-$(MAPBY).csv \
 	ch_mesh-256_ranks-32_mapby-$(MAPBY).csv \
 	ch_mesh-256_ranks-48_mapby-$(MAPBY).csv \
 	ch_mesh-256_ranks-64_mapby-$(MAPBY).csv \
@@ -115,33 +120,63 @@ DATS_ch-core-small=\
 
 $(call target-set,ch-core-small,$(DATS_ch-core-small))
 
-# hypothesis: < 1 hr each (so run via the /split target)
+# hypothesis: < 1 hr each (so can run via the /split target on debug q)
 DATS_ch-core-large=\
 	ch_mesh-2048_ranks-192_mapby-$(MAPBY).csv \
 	ch_mesh-2048_ranks-256_mapby-$(MAPBY).csv \
 	ch_mesh-2048_ranks-320_mapby-$(MAPBY).csv \
+	ch_mesh-4096_ranks-320_mapby-$(MAPBY).csv \
 	ch_mesh-4096_ranks-384_mapby-$(MAPBY).csv \
 	ch_mesh-4096_ranks-448_mapby-$(MAPBY).csv \
 	ch_mesh-4096_ranks-512_mapby-$(MAPBY).csv \
 
 $(call target-set,ch-core-large,$(DATS_ch-core-large))
 
-# hypothesis: 8192 should take ~2hr (on ~16 nodes), 16384 ~4h (on ~32 nodes)
+# Note: the gaps here are the ones in the above sets runnable on dbg q
 DATS_ch-core-jumbo=\
+	ch_mesh-2048_ranks-768_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-1024_mapby-$(MAPBY).csv \
+	ch_mesh-4096_ranks-128_mapby-$(MAPBY).csv \
+	ch_mesh-4096_ranks-256_mapby-$(MAPBY).csv \
+	ch_mesh-4096_ranks-768_mapby-$(MAPBY).csv \
+	ch_mesh-4096_ranks-1024_mapby-$(MAPBY).csv \
+	ch_mesh-6144_ranks-256_mapby-$(MAPBY).csv \
+	ch_mesh-6144_ranks-512_mapby-$(MAPBY).csv \
+	ch_mesh-6144_ranks-768_mapby-$(MAPBY).csv \
+	ch_mesh-6144_ranks-1024_mapby-$(MAPBY).csv \
+	ch_mesh-6144_ranks-2048_mapby-$(MAPBY).csv \
 	ch_mesh-8192_ranks-768_mapby-$(MAPBY).csv \
 	ch_mesh-8192_ranks-1024_mapby-$(MAPBY).csv \
-	ch_mesh-8192_ranks-1280_mapby-$(MAPBY).csv \
-	ch_mesh-12288_ranks-1280_mapby-$(MAPBY).csv \
-	ch_mesh-12288_ranks-1536_mapby-$(MAPBY).csv \
-	ch_mesh-12288_ranks-1792_mapby-$(MAPBY).csv \
+	ch_mesh-8192_ranks-2048_mapby-$(MAPBY).csv \
+	ch_mesh-8192_ranks-4096_mapby-$(MAPBY).csv \
 
-#ch_mesh-16384_ranks-1536_mapby-$(MAPBY).csv \
-#ch_mesh-16384_ranks-2048_mapby-$(MAPBY).csv \
-#ch_mesh-16384_ranks-2560_mapby-$(MAPBY).csv \
+# ch_mesh-12288_ranks-1024_mapby-$(MAPBY).csv \
+# ch_mesh-12288_ranks-2048_mapby-$(MAPBY).csv \
+# ch_mesh-12288_ranks-4096_mapby-$(MAPBY).csv \
 
 $(call target-set,ch-core-jumbo,$(DATS_ch-core-jumbo))
 
-DATS_ch-core=$(DATS_ch-core-small) $(DATS_ch-core-large) $(DATS_ch-core-jumbo)
+# These were collected on debug q (some only mesh+setup, without solve), but
+# perhaps are not of critical interest
+DATS_ch-core-jumbo-extra=\
+	ch_mesh-128_ranks-8_mapby-$(MAPBY).csv \
+	ch_mesh-256_ranks-8_mapby-$(MAPBY).csv \
+	ch_mesh-256_ranks-16_mapby-$(MAPBY).csv \
+	ch_mesh-1024_ranks-16_mapby-$(MAPBY).csv \
+	ch_mesh-1024_ranks-32_mapby-$(MAPBY).csv \
+	ch_mesh-1024_ranks-48_mapby-$(MAPBY).csv \
+	ch_mesh-1024_ranks-64_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-64_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-128_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-384_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-448_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-512_mapby-$(MAPBY).csv \
+	ch_mesh-4096_ranks-64_mapby-$(MAPBY).csv \
+
+$(call target-set,ch-core-jumbo-extra,$(DATS_ch-core-jumbo-extra))
+
+DATS_ch-core=$(DATS_ch-core-tiny) $(DATS_ch-core-small) \
+  $(DATS_ch-core-large) $(DATS_ch-core-jumbo)
 $(call target-set,ch-core,$(DATS_ch-core))
 
 # < 1 hr total
