@@ -21,7 +21,8 @@ SUPPRESS_RC?=
 SSH?=
 NOLOCAL?=1
 TASKS?=
-MPIRUN_INTERNAL_ARGS:=--bind-to none
+# --host +e: request empty nodes (do not share nodes among prun jobs)
+MPIRUN_INTERNAL_ARGS:=--bind-to none --host +e
 
 # It is not clear how '--map-by core' knows how many slots there
 # are per node, but the setting of MAX_SLOTS_PER_NODE must match
@@ -161,6 +162,9 @@ endef
 define calc
 $(strip $(shell echo '$(BC_FUNCS)' '$(1)' | bc))
 endef
+define sum
+$(call calc,$(patsubst %,% +,$(1)) 0)
+endef
 define max
 $(strip $(shell echo '$(1)' | xargs -n 1 echo | sort -nr | head -1))
 endef
@@ -205,24 +209,22 @@ $(if $(call is-dbg-q),\
 		$(1),$(MAIN_Q_MIN_NODES)))
 endef
 define job-nodes
-$(strip $(call cap-job-nodes,$(call max,\
+$(strip $(call cap-job-nodes,$(call sum,\
 		$(foreach t,$(call split-targets,$(1)),\
 			$(call tgt-nodes,$(t))))))
 endef
 
-# Only one job at a time allowed in debug queue and only one concurrent
-# execution of mpirun allowed per job (regardless of which queue), since
-# only one workload can run on the same set of resources for measurement.
-# TODO: does mpirun accept multiple invocations in the same job
-# allocations, and partition resources among the invocations?
-ifneq ($(or $(IN),$(call is-dbg-q)),)
+ifeq ($(IN),)
+# Only one job at a time allowed in debug queue
+ifneq ($(call is-dbg-q),)
 .NOTPARALLEL:
 endif
+endif # IN
 
 ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: | $(DATA_DIR)/
 	set -o pipefail; \
-	mpirun -n "$(call tgt-extract,ranks,$*)" \
+	prun -n "$(call tgt-extract,ranks,$*)" \
 		--map-by "$(call gen-map-by,$(call tgt-extract,mapby,$*))" \
 		$(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS) \
 		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
@@ -269,7 +271,9 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		$(if $(SSH),--attr enable_ssh=1) \
 		$(if $(QUEUE_ARG),-q $(QUEUE_ARG)) \
 		$(QSUB_ARGS) \
-		-- make -C $(CURDIR) IN=1 DATA_DIR=$(DATA_DIR) \
+		-- \
+		prte --daemonize \&\& trap pterm EXIT \&\& \
+		make -j -C $(CURDIR) IN=1 DATA_DIR=$(DATA_DIR) \
 		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
 		TASKS=$(TASKS) \
 		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))
