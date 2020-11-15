@@ -171,11 +171,6 @@ define is-dbg-q
 $(findstring debug,$(QUEUE_ARG))
 endef
 
-# dat/foo+bar --> foo
-define first-tgt
-$(firstword $(subst +, ,$(firstword $(1))))
-endef
-
 # tgt-extract(key, target_name) -> value
 define tgt-extract
 $(strip $(subst $(1)-,,$(filter $(1)-%,$(subst _, ,$(subst ., ,$(2))))))
