@@ -220,7 +220,7 @@ ifneq ($(or $(IN),$(call is-dbg-q)),)
 endif
 
 ifneq ($(IN),)
-$(DATA_DIR)/ch_%.csv:
+$(DATA_DIR)/ch_%.csv: | $(DATA_DIR)/
 	set -o pipefail; \
 	mpirun -n "$(call tgt-extract,ranks,$*)" \
 		--map-by "$(call gen-map-by,$(call tgt-extract,mapby,$*))" \
