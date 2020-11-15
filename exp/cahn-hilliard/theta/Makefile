@@ -219,7 +219,7 @@ ifneq ($(or $(IN),$(call is-dbg-q)),)
 .NOTPARALLEL:
 endif
 
-ifeq ($(IN),1)
+ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv:
 	set -o pipefail; \
 	mpirun -n "$(call tgt-extract,ranks,$*)" \
