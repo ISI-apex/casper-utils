@@ -251,14 +251,22 @@ $(DATA_DIR)/ch_%.csv: | $(DATA_DIR)/
 			$(if $(TASKS),--tasks "$(TASKS)")
 		2>&1 | tee "$@.log"
 else # IN=0
+define expanded-targets
+$(or $(DATS),$(1))
+endef
+define job-nodes-ovr
+$(strip $(or $(NODES),$(call job-nodes,$(call expanded-targets,$(1)))))
+endef
 # job-nodes-arg(target_name)
 define job-nodes-arg
-$(strip $(or $(NODES),$(call job-nodes,$(or $(DATS),$(1)))))
+$(info Nodes required for $(1): \
+  $(call required-nodes,$(call expanded-targets,$(1))))\
+$(call job-nodes-ovr,$(1))
 endef
 # max-time(target_name) -> max allowed job time limit
 define max-time-arg
 $(strip $(or $(MAX_TIME),\
-    $(call max-time-for-nodes,$(call job-nodes-arg,$(1)))))
+    $(call max-time-for-nodes,$(call job-nodes-ovr,$(1)))))
 endef
 
 # Accepts multiple targets in a single job: make dat/foo.log+bar.log
