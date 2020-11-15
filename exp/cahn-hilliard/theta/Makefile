@@ -141,7 +141,7 @@ DATS_ch-core-jumbo=\
 
 $(call target-set,ch-core-jumbo,$(DATS_ch-core-jumbo))
 
-DATS_ch-core=$(DATS_ch-core-small) $(DATS_ch-core-large)
+DATS_ch-core=$(DATS_ch-core-small) $(DATS_ch-core-large) $(DATS_ch-core-jumbo)
 $(call target-set,ch-core,$(DATS_ch-core))
 
 # < 1 hr total
