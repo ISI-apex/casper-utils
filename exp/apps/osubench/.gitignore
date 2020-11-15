@@ -5,3 +5,6 @@
 *.tar.gz
 osu-micro-benchmarks-*/
 osu-micro-benchmarks-*-prefix/
+
+# Even though we might commit some datasets, ignore dir
+dat/
