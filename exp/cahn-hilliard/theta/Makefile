@@ -210,10 +210,12 @@ $(if $(call is-dbg-q),\
 	$(if $(filter 1,$(call calc,$(MAIN_Q_MIN_NODES) < $(1))),\
 		$(1),$(MAIN_Q_MIN_NODES)))
 endef
+define required-nodes
+$(strip $(call sum,\
+  $(foreach t,$(call split-targets,$(1)),$(call tgt-nodes,$(t)))))
+endef
 define job-nodes
-$(strip $(call cap-job-nodes,$(call sum,\
-		$(foreach t,$(call split-targets,$(1)),\
-			$(call tgt-nodes,$(t))))))
+$(strip $(call cap-job-nodes,$(call required-nodes,$(1))))
 endef
 # max-time-for-nodes(nodes) -> max allowed job time limit
 # https://www.alcf.anl.gov/support-center/theta/job-scheduling-policy-theta
