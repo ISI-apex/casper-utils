@@ -21,6 +21,9 @@ mpirun_args=(
 	#--mca opal_verbose 100
 	#--mca opal_base_verbose 100
 	##--mca ras_base_verbose 100
+	#--mca errmgr_base_verbose 100
+	#--mca oob_base_verbose 100
+	#--mca routed_base_verbose 100
 	#--mca plm_base_verbose 100
 	#--mca plm_alps_debug 1
 
