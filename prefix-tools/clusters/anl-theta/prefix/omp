@@ -25,6 +25,8 @@ mpirun_args=(
 	#--mca plm_alps_debug 1
 
 	# Required! Only 'direct' routed works on Theta, rest fail to spawn
+	# NOTE: this is insufficient! OpenMPI (PRRTE) must be built without
+	# any other routed modules (./autogen.pl --include routed-direct)
 	--mca routed direct
 	#--mca routed binomial
 	#--mca routed radix
