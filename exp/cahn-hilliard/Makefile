@@ -17,6 +17,6 @@ $(DATA_DIR)/ch_mapby-%.csv:
 	sed -n '1p' $< > $@
 	echo $^ | xargs -n 1 sed -n '2p' | sort -n >> $@
 
-$(DATA_DIR)/ch_mapby-core_%.pdf \
-$(DATA_DIR)/ch_mapby-core_%.svg: $(DATA_DIR)/ch_mapby-core_%.csv
+$(DATA_DIR)/ch_mapby-ppr-node_%.pdf \
+$(DATA_DIR)/ch_mapby-ppr-node_%.svg: $(DATA_DIR)/ch_mapby-ppr-node_%.csv
 	$(if $(IN),,$(EPREFIX)/ptools/pstart) python ../plot.py $< $@
