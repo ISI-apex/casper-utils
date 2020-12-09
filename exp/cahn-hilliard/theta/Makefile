@@ -288,7 +288,7 @@ $(DATA_DIR)/ch_%.csv: | $(DATA_DIR)/
 		bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
 			"$(call tgt-extract,ranks,$*)" \
 			"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
-			$(if $(TASKS),--tasks "$(TASKS)")
+			$(if $(TASKS),--tasks "$(TASKS)") \
 		2>&1 | tee "$@.log"
 else # IN=0
 define expanded-targets
