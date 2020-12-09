@@ -103,13 +103,19 @@ DATS_ch-core-tiny=\
 
 $(call target-set,ch-core-tiny,$(DATS_ch-core-tiny))
 
+DATS_ch-mem=\
+	ch_mesh-256_ranks-16_mapby-$(MAPBY).csv \
+	ch_mesh-128_ranks-32_mapby-$(MAPBY).csv \
+
+$(call target-set,ch-mem,$(DATS_ch-mem))
+
 # Together with ch-core-tiny, < 1 hr total (fits on dbg q in sequence)
 DATS_ch-core-small=\
+	ch_mesh-96_ranks-4_mapby-$(MAPBY).csv \
 	ch_mesh-96_ranks-8_mapby-$(MAPBY).csv \
 	ch_mesh-96_ranks-16_mapby-$(MAPBY).csv \
 	ch_mesh-96_ranks-32_mapby-$(MAPBY).csv \
 	ch_mesh-96_ranks-64_mapby-$(MAPBY).csv \
-	ch_mesh-96_ranks-4_mapby-$(MAPBY).csv \
 	ch_mesh-256_ranks-32_mapby-$(MAPBY).csv \
 	ch_mesh-256_ranks-48_mapby-$(MAPBY).csv \
 	ch_mesh-256_ranks-64_mapby-$(MAPBY).csv \
@@ -124,9 +130,15 @@ $(call target-set,ch-core-small,$(DATS_ch-core-small))
 
 # hypothesis: < 1 hr each (so can run via the /split target on debug q)
 DATS_ch-core-large=\
+	ch_mesh-2048_ranks-128_mapby-$(MAPBY).csv \
 	ch_mesh-2048_ranks-192_mapby-$(MAPBY).csv \
 	ch_mesh-2048_ranks-256_mapby-$(MAPBY).csv \
 	ch_mesh-2048_ranks-320_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-384_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-512_mapby-$(MAPBY).csv \
+	ch_mesh-4096_ranks-128_mapby-$(MAPBY).csv \
+	ch_mesh-4096_ranks-192_mapby-$(MAPBY).csv \
+	ch_mesh-4096_ranks-256_mapby-$(MAPBY).csv \
 	ch_mesh-4096_ranks-320_mapby-$(MAPBY).csv \
 	ch_mesh-4096_ranks-384_mapby-$(MAPBY).csv \
 	ch_mesh-4096_ranks-448_mapby-$(MAPBY).csv \
@@ -134,27 +146,32 @@ DATS_ch-core-large=\
 
 $(call target-set,ch-core-large,$(DATS_ch-core-large))
 
-# Note: the gaps here are the ones in the above sets runnable on dbg q
+$(call target-set,ch-core-8nodes,\
+  $(DATS_ch-core-small) $(DATS_ch-core-large))
+
 DATS_ch-core-jumbo=\
 	ch_mesh-2048_ranks-768_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-1024_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-128_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-256_mapby-$(MAPBY).csv \
 	ch_mesh-4096_ranks-768_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-1024_mapby-$(MAPBY).csv \
-	ch_mesh-6144_ranks-256_mapby-$(MAPBY).csv \
-	ch_mesh-6144_ranks-512_mapby-$(MAPBY).csv \
-	ch_mesh-6144_ranks-768_mapby-$(MAPBY).csv \
-	ch_mesh-6144_ranks-1024_mapby-$(MAPBY).csv \
-	ch_mesh-6144_ranks-2048_mapby-$(MAPBY).csv \
-	ch_mesh-8192_ranks-768_mapby-$(MAPBY).csv \
-	ch_mesh-8192_ranks-1024_mapby-$(MAPBY).csv \
-	ch_mesh-8192_ranks-2048_mapby-$(MAPBY).csv \
-	ch_mesh-8192_ranks-4096_mapby-$(MAPBY).csv \
 
-# ch_mesh-12288_ranks-1024_mapby-$(MAPBY).csv \
-# ch_mesh-12288_ranks-2048_mapby-$(MAPBY).csv \
-# ch_mesh-12288_ranks-4096_mapby-$(MAPBY).csv \
+# segfault
+#	ch_mesh-2048_ranks-1024_mapby-$(MAPBY).csv \
+#	ch_mesh-4096_ranks-1024_mapby-$(MAPBY).csv \
+
+# OOM
+#	ch_mesh-6144_ranks-256_mapby-$(MAPBY).csv \
+#	ch_mesh-6144_ranks-512_mapby-$(MAPBY).csv \
+#	ch_mesh-6144_ranks-768_mapby-$(MAPBY).csv \
+#	ch_mesh-6144_ranks-1024_mapby-$(MAPBY).csv \
+#	ch_mesh-6144_ranks-2048_mapby-$(MAPBY).csv \
+
+#	ch_mesh-8192_ranks-768_mapby-$(MAPBY).csv \
+#	ch_mesh-8192_ranks-1024_mapby-$(MAPBY).csv \
+#	ch_mesh-8192_ranks-2048_mapby-$(MAPBY).csv \
+#	ch_mesh-8192_ranks-4096_mapby-$(MAPBY).csv \
+
+#	ch_mesh-12288_ranks-1024_mapby-$(MAPBY).csv \
+#	ch_mesh-12288_ranks-2048_mapby-$(MAPBY).csv \
+#	ch_mesh-12288_ranks-4096_mapby-$(MAPBY).csv \
 
 $(call target-set,ch-core-jumbo,$(DATS_ch-core-jumbo))
 
