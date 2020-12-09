@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -e
+
+run() {
+	echo "$@"
+	"$@"
+}
+
+# The command to start the DVM is always asynchronous, and --daemonize is
+# perfect because it returns only after the DVM has been started. However,
+# --daemonize disable the verbose log, so we provide a manual implementation
+# of daemonize behavior here. Note that --daemonize disables logging even
+# in the prun invocation.
+
+if [[ -n "${LOG}" ]]
+then
+	if [[ ! -d "$(dirname "${LOG}")" ]]
+	then
+		echo "dvmrun: ERROR: path for log does not exist: ${LOG}" 1>&2
+		exit 1
+	fi
+	# Could use a pipe, but we do want to mirror output to stdout/err,
+	# so simplest is to redirect to file, tee the file, grep the file.
+	echo "prte 2>&1 | tee "${LOG}" &"
+	prte 2>&1 | tee "${LOG}" &
+	DVM_PID=$! # PID of tee, but good enough
+	while ! grep -q 'DVM ready' "${LOG}" && \
+		ps -p "${DVM_PID}" 1>/dev/null 2>/dev/null
+	do
+		sleep 10
+	done
+	if ! ps -p "${DVM_PID}" 1>/dev/null 2>/dev/null
+	then
+		echo "dvmrun: ERROR: PRRTE DVM failed to start" 1>&2
+		exit 1
+	fi
+else
+	run prte --daemonize
+fi
+trap "run pterm" EXIT
+
+"$@"
