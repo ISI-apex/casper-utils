@@ -20,6 +20,8 @@ MONITOR?=0
 SUPPRESS_RC?=
 SSH?=
 NOLOCAL?=1
+OVERSUBSCRIBE?=
+DISPLAYMAP?=
 TASKS?=
 # --host +e: request empty nodes (do not share nodes among prun jobs)
 MPIRUN_INTERNAL_ARGS:=--bind-to none --host +e
@@ -221,7 +223,7 @@ $(strip $(subst $(1)-,,$(filter $(1)-%,$(subst _, ,$(subst ., ,$(2))))))
 endef
 
 define gen-map-by
-$(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)
+$(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)$(if $(OVERSUBSCRIBE),:OVERSUBSCRIBE)$(if $(DISPLAYMAP),:DISPLAYMAP)
 endef
 
 # tgt-tasks-per-node(target_name)
