@@ -327,10 +327,10 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		$(if $(QUEUE_ARG),-q $(QUEUE_ARG)) \
 		$(QSUB_ARGS) \
 		-- \
-		prte --daemonize \&\& trap pterm EXIT \&\& \
-		make -j -k -C $(CURDIR) IN=1 DATA_DIR=$(DATA_DIR) \
-		MPIRUN_ARGS='$(MPIRUN_ARGS)' VERBOSE=$(VERBOSE) \
-		TASKS=$(TASKS) \
+		env LOG=$${JOB_NAME}.dvmlog dvmrun \
+		make -j -k -C $(CURDIR) IN=1 \
+		DATA_DIR=$(DATA_DIR) MPIRUN_ARGS='$(MPIRUN_ARGS)' \
+		VERBOSE=$(VERBOSE) TASKS=$(TASKS) \
 		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))
 
 job:
