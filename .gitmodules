@@ -10,3 +10,6 @@
 [submodule "exp/apps/firedrake-bench"]
 	path = exp/apps/firedrake-bench
 	url = ../firedrake-bench.git
+[submodule "exp/apps/halide-sar-app"]
+	path = exp/apps/halide-sar-app
+	url = git@github.com:acolinisi/halide-sar-app.git
