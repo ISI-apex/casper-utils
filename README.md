@@ -528,7 +528,7 @@ To build, first build the CASPER compiler (must use Clang for all builds):
 
 Then, build an app against this build of CASPER, for example for the SAR app:
 
-    cd exp/apps/casper/halide-sar-app
+    cd exp/apps/casper/halide-sar-app/casper
     mkdir build && cd build
     CXX=clang++ CC=clang cmake ..
     make
