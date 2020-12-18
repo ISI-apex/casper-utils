@@ -94,17 +94,6 @@ public:
                 .parallel(x_o);
         }
 #endif
-
-#if 0
-        // Match mem layout to Casper Dat buffers (see comments in the other
-        // generator)
-        // TODO: bad that not agnostic to secondary dim size, but how else?
-
-        input.dim(0).set_stride(IMG_WIDTH);
-        input.dim(1).set_stride(1);
-        blur_y.dim(0).set_stride(IMG_WIDTH - BLUR_WIDTH);
-        blur_y.dim(1).set_stride(1);
-#endif
     }
 };
 
