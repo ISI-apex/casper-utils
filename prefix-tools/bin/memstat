@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+
+import sys
+import pandas as pd
+
+d = pd.read_csv(sys.argv[1])
+
+dg = d.groupby('pid')
+#print(dg.max()['mem_mb'])
+print(dg.min()['mem_mb'], dg.max()['mem_mb'])
+
