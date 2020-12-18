@@ -6,9 +6,6 @@ project(matrix LANGUAGES CXX C)
 find_package(CASPER REQUIRED PATHS "../../../../compiler")
 find_package(Halide REQUIRED)
 
-include_directories(${CASPER_META_INCLUDE_DIRS})
-link_directories(${CASPER_META_LIB_DIRS})
-
 casper_add_exec(matrix matrix.meta
   SOURCES matrix.meta.cpp halide_kern.meta.cpp
   C_KERNEL_SOURCES kern.c

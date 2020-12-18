@@ -6,9 +6,6 @@ project(blur LANGUAGES CXX C)
 find_package(CASPER REQUIRED PATHS "../../../../compiler")
 find_package(Halide REQUIRED)
 
-include_directories(${CASPER_META_INCLUDE_DIRS})
-link_directories(${CASPER_META_LIB_DIRS})
-
 # Input image (pick one) (ordered by size)
 set(INPUT_IMG
   casper-256x200.bmp
