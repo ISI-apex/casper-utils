@@ -510,3 +510,30 @@ The speedup from best parameter values over poorest or over average parameter
 values can be plotted using scripts in `exp/tune/`, however at the moment, the
 raw data output by the previous steps needs to be manually post-processed to
 extract aggregated maximum/minimum/etc values.
+
+Build applications
+===================
+
+There are several applications written in CASPER in `exp/apps/casper/`.
+To build and run them, first enter the Prefix as described in an earlier
+section (builds have not been tested on other systems, i.e. outside of the
+Prefix).
+
+To build, first build the CASPER compiler (must use Clang for all builds):
+
+    cd compiler
+    mkdir build && cd build
+    CXX=clang++ CC=clang cmake ..
+    make
+
+Then, build an app against this build of CASPER, for example for the SAR app:
+
+    cd exp/apps/casper/halide-sar-app
+    mkdir build && cd build
+    CXX=clang++ CC=clang cmake ..
+    make
+    make sarbp.run
+
+The app is a separate CMake project, and it contains a relative path to the
+CASPER compiler directory assuming the structure of this parent repository.
+The CASPER installation in the system/prefix takes precedence over this hint.
