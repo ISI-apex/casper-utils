@@ -4,7 +4,6 @@ project(blur LANGUAGES CXX C)
 # NOTE: To let the package installed in the system take precedence, use
 # PATHS, to have the given path take precedence, use HINTS.
 find_package(CASPER REQUIRED PATHS "../../../../compiler")
-find_package(Halide REQUIRED)
 
 # Input image (pick one) (ordered by size)
 set(INPUT_IMG
@@ -33,7 +32,6 @@ casper_add_exec(blur blur.meta
   # Until then, we have mock artifacts, specified here.
   CANDIDATES blur.candidates.csv
 )
-target_link_libraries(blur.meta LINK_PUBLIC Halide::Halide)
 
 # Run the target program (test target)
 add_custom_target(blur.run
