@@ -14,5 +14,5 @@
 	path = exp/apps/halide-sar-app
 	url = ../halide-sar-app.git
 [submodule "exp/apps/casper/halide-sar-app"]
-	path = exp/apps/casper/halide-sar-app
+	path = exp/apps/casper/sar/halide-sar-app
 	url = ../halide-sar-app.git
