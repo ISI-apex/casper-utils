@@ -12,7 +12,7 @@
 	url = ../firedrake-bench.git
 [submodule "exp/apps/halide-sar-app"]
 	path = exp/apps/halide-sar-app
-	url = git@github.com:acolinisi/halide-sar-app.git
+	url = git@github.com:ISI-apex/halide-sar-app.git
 [submodule "exp/apps/casper/halide-sar-app"]
 	path = exp/apps/casper/halide-sar-app
 	url = git@github.com:ISI-apex/halide-sar-app.git
