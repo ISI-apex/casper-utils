@@ -241,7 +241,7 @@ $(strip $(subst $(1)-,,$(filter $(1)-%,$(subst _, ,$(subst ., ,$(2))))))
 endef
 
 define gen-map-by
-$(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)$(if $(OVERSUBSCRIBE),:OVERSUBSCRIBE)$(if $(DISPLAYMAP),:DISPLAYMAP)
+$(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)$(if $(OVERSUBSCRIBE),:OVERSUBSCRIBE)$(if $(DISPLAYMAP),:DISPLAY)
 endef
 
 # tgt-tasks-per-node(target_name)
