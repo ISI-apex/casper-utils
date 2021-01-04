@@ -23,8 +23,10 @@ NOLOCAL?=1
 OVERSUBSCRIBE?=
 DISPLAYMAP?=
 TASKS?=
-# --host +e: request empty nodes (do not share nodes among prun jobs)
-MPIRUN_INTERNAL_ARGS:=--bind-to none --host +e
+# Whether prun subjobs are prohibited from being allocated onto the same node
+EMPTYNODES?=1
+
+MPIRUN_INTERNAL_ARGS:=--bind-to none $(if $(EMPTYNODES),--host +e)
 
 # MAX_SLOTS_PER_NODE is only used for --map-by core.  It is not clear how
 # '--map-by core' knows how many slots there are per node, but the setting
