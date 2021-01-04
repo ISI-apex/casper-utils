@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+
+parser = argparse.ArgumentParser(
+	description="Generate a rankfile for OpenMPI prun")
+parser.add_argument("rankfile")
+parser.add_argument("--ranks", type=int, required=True)
+parser.add_argument("--ranks-per-node", type=int, required=True)
+parser.add_argument("--dedicate-node-to-rank0", action="store_true")
+#parser.add_argument("--bind", action="store_true")
+args = parser.parse_args()
+
+if args.rankfile != '-':
+	rankfile = open(args.rankfile, "w")
+else:
+	rankfile = sys.stdout
+
+node = 0
+ranks_on_node = 0
+for r in range(args.ranks):
+	line = f"rank {r}=+n{node} slot={ranks_on_node}"
+	print(line, file=rankfile)
+
+	ranks_on_node += 1
+	if (args.dedicate_node_to_rank0 and r == 0) or \
+		ranks_on_node == args.ranks_per_node:
+		node += 1
+		ranks_on_node = 0
