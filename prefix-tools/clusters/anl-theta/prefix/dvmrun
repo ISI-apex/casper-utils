@@ -13,6 +13,14 @@ run() {
 # of daemonize behavior here. Note that --daemonize disables logging even
 # in the prun invocation.
 
+prte_args=()
+while [[ "$#" -gt 0 && "$1" != "--" ]]
+do
+	prte_args+=("$1")
+	shift
+done
+shift # --
+
 if [[ -n "${LOG}" ]]
 then
 	if [[ ! -d "$(dirname "${LOG}")" ]]
@@ -23,7 +31,7 @@ then
 	# Could use a pipe, but we do want to mirror output to stdout/err,
 	# so simplest is to redirect to file, tee the file, grep the file.
 	echo "prte 2>&1 | tee "${LOG}" &"
-	prte 2>&1 | tee "${LOG}" &
+	prte "${prte_args[@]}" 2>&1 | tee "${LOG}" &
 	DVM_PID=$! # PID of tee, but good enough
 	while ! grep -q 'DVM ready' "${LOG}" && \
 		ps -p "${DVM_PID}" 1>/dev/null 2>/dev/null
@@ -36,7 +44,7 @@ then
 		exit 1
 	fi
 else
-	run prte --daemonize
+	run prte --daemonize "${prte_args[@]}"
 fi
 trap "run pterm" EXIT
 

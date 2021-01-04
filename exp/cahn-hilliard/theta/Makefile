@@ -345,6 +345,7 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		$(QSUB_ARGS) \
 		-- \
 		env LOG=$${JOB_NAME}.dvmlog dvmrun \
+		  -- \
 		make -j -k -C $(CURDIR) IN=1 \
 		DATA_DIR=$(DATA_DIR) MPIRUN_ARGS='$(MPIRUN_ARGS)' \
 		VERBOSE=$(VERBOSE) TASKS=$(TASKS) \
