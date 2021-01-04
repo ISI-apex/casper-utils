@@ -25,6 +25,8 @@ DISPLAYMAP?=
 TASKS?=
 # Whether prun subjobs are prohibited from being allocated onto the same node
 EMPTYNODES?=1
+# TODO: this is WIP (do not use)
+RANKFILE?=
 
 MPIRUN_INTERNAL_ARGS:=--bind-to none $(if $(EMPTYNODES),--host +e)
 
@@ -260,8 +262,9 @@ $(strip $(if $(findstring mapby-ppr-,$(1)),\
 endef
 
 # tgt-nodes(target_name) -> node count (from: ranks/tasks_per_node)
+# +1 extra node for dedicating to rank 0
 define tgt-nodes
-$(call calc,ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1))))
+$(call calc,$(if $(RANKFILE),1+)ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1))))
 endef
 
 ifeq ($(IN),)
@@ -300,11 +303,19 @@ ifneq ($(call is-dbg-q),)
 endif
 endif # IN
 
+
+$(DATA_DIR)/ch_%.csv.rankfile: | $(DATA_DIR)/
+	mapranks --ranks "$(call tgt-extract,ranks,$*)" \
+		--ranks-per-node "$(call tgt-tasks-per-node,$*)" \
+		--dedicate-node-to-rank0 "$@"
+
 ifneq ($(IN),)
-$(DATA_DIR)/ch_%.csv: | $(DATA_DIR)/
+$(DATA_DIR)/ch_%.csv: $(if $(RANKFILE),$(DATA_DIR)/ch_%.csv.rankfile) \
+  | $(DATA_DIR)/
 	set -o pipefail; \
 	prun -n "$(call tgt-extract,ranks,$*)" \
 		--map-by "$(call gen-map-by,$(call tgt-extract,mapby,$*))" \
+		$(if $(RANKFILE),--mca prte_rankfile "$<") \
 		$(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS) \
 		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 		bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
@@ -349,7 +360,8 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		$(QSUB_ARGS) \
 		-- \
 		env LOG=$${JOB_NAME}.dvmlog dvmrun \
-		  -- \
+		$(if $(RANKFILE),--mca prte_rankfile $(DATA_DIR)/%.rankfile) \
+		-- \
 		make -j -k -C $(CURDIR) IN=1 \
 		DATA_DIR=$(DATA_DIR) MPIRUN_ARGS='$(MPIRUN_ARGS)' \
 		VERBOSE=$(VERBOSE) TASKS=$(TASKS) \
