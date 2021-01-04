@@ -357,3 +357,5 @@ job:
 		$(QSUB_ARGS) --attr enable_ssh=1 -I
 .PHONY: job
 endif # IN
+
+.SECONDARY:
