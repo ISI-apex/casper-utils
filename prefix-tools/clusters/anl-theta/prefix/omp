@@ -59,9 +59,9 @@ mpirun_args=(
 	#--mca pml_ucx_priority 0
 
 	# Select transport: TCP
+	#--mca pml_ob1_priority 0
 	#--mca btl self,tcp
-	#--mca btl_tcp_if_include ipogif0
-	# Also works: --mca btl_tcp_if_include 10.128.0.0/14
+	#--mca btl_tcp_if_exclude 10.237.0.0/16,10.236.0.0/16
 
 	# OOB uses TCP, regardless of the main transport
 	--mca oob_tcp_if_exclude 10.237.0.0/16,10.236.0.0/16
