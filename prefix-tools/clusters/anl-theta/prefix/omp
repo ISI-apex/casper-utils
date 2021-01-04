@@ -26,6 +26,8 @@ mpirun_args=(
 	#--mca routed_base_verbose 100
 	#--mca plm_base_verbose 100
 	#--mca plm_alps_debug 1
+	#--mca btl_base_verbose 100
+	#--mca ras_base_verbose 100
 
 	# Required! Only 'direct' routed works on Theta, rest fail to spawn
 	# NOTE: this is insufficient! OpenMPI (PRRTE) must be built without
