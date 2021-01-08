@@ -217,15 +217,15 @@ $(call target-set,ch-ppr-node,$(DATS_ch-ppr-node))
 
 DEFINE:=define
 define BC_FUNCS
-$(DEFINE) ceil(x) {
-  auto os,xx;x=-x;os=scale;scale=0
-  xx=x/1;if(xx>x).=xx--
-  scale=os;return(-xx)
-}
-scale=4;
+$(DEFINE) ceil(x) {\n
+  auto os,xx;x=-x;os=scale;scale=0\n
+  xx=x/1;if(xx>x).=xx--\n
+  scale=os;return(-xx)\n
+}\n
+scale=4;\n
 endef
 define calc
-$(strip $(shell echo '$(BC_FUNCS)' '$(1)' | bc))
+$(strip $(shell echo -e '$(BC_FUNCS)' '$(1)' | bc))
 endef
 define sum
 $(call calc,$(patsubst %,% +,$(1)) 0)
