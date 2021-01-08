@@ -46,7 +46,9 @@ int main (int argc, char *argv[])
 
 	printf("host %s: initing MPI...\n", hostname);
 
-	//sleep(30);
+#ifdef SLEEP
+	sleep(30);
+#endif
 
 	MPI_Init (&argc, &argv);
 
