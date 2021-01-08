@@ -23,26 +23,26 @@ NOLOCAL?=1
 OVERSUBSCRIBE?=
 DISPLAYMAP?=
 TASKS?=
-# Whether prun subjobs are prohibited from being allocated onto the same node
-EMPTYNODES?=1
-# TODO: this is WIP (do not use)
-RANKFILE?=
+DEDI_NODE_FOR_RANK0?=1
 
-MPIRUN_INTERNAL_ARGS:=--bind-to none $(if $(EMPTYNODES),--host +e)
+MPIRUN_INTERNAL_ARGS:=--bind-to none
 
-# MAX_SLOTS_PER_NODE is only used for --map-by core.  It is not clear how
-# '--map-by core' knows how many slots there are per node, but the setting
-# of MAX_SLOTS_PER_NODE must match whatever '--map-by core' does. We set
-# this var to max physical cores, assuming --map-by core defaults to number
-# of physical cores per node.  The value of this variable is ignored by
-# *-ppr-N-node targets, which set the param to N. For other targets, this
-# value determines how many nodes to request (based on how many ranks in the
-# target).
+# MAX_SLOTS_PER_NODE is only used for MAPBY=slot or core. OpenMPI PRRTE
+# queries the resource manager (ALPS) for how many slots are on each node.
+# We have to know it here in order to determine number of nodes to request,
+# so we set the variable to num physical cores per node.  The value of this
+# variable is ignored by *-ppr-N-node targets, which set the number of slots
+# per node to N.
 MAX_SLOTS_PER_NODE?=64
-# The '--map-by core' appears to be incompatible with --host
-# +e, so default to ppr-N-node for most targets.
-MAPBY?=ppr-$(MAX_SLOTS_PER_NODE)-node
+MAPBY?=slot
 MEM_PER_NODE:=190G
+
+ifneq ($(DEDI_NODE_FOR_RANK0),)
+ifneq ($(MAPBY),slot)
+$(error Conflicting mapping policy: \
+  dedicated node for rank 0 only works with mapping by 'slot')
+endif
+endif
 
 DBG_Q_MAX_NODES:=8
 MAIN_Q_MIN_NODES:=128
@@ -204,6 +204,8 @@ DATS_ch-core=$(DATS_ch-core-tiny) $(DATS_ch-core-small) \
 $(call target-set,ch-core,$(DATS_ch-core))
 
 # < 1 hr total
+# TODO: these targets are currently broken, need to implement not using
+# --map-by ppr-N-node, but by using +e:M max_slots=N in hostfile
 DATS_ch-ppr-node=\
 	ch_mesh-1024_ranks-64_mapby-ppr-8-node.csv \
 	ch_mesh-1024_ranks-64_mapby-ppr-16-node.csv \
@@ -249,14 +251,16 @@ $(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)$(if $(OVERSUBSCRIBE),:OVERSUBSCRIBE)$
 endef
 
 # tgt-tasks-per-node(target_name)
-# Extracts N from ppr-N-node within the target name.
-# Only ppr-N-node is supported, not other ppr-N-*.
+# For ppr-N-* targets, extracts N from ppr-N-node within the target name.
+# Only ppr-N-node is supported, not other ppr-N-*. For other targets,
+# uses MAX_SLOTS_PER_NODE.
 define tgt-tasks-per-node
 $(strip $(if $(findstring mapby-ppr-,$(1)),\
 	$(word 2,$(subst -, ,$(call tgt-extract,mapby,$(1)))),\
 	$(if $(findstring mapby-node,$(1)),\
 		1,\
-		$(if $(findstring mapby-core,$(1)),\
+		$(if $(or $(findstring mapby-core,$(1)),\
+			  $(findstring mapby-slot,$(1))),\
 			$(MAX_SLOTS_PER_NODE),\
 			$(error Cannot determine tasks-per-node from mapby for $(1))))))
 endef
@@ -303,19 +307,28 @@ ifneq ($(call is-dbg-q),)
 endif
 endif # IN
 
+# Note: support for rankfile is limited when there are more than one prun job
+# running against the PRRTE DVM. The prted daemon owns the rankfile, so there
+# can only be one, whereas we need one per prun subjob.
+#$(DATA_DIR)/ch_%.csv.rankfile: | $(DATA_DIR)/
+#	mapranks --ranks "$(call tgt-extract,ranks,$*)" \
+#		--ranks-per-node "$(call tgt-tasks-per-node,$*)" \
+#		--dedicate-node-to-rank0 "$@"
 
-$(DATA_DIR)/ch_%.csv.rankfile: | $(DATA_DIR)/
-	mapranks --ranks "$(call tgt-extract,ranks,$*)" \
-		--ranks-per-node "$(call tgt-tasks-per-node,$*)" \
-		--dedicate-node-to-rank0 "$@"
+# hostfile is actually the same for all jobs, the node specification is
+# implicit (requests "empty" nodes) and different sets of nodes are chosen
+# dynamically for each prun invocation.
+$(DATA_DIR)/ch_%.csv.hostfile: | $(DATA_DIR)/
+	rm -f $@
+	$(if $(DEDI_NODE_FOR_RANK0),echo '+e:1 max_slots=1' > $@)
+	echo '+e' >> $@
 
 ifneq ($(IN),)
-$(DATA_DIR)/ch_%.csv: $(if $(RANKFILE),$(DATA_DIR)/ch_%.csv.rankfile) \
-  | $(DATA_DIR)/
+$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/ch_%.csv.hostfile | $(DATA_DIR)/
 	set -o pipefail; \
 	prun -n "$(call tgt-extract,ranks,$*)" \
 		--map-by "$(call gen-map-by,$(call tgt-extract,mapby,$*))" \
-		$(if $(RANKFILE),--mca prte_rankfile "$<") \
+		--hostfile "$$PWD/$<" \
 		$(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS) \
 		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 		bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
