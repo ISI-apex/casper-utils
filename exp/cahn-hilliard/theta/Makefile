@@ -268,7 +268,7 @@ endef
 # tgt-nodes(target_name) -> node count (from: ranks/tasks_per_node)
 # +1 extra node for dedicating to rank 0
 define tgt-nodes
-$(call calc,$(if $(RANKFILE),1+)ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1))))
+$(call calc,$(if $(DEDI_NODE_FOR_RANK0),1+)ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1))))
 endef
 
 ifeq ($(IN),)
@@ -373,7 +373,6 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		$(QSUB_ARGS) \
 		-- \
 		env LOG=$${JOB_NAME}.dvmlog dvmrun \
-		$(if $(RANKFILE),--mca prte_rankfile $(DATA_DIR)/%.rankfile) \
 		-- \
 		make -j -k -C $(CURDIR) IN=1 \
 		DATA_DIR=$(DATA_DIR) MPIRUN_ARGS='$(MPIRUN_ARGS)' \
