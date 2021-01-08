@@ -67,7 +67,7 @@ endef
 define target-set-rule
 $(DATA_DIR)/$(1): DATS=$(2)
 $(DATA_DIR)/$(1): $(if $(IN),$(patsubst %,$(DATA_DIR)/%,$(2)))
-$(DATA_DIR)/$(1)/split: $(patsubst %,$(DATA_DIR)/%,$(2)) ;
+$(DATA_DIR)/$(1)^split: $(patsubst %,$(DATA_DIR)/%,$(2)) ;
 endef
 define target-set
 $(eval $(call target-set-rule,$(1),$(2)))
