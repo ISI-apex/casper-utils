@@ -312,7 +312,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/ch_%.hostfile | $(DATA_DIR)/
 		bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
 			"$(call tgt-extract,ranks,$*)" \
 			"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
-			--mem-per-node "$(MEM_PER_NODE)"
+			--mem-per-node "$(MEM_PER_NODE)" \
 			$(if $(TASKS),--tasks "$(TASKS)") \
 		2>&1 | tee "$@.log"
 else # IN=0
