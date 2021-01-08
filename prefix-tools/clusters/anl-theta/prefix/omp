@@ -117,6 +117,11 @@ then
 	args+=("${mpirun_args[@]}")
 fi
 
+if [[ -n "${DBG}" ]]
+then
+	DBG_CMD=(gdb --args)
+fi
+
 # Host PATH needed for apstat which is invoked downstream of this cmd
 PATH=$PATH:$HOST_PATH LD_LIBRARY_PATH="${alps_libs_paths}" \
-	exec env ${mca_vars[@]} ${EPREFIX}/usr/bin/${omp_tool} ${args[@]} "$@"
+	exec env ${mca_vars[@]} ${DBG_CMD[@]} ${EPREFIX}/usr/bin/${omp_tool} ${args[@]} "$@"
