@@ -27,22 +27,7 @@ DEDI_NODE_FOR_RANK0?=1
 
 MPIRUN_INTERNAL_ARGS:=--bind-to none
 
-# MAX_SLOTS_PER_NODE is only used for MAPBY=slot or core. OpenMPI PRRTE
-# queries the resource manager (ALPS) for how many slots are on each node.
-# We have to know it here in order to determine number of nodes to request,
-# so we set the variable to num physical cores per node.  The value of this
-# variable is ignored by *-ppr-N-node targets, which set the number of slots
-# per node to N.
-MAX_SLOTS_PER_NODE?=64
-MAPBY?=slot
 MEM_PER_NODE:=190G
-
-ifneq ($(DEDI_NODE_FOR_RANK0),)
-ifneq ($(MAPBY),slot)
-$(error Conflicting mapping policy: \
-  dedicated node for rank 0 only works with mapping by 'slot')
-endif
-endif
 
 DBG_Q_MAX_NODES:=8
 MAIN_Q_MIN_NODES:=128
@@ -89,65 +74,69 @@ $(eval $(call target-set-rule,$(1),$(2)))
 endef
 
 DATS_ch-test=\
-	ch_mesh-32_ranks-2_mapby-node.csv \
+	ch_mesh-32_ranks-2_tpn-1.csv \
 
 $(call target-set,ch-test,$(DATS_ch-test))
 
 DATS_ch-node=\
-	ch_mesh-32_ranks-2_mapby-node.csv \
-	ch_mesh-96_ranks-2_mapby-node.csv \
+	ch_mesh-32_ranks-2_tpn-1.csv \
+	ch_mesh-96_ranks-2_tpn-1.csv \
 
 $(call target-set,ch-node,$(DATS_ch-node))
 
+# Note: this is not the dynamic $(call tgt-tasks-per-node) that is derived
+# for each target from the target's name; here we are defining targets.
+TPN:=64
+
 # Fits on 8 nodes of debug q in parallel
 DATS_ch-core-tiny=\
-	ch_mesh-128_ranks-16_mapby-$(MAPBY).csv \
-	ch_mesh-128_ranks-32_mapby-$(MAPBY).csv \
-	ch_mesh-128_ranks-48_mapby-$(MAPBY).csv \
-	ch_mesh-128_ranks-64_mapby-$(MAPBY).csv \
+	ch_mesh-128_ranks-16_tpn-$(TPN).csv \
+	ch_mesh-128_ranks-32_tpn-$(TPN).csv \
+	ch_mesh-128_ranks-48_tpn-$(TPN).csv \
+	ch_mesh-128_ranks-64_tpn-$(TPN).csv \
 
 $(call target-set,ch-core-tiny,$(DATS_ch-core-tiny))
 
 DATS_ch-mem=\
-	ch_mesh-256_ranks-16_mapby-$(MAPBY).csv \
-	ch_mesh-128_ranks-32_mapby-$(MAPBY).csv \
+	ch_mesh-256_ranks-16_tpn-$(TPN).csv \
+	ch_mesh-128_ranks-32_tpn-$(TPN).csv \
 
 $(call target-set,ch-mem,$(DATS_ch-mem))
 
 # Together with ch-core-tiny, < 1 hr total (fits on dbg q in sequence)
 DATS_ch-core-small=\
-	ch_mesh-96_ranks-4_mapby-$(MAPBY).csv \
-	ch_mesh-96_ranks-8_mapby-$(MAPBY).csv \
-	ch_mesh-96_ranks-16_mapby-$(MAPBY).csv \
-	ch_mesh-96_ranks-32_mapby-$(MAPBY).csv \
-	ch_mesh-96_ranks-64_mapby-$(MAPBY).csv \
-	ch_mesh-256_ranks-32_mapby-$(MAPBY).csv \
-	ch_mesh-256_ranks-48_mapby-$(MAPBY).csv \
-	ch_mesh-256_ranks-64_mapby-$(MAPBY).csv \
-	ch_mesh-512_ranks-48_mapby-$(MAPBY).csv \
-	ch_mesh-512_ranks-64_mapby-$(MAPBY).csv \
-	ch_mesh-512_ranks-96_mapby-$(MAPBY).csv \
-	ch_mesh-1024_ranks-96_mapby-$(MAPBY).csv \
-	ch_mesh-1024_ranks-128_mapby-$(MAPBY).csv \
-	ch_mesh-1024_ranks-192_mapby-$(MAPBY).csv \
+	ch_mesh-96_ranks-4_tpn-$(TPN).csv \
+	ch_mesh-96_ranks-8_tpn-$(TPN).csv \
+	ch_mesh-96_ranks-16_tpn-$(TPN).csv \
+	ch_mesh-96_ranks-32_tpn-$(TPN).csv \
+	ch_mesh-96_ranks-64_tpn-$(TPN).csv \
+	ch_mesh-256_ranks-32_tpn-$(TPN).csv \
+	ch_mesh-256_ranks-48_tpn-$(TPN).csv \
+	ch_mesh-256_ranks-64_tpn-$(TPN).csv \
+	ch_mesh-512_ranks-48_tpn-$(TPN).csv \
+	ch_mesh-512_ranks-64_tpn-$(TPN).csv \
+	ch_mesh-512_ranks-96_tpn-$(TPN).csv \
+	ch_mesh-1024_ranks-96_tpn-$(TPN).csv \
+	ch_mesh-1024_ranks-128_tpn-$(TPN).csv \
+	ch_mesh-1024_ranks-192_tpn-$(TPN).csv \
 
 $(call target-set,ch-core-small,$(DATS_ch-core-small))
 
 # hypothesis: < 1 hr each (so can run via the /split target on debug q)
 DATS_ch-core-large=\
-	ch_mesh-2048_ranks-128_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-192_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-256_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-320_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-384_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-512_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-128_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-192_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-256_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-320_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-384_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-448_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-512_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-128_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-192_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-256_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-320_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-384_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-512_tpn-$(TPN).csv \
+	ch_mesh-4096_ranks-128_tpn-$(TPN).csv \
+	ch_mesh-4096_ranks-192_tpn-$(TPN).csv \
+	ch_mesh-4096_ranks-256_tpn-$(TPN).csv \
+	ch_mesh-4096_ranks-320_tpn-$(TPN).csv \
+	ch_mesh-4096_ranks-384_tpn-$(TPN).csv \
+	ch_mesh-4096_ranks-448_tpn-$(TPN).csv \
+	ch_mesh-4096_ranks-512_tpn-$(TPN).csv \
 
 $(call target-set,ch-core-large,$(DATS_ch-core-large))
 
@@ -155,47 +144,47 @@ $(call target-set,ch-core-8nodes,\
   $(DATS_ch-core-small) $(DATS_ch-core-large))
 
 DATS_ch-core-jumbo=\
-	ch_mesh-2048_ranks-768_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-768_mapby-$(MAPBY).csv \
+	ch_mesh-2048_ranks-768_tpn-$(TPN).csv \
+	ch_mesh-4096_ranks-768_tpn-$(TPN).csv \
 
 # segfault
-#	ch_mesh-2048_ranks-1024_mapby-$(MAPBY).csv \
-#	ch_mesh-4096_ranks-1024_mapby-$(MAPBY).csv \
+#	ch_mesh-2048_ranks-1024_tpn-$(TPN).csv \
+#	ch_mesh-4096_ranks-1024_tpn-$(TPN).csv \
 
 # OOM
-#	ch_mesh-6144_ranks-256_mapby-$(MAPBY).csv \
-#	ch_mesh-6144_ranks-512_mapby-$(MAPBY).csv \
-#	ch_mesh-6144_ranks-768_mapby-$(MAPBY).csv \
-#	ch_mesh-6144_ranks-1024_mapby-$(MAPBY).csv \
-#	ch_mesh-6144_ranks-2048_mapby-$(MAPBY).csv \
+#	ch_mesh-6144_ranks-256_tpn-$(TPN).csv \
+#	ch_mesh-6144_ranks-512_tpn-$(TPN).csv \
+#	ch_mesh-6144_ranks-768_tpn-$(TPN).csv \
+#	ch_mesh-6144_ranks-1024_tpn-$(TPN).csv \
+#	ch_mesh-6144_ranks-2048_tpn-$(TPN).csv \
 
-#	ch_mesh-8192_ranks-768_mapby-$(MAPBY).csv \
-#	ch_mesh-8192_ranks-1024_mapby-$(MAPBY).csv \
-#	ch_mesh-8192_ranks-2048_mapby-$(MAPBY).csv \
-#	ch_mesh-8192_ranks-4096_mapby-$(MAPBY).csv \
+#	ch_mesh-8192_ranks-768_tpn-$(TPN).csv \
+#	ch_mesh-8192_ranks-1024_tpn-$(TPN).csv \
+#	ch_mesh-8192_ranks-2048_tpn-$(TPN).csv \
+#	ch_mesh-8192_ranks-4096_tpn-$(TPN).csv \
 
-#	ch_mesh-12288_ranks-1024_mapby-$(MAPBY).csv \
-#	ch_mesh-12288_ranks-2048_mapby-$(MAPBY).csv \
-#	ch_mesh-12288_ranks-4096_mapby-$(MAPBY).csv \
+#	ch_mesh-12288_ranks-1024_tpn-$(TPN).csv \
+#	ch_mesh-12288_ranks-2048_tpn-$(TPN).csv \
+#	ch_mesh-12288_ranks-4096_tpn-$(TPN).csv \
 
 $(call target-set,ch-core-jumbo,$(DATS_ch-core-jumbo))
 
 # These were collected on debug q (some only mesh+setup, without solve), but
 # perhaps are not of critical interest
 DATS_ch-core-jumbo-extra=\
-	ch_mesh-128_ranks-8_mapby-$(MAPBY).csv \
-	ch_mesh-256_ranks-8_mapby-$(MAPBY).csv \
-	ch_mesh-256_ranks-16_mapby-$(MAPBY).csv \
-	ch_mesh-1024_ranks-16_mapby-$(MAPBY).csv \
-	ch_mesh-1024_ranks-32_mapby-$(MAPBY).csv \
-	ch_mesh-1024_ranks-48_mapby-$(MAPBY).csv \
-	ch_mesh-1024_ranks-64_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-64_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-128_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-384_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-448_mapby-$(MAPBY).csv \
-	ch_mesh-2048_ranks-512_mapby-$(MAPBY).csv \
-	ch_mesh-4096_ranks-64_mapby-$(MAPBY).csv \
+	ch_mesh-128_ranks-8_tpn-$(TPN).csv \
+	ch_mesh-256_ranks-8_tpn-$(TPN).csv \
+	ch_mesh-256_ranks-16_tpn-$(TPN).csv \
+	ch_mesh-1024_ranks-16_tpn-$(TPN).csv \
+	ch_mesh-1024_ranks-32_tpn-$(TPN).csv \
+	ch_mesh-1024_ranks-48_tpn-$(TPN).csv \
+	ch_mesh-1024_ranks-64_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-64_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-128_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-384_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-448_tpn-$(TPN).csv \
+	ch_mesh-2048_ranks-512_tpn-$(TPN).csv \
+	ch_mesh-4096_ranks-64_tpn-$(TPN).csv \
 
 $(call target-set,ch-core-jumbo-extra,$(DATS_ch-core-jumbo-extra))
 
@@ -204,16 +193,14 @@ DATS_ch-core=$(DATS_ch-core-tiny) $(DATS_ch-core-small) \
 $(call target-set,ch-core,$(DATS_ch-core))
 
 # < 1 hr total
-# TODO: these targets are currently broken, need to implement not using
-# --map-by ppr-N-node, but by using +e:M max_slots=N in hostfile
-DATS_ch-ppr-node=\
-	ch_mesh-1024_ranks-64_mapby-ppr-8-node.csv \
-	ch_mesh-1024_ranks-64_mapby-ppr-16-node.csv \
-	ch_mesh-1024_ranks-64_mapby-ppr-32-node.csv \
-	ch_mesh-1024_ranks-64_mapby-ppr-48-node.csv \
-	ch_mesh-1024_ranks-64_mapby-ppr-64-node.csv \
+DATS_ch-tpn=\
+	ch_mesh-1024_ranks-64_tpn-8-node.csv \
+	ch_mesh-1024_ranks-64_tpn-16-node.csv \
+	ch_mesh-1024_ranks-64_tpn-32-node.csv \
+	ch_mesh-1024_ranks-64_tpn-48-node.csv \
+	ch_mesh-1024_ranks-64_tpn-64-node.csv \
 
-$(call target-set,ch-ppr-node,$(DATS_ch-ppr-node))
+$(call target-set,ch-tpn,$(DATS_ch-tpn))
 
 DEFINE:=define
 define BC_FUNCS
@@ -243,26 +230,18 @@ endef
 
 # tgt-extract(key, target_name) -> value
 define tgt-extract
-$(strip $(subst $(1)-,,$(filter $(1)-%,$(subst _, ,$(subst ., ,$(2))))))
+$(strip $(if $(findstring $(1),$(2)),\
+	$(subst $(1)-,,$(filter $(1)-%,$(subst _, ,$(subst ., ,$(2))))),
+	$(error Field $(1) not in target name)))
 endef
 
-define gen-map-by
-$(subst -,:,$(1))$(if $(NOLOCAL),:NOLOCAL)$(if $(OVERSUBSCRIBE),:OVERSUBSCRIBE)$(if $(DISPLAYMAP),:DISPLAY)
+define gen-map-by-mods
+$(strip $(if $(NOLOCAL),:NOLOCAL)$(if $(OVERSUBSCRIBE),:OVERSUBSCRIBE)$(if $(DISPLAYMAP),:DISPLAY))
 endef
 
 # tgt-tasks-per-node(target_name)
-# For ppr-N-* targets, extracts N from ppr-N-node within the target name.
-# Only ppr-N-node is supported, not other ppr-N-*. For other targets,
-# uses MAX_SLOTS_PER_NODE.
 define tgt-tasks-per-node
-$(strip $(if $(findstring mapby-ppr-,$(1)),\
-	$(word 2,$(subst -, ,$(call tgt-extract,mapby,$(1)))),\
-	$(if $(findstring mapby-node,$(1)),\
-		1,\
-		$(if $(or $(findstring mapby-core,$(1)),\
-			  $(findstring mapby-slot,$(1))),\
-			$(MAX_SLOTS_PER_NODE),\
-			$(error Cannot determine tasks-per-node from mapby for $(1))))))
+$(strip $(call tgt-extract,tpn,$(1)))
 endef
 
 # tgt-nodes(target_name) -> node count (from: ranks/tasks_per_node)
@@ -318,17 +297,16 @@ endif # IN
 # hostfile is actually the same for all jobs, the node specification is
 # implicit (requests "empty" nodes) and different sets of nodes are chosen
 # dynamically for each prun invocation.
-$(DATA_DIR)/ch_%.csv.hostfile: | $(DATA_DIR)/
-	rm -f $@
-	$(if $(DEDI_NODE_FOR_RANK0),echo '+e:1 max_slots=1' > $@)
-	echo '+e' >> $@
+$(DATA_DIR)/ch_%.hostfile: | $(DATA_DIR)/
+	echo -e $(if $(DEDI_NODE_FOR_RANK0),\
+		'+e:1 max_slots=1\n+e:$(call calc,$(call tgt-nodes,$*)-1) max_slots=$(call tgt-tasks-per-node,$*)',\
+		'+e:$(call tgt-nodes,$*) max_slots=$(call tgt-tasks-per-node,$*)') > $@
 
 ifneq ($(IN),)
-$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/ch_%.csv.hostfile | $(DATA_DIR)/
+$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/ch_%.hostfile | $(DATA_DIR)/
 	set -o pipefail; \
 	prun -n "$(call tgt-extract,ranks,$*)" \
-		--map-by "$(call gen-map-by,$(call tgt-extract,mapby,$*))" \
-		--hostfile "$$PWD/$<" \
+		--map-by "slot$(call gen-map-by-mods)" --hostfile "$$PWD/$<" \
 		$(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS) \
 		env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 		bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
