@@ -1,9 +1,17 @@
 #/usr/bin/env bash
 
+ONLY_MINE=$1
+shift 1
+
+if [[ "${ONLY_MINE}" = "1" ]]
+then
+	FILTER="$(whoami)"
+fi
+
 while true
 do
-	echo
+	echo ===
 	# sed to remove nasty whitespace
-	qstat -f | grep "$(whoami)" | sed 's/ \+/ /g'
+	qstat -f "$@" | grep "${FILTER}" | sed 's/ \+/ /g'
 	sleep 20
 done
