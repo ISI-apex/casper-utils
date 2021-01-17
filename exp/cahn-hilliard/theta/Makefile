@@ -27,7 +27,7 @@ DEDI_NODE_FOR_RANK0?=1
 
 MPIRUN_INTERNAL_ARGS:=--bind-to none
 
-MEM_PER_NODE:=190G
+MEM_PER_NODE?=190G
 
 DBG_Q_MAX_NODES:=8
 MAIN_Q_MIN_NODES:=128
@@ -312,7 +312,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/ch_%.hostfile | $(DATA_DIR)/
 		bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
 			"$(call tgt-extract,ranks,$*)" \
 			"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
-			--mem-per-node "$(MEM_PER_NODE)" \
+			$(if $(MEM_PER_NODE),--mem-per-node "$(MEM_PER_NODE)") \
 			$(if $(TASKS),--tasks "$(TASKS)") \
 		2>&1 | tee "$@.log"
 else # IN=0
@@ -359,6 +359,7 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		OVERSUBSCRIBE=$(OVERSUBSCRIBE) \
 		DISPLAYMAP=$(DISPLAYMAP) \
 		DEDI_NODE_FOR_RANK0=$(DEDI_NODE_FOR_RANK0) \
+		MEM_PER_NODE=$(MEM_PER_NODE) \
 		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))
 
 job:
