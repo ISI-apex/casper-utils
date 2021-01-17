@@ -249,7 +249,12 @@ endef
 # tgt-nodes(target_name) -> node count (from: ranks/tasks_per_node)
 # +1 extra node for dedicating to rank 0
 define tgt-nodes
-$(call calc,$(if $(DEDI_NODE_FOR_RANK0),1+)ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1))))
+$(if $(DEDI_NODE_FOR_RANK0),\
+  $(call calc,\
+    1 + ceil(($(call tgt-extract,ranks,$(1))-1) / \
+      $(call tgt-tasks-per-node,$(1)))),\
+  $(call calc,\
+    ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1)))))
 endef
 
 ifeq ($(IN),)
@@ -316,6 +321,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/ch_%.hostfile | $(DATA_DIR)/
 			"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
 			$(if $(MEM_PER_NODE),--mem-per-node "$(MEM_PER_NODE)") \
 			$(if $(TASKS),--tasks "$(TASKS)") \
+			$(if $(DEDI_NODE_FOR_RANK0),--dedicated-node-for-rank0) \
 			$(if $(MONITOR_MEM),--monitor-mem $(MONITOR_MEM)) \
 		2>&1 | tee "$@.log"
 else # IN=0
