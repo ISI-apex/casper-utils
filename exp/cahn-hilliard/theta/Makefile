@@ -24,6 +24,8 @@ OVERSUBSCRIBE?=
 DISPLAYMAP?=
 TASKS?=
 DEDI_NODE_FOR_RANK0?=1
+# Print peak memory usage every N seconds
+MONITOR_MEM?=
 
 MPIRUN_INTERNAL_ARGS:=--bind-to none
 
@@ -314,6 +316,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/ch_%.hostfile | $(DATA_DIR)/
 			"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
 			$(if $(MEM_PER_NODE),--mem-per-node "$(MEM_PER_NODE)") \
 			$(if $(TASKS),--tasks "$(TASKS)") \
+			$(if $(MONITOR_MEM),--monitor-mem $(MONITOR_MEM)) \
 		2>&1 | tee "$@.log"
 else # IN=0
 define expanded-targets
@@ -360,6 +363,7 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		DISPLAYMAP=$(DISPLAYMAP) \
 		DEDI_NODE_FOR_RANK0=$(DEDI_NODE_FOR_RANK0) \
 		MEM_PER_NODE=$(MEM_PER_NODE) \
+		MONITOR_MEM=$(MONITOR_MEM) \
 		$(patsubst %,$(DATA_DIR)/%,$(subst +, ,$*))
 
 job:
