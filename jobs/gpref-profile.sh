@@ -139,6 +139,40 @@ then
 	step_done select_profile_etc
 fi
 
+# This has to happen after the profile is selected, so that use flags
+# for LLVM+Clang are availabe, but before the profile is emerged, so
+# that packages that depend on LLVM+Clang gets rebuilt after LLVM+Clang
+# is rebuilt with itself.
+if ! step_is_done bootstrap_llvm
+	# Bootstrap LLVM+Clang with GCC first, then rebuild it with
+	# itself. Having an LLVM built with Clang is necessary because
+	# MLIR apps build only with Clang (note: if LLVM is and the app
+	# is built with GCC, then there are fewer errors, but still not
+	# successful).  Even if it worked with GCC, it's best to build
+	# all the stuff in LLVM-universe with Clang and eliminate GCC
+	# from the picture, only using GCC to bootstrap Clang.  Also
+	# rebuilding Clang & Co. (besides LLVM) is optional, but
+	# consistent.
+	LLVM_PKGS=(
+		sys-devel/llvm
+		sys-devel/llvm-common
+		sys-libs/libomp
+		sys-libs/compiler-rt
+		sys-libs/compiler-rt-sanitizers
+		sys-devel/clang
+		sys-devel/clang-common
+		sys-devel/clang-runtime
+	)
+	portrun "emerge ${LLVM_PKGS[@]}" # bootstrap with gcc
+	# switch build compiler to Clang, then re-emerge
+	for p in ${LLVM_PKGS[@]}
+	do
+		run sed -i "s@^#\s*\(${p}\)\s\+${CLANG_ENV}\)\s*\$@\1@" \
+			"$ROOT"/etc/portage/package.env
+	done
+	portrun "emerge ${LLVM_PKGS[@]}" # rebuild with Clang
+	step_done bootstrap_llvm
+fi
 
 if ! step_is_done emerge_profile
 then
