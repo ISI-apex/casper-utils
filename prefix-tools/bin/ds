@@ -10,11 +10,26 @@ parser.add_argument('csv_file',
 	help='Path to CSV file with the dataset')
 parser.add_argument('-s', '--sort',
 	help='Comma-separated list of columns by which to sort')
+parser.add_argument('-c', '--columns',
+	help='Comma-separated list of columns to include')
+parser.add_argument('-r', '--rows', type=int, nargs=2,
+	help='Print only range of rows')
+parser.add_argument('--row', type=int,
+	help='Print only one row (given index) with one column per line')
 args = parser.parse_args()
 
 d = pd.read_csv(args.csv_file)
+if args.columns is not None:
+	d = d[args.columns.split(',')]
+
+if args.rows is not None:
+	d = d.iloc[args.rows[0]:args.rows[1]]
 
 if args.sort:
 	d = d.sort_values(args.sort.split(','))
 
-print(d)
+if args.row is not None:
+	row = d.iloc[args.row]
+	print(row)
+else:
+	print(d)
