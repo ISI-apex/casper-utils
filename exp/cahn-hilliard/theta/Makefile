@@ -165,6 +165,17 @@ DATS_ch-memlim=\
 
 $(call target-set,ch-memlim,$(DATS_ch-memlim))
 
+DATS_ch-memlim2=\
+	ch_mesh-16384_ranks-512_tpn-24_steps-mesh-setup.csv \
+	ch_mesh-16384_ranks-512_tpn-16_steps-mesh-setup.csv \
+	ch_mesh-16384_ranks-512_tpn-8_steps-mesh-setup.csv \
+	ch_mesh-4096_ranks-1024_tpn-64.csv \
+	ch_mesh-4096_ranks-2048_tpn-64.csv \
+	ch_mesh-8192_ranks-1024_tpn-24.csv \
+	ch_mesh-8192_ranks-2048_tpn-24.csv \
+
+$(call target-set,ch-memlim2,$(DATS_ch-memlim2))
+
 DATS_ch-memlim-dbg=\
 	ch_mesh-8192_ranks-2048_tpn-16.csv \
 
