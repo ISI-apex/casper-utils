@@ -283,8 +283,8 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.hostfile | $(DATA_DIR)/
 	bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
 		"$(call tgt-extract,ranks,$*)" \
 		"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
+		$(if $(call tgt-steps,$*),--tasks "$(call tgt-steps,$*)") \
 		$(if $(MEM_PER_NODE),--mem-per-node "$(MEM_PER_NODE)") \
-		$(if $(TASKS),--tasks "$(TASKS)") \
 		$(if $(DEDI_NODE_FOR_RANK0),--dedicated-node-for-rank0) \
 		$(if $(MONITOR_MEM),--monitor-mem $(MONITOR_MEM)) \
 	2>&1 | tee "$@.log"

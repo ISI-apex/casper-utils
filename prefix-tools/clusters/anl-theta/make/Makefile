@@ -95,11 +95,18 @@ define is-dbg-q
 $(findstring debug,$(QUEUE_ARG))
 endef
 
-# tgt-extract(key, target_name) -> value
+# tgt-extract(key, target_name [, is_optional]) -> value
 define tgt-extract
 $(strip $(if $(findstring $(1),$(2)),\
 	$(subst $(1)-,,$(filter $(1)-%,$(subst _, ,$(subst ., ,$(2))))),
-	$(error Field $(1) not in target name)))
+	$(if $(3),,$(error Field $(1) not in target name))))
+endef
+
+COMMA:=,
+
+# tgt-steps(target_name) -> comma-separated list of step names
+define tgt-steps
+$(strip $(subst -,$(COMMA),$(call tgt-extract,steps,$(1),optional)))
 endef
 
 define gen-map-by-mods
