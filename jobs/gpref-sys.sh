@@ -35,7 +35,14 @@ fi
 PPATH=$1
 if [ -z "${PPATH}" ]
 then
-	echo "ERROR: prefix name not specified as argument" 1>&2
+	echo "ERROR: prefix name not specified as first argument" 1>&2
+	exit 1
+fi
+
+PROFILE=$2
+if [ -z "${PROFILE}" ]
+then
+	echo "ERROR: profile name not specified as second argument" 1>&2
 	exit 1
 fi
 

@@ -41,7 +41,7 @@ else
 	NICE=""
 fi
 
-${NICE} ${SELF_DIR}/gpref-sys.sh "${PPATH}" 2>&1 | tee ${LOGDIR}/gpref-sys-${tstamp}.log
+${NICE} ${SELF_DIR}/gpref-sys.sh "${PPATH}" "${PROFILE}" 2>&1 | tee ${LOGDIR}/gpref-sys-${tstamp}.log
 echo "gpref-sys RC: $?"
 ${NICE} ${SELF_DIR}/gpref-profile.sh "${PPATH}" "${PROFILE}" 2>&1 | tee ${LOGDIR}/gpref-profile-${tstamp}.log
 echo "gpref-profile RC: $?"
