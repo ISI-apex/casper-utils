@@ -24,7 +24,7 @@ then
 	echo "ERROR: prefix name not specified as argument" 1>&2
 	exit 1
 fi
-PROFILE=${2:-casper-usc-hpcc-amd64}
+PROFILE=$2
 
 ROOT=$(realpath ${PPATH})
 
