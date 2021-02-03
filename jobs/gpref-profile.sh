@@ -169,14 +169,16 @@ then
 		sys-devel/clang-common
 		sys-devel/clang-runtime
 	)
-	portrun "emerge ${LLVM_PKGS[@]}" # bootstrap with gcc
+	# There's a quoting issue with portrun, so just flatten the list
+	LLVM_PKGS_L="${LLVM_PKGS[@]}"
+	portrun "emerge ${LLVM_PKGS_L}" # bootstrap with gcc
 	# switch build compiler to Clang, then re-emerge
 	for p in ${LLVM_PKGS[@]}
 	do
 		run sed -i "s@^#\s*\(${p}\s\+clang\)\s*\$@\1@" \
 			"$ROOT"/etc/portage/package.env
 	done
-	portrun "emerge ${LLVM_PKGS[@]}" # rebuild with Clang
+	portrun "emerge ${LLVM_PKGS_L}" # rebuild with Clang
 	step_done bootstrap_llvm
 fi
 
