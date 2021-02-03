@@ -97,14 +97,18 @@ the provided distfiles archive and directory, the format is `tar.gz`.
 Step 2. Run build job
 ---------------------
 
+In all sections that follow:
+
+* the first argument (`PREFIX_PATH`) is a relative or absolute folder where
+  the prefix will be built (ensure several GB of space, and note that after
+  prefix is built it cannot be relocated to another path)
+* the second argument is a Gentoo profile name specific to the given platform
+
 ### USC HPCC or Discovery
 Use this wrapper script to launch the build job on worker nodes:
 
     $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER[:PARTITION] ARCH
 
-* the first argument (`PREFIX_PATH`) is a relative or absolute folder where
-  the prefix will be built (ensure several GB of space, and note that after
-  prefix is built it cannot be relocated to another path);
 * the second argument is a Gentoo profile name where CLUSTER identifies the
   HPC cluster and ARCH identifies the CPU family for which to optimize via the
   `-march,-mtune` compiler flags (for the generic unoptimized use `amd64`; for
@@ -130,10 +134,19 @@ Run the build script directly:
 
     $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-anl-theta-knl
 
-* the first argument (`PREFIX_PATH`) is a relative or absolute folder where
-  the prefix will be built (ensure several GB of space, and note that after
-  prefix is built it cannot be relocated to another path)
-* the second argument is a Gentoo profile name, here, optimized for ANL Theta
+### OLCF Summit
+
+On OLCF, the build can be done on a login machine.
+
+Override the default for number of processors to use (the default is what
+`nproc` returns), this is required on the OLCF Summit login machines since they
+are shared and enforce [a limit of 16 HW threads, 16 GB mem][1]:
+
+    $ export NPROC=16
+
+Run the build script directly:
+
+    $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-olcf-summit
 
 ### Other Linux hosts
 
@@ -146,14 +159,11 @@ Run the build script directly:
 
     $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-generic-ARCH
 
-where
-* the first argument (`PREFIX_PATH`) is a relative or absolute folder where
-  the prefix will be built (ensure several GB of space, and note that after
-  prefix is built it cannot be relocated to another path)
-* the second argument is a Gentoo profile name where ARCH identifies the CPU
-  family for which to optimize via the `-march,-mtune` compiler flags. For the
-  generic unoptimized use `amd64`; for gpuk40 (Xeon E5-2670) use `sandybridge`;
-  for supported cpu families see `ebuilds/profiles/casper-generic-*`).
+where the second argument is a Gentoo profile name where ARCH identifies the
+CPU family for which to optimize via the `-march,-mtune` compiler flags. For
+the generic unoptimized use `amd64`; for gpuk40 (Xeon E5-2670) use
+`sandybridge`; for supported cpu families see
+`ebuilds/profiles/casper-generic-*`).
 
 ### Tips and notes
 
@@ -545,3 +555,5 @@ Then, build an app against this build of CASPER, for example for the SAR app:
 The app is a separate CMake project, and it contains a relative path to the
 CASPER compiler directory assuming the structure of this parent repository.
 The CASPER installation in the system/prefix takes precedence over this hint.
+
+[1]: https://docs.olcf.ornl.gov/systems/summit_user_guide.html#per-user-login-node-resource-limits
