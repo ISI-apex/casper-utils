@@ -41,6 +41,14 @@ from a shared filesystem:
 
         $ rsync -aq /project/jpwalter_356/distfiles/ casper-utils/distfiles/
 
+* On ANL Theta:
+
+	$ rsync -aq /lus/theta-fs0/projects/CASPER/distfiles/ casper-utils/distfiles/
+
+* On Oak Ridge Summit:
+
+	$ rsync -aq /ccs/proj/csc436/distfiles/ casper-utils/distfiles/
+
 * On the ISI gpuk40 machine:
 
         $ rsync -aq /home/casper/distfiles/ casper-utils/distfiles/
@@ -54,7 +62,7 @@ and extracted at root of this repository:
         $ gdown https://drive.google.com/uc?id=1nQqWsyeYBwCBA8gUdwSyjryr_OvSQFk1
         $ tar xf distfiles-20200604.tar
 
-Then, make your copy writeable:
+Regardless of on which system in the above list, make your copy writeable:
 
 	$ chmod -R u+rw casper-utils/distfiles/
 
