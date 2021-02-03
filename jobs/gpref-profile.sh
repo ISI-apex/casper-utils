@@ -169,6 +169,23 @@ then
 	step_done select_profile_etc
 fi
 
+# Remove installed but masked packages. Disabled, because not necessary --
+# emerging the profile will take care of it, provided constraints in the
+# profile are correct.
+#
+#if ! step_is_done install_gentoolkit
+#then
+#	prun "emerge app-portage/gentoolkit"
+#	step_done install_gentoolkit
+#fi
+#
+#if ! step_is_done remove_masked
+#then
+#	pkgs=$(prun "equery -C l -F '\$mask \$cp' '*/*'" | grep ^M | cut -d' ' -f3)
+#	prun "emerge -v --depclean --deselect ${pkgs}"
+#	step_done remove_masked
+#fi
+
 # This has to happen after the profile is selected, so that use flags
 # for LLVM+Clang are availabe, but before the profile is emerged, so
 # that packages that depend on LLVM+Clang gets rebuilt after LLVM+Clang
