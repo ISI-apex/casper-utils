@@ -32,6 +32,11 @@ ROOT=$(realpath ${PPATH})
 STATUS_DIR=$ROOT/status
 mkdir -p ${STATUS_DIR}
 
+if [[ -z "${NPROC}" ]]
+then
+	NPROC=$(nproc)
+fi
+
 step_is_done() {
 	test -f "${STATUS_DIR}/$1"
 }
@@ -52,7 +57,7 @@ prun() {
 }
 portrun() {
 	# TMPDIR set by set_tmpdir above
-	prun "env PORTAGE_TMPDIR=${TMPDIR} MAKEOPTS=-j$(nproc) $@"
+	prun "env PORTAGE_TMPDIR=${TMPDIR} MAKEOPTS=-j${NPROC} $@"
 }
 
 if ! step_is_done emerge_git
