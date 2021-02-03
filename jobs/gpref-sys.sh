@@ -122,7 +122,7 @@ then
 	# NOTE: actual prefixrc installed by app-portage/prefix-tools
 
 	cat > "$ROOT/.prefixrc" <<- 'EOF'
-	# This file is sourced after $EPREFIX/etc/etc/prefix-tools/prefixrc
+	# This file is sourced after $EPREFIX/etc/prefix-tools/prefixrc
 	# into every shell (including in non-interactive mode). Add
 	# your favoriete aliases and shell prompt config here.
 	#
