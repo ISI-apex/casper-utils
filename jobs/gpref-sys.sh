@@ -78,7 +78,7 @@ fi
 export USE_CPU_CORES=${NPROC}
 export TODO=noninteractive
 export OFFLINE_MODE=$OFFLINE_MODE
-export SNAPSHOT_DATE=20200604
+export SNAPSHOT_DATE=20210119
 
 # This variable may be set on some hosts that use lmod system, but having
 # this variable set breaks the normal GCC shipped with the system.
