@@ -1,6 +1,6 @@
---- a/startprefix	2020-10-24 20:01:30.000000000 -0000
-+++ b/startprefix	2020-10-24 20:08:31.000000000 -0000
-@@ -52,22 +52,47 @@
+--- startprefix.orig	2021-01-22 20:20:17.275417000 -0500
++++ startprefix.env	2021-02-03 05:30:34.741407000 -0500
+@@ -52,22 +52,55 @@
  # give a small notice
  echo "Entering Gentoo Prefix ${EPREFIX}"
  # start the login shell, clean the entire environment but what's needed
@@ -28,8 +28,16 @@
 +	[[ -n ${TEMP} ]] && RETAIN+=(TEMP=$TEMP)
  fi
 +# retain variables whose names match patterns listed in a file
-+ENV_FILES=(
-+	"${EPREFIX}/etc/prefix-tools/prefixenv"
++PENV_DIR="${EPREFIX}"/etc/prefix-tools/env.d
++ENV_FILES=()
++if [[ -d "${PENV_DIR}" && -n "$(ls -A "${PENV_DIR}")" ]]
++then
++	for f in "${PENV_DIR}"/*
++	do
++		ENV_FILES+=("${f}")
++	done
++fi
++ENV_FILES+=(
 +	"${EPREFIX}/.prefixenv"
 +)
 +for ENV_FILE in ${ENV_FILES[@]}
@@ -54,4 +62,4 @@
 +done
  # do it!
  if [[ ${SHELL#${EPREFIX}} != ${SHELL} ]] ; then
- 	# interactive if no '-c command' args in $@ (so set --rcfile) and
+ 	'/autofs/nccs-svm1_home1/acolin/casper/gpref/gp-k/usr/bin/env' -i $RETAIN BASH_ENV="${EPREFIX}/etc/profile" $SHELL --rcfile "${EPREFIX}"/etc/profile "$@"
