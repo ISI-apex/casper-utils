@@ -173,7 +173,7 @@ then
 	# switch build compiler to Clang, then re-emerge
 	for p in ${LLVM_PKGS[@]}
 	do
-		run sed -i "s@^#\s*\(${p}\)\s\+${CLANG_ENV}\)\s*\$@\1@" \
+		run sed -i "s@^#\s*\(${p}\s\+clang\)\s*\$@\1@" \
 			"$ROOT"/etc/portage/package.env
 	done
 	portrun "emerge ${LLVM_PKGS[@]}" # rebuild with Clang
