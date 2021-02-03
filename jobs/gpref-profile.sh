@@ -44,6 +44,18 @@ step_done() {
 	touch "${STATUS_DIR}/$1"
 }
 
+#if [[ "${PROFILE}" =~ olcf-summit ]]
+#then
+#	# On Summit, there is a memory usage limit, so don't use tmpfs,
+#	# which is default. By default, we assume that the build is in NFS (~),
+#	# but if it's in a parallel file system, take care to measure its
+#	# performance for builds, if bad, then override TMDIR.
+#	#
+#	# The downside of using NFS are stale .nfsXXXXX files that sometimes
+#	# cause merge step of packages to fail.
+#	TMPDIR="$ROOT"/var/tmp
+#fi
+
 set_tmpdir 16000 # MB of space; sets TMPDIR, needed by prun (via .prefixrc)
 
 run() {
