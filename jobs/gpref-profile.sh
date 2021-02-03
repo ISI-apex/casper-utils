@@ -240,7 +240,7 @@ then
 		sets+=("@casper-libs")
 	fi
 	# Apply use flags, overrides from the newly added repo, install sets
-	portrun "emerge -v --deep --complete-graph --update --newuse --newrepo @world ${sets[@]}"
+	portrun "emerge -v --deep --complete-graph --update --newuse --newrepo --keep-going @world ${sets[@]}"
 	step_done emerge_profile
 fi
 
