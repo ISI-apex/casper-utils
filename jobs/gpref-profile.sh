@@ -37,6 +37,26 @@ then
 	NPROC=$(nproc)
 fi
 
+if [[ "${PROFILE}" =~ generic ]]
+then
+	CLUSTER=generic
+elif [[ "${PROFILE}" =~ usc-hpcc ]]
+then
+	CLUSTER=usc-hpcc
+elif [[ "${PROFILE}" =~ usc-discovery ]]
+then
+	CLUSTER=usc-discovery
+elif [[ "${PROFILE}" =~ anl-theta ]]
+then
+	CLUSTER=anl-theta
+elif [[ "${PROFILE}" =~ olcf-summit ]]
+then
+	CLUSTER=olcf-summit
+else
+	echo "ERROR: can't resolve profile name into cluster name" 1>&2
+	exit 2
+fi
+
 step_is_done() {
 	test -f "${STATUS_DIR}/$1"
 }
@@ -120,26 +140,19 @@ then
 	ETC_FILES=(
 		casper/etc/portage/package.license
 		casper/etc/portage/package.env
+		${CLUSTER}/etc/portage/package.provided
 	)
-	# TODO: scan 'parent' files and pick up etc subfolders if exist
-	if [[ "${PROFILE}" =~ generic ]]
-	then
-		ETC_FILES+=(generic/etc/portage/package.provided)
-	elif [[ "${PROFILE}" =~ usc-hpcc ]]
-	then
-		ETC_FILES+=(usc-hpcc/etc/portage/package.provided)
-	elif [[ "${PROFILE}" =~ usc-discovery ]]
-	then
-		ETC_FILES+=(usc-discovery/etc/portage/package.provided)
-	fi
 	ETC_DIRS=(
 		casper/etc/portage/sets
 		casper/etc/portage/env
 	)
 	for f in ${ETC_FILES[@]}
 	do
-		cat "$ROOT"/${REPO_PATH}/profiles/${f} \
-			>> "$ROOT"/etc/portage/$(basename ${f})
+		ETC_FILE="$ROOT"/${REPO_PATH}/profiles/${f}
+		if [[ -f "${ETC_FILE}" ]]
+		then
+			cat "${ETC_FILE}" >> "$ROOT"/etc/portage/$(basename ${f})
+		fi
 	done
 	for d in ${ETC_DIRS[@]}
 	do
