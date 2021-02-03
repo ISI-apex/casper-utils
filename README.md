@@ -66,7 +66,9 @@ Regardless of on which system in the above list, make your copy writeable:
 
 	$ chmod -R u+rw casper-utils/distfiles/
 
-Note: Online build hosts will automatically fetch tarballs from upstream (subject to
+### Supplemental information: unfetchable tarballs
+
+Online build hosts will automatically fetch tarballs from upstream (subject to
 broken links or server downtime), but some tarballs (listed below) cannot be
 fetched from upstream at all. So, even for online hosts, you have to obtain
 the tarball directory as described above.
