@@ -185,7 +185,14 @@ then
 		-e 's/^CXXFLAGS=.*/CXXFLAGS="${CXXFLAGS}"/' \
 		"$ROOT/etc/portage/make.conf"
 
-	echo 'ACCEPT_KEYWORDS="~amd64 ~amd64-linux"' >> "$ROOT/etc/portage/make.conf"
+	# hack.. but else to get arch from /etc/portage/make.profile symlink?
+	if [[ "${PROFILE}" =~ olcf-summit ]]
+	then
+		AKW="~ppc64 ~ppc64-linux"
+	else
+		AKW="~amd64 ~amd64-linux"
+	fi
+	echo "ACCEPT_KEYWORDS=\"${AKW}\"" >> "$ROOT/etc/portage/make.conf"
 	step_done make_conf
 fi
 
