@@ -129,6 +129,10 @@ then
 		casper/etc/portage/package.env
 		${CLUSTER}/etc/portage/package.provided
 	)
+	if [[ "${CLUSTER}" =~ anl-theta ]]
+	then
+		ETC_FILES+=(casper-cross/etc/portage/package.env)
+	fi
 	ETC_DIRS=(
 		casper/etc/portage/sets
 		casper/etc/portage/env
