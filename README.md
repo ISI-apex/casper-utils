@@ -105,6 +105,7 @@ In all sections that follow:
 * the second argument is a Gentoo profile name specific to the given platform
 
 ### USC HPCC or Discovery
+
 Use this wrapper script to launch the build job on worker nodes:
 
     $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER[:PARTITION] ARCH
@@ -120,33 +121,15 @@ Use this wrapper script to launch the build job on worker nodes:
   CPU family for the build host (`sandybridge` is a reasonable choice for
   building a generic prefix, see notes below).
 
-### ANL Theta
+### ANL Theta and OLCF Summit
 
-On ANL Theta, the build can be done on a login machine.
+* On ANL Theta, the build can be done on a login machine:
 
-Override the default for number of processors to use (the default is what
-`nproc` returns), this is required on the ANL Theta login machines since they
-are shared but do not enforce a limit:
+        $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-anl-theta-knl
 
-    $ export NPROC=12
+* On OLCF Summit, the build can be done on a login machine:
 
-Run the build script directly:
-
-    $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-anl-theta-knl
-
-### OLCF Summit
-
-On OLCF, the build can be done on a login machine.
-
-Override the default for number of processors to use (the default is what
-`nproc` returns), this is required on the OLCF Summit login machines since they
-are shared and enforce [a limit of 16 HW threads, 16 GB mem][1]:
-
-    $ export NPROC=16
-
-Run the build script directly:
-
-    $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-olcf-summit
+        $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-olcf-summit
 
 ### Other Linux hosts
 
@@ -154,6 +137,12 @@ You might want to override the default for number of processors to use (the
 default is what `nproc` returns).
 
     $ export NPROC=16
+
+You may also want to override the default temporary build directory (the
+default is the first one that has enough space from the list: `/tmp`,
+`/dev/shm`):
+
+    $ export TMPDIR=/path/to/custom/temp/dir
 
 Run the build script directly:
 
@@ -555,5 +544,3 @@ Then, build an app against this build of CASPER, for example for the SAR app:
 The app is a separate CMake project, and it contains a relative path to the
 CASPER compiler directory assuming the structure of this parent repository.
 The CASPER installation in the system/prefix takes precedence over this hint.
-
-[1]: https://docs.olcf.ornl.gov/systems/summit_user_guide.html#per-user-login-node-resource-limits

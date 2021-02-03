@@ -352,3 +352,49 @@ function pport {
 function p4port { # useful on USC Discovery (usage capped at 4 cores @ 100%)
 	MAKEOPTS="-j4" port "$@"
 }
+
+function profile_to_cluster {
+	local CLUSTER=""
+	if [[ "${PROFILE}" =~ generic ]]
+	then
+		CLUSTER=generic
+	elif [[ "${PROFILE}" =~ usc-hpcc ]]
+	then
+		CLUSTER=usc-hpcc
+	elif [[ "${PROFILE}" =~ usc-discovery ]]
+	then
+		CLUSTER=usc-discovery
+	elif [[ "${PROFILE}" =~ anl-theta ]]
+	then
+		CLUSTER=anl-theta
+	elif [[ "${PROFILE}" =~ olcf-summit ]]
+	then
+		CLUSTER=olcf-summit
+	fi
+	echo "${CLUSTER}"
+}
+
+function set_nproc {
+	local CLUSTER="$1"
+	case "${CLUSTER}" in
+
+		# OLCF Summit login machines enforce a per-user limit of 16 HW
+		# thread, 16GB mem; base system builds with NPROC=16, but some
+		# packages in casper profile might not (handling this is WIP).
+		olcf-summit) NPROC=16 ;;
+
+		# ANL Theta login machines are shared, but no limit is enforced
+		anl-theta) NPROC=12 ;;
+
+		# On HPCC Discovery cluster, nproc will return only as many
+		# cores as have been requested from the resource manager.
+		#
+		# On USC HPCC legacy cluster nproc returns raw HW cores (not
+		# 100% confirmed though), but it's harmless to use them all
+		# regardless of requested number of processes for the job,
+		# since a limit on processes is not enforced.
+		usc-*) NPROC=$(nproc) ;;
+
+		*) NPROC=$(nproc) ;;
+	esac
+}

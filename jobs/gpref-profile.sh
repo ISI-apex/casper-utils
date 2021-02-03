@@ -32,29 +32,16 @@ ROOT=$(realpath ${PPATH})
 STATUS_DIR=$ROOT/status
 mkdir -p ${STATUS_DIR}
 
-if [[ -z "${NPROC}" ]]
+CLUSTER="$(profile_to_cluster "${PROFILE}")"
+if [[ -z "${CLUSTER}" ]]
 then
-	NPROC=$(nproc)
-fi
-
-if [[ "${PROFILE}" =~ generic ]]
-then
-	CLUSTER=generic
-elif [[ "${PROFILE}" =~ usc-hpcc ]]
-then
-	CLUSTER=usc-hpcc
-elif [[ "${PROFILE}" =~ usc-discovery ]]
-then
-	CLUSTER=usc-discovery
-elif [[ "${PROFILE}" =~ anl-theta ]]
-then
-	CLUSTER=anl-theta
-elif [[ "${PROFILE}" =~ olcf-summit ]]
-then
-	CLUSTER=olcf-summit
-else
 	echo "ERROR: can't resolve profile name into cluster name" 1>&2
 	exit 2
+fi
+
+if [[ -z "${NPROC}" ]]
+then
+	set_nproc "${CLUSTER}"
 fi
 
 step_is_done() {

@@ -46,6 +46,18 @@ then
 	exit 1
 fi
 
+CLUSTER="$(profile_to_cluster "${PROFILE}")"
+if [[ -z "${CLUSTER}" ]]
+then
+	echo "ERROR: can't resolve profile name into cluster name" 1>&2
+	exit 2
+fi
+
+if [[ -z "${NPROC}" ]]
+then
+	set_nproc "${CLUSTER}"
+fi
+
 PNAME=$(basename ${PPATH})
 export ROOT=$(realpath ${PPATH})
 
@@ -64,15 +76,6 @@ ETC_PTOOLS="etc/prefix-tools"
 
 export PORTAGE_TMPDIR="${TMP_HOME}"
 export DISTDIR="${DIST_PATH}"
-
-if [[ -z "${NPROC}" ]]
-then
-	# Note: at least on HPCC Discovery cluster, nproc will return only
-	# as many cores as have been requested from the resource manager.
-	# But, if nproc returns raw HW cores (on legacy cluster), it's
-	# harmless to use them all, since it's not enforced.
-	NPROC=$(nproc)
-fi
 
 # Env vars read by bootstrap-prefix.sh
 export USE_CPU_CORES=${NPROC}
