@@ -181,6 +181,13 @@ then
 		sys-devel/clang-common
 		sys-devel/clang-runtime
 	)
+	SAVE_NPROC=${NPROC}
+	if [[ "${PROFILE}" =~ olcf-summit ]]
+	then
+		# The 16GB per-user limit on Summit is enough for -j16 for
+		# the whole base system but not enough for LLVM....
+		NPROC=8
+	fi
 	# There's a quoting issue with portrun, so just flatten the list
 	LLVM_PKGS_L="${LLVM_PKGS[@]}"
 	portrun "emerge ${LLVM_PKGS_L}" # bootstrap with gcc
@@ -191,6 +198,7 @@ then
 			"$ROOT"/etc/portage/package.env
 	done
 	portrun "emerge ${LLVM_PKGS_L}" # rebuild with Clang
+	NPROC=${SAVE_NPROC}
 	step_done bootstrap_llvm
 fi
 
