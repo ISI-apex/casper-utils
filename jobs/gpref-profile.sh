@@ -149,6 +149,7 @@ fi
 # that packages that depend on LLVM+Clang gets rebuilt after LLVM+Clang
 # is rebuilt with itself.
 if ! step_is_done bootstrap_llvm
+then
 	# Bootstrap LLVM+Clang with GCC first, then rebuild it with
 	# itself. Having an LLVM built with Clang is necessary because
 	# MLIR apps build only with Clang (note: if LLVM is and the app
