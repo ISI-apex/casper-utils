@@ -291,7 +291,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.hostfile | $(DATA_DIR)/
 	set -o pipefail; \
 	$(call prun-cmd,$*,$<) \
 	env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
-	bash $(PWD)/fch.sh "$(call tgt-extract,mesh,$*)" \
+	bash $(PWD)/../fch.sh "$(call tgt-extract,mesh,$*)" \
 		"$(call tgt-extract,ranks,$*)" \
 		"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
 		$(if $(call tgt-steps,$*),--tasks "$(call tgt-steps,$*)") \
