@@ -18,7 +18,7 @@ $(error GCC $(GCC_VER_MAJMIN) not supported by CUDA:$(NL) \
 endif
 
 add_%: add_%.cu
-	nvcc -o $@ $<
+	nvcc -g -O0 -o $@ $<
 
 clean:
 	rm -f add_copy add_managed
