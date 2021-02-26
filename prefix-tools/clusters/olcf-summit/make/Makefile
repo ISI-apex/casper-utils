@@ -121,11 +121,12 @@ endef
 
 # tgt-nodes(target_name) -> node count (from: ranks/tasks_per_node)
 # +1 extra node for dedicating to rank 0
+# +1 for extra node for NOLOCAL workaround (see comment near hostfile below)
 define tgt-nodes
 $(strip \
   $(if $(DEDI_NODE_FOR_RANK0),\
     $(call calc,\
-      1 + ceil(($(call tgt-extract,ranks,$(1))-1) / \
+      2 + ceil(($(call tgt-extract,ranks,$(1))-1) / \
 	$(call tgt-tasks-per-node,$(1)))),\
     $(call calc,\
       ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1))))))
