@@ -16,10 +16,19 @@ parser.add_argument('-r', '--rows', type=int, nargs=2,
 	help='Print only range of rows')
 parser.add_argument('--row', type=int,
 	help='Print only one row (given index) with one column per line')
+parser.add_argument('--rank', type=int,
+	help='Print only the rows for the given rank')
 args = parser.parse_args()
 
 for csv_file in args.csv_file:
 	d = pd.read_csv(csv_file)
+
+	if args.rank is not None:
+		# can't have int columns with nan, so drop nan first
+		d = d.dropna(subset=['rank'])
+		d['rank'] = d['rank'].astype('int32')
+		d = d[d['rank'] == args.rank]
+
 	if args.columns is not None:
 		d = d[args.columns.split(',')]
 
