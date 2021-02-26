@@ -1,0 +1,160 @@
+#!/usr/bin/env bash
+
+set -e
+
+self_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+EPREFIX=$(cd -- "$(dirname ${self_dir})"/ && pwd)
+source "${self_dir}"/pscommon.sh
+
+if [[ "$#" -lt 1 ]]
+then
+	echo "Usage: $0 bsub_arg..." 1>&2
+	echo "Environment vars:" 1>&2
+	echo "  SUPPRESS_RC: exit with return code 0 regardless of job" 1>&2
+	echo "  NONBLOCK: exit after submitting job, do not wait for job" 1>&2
+	echo "  MONITOR: dump the job log to stdout" 1>&2
+	exit 1
+fi
+
+QSUB_ARGS=()
+while [[ "$#" -gt 0 ]]
+do
+	arg="$1"
+	if [[ "${arg}" = "--" ]]
+	then
+		shift
+		break
+	else
+		QSUB_ARGS+=("${arg}")
+		shift
+
+		if [[ "${arg}" =~ ^(-o)$ ]]
+		then
+			log_prefix="$1" # the following arg
+			QSUB_ARGS+=("${1}")
+			shift
+		fi
+	fi
+done
+
+# External interface: by default monitoring enabled, to disable set to 0
+if [[ "${MONITOR}" = "0" ]]
+then
+	MONITOR=
+elif [[ -z "${MONITOR}" ]]
+then
+	MONITOR=1
+fi
+
+if [[ -z "${log_prefix}" ]]
+then
+	echo "ERROR: failed to parse log name from args" 1>&2
+fi
+
+logs=(${log_prefix})
+
+if [[ -n "${MONITOR}" ]]
+then
+	function terminate_tail() {
+		if  [[ -n "${TAIL_PID}" ]]
+		then
+			echo "Terminating tail process..."
+			run kill ${TAIL_PID}
+			set +e
+			run wait ${TAIL_PID} 2>/dev/null
+			set -e
+		fi
+	}
+	trap terminate_tail EXIT
+	rm -f ${logs[@]}
+	touch ${logs[@]}
+	tail -f ${logs[@]} &
+	TAIL_PID=$!
+fi
+
+PCMD=$@
+# Need a wrapper script only to gain a way to check status of completed jobs
+jobstat_file="${log_prefix}.stat"
+tmpscr=${log_prefix}.sh
+cat <<EOF > $tmpscr
+#!/bin/bash
+"${EPREFIX}"/startprefix -c "${PCMD}"
+RC=\$?
+echo "ExitCode=\${RC}" > ${jobstat_file}_
+# TODO: adapt for LSF (note: might not be needed if can query completed jobs)
+#qstat -l -f \${COBALT_JOBID} >> ${jobstat_file}_
+echo DUMMY_STAT_RESULT >> ${jobstat_file}_
+mv ${jobstat_file}{_,}
+exit \$RC
+EOF
+chmod +x "${tmpscr}"
+
+# On Summit, back-to-back submission of jobs breaks env var propagation
+BSUB_LOCK=${EPREFIX}/tmp/pbsub.lock
+while [[ -f "${BSUB_LOCK}" ]]
+do
+	echo "Waiting for bsub lock..."
+	sleep 10
+done
+touch "${BSUB_LOCK}"
+
+run_sub() {
+	rund bsub ${QSUB_ARGS[@]} "${tmpscr}"
+}
+rm -f ${jobstat_file} ${log_prefix}.job
+DRY=1 run_sub > ${log_prefix}.job
+subout=$(run_sub)
+subrc=$?
+
+sleep 10 # prevent back-to-back invocations of bsub (see comment above)
+rm -f "${BSUB_LOCK}"
+
+if [[ "${subrc}" != 0 ]]
+then
+	echo "ERROR: failed to submit job: rc ${subrc}" 1>&2
+	exit 1
+fi
+subout_re="^Job <[0-9]+>"
+if [[ -z "${subout}" || ! "${subout}" =~ $subout_re ]]
+then
+	echo "ERROR: failed to parse jobid from bsub output: '${subout}'" 1>&2
+	exit 1
+fi
+jobid="$(echo "${subout}" | sed 's/^Job <\([0-9]\+\)>.*/\1/')"
+echo "Job ID: $jobid"
+
+if [ -n "${NONBLOCK}" ]
+then
+	echo "EXITING: non-block mode enabled"
+	exit 0
+fi
+
+# Job lingers in the queue after job script exits, wait for it
+echo "Waiting for job to finish and disappear from the queue..."
+while ! bjobs -noheader "${jobid}" | grep -q 'DONE\|EXIT'
+do
+	sleep 10
+done
+echo "FInished job no longer in the queue"
+
+if [[ ! -f "${jobstat_file}" ]]
+then
+	echo "NOTICE: job did not create a stat file" 1>&2
+fi
+
+if [[ -z "${SUPPRESS_RC}" ]]
+then
+	if [[ ! -f "${jobstat_file}" ]]
+	then
+		exit 1
+	fi
+	RC=$(sed -n 's/^ExitCode=\(.*\)/\1/p' "${jobstat_file}")
+	if [[ -z "${RC}" ]]
+	then
+		echo "ERROR: no exit code found in job status file" 1>&2
+		exit 1
+	fi
+	exit ${RC}
+else
+	exit 0
+fi

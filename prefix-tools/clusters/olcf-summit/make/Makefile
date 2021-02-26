@@ -237,8 +237,10 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 	echo JOB_NAME=$${JOB_NAME}
 	echo $@ > $${JOB_NAME}.tgt
 	MONITOR=$(MONITOR) SUPPRESS_RC=$(SUPPRESS_RC) \
-	bsub -O "$${JOB_NAME}" -P "$(ACCOUNT)" \
-		-nnodes "$(call job-nodes-arg,$*)" -W "$(call max-time-arg,$*)" \
+	$(PTOOLS)/pbsub -J "$${JOB_NAME}" -o "$${JOB_NAME}.log" \
+		-P "$(ACCOUNT)" \
+		-nnodes "$(call job-nodes-arg,$*)" \
+		-W "$(call max-time-arg,$*)" \
 		$(if $(QUEUE_ARG),-q $(QUEUE_ARG)) \
 		$(BSUB_ARGS) \
 		-- \
