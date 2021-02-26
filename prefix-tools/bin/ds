@@ -6,7 +6,7 @@ import argparse
 
 parser = argparse.ArgumentParser(
 	description="Print a CSV dataset in pretty formatting")
-parser.add_argument('csv_file',
+parser.add_argument('csv_file', nargs='*',
 	help='Path to CSV file with the dataset')
 parser.add_argument('-s', '--sort',
 	help='Comma-separated list of columns by which to sort')
@@ -18,18 +18,19 @@ parser.add_argument('--row', type=int,
 	help='Print only one row (given index) with one column per line')
 args = parser.parse_args()
 
-d = pd.read_csv(args.csv_file)
-if args.columns is not None:
-	d = d[args.columns.split(',')]
+for csv_file in args.csv_file:
+	d = pd.read_csv(csv_file)
+	if args.columns is not None:
+		d = d[args.columns.split(',')]
 
-if args.rows is not None:
-	d = d.iloc[args.rows[0]:args.rows[1]]
+	if args.rows is not None:
+		d = d.iloc[args.rows[0]:args.rows[1]]
 
-if args.sort:
-	d = d.sort_values(args.sort.split(','))
+	if args.sort:
+		d = d.sort_values(args.sort.split(','))
 
-if args.row is not None:
-	row = d.iloc[args.row]
-	print(row)
-else:
-	print(d)
+	if args.row is not None:
+		row = d.iloc[args.row]
+		print(row)
+	else:
+		print(d)
