@@ -153,16 +153,13 @@ define job-nodes
 $(strip $(call cap-job-nodes,$(call required-nodes,$(1))))
 endef
 # max-time-for-nodes(nodes) -> max allowed job time limit
-# TODO: update for Summit
-# https://www.alcf.anl.gov/support-center/theta/job-scheduling-policy-theta
-# Note: qsub -t 0 (which supposed to mean 'max allowed') does not work.
+# https://docs.olcf.ornl.gov/systems/summit_user_guide.html#job-priority-by-processor-count
 define max-time-for-nodes
-$(if $(call greater-eq,$(1),802),24:00:00,\
-$(if $(call greater-eq,$(1),640),12:00:00,\
-$(if $(call greater-eq,$(1),384),9:00:00,\
-$(if $(call greater-eq,$(1),256),6:00:00,\
-$(if $(call greater-eq,$(1),128),3:00:00,\
-$(if $(call is-dbg-q),01:00:00,\
+$(if $(call greater-eq,$(1),922),24:00:00,\
+$(if $(call greater-eq,$(1),92),12:00:00,\
+$(if $(call greater-eq,$(1),46),6:00:00,\
+$(if $(call greater-eq,$(1),1),2:00:00,\
+$(if $(call is-dbg-q),02:00:00,\
     $(error Nodes below min allocation and not on debug queue: $(1))))))))
 endef
 endif # IN
