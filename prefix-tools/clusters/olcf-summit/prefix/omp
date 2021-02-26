@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+# Wrapper for launching OpenMPI tools on Summit: mpirun, prun, prte, pterm, etc
+
+set -e
+set -x
+
+if [[ -z "$EPREFIX" ]]
+then
+	echo "ERROR: env var EPREFIX not set to root dir of prefix" 1>&2
+	echo "       (was script run not from within prefix?)" 1>&2
+	exit 2
+fi
+
+omp_tool=$(basename $0)
+
+# LSF is needed by OpenMPI RAS LSF module (for getting resources allocated
+# to job); without the path set, OpenMPI ends up not selecting LSF RAS.
+# TODO: obtain this programatically somehow
+LSF_LIB_DIR="/opt/ibm/spectrumcomputing/lsf/10.1.0.9/linux3.10-glibc2.17-ppc64le-csm/lib"
+
+args=()
+mpirun_args=(
+	#-v
+	#--mca pml_base_verbose 100
+	##--mca odls_base_verbose 100
+	#--mca opal_verbose 100
+	#--mca opal_base_verbose 100
+	##--mca ras_base_verbose 100
+	#--mca errmgr_base_verbose 100
+	#--mca oob_base_verbose 100
+	#--mca routed_base_verbose 100
+	#--mca plm_base_verbose 100
+	#--mca plm_alps_debug 1
+	#--mca btl_base_verbose 100
+	#--mca ras_base_verbose 100
+	#--mca rmaps_base_verbose 100
+
+	# Required! Only 'direct' routed works on Theta, rest fail to spawn
+	# NOTE: this is insufficient! OpenMPI (PRRTE) must be built without
+	# any other routed modules (./autogen.pl --include routed-direct)
+	# TODO: what about on Summit?
+	#--mca routed direct
+	#--mca routed binomial
+	#--mca routed radix
+)
+
+# Can't set via --mca, since need to be applied to "projects" other than OMPI
+# Don't have --prmca (yet?): https://github.com/open-mpi/ompi/issues/7285
+# NOTE: these need to also be listed in .prefixenv to be forwarded
+mca_vars=(
+	#PRTE_MCA_prte_base_verbose=100
+	#PRTE_MCA_prte_pmix_verbose=100
+	#PRTE_MCA_pmix_base_verbose=100
+	#PRTE_MCA_pmix_server_verbose=100
+
+	# Default timeout (3sec) has been observed to expire on Summit too
+	PRTE_MCA_pmix_server_max_wait=120
+)
+
+if [[ "${omp_tool}" != pterm ]]
+then
+	args+=("${mpirun_args[@]}")
+fi
+
+if [[ -n "${DBG}" ]]
+then
+	DBG_CMD=(gdb --args)
+fi
+
+exec env LD_LIBRARY_PATH="${LSF_LIB_DIR}" ${mca_vars[@]} ${DBG_CMD[@]} \
+	${EPREFIX}/usr/bin/${omp_tool} ${args[@]} "$@"
