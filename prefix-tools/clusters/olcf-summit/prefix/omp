@@ -3,7 +3,6 @@
 # Wrapper for launching OpenMPI tools on Summit: mpirun, prun, prte, pterm, etc
 
 set -e
-set -x
 
 if [[ -z "$EPREFIX" ]]
 then
