@@ -20,7 +20,7 @@ include $(PTOOLS_DIR)/clusters/olcf-summit/make/Makefile
 # default also varies by rank count -- the default is a mess.
 OMP_NUM_THREADS?=1
 
-all: ch-core-small ch-core-large
+all: ch-test
 
 # Must be after the first target which will be the default target
 include ../Makefile
@@ -30,253 +30,36 @@ DATS_ch-test=\
 
 $(call target-set,ch-test,$(DATS_ch-test))
 
-DATS_ch-node=\
-	ch_mesh-32_ranks-2_tpn-1.csv \
-	ch_mesh-96_ranks-2_tpn-1.csv \
+DATS_ch-4k=\
+	ch_mesh-4096_ranks-42_tpn-42.csv \
+	ch_mesh-4096_ranks-84_tpn-42.csv \
+	ch_mesh-4096_ranks-168_tpn-42.csv \
+	ch_mesh-4096_ranks-346_tpn-42.csv \
+	ch_mesh-4096_ranks-692_tpn-42.csv \
+	ch_mesh-4096_ranks-1384_tpn-42.csv \
+	ch_mesh-4096_ranks-2768_tpn-42.csv \
+	ch_mesh-4096_ranks-5536_tpn-42.csv \
 
-$(call target-set,ch-node,$(DATS_ch-node))
+$(call target-set,ch-4k,$(DATS_ch-4k))
 
-# Note: this is not the dynamic $(call tgt-tasks-per-node) that is derived
-# for each target from the target's name; here we are defining targets.
-TPN:=64
+DATS_ch-8k=\
+	ch_mesh-8192_ranks-42_tpn-42.csv \
+	ch_mesh-8192_ranks-84_tpn-42.csv \
+	ch_mesh-8192_ranks-168_tpn-42.csv \
+	ch_mesh-8192_ranks-346_tpn-42.csv \
+	ch_mesh-8192_ranks-692_tpn-42.csv \
+	ch_mesh-8192_ranks-1384_tpn-42.csv \
+	ch_mesh-8192_ranks-2768_tpn-42.csv \
 
-# Fits on 8 nodes of debug q in parallel
-DATS_ch-core-tiny=\
-	ch_mesh-128_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-2_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-4_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-8_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-16_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-32_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-48_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-64_tpn-$(TPN).csv \
+$(call target-set,ch-8k,$(DATS_ch-8k))
 
-$(call target-set,ch-core-tiny,$(DATS_ch-core-tiny))
+DATS_ch-16k=\
+	ch_mesh-16384_ranks-2768_tpn-24.csv \
+	ch_mesh-16384_ranks-5536_tpn-24.csv \
+	ch_mesh-16384_ranks-11072_tpn-40.csv \
 
-#ch_mesh-64_ranks-1_tpn-$(TPN).csv
-DATS_ch-mem-with-size=\
-	ch_mesh-64_ranks-2_tpn-$(TPN).csv \
-	ch_mesh-64_ranks-4_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-2_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-4_tpn-$(TPN).csv \
-	ch_mesh-256_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-256_ranks-2_tpn-$(TPN).csv \
-	ch_mesh-256_ranks-4_tpn-$(TPN).csv \
+$(call target-set,ch-16k,$(DATS_ch-16k))
 
-#	ch_mesh-512_ranks-1_tpn-$(TPN).csv \
-#	ch_mesh-1024_ranks-1_tpn-$(TPN).csv \
-
-#	ch_mesh-2048_ranks-1_tpn-$(TPN).csv \
-#	ch_mesh-4096_ranks-1_tpn-$(TPN).csv \
-#	ch_mesh-8192_ranks-1_tpn-$(TPN).csv \
-#	ch_mesh-16384_ranks-1_tpn-$(TPN).csv \
-
-#	ch_mesh-128_ranks-64_tpn-$(TPN).csv \
-#	ch_mesh-256_ranks-64_tpn-$(TPN).csv \
-#	ch_mesh-512_ranks-64_tpn-$(TPN).csv \
-#	ch_mesh-1024_ranks-64_tpn-$(TPN).csv \
-
-$(call target-set,ch-mem-with-size,$(DATS_ch-mem-with-size))
-
-DATS_ch-mem-with-ranks-512=\
-	ch_mesh-512_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-2_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-4_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-8_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-16_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-32_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-64_tpn-$(TPN).csv \
-
-$(call target-set,ch-mem-with-ranks-512,$(DATS_ch-mem-with-ranks-512))
-
-DATS_ch-mem-with-ranks-1024=\
-	ch_mesh-1024_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-2_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-4_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-8_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-16_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-32_tpn-$(TPN).csv \
-
-
-#	ch_mesh-1024_ranks-64_tpn-$(TPN).csv \
-
-$(call target-set,ch-mem-with-ranks-1024,$(DATS_ch-mem-with-ranks-1024))
-
-DATS_ch-mem-with-ranks-2048=\
-	ch_mesh-2048_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-2_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-4_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-8_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-16_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-32_tpn-$(TPN).csv \
-
-#	ch_mesh-2048_ranks-64_tpn-$(TPN).csv \
-
-$(call target-set,ch-mem-with-ranks-2048,$(DATS_ch-mem-with-ranks-2048))
-
-DATS_ch-mem-with-size-ranks-1=\
-	ch_mesh-128_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-256_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-8192_ranks-1_tpn-$(TPN).csv \
-	ch_mesh-16384_ranks-1_tpn-$(TPN).csv \
-
-$(call target-set,ch-mem-with-size-ranks-1,$(DATS_ch-mem-with-size-ranks-1))
-
-#DATS_ch-mem-with-size-ranks-2=\
-#	ch_mesh-128_ranks-2_tpn-$(TPN).csv \
-#	ch_mesh-256_ranks-2_tpn-$(TPN).csv \
-#	ch_mesh-512_ranks-2_tpn-$(TPN).csv \
-#	ch_mesh-1024_ranks-2_tpn-$(TPN).csv \
-#	ch_mesh-2048_ranks-2_tpn-$(TPN).csv \
-#	ch_mesh-4096_ranks-2_tpn-$(TPN).csv \
-#	ch_mesh-8192_ranks-2_tpn-$(TPN).csv \
-#	ch_mesh-16384_ranks-2_tpn-$(TPN).csv \
-#
-#$(call target-set,ch-mem-with-size-ranks-2,$(DATS_ch-mem-with-size-ranks-2))
-
-DATS_ch-memlim=\
-	ch_mesh-8192_ranks-512_tpn-8.csv \
-	ch_mesh-8192_ranks-1024_tpn-16.csv \
-	ch_mesh-8192_ranks-2048_tpn-16.csv \
-
-# out of time (> 2h)
-#	ch_mesh-8192_ranks-256_tpn-16.csv \
-
-# OOM
-#	ch_mesh-8192_ranks-512_tpn-32.csv \
-#	ch_mesh-8192_ranks-512_tpn-64.csv \
-#	ch_mesh-8192_ranks-1024_tpn-32.csv \
-#	ch_mesh-8192_ranks-1024_tpn-64.csv \
-#	ch_mesh-8192_ranks-2048_tpn-32.csv \
-#	ch_mesh-8192_ranks-2048_tpn-64.csv \
-
-
-# Startup suceeds
-# ch_mesh-8192_ranks-16_tpn-$(TPN).csv \
-
-# OOM on ranks > 0
-#ch_mesh-8192_ranks-32_tpn-$(TPN).csv \
-#ch_mesh-8192_ranks-64_tpn-$(TPN).csv \
-
-$(call target-set,ch-memlim,$(DATS_ch-memlim))
-
-DATS_ch-memlim2=\
-	ch_mesh-16384_ranks-512_tpn-24_steps-mesh-setup.csv \
-	ch_mesh-16384_ranks-512_tpn-16_steps-mesh-setup.csv \
-	ch_mesh-16384_ranks-512_tpn-8_steps-mesh-setup.csv \
-	ch_mesh-4096_ranks-1024_tpn-64.csv \
-	ch_mesh-4096_ranks-2048_tpn-64.csv \
-	ch_mesh-8192_ranks-1024_tpn-24.csv \
-	ch_mesh-8192_ranks-2048_tpn-24.csv \
-
-$(call target-set,ch-memlim2,$(DATS_ch-memlim2))
-
-DATS_ch-memlim-dbg=\
-	ch_mesh-8192_ranks-2048_tpn-16.csv \
-
-$(call target-set,ch-memlim-dbg,$(DATS_ch-memlim-dbg))
-
-DATS_ch-mem=\
-	ch_mesh-256_ranks-16_tpn-$(TPN).csv \
-	ch_mesh-128_ranks-32_tpn-$(TPN).csv \
-
-$(call target-set,ch-mem,$(DATS_ch-mem))
-
-# Together with ch-core-tiny, < 1 hr total (fits on dbg q in sequence)
-DATS_ch-core-small=\
-	ch_mesh-96_ranks-4_tpn-$(TPN).csv \
-	ch_mesh-96_ranks-8_tpn-$(TPN).csv \
-	ch_mesh-96_ranks-16_tpn-$(TPN).csv \
-	ch_mesh-96_ranks-32_tpn-$(TPN).csv \
-	ch_mesh-96_ranks-64_tpn-$(TPN).csv \
-	ch_mesh-256_ranks-32_tpn-$(TPN).csv \
-	ch_mesh-256_ranks-48_tpn-$(TPN).csv \
-	ch_mesh-256_ranks-64_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-48_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-64_tpn-$(TPN).csv \
-	ch_mesh-512_ranks-96_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-96_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-128_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-192_tpn-$(TPN).csv \
-
-$(call target-set,ch-core-small,$(DATS_ch-core-small))
-
-# hypothesis: < 1 hr each (so can run via the /split target on debug q)
-DATS_ch-core-large=\
-	ch_mesh-2048_ranks-128_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-192_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-256_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-320_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-384_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-512_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-128_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-192_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-256_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-320_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-384_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-448_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-512_tpn-$(TPN).csv \
-
-$(call target-set,ch-core-large,$(DATS_ch-core-large))
-
-$(call target-set,ch-core-8nodes,\
-  $(DATS_ch-core-small) $(DATS_ch-core-large))
-
-DATS_ch-core-jumbo=\
-	ch_mesh-2048_ranks-768_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-768_tpn-$(TPN).csv \
-
-# segfault
-#	ch_mesh-2048_ranks-1024_tpn-$(TPN).csv \
-#	ch_mesh-4096_ranks-1024_tpn-$(TPN).csv \
-
-# OOM
-#	ch_mesh-6144_ranks-256_tpn-$(TPN).csv \
-#	ch_mesh-6144_ranks-512_tpn-$(TPN).csv \
-#	ch_mesh-6144_ranks-768_tpn-$(TPN).csv \
-#	ch_mesh-6144_ranks-1024_tpn-$(TPN).csv \
-#	ch_mesh-6144_ranks-2048_tpn-$(TPN).csv \
-
-#	ch_mesh-8192_ranks-768_tpn-$(TPN).csv \
-#	ch_mesh-8192_ranks-1024_tpn-$(TPN).csv \
-#	ch_mesh-8192_ranks-2048_tpn-$(TPN).csv \
-#	ch_mesh-8192_ranks-4096_tpn-$(TPN).csv \
-
-#	ch_mesh-12288_ranks-1024_tpn-$(TPN).csv \
-#	ch_mesh-12288_ranks-2048_tpn-$(TPN).csv \
-#	ch_mesh-12288_ranks-4096_tpn-$(TPN).csv \
-
-$(call target-set,ch-core-jumbo,$(DATS_ch-core-jumbo))
-
-# These were collected on debug q (some only mesh+setup, without solve), but
-# perhaps are not of critical interest
-DATS_ch-core-jumbo-extra=\
-	ch_mesh-128_ranks-8_tpn-$(TPN).csv \
-	ch_mesh-256_ranks-8_tpn-$(TPN).csv \
-	ch_mesh-256_ranks-16_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-16_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-32_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-48_tpn-$(TPN).csv \
-	ch_mesh-1024_ranks-64_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-64_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-128_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-384_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-448_tpn-$(TPN).csv \
-	ch_mesh-2048_ranks-512_tpn-$(TPN).csv \
-	ch_mesh-4096_ranks-64_tpn-$(TPN).csv \
-
-$(call target-set,ch-core-jumbo-extra,$(DATS_ch-core-jumbo-extra))
-
-DATS_ch-core=$(DATS_ch-core-tiny) $(DATS_ch-core-small) \
-  $(DATS_ch-core-large) $(DATS_ch-core-jumbo)
-$(call target-set,ch-core,$(DATS_ch-core))
-
-# < 1 hr total
 DATS_ch-tpn=\
 	ch_mesh-1024_ranks-64_tpn-8-node.csv \
 	ch_mesh-1024_ranks-64_tpn-16-node.csv \
