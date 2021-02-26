@@ -122,12 +122,13 @@ endef
 # tgt-nodes(target_name) -> node count (from: ranks/tasks_per_node)
 # +1 extra node for dedicating to rank 0
 define tgt-nodes
-$(if $(DEDI_NODE_FOR_RANK0),\
-  $(call calc,\
-    1 + ceil(($(call tgt-extract,ranks,$(1))-1) / \
-      $(call tgt-tasks-per-node,$(1)))),\
-  $(call calc,\
-    ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1)))))
+$(strip \
+  $(if $(DEDI_NODE_FOR_RANK0),\
+    $(call calc,\
+      1 + ceil(($(call tgt-extract,ranks,$(1))-1) / \
+	$(call tgt-tasks-per-node,$(1)))),\
+    $(call calc,\
+      ceil($(call tgt-extract,ranks,$(1)) / $(call tgt-tasks-per-node,$(1))))))
 endef
 
 ifeq ($(IN),)
