@@ -91,7 +91,9 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.hostfile | $(DATA_DIR)/
 	  LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:${CUDA_LIB_DIR}:${XL_LIB_DIR}" \
 	bash $(PWD)/../fch.sh "$(call tgt-extract,mesh,$*)" \
 		"$(call tgt-extract,ranks,$*)" \
-		"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
+		"$(call tgt-tasks-per-node,$*)" \
+		--elapsed-out "$@" \
+		--solution-out "$(patsubst %.csv,%.pvd,$@)" \
 		$(if $(call tgt-steps,$*),--tasks "$(call tgt-steps,$*)") \
 		$(if $(MEM_PER_NODE),--mem-per-node "$(MEM_PER_NODE)") \
 		$(if $(DEDI_NODE_FOR_RANK0),--dedicated-node-for-rank0) \
