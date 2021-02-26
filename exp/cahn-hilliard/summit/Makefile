@@ -71,14 +71,24 @@ $(call target-set,ch-tpn,$(DATS_ch-tpn))
 
 ifneq ($(IN),)
 # NOTES: On Summit, have these extra happenings:
-#  1. for some reason PETSC_DIR is not propagated
+#  1. for some reason some env vars are not propagated, so set them here
+#    1a. PETSC_DIR
+#    1a. CUDA lib is not found, presumably because of a missing env var,
+#        workaround is to add it to LD_LIBRARY_PATH here
 #  2. in case prefix is in ~ file system, it's read-only on compute nodes,
 #  so have to set cache directory to a writable path
+#
+CUDA_LIB_DIR:="/autofs/nccs-svm1_home1/acolin/casper/gpref/gp-k/opt/cuda/targets/ppc64le-linux/lib"
+# TODO: needing XL_LIB_DIR is a bug, petsc4py pulls this in from host!
+XL_LIB_DIR:="/autofs/nccs-svm1_sw/summit/xl/16.1.1-5/lib"
+
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.hostfile | $(DATA_DIR)/
 	set -o pipefail; \
 	$(call prun-cmd,$*,$<) \
 	env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
-	  PETSC_DIR=$$PETSC_DIR XDG_CACHE_HOME=$$__LSF_JOB_TMPDIR__ \
+	  XDG_CACHE_HOME="$$__LSF_JOB_TMPDIR__" \
+	  PETSC_DIR="${EPREFIX}/usr/lib64/petsc" \
+	  LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:${CUDA_LIB_DIR}:${XL_LIB_DIR}" \
 	bash $(PWD)/../fch.sh "$(call tgt-extract,mesh,$*)" \
 		"$(call tgt-extract,ranks,$*)" \
 		"$(call tgt-tasks-per-node,$*)" --elapsed-out "$@" \
