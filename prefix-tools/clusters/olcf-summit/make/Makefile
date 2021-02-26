@@ -12,11 +12,6 @@ MAKEFLAGS+=--keep-going
 
 PTOOLS:=$(EPREFIX)/ptools
 
-# LSF is needed by OpenMPI RAS LSF module (for getting resources allocated
-# to job); without the path set, OpenMPI ends up not selecting LSF RAS.
-# TODO: obtain this programatically somehow
-LSF_LIB_DIR:=/opt/ibm/spectrumcomputing/lsf/10.1.0.9/linux3.10-glibc2.17-ppc64le-csm/lib
-
 # 0 max time means maximum allowed
 MAX_TIME?=
 ACCOUNT?=
@@ -242,7 +237,6 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		$(BSUB_ARGS) \
 		-- \
 		env LOG=$${JOB_NAME}.dvmlog \
-		LD_LIBRARY_PATH=$(LSF_LIB_DIR) \
 		dvmrun \
 		-- \
 		make -j -k -C $(CURDIR) IN=1 \
