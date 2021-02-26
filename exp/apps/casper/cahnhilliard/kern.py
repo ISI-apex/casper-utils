@@ -22,8 +22,7 @@ steps = 1
 compute_norms = False # TODO
 verbose = False
 
-solution_out = None
-#solution_out = 'ch-sol.pvd'
+solution_out = 'ch-sol.pvd'
 
 def generate():
     tasks = dict()
