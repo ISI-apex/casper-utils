@@ -186,11 +186,12 @@ endif # IN
 # implicit (requests "empty" nodes) and different sets of nodes are chosen
 # dynamically for each prun invocation.
 #
-# NOTE: the first '+e:1 max_slots=1' line refers to the HNP node. If it is
-# not added, then the HNP node is not in the list of allocated nodes, but then
-# the NOLOCAL is applied and removes first node (which is not the HNP node),
-# leaving the list one node short. For some reason this happens on Summit but
-# not on Theta.
+# NOTE: the first '+e:1 max_slots=1' line refers to the HNP node. This is
+# a workaround. If it is not added, then the HNP node is not in the list of
+# allocated nodes, but then NOLOCAL is applied and removes first node (which is
+# not the HNP node), leaving the list one node short. For some reason this
+# happens on Summit but not on Theta (perhaps on Theta the resource manager
+# does not include the MOM node into the allocation, but on Summit it does).
 $(DATA_DIR)/prun_%.hostfile: | $(DATA_DIR)/
 	echo -e $(if $(DEDI_NODE_FOR_RANK0),\
 		'+e:1 max_slots=1\n+e:1 max_slots=1\n+e:$(call calc,$(call tgt-nodes,$*)-1) max_slots=$(call tgt-tasks-per-node,$*)',\
