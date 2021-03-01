@@ -57,6 +57,22 @@ mca_vars=(
 	PRTE_MCA_pmix_server_max_wait=120
 )
 
+# Propagate env vars exported by $EPREFIX/etc/profile (which is in part
+# sources /etc/profile.env generated from /etc/env.d/* by env-update).
+#
+# These args should be explicitly passed on all clusters, but note that on
+# Theta, even without this, somehow the vars end up propagated from the shell
+# on the MOM node to the compute nodes, but not so on Summit. On Summit (LSF)
+# env vars don't end up propagated to the compute nodes. Note: when
+# investigating this, note that env vars will be fine on the rank that runs on
+# the HNP node (batch*) but not fine on the ranks on compute nodes.
+prefix_vars=($(env -i bash -c "source $EPREFIX/etc/profile && env" | \
+	cut -d'=' -f1 | grep -E -v '^(_|SHLVL|PWD)$'))
+for var in ${prefix_vars[@]}
+do
+	mpirun_args+=(-x ${var})
+done
+
 if [[ "${omp_tool}" != pterm ]]
 then
 	args+=("${mpirun_args[@]}")
