@@ -21,7 +21,9 @@ find_package(Python COMPONENTS Interpreter REQUIRED) # for Python_SITELIB
 # TODO: burn the EXTRA_PYTHONPATH into the metaprogram somehow
 add_custom_target(ch.run
   ${CMAKE_COMMAND} -E env
+    XDG_CACHE_HOME=cachedir
     EXTRA_PYTHONPATH="${CMAKE_CURRENT_SOURCE_DIR}:${CASPER_PYAPI_DIR}:${Python_SITELIB}"
-    mpirun -x EXTRA_PYTHONPATH -n $$RANKS --map-by ppr:1:node:NOLOCAL
+    mpirun -x XDG_CACHE_HOME -x EXTRA_PYTHONPATH
+      -n $$RANKS --map-by ppr:1:node:NOLOCAL
         ${ch_BUILD_DIR}/ch
   DEPENDS ${ch_BUILD_DIR}/ch)
