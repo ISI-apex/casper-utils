@@ -42,6 +42,12 @@ mpirun_args=(
 	#--mca routed direct
 	#--mca routed binomial
 	#--mca routed radix
+
+	# Fix for env var not propagating with prun (PRRTE PR #795)
+	# Note that propagation works with mpirun, and a patch to openmpi that
+	# adds the "ompi5" personality to prterun case fixes propagation with
+	# prterun, but not with prun. This is needed to fix prun.
+	--mca schizo_base_personalities prte,ompi5
 )
 
 # Can't set via --mca, since need to be applied to "projects" other than OMPI
