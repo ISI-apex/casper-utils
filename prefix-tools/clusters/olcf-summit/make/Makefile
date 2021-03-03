@@ -168,35 +168,17 @@ ifneq ($(call is-dbg-q),)
 endif
 endif # IN
 
-# Note: support for rankfile is limited when there are more than one prun job
-# running against the PRRTE DVM. The prted daemon owns the rankfile, so there
-# can only be one, whereas we need one per prun subjob.
-#$(DATA_DIR)/ch_%.csv.rankfile: | $(DATA_DIR)/
-#	mapranks --ranks "$(call tgt-extract,ranks,$*)" \
-#		--ranks-per-node "$(call tgt-tasks-per-node,$*)" \
-#		--dedicate-node-to-rank0 "$@"
-
-# hostfile is actually the same for all jobs, the node specification is
-# implicit (requests "empty" nodes) and different sets of nodes are chosen
-# dynamically for each prun invocation.
-#
-# NOTE: the first '+e:1 max_slots=1' line refers to the HNP node. This is
-# a workaround. If it is not added, then the HNP node is not in the list of
-# allocated nodes, but then NOLOCAL is applied and removes first node (which is
-# not the HNP node), leaving the list one node short. For some reason this
-# happens on Summit but not on Theta (perhaps on Theta the resource manager
-# does not include the MOM node into the allocation, but on Summit it does).
-$(DATA_DIR)/prun_%.hostfile: | $(DATA_DIR)/
-	echo -e $(if $(DEDI_NODE_FOR_RANK0),\
-		'+e:1 max_slots=1\n+e:1 max_slots=1\n+e:$(call calc,$(call tgt-nodes,$*)-1) max_slots=$(call tgt-tasks-per-node,$*)',\
-		'+e:$(call tgt-nodes,$*) max_slots=$(call tgt-tasks-per-node,$*)') > $@
+$(DATA_DIR)/prun_%.rankfile: | $(DATA_DIR)/
+	mapranks --ranks "$(call tgt-extract,ranks,$*)" \
+		--ranks-per-node "$(call tgt-tasks-per-node,$*)" \
+		$(if $(DEDI_NODE_FOR_RANK0),--dedicate-node-to-rank0) "$@"
 
 ifneq ($(IN),)
-# prun-cmd(target-stem, hostfile)
+# prun-cmd(target-stem, rankfile)
 define prun-cmd
 prun -n "$(call tgt-extract,ranks,$(1))" \
-	--map-by "slot$(call gen-map-by-mods)" --hostfile "$(abspath $(2))" \
-	$(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
+    --map-by "rankfile:FILE=$(2)$(call gen-map-by-mods)" \
+    $(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
 endef
 # Example usage from the consumer makefile:
 #$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.hostfile | $(DATA_DIR)/
