@@ -424,6 +424,23 @@ respective package:
 
     p4port ebuild app-portage/prefix-tools/prefix-tools-9999.ebuild manifest
 
+Troubleshooting: emerge/ebuild hangs
+------------------------------------
+
+If emerge is waiting for a lock to be released (it will say so), then
+it might be due to a previous emerge/ebuild not having completed cleanly,
+so try manually cleanup the lock file (after checking for any portage
+processes that might still be running):
+
+    rm $EPREFIX/var/db/.pkg.portage_lockfile
+
+If emerge or ebuild hangs at the very end of a merge without any relevant
+output, it may be due to file system issues (especially when running on
+networked filesystems of various kinds). Try disable the `sync` that is called
+after merging (and has been observed to hang on NFS):
+
+    FEATURES="-merge-sync" emerge ...
+
 Evaluate CASPER Auto-tuner
 ==========================
 
