@@ -18,4 +18,5 @@
 	url = ../halide-sar-app.git
 [submodule "exp/apps/cahnhilliard_2d"]
 	path = exp/apps/cahnhilliard_2d
-	url = https://github.com/adegenna/cahnhilliard_2d.git
+	#url = https://github.com/adegenna/cahnhilliard_2d.git
+	url = ../cahnhilliard_2d.git
