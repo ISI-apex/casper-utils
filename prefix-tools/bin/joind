@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+import sys
+import os
+import pandas as pd
+
+d = pd.DataFrame()
+for f in sys.argv[2:]:
+	if os.stat(f).st_size == 0:
+		continue
+	f_d = pd.read_csv(f)
+	d = pd.concat([d, f_d])
+
+#print(d)
+d.to_csv(sys.argv[1])
