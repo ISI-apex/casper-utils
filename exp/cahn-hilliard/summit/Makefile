@@ -69,6 +69,8 @@ DATS_ch-tpn=\
 
 $(call target-set,ch-tpn,$(DATS_ch-tpn))
 
+$(call target-set,ch-scaling,$(DATS_ch-4k) $(DATS_ch-8k))
+
 ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 	set -o pipefail; \
