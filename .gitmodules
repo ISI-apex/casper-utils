@@ -16,3 +16,6 @@
 [submodule "exp/apps/casper/halide-sar-app"]
 	path = exp/apps/casper/sar/halide-sar-app
 	url = ../halide-sar-app.git
+[submodule "exp/apps/cahnhilliard_2d"]
+	path = exp/apps/cahnhilliard_2d
+	url = https://github.com/adegenna/cahnhilliard_2d.git
