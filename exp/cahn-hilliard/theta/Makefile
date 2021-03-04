@@ -139,31 +139,13 @@ $(call target-set,ch-mem-with-size-ranks-1,$(DATS_ch-mem-with-size-ranks-1))
 #
 #$(call target-set,ch-mem-with-size-ranks-2,$(DATS_ch-mem-with-size-ranks-2))
 
-DATS_ch-memlim=\
+DATS_ch-scaling=\
 	ch_mesh-8192_ranks-512_tpn-8.csv \
 	ch_mesh-8192_ranks-1024_tpn-16.csv \
+	ch_mesh-8192_ranks-1536_tpn-16.csv \
 	ch_mesh-8192_ranks-2048_tpn-16.csv \
 
-# out of time (> 2h)
-#	ch_mesh-8192_ranks-256_tpn-16.csv \
-
-# OOM
-#	ch_mesh-8192_ranks-512_tpn-32.csv \
-#	ch_mesh-8192_ranks-512_tpn-64.csv \
-#	ch_mesh-8192_ranks-1024_tpn-32.csv \
-#	ch_mesh-8192_ranks-1024_tpn-64.csv \
-#	ch_mesh-8192_ranks-2048_tpn-32.csv \
-#	ch_mesh-8192_ranks-2048_tpn-64.csv \
-
-
-# Startup suceeds
-# ch_mesh-8192_ranks-16_tpn-$(TPN).csv \
-
-# OOM on ranks > 0
-#ch_mesh-8192_ranks-32_tpn-$(TPN).csv \
-#ch_mesh-8192_ranks-64_tpn-$(TPN).csv \
-
-$(call target-set,ch-memlim,$(DATS_ch-memlim))
+$(call target-set,ch-scaling,$(DATS_ch-scaling))
 
 DATS_ch-memlim2=\
 	ch_mesh-16384_ranks-512_tpn-24_steps-mesh-setup.csv \
@@ -175,6 +157,63 @@ DATS_ch-memlim2=\
 	ch_mesh-8192_ranks-2048_tpn-24.csv \
 
 $(call target-set,ch-memlim2,$(DATS_ch-memlim2))
+
+DATS_ch-memlim3=\
+	ch_mesh-12288_ranks-512_tpn-16_steps-mesh-setup.csv \
+	ch_mesh-12288_ranks-512_tpn-8_steps-mesh-setup.csv \
+	ch_mesh-4096_ranks-1024_tpn-48.csv \
+	ch_mesh-4096_ranks-2048_tpn-48.csv \
+	ch_mesh-8192_ranks-4096_tpn-24.csv \
+
+#	ch_mesh-8192_ranks-8192_tpn-24.csv \
+#	ch_mesh-4096_ranks-1024_tpn-32.csv \
+#	ch_mesh-4096_ranks-2048_tpn-32.csv \
+
+$(call target-set,ch-memlim3,$(DATS_ch-memlim3))
+
+DATS_ch-memlim4=\
+	ch_mesh-12288_ranks-4096_tpn-8.csv \
+
+$(call target-set,ch-memlim4,$(DATS_ch-memlim4))
+
+DATS_ch-memlim5=\
+	ch_mesh-8192_ranks-4096_tpn-24.csv \
+	ch_mesh-8192_ranks-8192_tpn-24.csv \
+
+$(call target-set,ch-memlim5,$(DATS_ch-memlim5))
+
+DATS_ch-memlim5-1=\
+	ch_mesh-8192_ranks-3192_tpn-24.csv \
+
+$(call target-set,ch-memlim5-1,$(DATS_ch-memlim5-1))
+
+DATS_ch-memlim6=\
+	ch_mesh-8192_ranks-4096_tpn-24.csv \
+
+$(call target-set,ch-memlim6,$(DATS_ch-memlim6))
+
+DATS_ch-memlim7=\
+	ch_mesh-8192_ranks-8192_tpn-24.csv \
+
+$(call target-set,ch-memlim7,$(DATS_ch-memlim7))
+
+DATS_ch-memlim8=\
+	ch_mesh-10000_ranks-512_tpn-8_steps-mesh-setup.csv \
+	ch_mesh-9000_ranks-512_tpn-8_steps-mesh-setup.csv \
+	ch_mesh-4096_ranks-512_tpn-48.csv \
+	ch_mesh-4096_ranks-4096_tpn-48.csv \
+	ch_mesh-8192_ranks-512_tpn-24.csv \
+	ch_mesh-8192_ranks-1536_tpn-24.csv \
+
+$(call target-set,ch-memlim8,$(DATS_ch-memlim8))
+
+DATS_ch-memlim9=\
+	ch_mesh-9000_ranks-1024_tpn-24.csv \
+	ch_mesh-9000_ranks-1536_tpn-24.csv \
+	ch_mesh-9000_ranks-2048_tpn-24.csv \
+	ch_mesh-9000_ranks-3192_tpn-24.csv \
+
+$(call target-set,ch-memlim9,$(DATS_ch-memlim9))
 
 DATS_ch-memlim-dbg=\
 	ch_mesh-8192_ranks-2048_tpn-16.csv \
