@@ -1,0 +1,29 @@
+mesh=128
+
+Defautl
+real    5m58.466s
+user    476m50.783s
+sys     1m58.489s
+
+OMP_NUM_THREADS=2
+real    1m36.772s
+user    3m9.636s
+sys     0m0.531s
+a
+
+OMP_NUM_THREADS=4
+real    1m0.984s
+user    3m42.198s
+sys     0m0.898s
+
+OMP_NUM_THREADS=8
+real    0m49.603s
+user    5m39.486s
+sys     0m1.463s
+
+OMP_NUM_THREADS=16
+real    0m40.513s
+user    9m50.211s
+sys     0m1.793s
+
+

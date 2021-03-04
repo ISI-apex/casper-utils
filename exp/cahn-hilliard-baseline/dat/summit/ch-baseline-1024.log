@@ -1,0 +1,61 @@
+mesh=1024
+
+time env OMP_NUM_THREADS=42 ./ch2d
+Biharmonic timescale dt_biharm = 9.09495e-09
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 7.05958e+09
+Solving deterministic (noise-free) CH
+iter: 1 , t = 2.72848e-06, relative residual: 0.0525056
+
+real    28m11.212s
+user    501m23.471s
+sys     1m11.533s
+
+
+acolin@batch5 build $ time env OMP_NUM_THREADS=12 ./ch2d && echo done
+Biharmonic timescale dt_biharm = 9.09495e-09
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 7.05958e+09
+Solving deterministic (noise-free) CH
+ter: 1 , t = 2.72848e-06, relative residual: 0.0525056
+
+real    31m41.610s
+user    256m19.250s
+sys     0m31.208s
+done
+a
+
+acolin@batch5 build $ time env OMP_NUM_THREADS=24 ./ch2d && echo done
+Biharmonic timescale dt_biharm = 9.09495e-09
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 7.05958e+09
+Solving deterministic (noise-free) CH
+iter: 1 , t = 2.72848e-06, relative residual: 0.0525056
+
+real    22m44.124s
+user    288m49.801s
+sys     0m39.471s
+done
+
+acolin@h31n04 build $ time env OMP_NUM_THREADS=42 ./ch2d && echo done
+Biharmonic timescale dt_biharm = 9.09495e-09
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 7.05958e+09
+Solving deterministic (noise-free) CH                                                                                                                            jkiter: 1 , t = 2.72848e-06, relative residual: 0.0525056
+
+real    23m46.983s
+user    337m54.675s
+sys     1m3.553s
+done

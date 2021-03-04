@@ -1,0 +1,125 @@
+mesh = 256
+
+h31n04
+
+th=42
+Biharmonic timescale dt_biharm = 2.32831e-06
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 6.87014e+06
+Solving deterministic (noise-free) CH
+iter: 1 , t = 0.000698492, relative residual: 0.0562868
+
+real	1m27.159s
+user	44m13.103s
+sys	0m20.888s
+done
+
+th=32
+Biharmonic timescale dt_biharm = 2.32831e-06
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 6.87014e+06
+Solving deterministic (noise-free) CH
+iter: 1 , t = 0.000698492, relative residual: 0.0562868
+
+real	1m22.585s
+user	32m18.353s
+sys	0m12.523s
+done
+
+th=24
+Biharmonic timescale dt_biharm = 2.32831e-06
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 6.87014e+06
+Solving deterministic (noise-free) CH
+iter: 1 , t = 0.000698492, relative residual: 0.0562868
+
+real	1m31.894s
+user	27m34.587s
+sys	0m7.828s
+done
+
+th=16
+Biharmonic timescale dt_biharm = 2.32831e-06
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 6.87014e+06
+Solving deterministic (noise-free) CH
+iter: 1 , t = 0.000698492, relative residual: 0.0562868
+
+real	1m37.509s
+user	20m35.785s
+sys	0m5.301s
+done
+
+th=8
+Biharmonic timescale dt_biharm = 2.32831e-06
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 6.87014e+06
+Solving deterministic (noise-free) CH
+iter: 1 , t = 0.000698492, relative residual: 0.0562868
+
+real	2m22.164s
+user	16m27.200s
+sys	0m3.528s
+done
+
+th=4
+Biharmonic timescale dt_biharm = 2.32831e-06
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 6.87014e+06
+Solving deterministic (noise-free) CH
+iter: 1 , t = 0.000698492, relative residual: 0.0562868
+
+real	4m5.968s
+user	15m22.084s
+sys	0m2.782s
+done
+
+e29n07
+
+th=2
+Biharmonic timescale dt_biharm = 2.32831e-06
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 6.87014e+06
+Solving deterministic (noise-free) CH
+iter: 1 , t = 0.000698492, relative residual: 0.0562868
+
+real	7m34.294s
+user	14m48.131s
+sys	0m2.652s
+done
+
+th=1
+Biharmonic timescale dt_biharm = 2.32831e-06
+Diffusion timescale dt_diff = 1 dt_biharm
+Linear timescale dt_lin = 200 dt_biharm
+t0 = 0 dt_biharm , tf = 300 dt_biharm
+Initialized Cahn-Hilliard equation: scalar parameters, periodic BCs, no thermal dependence
+residual at initial condition: 6.87014e+06
+Solving deterministic (noise-free) CH
+iter: 1 , t = 0.000698492, relative residual: 0.0562868
+
+real	14m33.601s
+user	14m31.964s
+sys	0m1.340s
+done
