@@ -16,10 +16,6 @@ run() {
 mpi_args=(
 )
 
-# increase timeout to workaround failure to SPAWN
-mca_vars=(
-	PRTE_MCA_pmix_server_max_wait=60
-)
 #UCX_TLS=ud,shm
 
 # careful to not invoke via any other name than 'mpirun',
@@ -29,6 +25,6 @@ which --all mpirun | while read line
 do
 	if [[ $(realpath "${line}") != "$(realpath "${BASH_SOURCE[0]}")" ]]
 	then
-		SPACE_MB=16 run wtmp env ${mca_vars[@]} "${line}" ${mpi_args[@]} "$@"
+		SPACE_MB=16 run wtmp env "${line}" ${mpi_args[@]} "$@"
 	fi
 done
