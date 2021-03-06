@@ -21,46 +21,9 @@ LSF_LIB_DIR="/opt/ibm/spectrumcomputing/lsf/10.1.0.9/linux3.10-glibc2.17-ppc64le
 args=()
 mpirun_args=(
 	#-v
-	#--mca pml_base_verbose 100
-	##--mca odls_base_verbose 100
-	#--mca opal_verbose 100
-	#--mca opal_base_verbose 100
-	##--mca ras_base_verbose 100
-	#--mca errmgr_base_verbose 100
-	#--mca oob_base_verbose 100
-	#--mca routed_base_verbose 100
-	#--mca plm_base_verbose 100
-	#--mca plm_alps_debug 1
-	#--mca btl_base_verbose 100
-	#--mca ras_base_verbose 100
-	#--mca rmaps_base_verbose 100
-
-	# Required! Only 'direct' routed works on Theta, rest fail to spawn
-	# NOTE: this is insufficient! OpenMPI (PRRTE) must be built without
-	# any other routed modules (./autogen.pl --include routed-direct)
-	# TODO: what about on Summit?
-	#--mca routed direct
-	#--mca routed binomial
-	#--mca routed radix
 
 	# Fix for env var not propagating with prun (PRRTE PR #795)
-	# Note that propagation works with mpirun, and a patch to openmpi that
-	# adds the "ompi5" personality to prterun case fixes propagation with
-	# prterun, but not with prun. This is needed to fix prun.
-	--mca schizo_base_personalities prte,ompi5
-)
-
-# Can't set via --mca, since need to be applied to "projects" other than OMPI
-# Don't have --prmca (yet?): https://github.com/open-mpi/ompi/issues/7285
-# NOTE: these need to also be listed in .prefixenv to be forwarded
-mca_vars=(
-	#PRTE_MCA_prte_base_verbose=100
-	#PRTE_MCA_prte_pmix_verbose=100
-	#PRTE_MCA_pmix_base_verbose=100
-	#PRTE_MCA_pmix_server_verbose=100
-
-	# Default timeout (3sec) has been observed to expire on Summit too
-	PRTE_MCA_pmix_server_max_wait=120
+	--personality ompi
 )
 
 # Propagate env vars exported by $EPREFIX/etc/profile (which is in part
@@ -89,5 +52,5 @@ then
 	DBG_CMD=(gdb --args)
 fi
 
-exec env LD_LIBRARY_PATH="${LSF_LIB_DIR}" ${mca_vars[@]} ${DBG_CMD[@]} \
+exec env LD_LIBRARY_PATH="${LSF_LIB_DIR}" ${DBG_CMD[@]} \
 	${EPREFIX}/usr/bin/${omp_tool} ${args[@]} "$@"

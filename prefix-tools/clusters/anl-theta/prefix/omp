@@ -15,81 +15,10 @@ omp_tool=$(basename $0)
 
 args=()
 mpirun_args=(
-	#-v
-	#--mca pml_base_verbose 100
-	##--mca odls_base_verbose 100
-	#--mca opal_verbose 100
-	#--mca opal_base_verbose 100
-	##--mca ras_base_verbose 100
-	#--mca errmgr_base_verbose 100
-	#--mca oob_base_verbose 100
-	#--mca routed_base_verbose 100
-	#--mca plm_base_verbose 100
-	#--mca plm_alps_debug 1
-	#--mca btl_base_verbose 100
-	#--mca ras_base_verbose 100
+	# -v
 
-	# Required! Only 'direct' routed works on Theta, rest fail to spawn
-	# NOTE: this is insufficient! OpenMPI (PRRTE) must be built without
-	# any other routed modules (./autogen.pl --include routed-direct)
-	--mca routed direct
-	#--mca routed binomial
-	#--mca routed radix
-
-	# Select transport: built-in uGNI
-	#--mca pml_ob1_priority 100
-	#--mca btl_base_verbose 100
-	##--mca btl_ugni_verbose 100
-
-
-	# Select transport: UCX
-	#--mca pml ucx
-	#--mca pml_ucx_priority 100
-	#--mca pml_ucx_verbose 100
-
-	# Select transport: OFI libfabric
-	#
-	# Requires patch to odls ('default', or any other odls) to not close
-	# file descriptors in forked child, because ofi's uGNI backend needs
-	# to query alpslli for credentials (unlike built-in uGNI transport,
-	# OFI does not rely on PMI_GNI_PTAG variables set by alps odls).
-	#
-	#--mca mtl ofi
-	#--mca mtl_ofi_priority 100
-	#--mca mtl_ofi_verbose 100
-	#--mca mtl_base_verbose 100
-	#--mca pml_ucx_priority 0
-
-	# Select transport: TCP
-	#--mca pml_ob1_priority 0
-	#--mca btl self,tcp
-	#--mca btl_tcp_if_exclude 10.237.0.0/16,10.236.0.0/16
-
-	# OOB uses TCP, regardless of the main transport
-	--mca oob_tcp_if_exclude 10.237.0.0/16,10.236.0.0/16
-
-	#--mca shmem_base_verbose 100
-	#--mca shmem mmap
-
-	# We want alps odls, but can't explicitly select it here, because
-	# mpirun loads odls too (on service node, and alps odls fails there);
-	# so have to rely on priority to select alps.
-	# NOTE: The hardcoded priorities are broken in OpenMPI <5.x (alps odls
-	# not selected); needs patch
-	#--mca odls alps
-)
-
-# Can't set via --mca, since need to be applied to "projects" other than OMPI
-# Don't have --prmca (yet?): https://github.com/open-mpi/ompi/issues/7285
-# NOTE: these need to also be listed in .prefixenv to be forwarded
-mca_vars=(
-	#PRTE_MCA_prte_base_verbose=100
-	#PRTE_MCA_prte_pmix_verbose=100
-	#PRTE_MCA_pmix_base_verbose=100
-	#PRTE_MCA_pmix_server_verbose=100
-
-	# Default timeout (3sec) has been observed to expire even on debug q
-	PRTE_MCA_pmix_server_max_wait=120
+	# Fix for env var not propagating with prun (PRRTE PR #795)
+	--personality ompi
 )
 
 # mpirun needs to talk to ALPS, so it neds to load its libs at runtime
@@ -124,4 +53,4 @@ fi
 
 # Host PATH needed for apstat which is invoked downstream of this cmd
 PATH=$PATH:$HOST_PATH LD_LIBRARY_PATH="${alps_libs_paths}" \
-	exec env ${mca_vars[@]} ${DBG_CMD[@]} ${EPREFIX}/usr/bin/${omp_tool} ${args[@]} "$@"
+	exec env ${DBG_CMD[@]} ${EPREFIX}/usr/bin/${omp_tool} ${args[@]} "$@"
