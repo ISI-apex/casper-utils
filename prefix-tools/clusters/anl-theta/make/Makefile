@@ -104,9 +104,9 @@ endef
 
 COMMA:=,
 
-# tgt-steps(target_name) -> comma-separated list of step names
-define tgt-steps
-$(strip $(subst -,$(COMMA),$(call tgt-extract,steps,$(1),optional)))
+# tgt-tasks(target_name) -> comma-separated list of algorithm step names
+define tgt-tasks
+$(strip $(subst -,$(COMMA),$(call tgt-extract,tasks,$(1),optional)))
 endef
 
 define gen-map-by-mods

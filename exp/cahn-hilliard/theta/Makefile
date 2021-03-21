@@ -335,7 +335,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.hostfile | $(DATA_DIR)/
 		"$(call tgt-tasks-per-node,$*)" \
 		--elapsed-out "$@" \
 		--solution-out "$(patsubst %.csv,%.pvd,$@)" \
-		$(if $(call tgt-steps,$*),--tasks "$(call tgt-steps,$*)") \
+		$(if $(call tgt-tasks,$*),--tasks "$(call tgt-tasks,$*)") \
 		$(if $(MEM_PER_NODE),--mem-per-node "$(MEM_PER_NODE)") \
 		$(if $(DEDI_NODE_FOR_RANK0),--dedicated-node-for-rank0) \
 		$(if $(MONITOR_MEM),--monitor-mem $(MONITOR_MEM)) \
