@@ -2,6 +2,8 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 
+show_cols = ['cluster', 'mesh', 'ranks_per_node', 'total_s']
+
 d = pd.read_csv(sys.argv[1])
 d = d[(d['mesh'] == 8192) & (d['rank'] == 0)]
 d = d.sort_values('ranks')
@@ -11,8 +13,8 @@ d['dsl_s'] = d['setup_s'] + d['solve_s']
 d_theta = d[(d['cluster'] == 'theta') & (d['ranks_per_node'] == 24)]
 print(d[d['cluster'] == 'summit'])
 d_summit = d[(d['cluster'] == 'summit') & ((d['ranks_per_node'] == 40) | (d['ranks_per_node'] == 42 ))]
-print(d_theta)
-print(d_summit)
+print(d_theta[show_cols])
+print(d_summit[show_cols])
 
 fig = plt.figure(figsize=(6.3, 5))
 #fig, ax_theta = plt.subplots()
