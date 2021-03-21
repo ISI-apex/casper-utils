@@ -184,7 +184,9 @@ $(DATA_DIR)/prun_%.hostfile: | $(DATA_DIR)/
 
 ifneq ($(IN),)
 # prun-cmd(target-stem, hostfile)
+# TODO: switch to rankfile
 define prun-cmd
+$(error TODO: not implemented: switch to rankfile)
 prun -n "$(call tgt-extract,ranks,$(1))" \
 	--map-by "slot$(call gen-map-by-mods)" --hostfile "$(abspath $(2))" \
 	$(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
