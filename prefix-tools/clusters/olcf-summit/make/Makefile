@@ -25,7 +25,8 @@ DEDI_NODE_FOR_RANK0?=1
 # Print peak memory usage every N seconds
 MONITOR_MEM?=
 
-MPIRUN_INTERNAL_ARGS:=--bind-to none
+# Versions of OpenMPI stack prior to 2021-03 have needed '--bind-to none' here
+MPIRUN_INTERNAL_ARGS:=
 
 MEM_PER_NODE?=510G
 
