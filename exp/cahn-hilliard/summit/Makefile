@@ -76,7 +76,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 	set -o pipefail; \
 	$(call prun-cmd,$*,$<) \
 	env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
-	  XDG_CACHE_HOME="$@.cache" \
+	  XDG_CACHE_HOME="$@.cache" MPLCONFIGDIR="$@.mpl" \
 	bash $(PWD)/../fch.sh "$(call tgt-extract,mesh,$*)" \
 		"$(call tgt-extract,ranks,$*)" \
 		"$(call tgt-tasks-per-node,$*)" \
