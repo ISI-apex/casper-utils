@@ -1,19 +1,30 @@
-import sys
+import argparse
 import pandas as pd
 import matplotlib.pyplot as plt
 
-mesh = 8192
-theta_tpn = [24]
-summit_tpn = [40, 42]
+def csv_int_list(s):
+    return [int(n) for n in s.split(",")]
 
-#mesh = 4096
-#theta_tpn = [48]
-#summit_tpn = [41]
+parser = argparse.ArgumentParser(
+    description="Plot mesh distribution time and total time")
+parser.add_argument('dataset',
+        help="Input file with data (CSV)")
+parser.add_argument('figure',
+        help="Output file with plot (extension determines format, e.g. .pdf)")
+parser.add_argument('--mesh', type=int, required=True,
+        help="Mesh size for which to plot data")
+parser.add_argument('--theta-tpn', type=csv_int_list, required=True,
+        help="Ranks-per-node values which to include " +
+            "from Theta cluster (comma-separated)")
+parser.add_argument('--summit-tpn', type=csv_int_list, required=True,
+        help="Ranks-per-node values which to include " +
+            "from Summit cluster (comma-separated)")
+args = parser.parse_args()
 
 show_cols = ['cluster', 'mesh', 'ranks_per_node', 'total_s']
 
-d = pd.read_csv(sys.argv[1])
-d = d[(d['mesh'] == mesh) & (d['rank'] == 0)]
+d = pd.read_csv(args.dataset)
+d = d[(d['mesh'] == args.mesh) & (d['rank'] == 0)]
 d = d.sort_values('ranks')
 
 d['dsl_s'] = d['setup_s'] + d['solve_s']
@@ -25,8 +36,8 @@ def calc_tpn_cond(tpns):
         tpn_cond = tpn_cond | (d['ranks_per_node'] == tpns[i])
     return tpn_cond
 
-d_theta = d[(d['cluster'] == 'theta') & calc_tpn_cond(theta_tpn)]
-d_summit = d[(d['cluster'] == 'summit') & calc_tpn_cond(summit_tpn)]
+d_theta = d[(d['cluster'] == 'theta') & calc_tpn_cond(args.theta_tpn)]
+d_summit = d[(d['cluster'] == 'summit') & calc_tpn_cond(args.summit_tpn)]
 print(d_theta[show_cols])
 print(d_summit[show_cols])
 
@@ -52,7 +63,7 @@ ln_summit += ax_summit.plot(d_summit['ranks'], d_summit['total_s'], '--',
         marker='o', color='green')
 ax_summit.set_ylabel("Execution Time on Summit (s)")
 
-plt.title(f"Time to distribute {mesh} x {mesh} 2D mesh")
+plt.title(f"Time to distribute {args.mesh} x {args.mesh} 2D mesh")
 ax_theta.set_xlabel("Ranks")
 
 lns = ln_theta + ln_summit 
@@ -63,5 +74,5 @@ ax_theta.set_ylim(ymin=0)
 ax_summit.set_ylim(ymin=0)
 
 
-fig.savefig(sys.argv[2], bbox_inches='tight')
+fig.savefig(args.figure, bbox_inches='tight')
 plt.show()
