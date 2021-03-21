@@ -175,11 +175,11 @@ $(DATA_DIR)/prun_%.rankfile: | $(DATA_DIR)/
 		$(if $(DEDI_NODE_FOR_RANK0),--dedicate-node-to-rank0) "$@"
 
 ifneq ($(IN),)
-# prun-cmd(target-stem, rankfile)
+# prun-cmd(target-stem, rankfile, env vars)
 define prun-cmd
 prun -n "$(call tgt-extract,ranks,$(1))" \
     --map-by "rankfile:FILE=$(2)$(call gen-map-by-mods)" \
-    $(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
+    $(patsubst %,-x %,$(3)) $(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
 endef
 # Example usage from the consumer makefile:
 #$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.hostfile | $(DATA_DIR)/

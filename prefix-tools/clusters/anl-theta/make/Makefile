@@ -183,13 +183,13 @@ $(DATA_DIR)/prun_%.hostfile: | $(DATA_DIR)/
 		'+e:$(call tgt-nodes,$*) max_slots=$(call tgt-tasks-per-node,$*)') > $@
 
 ifneq ($(IN),)
-# prun-cmd(target-stem, hostfile)
+# prun-cmd(target-stem, hostfile, env vars)
 # TODO: switch to rankfile
 define prun-cmd
 $(error TODO: not implemented: switch to rankfile)
 prun -n "$(call tgt-extract,ranks,$(1))" \
 	--map-by "slot$(call gen-map-by-mods)" --hostfile "$(abspath $(2))" \
-	$(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
+	$(patsubst %,-x %,$(3)) $(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
 endef
 # Example usage from the consumer makefile:
 #$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.hostfile | $(DATA_DIR)/
