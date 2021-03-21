@@ -327,6 +327,7 @@ $(call target-set,ch-tpn,$(DATS_ch-tpn))
 
 ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
+	mkdir -p "$@.mpl"
 	set -o pipefail; \
 	$(call prun-cmd,$*,$<) \
 	env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
