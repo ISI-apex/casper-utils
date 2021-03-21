@@ -10,14 +10,23 @@ endif
 # default also varies by rank count -- the default is a mess.
 OMP_NUM_THREADS?=1
 
+# Prevent worker nodes from quering compiler version (in Firedrake)
+FD_CC=gcc
+FD_CXX=g++
+FD_CCVER=$(shell $(FD_CC) -dumpversion | cut -d. -f-2)
+FD_BENCH_DIR=../../apps/firedrake-bench
+
 ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 	mkdir -p "$@.mpl"
 	set -o pipefail; \
 	env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 	  XDG_CACHE_HOME="$@.cache" MPLCONFIGDIR="$@.mpl" \
-	$(call prun-cmd,$*,$<,OMP_NUM_THREADS XDG_CACHE_HOME MPLCONFIGDIR) \
-	bash $(PWD)/../fch.sh "$(call tgt-extract,mesh,$*)" \
+	  CC="$(FD_CC)" CXX="$(FD_CXX)" CCVER="$(FD_CCVER)" \
+	$(call prun-cmd,$*,$<,\
+		OMP_NUM_THREADS XDG_CACHE_HOME MPLCONFIGDIR CC CXX CCVER) \
+	python "$(FD_BENCH_DIR)/cahn_hilliard/firedrake_cahn_hilliard_bare.py" \
+		"$(call tgt-extract,mesh,$*)" \
 		"$(call tgt-extract,ranks,$*)" \
 		"$(call tgt-tasks-per-node,$*)" \
 		--elapsed-out "$@" \
