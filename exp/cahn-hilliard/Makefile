@@ -20,9 +20,9 @@ ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 	mkdir -p "$@.mpl"
 	set -o pipefail; \
-	env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
-	  XDG_CACHE_HOME="$@.cache" MPLCONFIGDIR="$@.mpl" \
-	  CC="$(FD_CC)" CXX="$(FD_CXX)" CCVER="$(FD_CCVER)" \
+	OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
+	XDG_CACHE_HOME="$@.cache" MPLCONFIGDIR="$@.mpl" \
+	CC="$(FD_CC)" CXX="$(FD_CXX)" CCVER="$(FD_CCVER)" \
 	$(call prun-cmd,$*,$<,\
 		OMP_NUM_THREADS XDG_CACHE_HOME MPLCONFIGDIR CC CXX CCVER) \
 	python "$(FD_BENCH_DIR)/cahn_hilliard/firedrake_cahn_hilliard_bare.py" \
