@@ -1,3 +1,15 @@
+ifeq ($(filter %.pdf %.svg,$(MAKECMDGOALS)),)
+ifeq ($(EPREFIX),)
+$(error EPREFIX env var not set to Prefix root directory)
+endif # EPREFIX
+else
+EPREFIX_REQUIRED=
+endif
+
+# Very important to set OMP threads, otherwise it spawns way to many, and the
+# default also varies by rank count -- the default is a mess.
+OMP_NUM_THREADS?=1
+
 ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 	mkdir -p "$@.mpl"

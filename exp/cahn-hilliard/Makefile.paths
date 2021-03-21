@@ -1,0 +1,11 @@
+# Could point to installation within the prefix, or within casper-utils (the
+# latter is convenient for development, but the former is ensures that the
+# prefix is self-sufficient, i.e. does not depend on any other repos)
+ifneq ($(wildcard ../../../prefix-tools),)
+PTOOLS_DIR:=../../../prefix-tools
+else ifneq (${EPREFIX},)
+PTOOLS_DIR:=${EPREFIX}/usr/share/prefix-tools
+else
+$(error prefix-tools dir not found)
+endif
+

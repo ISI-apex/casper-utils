@@ -1,24 +1,7 @@
-ifeq ($(filter %.pdf %.svg,$(MAKECMDGOALS)),)
-ifeq ($(EPREFIX),)
-$(error EPREFIX env var not set to Prefix root directory)
-endif # EPREFIX
-else
-EPREFIX_REQUIRED=
-endif
-
 ACCOUNT?=csc436
 
-# Could point to installation within the prefix, or within casper-utils (the
-# latter is convenient for development, but the former is ensures that the
-# prefix is self-sufficient, i.e. does not depend on any other repos)
-#PTOOLS_DIR:=${EPREFIX}/usr/share/prefix-tools
-PTOOLS_DIR:=../../../prefix-tools
-
+include ../Makefile.paths
 include $(PTOOLS_DIR)/clusters/olcf-summit/make/Makefile
-
-# Very important to set OMP threads, otherwise it spawns way to many, and the
-# default also varies by rank count -- the default is a mess.
-OMP_NUM_THREADS?=1
 
 all: ch-test
 
