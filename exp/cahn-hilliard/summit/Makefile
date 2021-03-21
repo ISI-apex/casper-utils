@@ -70,24 +70,3 @@ DATS_ch-tpn=\
 $(call target-set,ch-tpn,$(DATS_ch-tpn))
 
 $(call target-set,ch-scaling,$(DATS_ch-4k) $(DATS_ch-8k))
-
-ifneq ($(IN),)
-$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
-	mkdir -p "$@.mpl"
-	set -o pipefail; \
-	$(call prun-cmd,$*,$<) \
-	env OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
-	  XDG_CACHE_HOME="$@.cache" MPLCONFIGDIR="$@.mpl" \
-	bash $(PWD)/../fch.sh "$(call tgt-extract,mesh,$*)" \
-		"$(call tgt-extract,ranks,$*)" \
-		"$(call tgt-tasks-per-node,$*)" \
-		--elapsed-out "$@" \
-		--solution-out "$(patsubst %.csv,%.pvd,$@)" \
-		$(if $(call tgt-extract,steps,$*,1),\
-			--steps "$(call tgt-extract,steps,$*)") \
-		$(if $(call tgt-tasks,$*),--tasks "$(call tgt-tasks,$*)") \
-		$(if $(MEM_PER_NODE),--mem-per-node "$(MEM_PER_NODE)") \
-		$(if $(DEDI_NODE_FOR_RANK0),--dedicated-node-for-rank0) \
-		$(if $(MONITOR_MEM),--monitor-mem $(MONITOR_MEM)) \
-	2>&1 | tee "$@.log"
-endif # IN=
