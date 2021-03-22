@@ -123,13 +123,27 @@ Use this wrapper script to launch the build job on worker nodes:
   CPU family for the build host (`sandybridge` is a reasonable choice for
   building a generic prefix, see notes below).
 
-### ANL Theta and OLCF Summit
+### ANL Theta
 
-* On ANL Theta, the build can be done on a login machine:
+On ANL Theta, the build can be done on a login machine:
 
-        $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-anl-theta-knl
+    $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-anl-theta-knl
 
-* On OLCF Summit, the build can be done on a login machine:
+### OLCF Summit
+
+On OLCF Summit, choose `PREFIX_PATH` to be in the project work area backed by
+the Spectrum Scale parallel filesystem (aka. "scratch"), not project or user
+home file systems backed by NFS. This is because the work area has massive
+amounts of space, and because NFS (used for home) creates problems with stale
+`.nfsX` files and may not be the fastest when accessed from worker nodes.
+
+The project work area has a 90 day file retention period, which means files are
+deleted after they haven't been accessed for this long. To refresh file access
+times and thus prevent the purge, run this every couple of months:
+
+    $ find PREFIX_PATH -execdir touch -a {} \;
+
+The build can be done on a login machine:
 
         $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-olcf-summit
 
