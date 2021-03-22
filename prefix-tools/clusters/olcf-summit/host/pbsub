@@ -28,10 +28,10 @@ do
 		QSUB_ARGS+=("${arg}")
 		shift
 
-		if [[ "${arg}" =~ ^(-o)$ ]]
+		if [[ "${arg}" =~ ^(-J)$ ]]
 		then
-			log_prefix="$1" # the following arg
-			QSUB_ARGS+=("${1}")
+			log_prefix="${1}" # the following arg
+			QSUB_ARGS+=("${log_prefix}")
 			shift
 		fi
 	fi
