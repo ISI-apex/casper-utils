@@ -9,7 +9,7 @@ then
 	exit 1
 fi
 CASPER_UTILS=$(realpath ${SELF_DIR}/..)
-source ${CASPER_UTILS}/prefix-tools/etc/prefixhelpers
+source ${CASPER_UTILS}/prefix-tools/etc/prefix-tools/prefixhelpers
 
 if [[ ! -e "${OVERLAY_PATH}" ]]
 then

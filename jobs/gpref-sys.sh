@@ -9,7 +9,7 @@ then
 	exit 1
 fi
 CASPER_UTILS=$(realpath ${SELF_DIR}/..)
-source ${CASPER_UTILS}/prefix-tools/etc/prefixhelpers
+source ${CASPER_UTILS}/prefix-tools/etc/prefix-tools/prefixhelpers
 
 PTOOLS_DIR="${SELF_DIR}"/../prefix-tools
 
