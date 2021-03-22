@@ -64,11 +64,15 @@ export ROOT=$(realpath ${PPATH})
 mkdir -p $ROOT
 
 # Workaround for /etc/profile.d/..mx. setting LD_LIBRARY_PATH: wrap shell
-mkdir -p "${TMP_HOME}"/bin
-export PATH="${TMP_HOME}/bin:$PATH"
-echo '/bin/bash --noprofile "$@"' > "${TMP_HOME}"/bin/bash
-chmod +x "${TMP_HOME}"/bin/bash
-export SHELL="${TMP_HOME}/bin/bash"
+# Can't use TMP_HOME because startprefix detects wrapper as prefix shell
+# when the path starts with ROOT.
+SHELL_WRAP_TMP=$(dirname "${ROOT}")/.tmp.$(basename "${ROOT}")
+SHELL_WRAP="${SHELL_WRAP_TMP}"/bin/bash
+mkdir -p "$(dirname "${SHELL_WRAP}")"
+export PATH="$(dirname "${SHELL_WRAP}"):$PATH"
+echo "$SHELL" '--noprofile "$@"' > "${SHELL_WRAP}"
+chmod +x "${SHELL_WRAP}"
+export SHELL="${SHELL_WRAP}"
 
 # Note: if you edit this path, also edit in startprefix.patch and
 # in app-portage/prefix-toolkit ebuild.
