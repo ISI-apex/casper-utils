@@ -13,9 +13,6 @@ source ${CASPER_UTILS}/prefix-tools/etc/prefix-tools/prefixhelpers
 
 PTOOLS_DIR="${SELF_DIR}"/../prefix-tools
 
-set_tmpdir 16000 # MB of free space
-TMP_HOME="${TMPDIR}" # name used in this script, to avoid confusion
-
 if [[ ! -e "${DIST_PATH}" ]]
 then
 	echo "ERROR: DIST_PATH not pointing to source archives dir" 1>&2
@@ -53,13 +50,23 @@ then
 	exit 2
 fi
 
+PNAME=$(basename ${PPATH})
+export ROOT=$(realpath ${PPATH})
+
 if [[ -z "${NPROC}" ]]
 then
 	set_nproc "${CLUSTER}"
 fi
 
-PNAME=$(basename ${PPATH})
-export ROOT=$(realpath ${PPATH})
+if [[ "${PROFILE}" =~ olcf-summit ]]
+then
+	# On Summit, there is a memory usage limit, so don't use tmpfs (/tmp)
+	# for building the profile (base system build does fit in tmpfs).
+	TMPDIR="$ROOT"/var/tmp
+fi
+
+set_tmpdir 16000 # MB of free space
+TMP_HOME="${TMPDIR}" # name used in this script, to avoid confusion
 
 mkdir -p $ROOT
 
