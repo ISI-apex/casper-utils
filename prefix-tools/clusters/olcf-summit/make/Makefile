@@ -10,8 +10,6 @@ endif # ACCOUNT
 
 MAKEFLAGS+=--keep-going
 
-PTOOLS:=$(EPREFIX)/ptools
-
 # 0 max time means maximum allowed
 MAX_TIME?=
 ACCOUNT?=
@@ -214,7 +212,7 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 	echo JOB_NAME=$${JOB_NAME}
 	echo $@ > $${JOB_NAME}.tgt
 	MONITOR=$(MONITOR) SUPPRESS_RC=$(SUPPRESS_RC) \
-	$(PTOOLS)/pbsub -J "$${JOB_NAME}" -o "$${JOB_NAME}.log" \
+	$(PTOOLS_HOST)/pbsub -J "$${JOB_NAME}" -o "$${JOB_NAME}.log" \
 		-P "$(ACCOUNT)" \
 		-nnodes "$(call job-nodes-arg,$*)" \
 		-W "$(call max-time-arg,$*)" \

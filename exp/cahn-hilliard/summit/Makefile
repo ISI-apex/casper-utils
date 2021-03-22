@@ -1,7 +1,10 @@
+CLUSTER=olcf-summit
 ACCOUNT?=csc436
 
-include ../Makefile.paths
-include $(PTOOLS_DIR)/clusters/olcf-summit/make/Makefile
+PTOOLS:=${EPREFIX}/usr/share/prefix-tools
+PTOOLS_HOST:=${EPREFIX}/ptools
+
+include $(PTOOLS)/make/Makefile
 
 all: ch-test
 

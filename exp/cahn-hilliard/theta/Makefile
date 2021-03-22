@@ -1,7 +1,10 @@
+CLUSTER=anl-theta
 ACCOUNT?=CASPER
 
-include ../Makefile.paths
-include $(PTOOLS_DIR)/clusters/anl-theta/make/Makefile
+PTOOLS:=${EPREFIX}/usr/share/prefix-tools
+PTOOLS_HOST:=${EPREFIX}/ptools
+
+include $(PTOOLS)/make/Makefile
 
 all: ch-core-small ch-core-large
 
