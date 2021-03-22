@@ -30,7 +30,7 @@ then
 	fi
 	# Could use a pipe, but we do want to mirror output to stdout/err,
 	# so simplest is to redirect to file, tee the file, grep the file.
-	echo "prte 2>&1 | tee "${LOG}" &"
+	echo "prte ${prte_args[@]} 2>&1 | tee "${LOG}" &"
 	prte "${prte_args[@]}" 2>&1 | tee "${LOG}" &
 	DVM_PID=$! # PID of tee, but good enough
 	while ! grep -q 'DVM ready' "${LOG}" && \
@@ -48,4 +48,4 @@ else
 fi
 trap "run pterm" EXIT
 
-"$@"
+run "$@"
