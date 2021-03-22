@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+delay=$1
+shift
+
+"$@"
+sleep "${delay}"

@@ -89,25 +89,18 @@ exit \$RC
 EOF
 chmod +x "${tmpscr}"
 
-# On Summit, back-to-back submission of jobs breaks env var propagation
+# On Summit, concurrent submission of jobs breaks jobs in strange ways
 BSUB_LOCK=${EPREFIX}/tmp/pbsub.lock
-while [[ -f "${BSUB_LOCK}" ]]
-do
-	echo "Waiting for bsub lock..."
-	sleep 10
-done
-touch "${BSUB_LOCK}"
 
 run_sub() {
-	rund bsub ${QSUB_ARGS[@]} "${tmpscr}"
+	# Delay to prevent not only concurrent, but also back-to-back bsubs
+	rund flock "${BSUB_LOCK}" \
+		"${self_dir}"/pdelay 30 bsub ${QSUB_ARGS[@]} "${tmpscr}"
 }
 rm -f ${jobstat_file} ${log_prefix}.job
 DRY=1 run_sub > ${log_prefix}.job
 subout=$(run_sub)
 subrc=$?
-
-sleep 10 # prevent back-to-back invocations of bsub (see comment above)
-rm -f "${BSUB_LOCK}"
 
 if [[ "${subrc}" != 0 ]]
 then
