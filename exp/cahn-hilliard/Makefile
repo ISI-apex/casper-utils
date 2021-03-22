@@ -18,7 +18,7 @@ FD_BENCH_DIR=../../apps/firedrake-bench
 
 ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
-	mkdir -p "$@.mpl"
+	mkdir -p "$@.mpl" "$@.sol"
 	set -o pipefail; \
 	OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
 	XDG_CACHE_HOME="$@.cache" MPLCONFIGDIR="$@.mpl" \
@@ -30,7 +30,8 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 		"$(call tgt-extract,ranks,$*)" \
 		"$(call tgt-tasks-per-node,$*)" \
 		--elapsed-out "$@" \
-		--solution-out "$(patsubst %.csv,%.pvd,$@)" \
+		--solution-out \
+		  "$(patsubst %.csv,%.sol,$@)/$(patsubst %.csv,%.pvd,$@)" \
 		$(if $(call tgt-extract,steps,$*,1),\
 			--steps "$(call tgt-extract,steps,$*)") \
 		$(if $(call tgt-tasks,$*),--tasks "$(call tgt-tasks,$*)") \
