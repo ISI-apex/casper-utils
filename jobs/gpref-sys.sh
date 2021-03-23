@@ -232,9 +232,9 @@ then
 	P_UID=$(stat -c '%u' "${ROOT}")
 	P_GID=$(stat -c '%g' "${ROOT}")
 
-	sed -i "/^${P_GROUP}:/d" "${ROOT}"/etc/group
-	echo "${P_GROUP}:x:${P_GID}:" >> "${ROOT}"/etc/group
-	sed -i "s/^${P_USER}:x:[0-9]\+:[0-9]\+:/${P_USER}:x:${P_UID}:${P_GID}:/" \
+	sed -i "s@^portage:\([^:]*\):[0-9]\+:portage@${P_GROUP}:\1:${P_GID}:${P_USER}@" \
+		"${ROOT}"/etc/group
+	sed -i "s@^portage:\([^:]*\):[0-9]\+:[0-9]\+:[^:]*:[^:]*:@${P_USER}:x:${P_UID}:${P_GID}:Prefix User:${HOME}:@" \
 		"${ROOT}"/etc/passwd
 	step_done passwd
 fi
