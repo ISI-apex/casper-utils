@@ -109,7 +109,7 @@ fi
 
 if ! step_is_done select_profile
 then
-	portrun "eselect profile set ${REPO}:${PROFILE}"
+	prun "eselect profile set ${REPO}:${PROFILE}"
 	step_done select_profile
 fi
 
@@ -232,7 +232,7 @@ fi
 
 if ! step_is_done select_python
 then
-	portrun "eselect python set python3.8"
+	prun "eselect python set python3.8"
 	step_done select_python
 fi
 
