@@ -232,7 +232,11 @@ fi
 
 if ! step_is_done select_python
 then
-	prun "eselect python set python3.8"
+	if prun "eselect modules has python"
+	then
+		# select latest installed version of python
+		prun 'eselect python set python$(equery -q -C l -F '$version' python | sort -Vr | head -1 | cut -d'.' -f1-2)'
+	fi
 	step_done select_python
 fi
 
