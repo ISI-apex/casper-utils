@@ -144,7 +144,12 @@ times and thus prevent the purge, run this every couple of months:
 
     $ find PREFIX_PATH -execdir touch -a {} \;
 
-The build can be done on a login machine:
+The build can be done on a worker node (preferred), run this command
+on the login machine to submit the job:
+
+        $ casper-utils/jobs/olcf-summit/gpref.job.sh PREFIX_PATH casper-olcf-summit
+
+Or, the build can also be done directly on the login macine:
 
         $ casper-utils/jobs/gpref.sh PREFIX_PATH casper-olcf-summit
 
