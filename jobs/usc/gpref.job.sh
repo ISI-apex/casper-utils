@@ -8,7 +8,7 @@ set -e
 
 # export because the nested scripts called below need it
 export SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-CASPER_UTILS=$(realpath ${SELF_DIR}/..)
+CASPER_UTILS=$(realpath ${SELF_DIR}/../..)
 
 export DIST_PATH=${CASPER_UTILS}/distfiles
 export OVERLAY_PATH=${CASPER_UTILS}/ebuilds

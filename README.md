@@ -110,12 +110,13 @@ In all sections that follow:
 
 Use this wrapper script to launch the build job on worker nodes:
 
-    $ casper-utils/jobs/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER[:PARTITION] ARCH
+    $ casper-utils/jobs/usc/gpref.job.sh PREFIX_PATH casper-usc-CLUSTER-ARCH CLUSTER[:PARTITION] ARCH
 
 * the second argument is a Gentoo profile name where CLUSTER identifies the
-  HPC cluster and ARCH identifies the CPU family for which to optimize via the
-  `-march,-mtune` compiler flags (for the generic unoptimized use `amd64`; for
-   supported clusters and cpu families see `ebuilds/profiles/casper-usc-*-*`),
+  HPC cluster (usc-hpcc or usc-discovery) and ARCH identifies the CPU family
+  for which to optimize via the `-march,-mtune` compiler flags (for the generic
+  unoptimized use `amd64`; for supported clusters and cpu families see
+  `ebuilds/profiles/casper-usc-*-*`),
 * the third argument is the cluster name: either `discovery` or `hpcc`,
   optionally followed by colon and a partition name, e.g. `oneweek`.
 * the fourth argument ARCH again, but cannot be `amd64`;
