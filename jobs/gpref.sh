@@ -15,6 +15,8 @@ export DIST_PATH=${CASPER_UTILS}/distfiles
 export OVERLAY_PATH=${CASPER_UTILS}/ebuilds
 export FILES_PATH=${CASPER_UTILS}/jobs/gpref
 
+export OFFLINE_MODE=1
+
 PPATH=$1
 if [ -z "${PPATH}" ]
 then
