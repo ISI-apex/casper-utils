@@ -341,3 +341,36 @@ then
 	fi
 	step_done kernel
 fi
+
+# Setup host-based authentication by copying config from host
+# NOTE: this may differ among clusters, so far developed on Summit.
+if ! step_is_done ssh
+then
+	ssh_dir=etc/ssh
+	ssh_config="$ROOT/${ssh_dir}/ssh_config"
+
+	declare -A ssh_options
+	ssh_options["EnableSSHKeySign"]="yes"
+	ssh_options["HostbasedAuthentication"]="yes"
+
+	for opt in ${!ssh_options[@]}
+	do
+		val="${ssh_options[${opt}]}"
+		if grep -q "^\s*${opt}\s\+" "${ssh_config}"
+		then
+			sed -i "s/^\s*${opt}\s\+.*/${opt} ${val}/" \
+				"${ssh_config}"
+		else
+			echo "${opt} ${val}" >> "${ssh_config}"
+		fi
+	done
+
+	for key_file in /${ssh_dir}/ssh_host_*_key.pub
+	do
+		ln -s ${key_file} $ROOT/${key_file}
+	done
+
+	# ssh-keysign is a setuid root executable, so point to host's
+	ln -sf /usr/libexec/openssh/ssh-keysign $ROOT/usr/lib64/misc/ssh-keysign
+	step_done ssh
+fi
