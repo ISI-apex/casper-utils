@@ -45,6 +45,17 @@ DATS_ch-4k-steps-50=\
 	ch_mesh-4096_ranks-5536_tpn-42_steps-50.csv \
 
 $(call target-set,ch-4k-steps-50,$(DATS_ch-4k-steps-50))
+
+DATS_ch-4k-steps-100=\
+	ch_mesh-4096_ranks-42_tpn-42_steps-100.csv \
+	ch_mesh-4096_ranks-84_tpn-42_steps-100.csv \
+	ch_mesh-4096_ranks-168_tpn-42_steps-100.csv \
+	ch_mesh-4096_ranks-346_tpn-42_steps-100.csv \
+	ch_mesh-4096_ranks-692_tpn-42_steps-100.csv \
+	ch_mesh-4096_ranks-1384_tpn-42_steps-100.csv \
+
+$(call target-set,ch-4k-steps-100,$(DATS_ch-4k-steps-100))
+
 DATS_ch-4k=\
 	ch_mesh-4096_ranks-42_tpn-42_steps-1.csv \
 	ch_mesh-4096_ranks-84_tpn-42_steps-1.csv \
