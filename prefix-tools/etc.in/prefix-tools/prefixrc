@@ -18,7 +18,7 @@ fi
 
 # The following we do want to load into every shell
 
-source "${EPREFIX}"/@__ETC_PTOOLS__@/prefixhelpers
+source "${EPREFIX}"/usr/lib/prefix-tools/sh/prefixhelpers
 
 if [[ -f "${EPREFIX}"/.prefixrc ]]
 then

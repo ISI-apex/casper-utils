@@ -17,7 +17,7 @@ export OFFLINE_MODE=1
 
 # for constraint() function
 # TODO: move constraint (and funcs for host tools) out of prefixhelpers
-source ${CASPER_UTILS}/prefix-tools/etc/prefixhelpers
+source ${CASPER_UTILS}/prefix-tools/sh/prefixhelpers
 
 PPATH=$1
 if [ -z "${PPATH}" ]
