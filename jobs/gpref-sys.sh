@@ -58,14 +58,7 @@ then
 	set_nproc "${CLUSTER}"
 fi
 
-if [[ "${PROFILE}" =~ olcf-summit ]]
-then
-	# On Summit, there is a memory usage limit, so don't use tmpfs (/tmp)
-	# for building the profile (base system build does fit in tmpfs).
-	TMPDIR="$ROOT"/var/tmp
-fi
-
-set_tmpdir 16000 # MB of free space
+set_tmpdir "${CLUSTER}" 16000 "$ROOT" # MB of free space
 TMP_HOME="${TMPDIR}" # name used in this script, to avoid confusion
 
 mkdir -p $ROOT

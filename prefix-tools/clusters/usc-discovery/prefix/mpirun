@@ -25,6 +25,7 @@ which --all mpirun | while read line
 do
 	if [[ $(realpath "${line}") != "$(realpath "${BASH_SOURCE[0]}")" ]]
 	then
-		SPACE_MB=16 run wtmp env "${line}" ${mpi_args[@]} "$@"
+		CLUSTER=usc-discovery SPACE_MB=16 \
+			run wtmp env "${line}" ${mpi_args[@]} "$@"
 	fi
 done

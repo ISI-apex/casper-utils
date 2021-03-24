@@ -229,32 +229,84 @@ function check_space_mb
 }
 
 # Set TMPDIR to a temporary directory to be used as build dir.  Uses directory
-# allocated by resource manager (SLURM) if set, otherwise, creates one with
-# mktemp, and registers a cleanup hook.
+# allocated by resource manager if set, otherwise, looks at the path passed
+# in TMPDIR and either uses it as is, or if it is empty or is detected to be a
+# shared directory (e.g. /tmp or /dev/shm), then creates a subdirectory in
+# one of these shared directories with mktemp, and registers a cleanup hook.
+# Set THE_TMPDIR to override all of the selection logic except the subdirectory
+# creation in case of shared directories.
+#
+# Cluster-specific defaults are used, but some require ROOT to be set to
+# the prefix path.
 #
 # NOTE: This function replaces the EXIT trap handler. Be careful if you
 # want to use this function and use EXIT trap handler from your script.
 function set_tmpdir
 {
-	local min_space_mb
-	if [[ -n "${SPACE_MB}" ]]
+	# All args are optional
+	local cluster="$1"
+	shift
+	local min_space_mb="$1"
+	shift
+	local root="$1"
+	shift
+	echo TMPDIR=$TMPDIR
+
+	if [[ -z "${min_space_mb}" ]]
 	then
-		min_space_mb="${SPACE_MB}"
-	else
-		min_space_mb=1024
+		if [[ -n "${SPACE_MB}" ]]
+		then
+			min_space_mb="${SPACE_MB}"
+		else
+			min_space_mb=1024
+		fi
 	fi
 
 	if [[ -z "${THE_TMPDIR}" ]]
 	then
-		# Try to use the tmp dir alloce to the job by resource manager
+		# Highest priority: use the tmp dir alloced to the job
+		# by the resource manager
 		if [[ -n "${SLURM_TMPDIR}" ]]
 		then
 			THE_TMPDIR="${SLURM_TMPDIR}"
-		elif [[ -n "${TMPDIR}" ]]
+		elif [[ -n "${__LSF_JOB_TMPDIR__}" ]]
+		then
+			THE_TMPDIR="${__LSF_JOB_TMPDIR__}"
+		fi
+
+		# Next priority: use TMPDIR
+		if [[ -n "${TMPDIR}" ]]
 		then
 			THE_TMPDIR="${TMPDIR}"
 		fi
 	fi
+
+	# If still not set, then use a default
+	if [[ -z "${THE_TMPDIR}" ]]
+	then
+		case "${cluster}" in
+		olcf-summit)
+			# On Summit, on login machines, don't use (/tmp,
+			# backed by tmpfs), because there is a memory usage
+			# limit, which the build exceeds.  Instead, use the
+			# same FS as the prefix (which is expected to be the
+			# Spectrum parallel FS). Note: for worker machines we
+			# won't get here since RM case above.
+			if [[ -n "${root}" ]]
+			then
+				THE_TMPDIR="${root}"/var/tmp
+			else
+				echo "ERROR: temp dir selection failed: " \
+					"refusing to use /tmp on Summit," \
+					"but prefix path was not given" 1>&2
+				exit 1
+			fi
+			;;
+		esac
+	fi
+
+	# If still not set, or set to a shared directory, try one
+	# of the shared directories, checking for free space.
 
 	# /tmp is not good enough, create a dedicated dir within /tmp
 	function cleanup_tmp {
@@ -286,7 +338,7 @@ function set_tmpdir
 				tmp_root=/tmp
 			else
 				echo "ERROR: no temp dir has ${min_space_mb} MB of space" 1>&2
-				return 1
+				exit 1
 			fi
 		else
 			if [ -n "${THE_TMPDIR}" ]
@@ -316,14 +368,29 @@ function set_tmpdir
 		trap cleanup_tmp EXIT
 	fi
 
+	# If still not set, we don't have any other options left
+	if [[ -z "${THE_TMPDIR}" ]]
+	then
+		echo "ERROR: temp directory selection failed" 1>&2
+		exit 2
+	fi
+
+	# Validate our selection
 	if [[ ! -e "${THE_TMPDIR}" ]]
 	then
 		echo "ERROR: temp directory '${THE_TMPDIR}' does not exist" 1>&2
-		return 2
-	elif ! touch ${THE_TMPDIR}/test_tmp
+		exit 3
+	fi
+	if ! touch "${THE_TMPDIR}"/test_tmp
 	then
 		echo "ERROR: temp directory '${THE_TMPDIR}' not writable" 1>&2
-		return 3
+		exit 4
+	fi
+	if ! check_space_mb "${THE_TMPDIR}" "${min_space_mb}"
+	then
+		echo "ERROR: temp directory '${THE_TMPDIR}'" \
+			"has insufficient space (<= ${min_space_mb} MB)" 1>&2
+		exit 5
 	fi
 
 	export TMPDIR="${THE_TMPDIR}"
@@ -335,13 +402,13 @@ function with_portage_tmpdir {
 	run env PORTAGE_TMPDIR=$TMPDIR $@
 }
 
-# parametrized by env vars: SPACE_MB and KEEP_TMPDIR
+# parametrized by env vars: SPACE_MB and KEEP_TMPDIR and CLUSTER
 function wtmp {
-	(set_tmpdir && "$@")
+	(set_tmpdir "${CLUSTER}" && "$@")
 }
 function port {
 	echo MAKEOPTS="${MAKEOPTS}"
-	(set_tmpdir && with_portage_tmpdir "$@")
+	(set_tmpdir "${CLUSTER}" && with_portage_tmpdir "$@")
 }
 function sport {
 	MAKEOPTS="-j1" port "$@"

@@ -44,21 +44,15 @@ then
 	set_nproc "${CLUSTER}"
 fi
 
+# sets TMPDIR, needed by prun (via .prefixrc)
+set_tmpdir "${CLUSTER}" 16000 "$ROOT" # MB of space
+
 step_is_done() {
 	test -f "${STATUS_DIR}/$1"
 }
 step_done() {
 	touch "${STATUS_DIR}/$1"
 }
-
-if [[ "${PROFILE}" =~ olcf-summit ]]
-then
-	# On Summit, there is a memory usage limit, so don't use tmpfs (/tmp)
-	# for building the profile (base system build does fit in tmpfs).
-	TMPDIR="$ROOT"/var/tmp
-fi
-
-set_tmpdir 16000 # MB of space; sets TMPDIR, needed by prun (via .prefixrc)
 
 run() {
 	echo "$@"
