@@ -1,7 +1,7 @@
 CLUSTER=olcf-summit
 ACCOUNT?=csc436
 
-PTOOLS:=${EPREFIX}/usr/share/prefix-tools
+PTOOLS:=${EPREFIX}/usr/lib/prefix-tools
 PTOOLS_HOST:=${EPREFIX}/ptools
 
 include $(PTOOLS)/make/Makefile

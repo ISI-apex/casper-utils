@@ -1,7 +1,7 @@
 CLUSTER=anl-theta
 ACCOUNT?=CASPER
 
-PTOOLS:=${EPREFIX}/usr/share/prefix-tools
+PTOOLS:=${EPREFIX}/usr/lib/prefix-tools
 PTOOLS_HOST:=${EPREFIX}/ptools
 
 include $(PTOOLS)/make/Makefile
