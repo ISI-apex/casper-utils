@@ -32,6 +32,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 		--elapsed-out "$@" \
 		--solution-out \
 		  "$(patsubst %.csv,%.sol,$@)/$(patsubst %.csv,%.pvd,$@)" \
+		--obj-dir "$(patsubst %.csv,%.obj,$@)" \
 		$(if $(call tgt-extract,steps,$*,1),\
 			--steps "$(call tgt-extract,steps,$*)") \
 		$(if $(call tgt-tasks,$*),--tasks "$(call tgt-tasks,$*)") \
