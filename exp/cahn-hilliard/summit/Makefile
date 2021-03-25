@@ -29,8 +29,6 @@ DATS_ch-4k-steps-25=\
 	ch_mesh-4096_ranks-346_tpn-42_steps-25.csv \
 	ch_mesh-4096_ranks-692_tpn-42_steps-25.csv \
 	ch_mesh-4096_ranks-1384_tpn-42_steps-25.csv \
-	ch_mesh-4096_ranks-2768_tpn-42_steps-25.csv \
-	ch_mesh-4096_ranks-5536_tpn-42_steps-25.csv \
 
 $(call target-set,ch-4k-steps-25,$(DATS_ch-4k-steps-25))
 
