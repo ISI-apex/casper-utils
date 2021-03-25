@@ -22,6 +22,15 @@ DATS_ch-test-2=\
 
 $(call target-set,ch-test-2,$(DATS_ch-test-2))
 
+DATS_ch-2k-steps-25=\
+	ch_mesh-2048_ranks-42_tpn-42_steps-25.csv \
+	ch_mesh-2048_ranks-84_tpn-42_steps-25.csv \
+	ch_mesh-2048_ranks-168_tpn-42_steps-25.csv \
+	ch_mesh-2048_ranks-346_tpn-42_steps-25.csv \
+	ch_mesh-2048_ranks-692_tpn-42_steps-25.csv \
+
+$(call target-set,ch-2k-steps-25,$(DATS_ch-2k-steps-25))
+
 DATS_ch-4k-steps-25=\
 	ch_mesh-4096_ranks-42_tpn-42_steps-25.csv \
 	ch_mesh-4096_ranks-84_tpn-42_steps-25.csv \
