@@ -93,9 +93,7 @@ chmod +x "${tmpscr}"
 BSUB_LOCK=${EPREFIX}/tmp/pbsub.lock
 
 run_sub() {
-	# Delay to prevent not only concurrent, but also back-to-back bsubs
-	rund flock "${BSUB_LOCK}" \
-		"${self_dir}"/pdelay 30 bsub ${QSUB_ARGS[@]} "${tmpscr}"
+	rund flock "${BSUB_LOCK}" bsub ${QSUB_ARGS[@]} "${tmpscr}"
 }
 rm -f ${jobstat_file} ${log_prefix}.job
 DRY=1 run_sub > ${log_prefix}.job
