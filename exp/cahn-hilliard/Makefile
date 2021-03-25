@@ -18,10 +18,12 @@ FD_BENCH_DIR=../../apps/firedrake-bench
 
 ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
-	mkdir -p "$@.mpl" "$@.sol"
+	mkdir -p "$(patsubst %.csv,%.mpl,%@)" \
+		"$(patsubst %.csv,%.sol,$@)"
 	set -o pipefail; \
 	OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
-	XDG_CACHE_HOME="$@.cache" MPLCONFIGDIR="$@.mpl" \
+	XDG_CACHE_HOME="$(patsubst %.csv,%.cache,$@)" \
+	MPLCONFIGDIR="$(patsubst %.csv,%.mpl,$@)" \
 	CC="$(FD_CC)" CXX="$(FD_CXX)" CCVER="$(FD_CCVER)" \
 	$(call prun-cmd,$*,$<,\
 		OMP_NUM_THREADS XDG_CACHE_HOME MPLCONFIGDIR CC CXX CCVER) \
