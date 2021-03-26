@@ -28,10 +28,11 @@ then
 		echo "dvmrun: ERROR: path for log does not exist: ${LOG}" 1>&2
 		exit 1
 	fi
+	touch "${LOG}" # to prevent race between grep and prte command
 	# Could use a pipe, but we do want to mirror output to stdout/err,
 	# so simplest is to redirect to file, tee the file, grep the file.
-	echo "prte ${prte_args[@]} 2>&1 | tee "${LOG}" &"
-	prte "${prte_args[@]}" 2>&1 | tee "${LOG}" &
+	echo "prte ${prte_args[@]} 2>&1 | tee -a "${LOG}" &"
+	prte "${prte_args[@]}" 2>&1 | tee -a "${LOG}" &
 	DVM_PID=$! # PID of tee, but good enough
 	while ! grep -q 'DVM ready' "${LOG}" && \
 		ps -p "${DVM_PID}" 1>/dev/null 2>/dev/null
