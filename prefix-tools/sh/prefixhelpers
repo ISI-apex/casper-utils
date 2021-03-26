@@ -445,11 +445,18 @@ function set_nproc {
 	local CLUSTER="$1"
 	case "${CLUSTER}" in
 
-		# OLCF Summit login machines enforce a per-user limit of 16 HW
-		# thread, 16GB mem; base system builds with NPROC=16, but some
-		# packages in casper profile might not (handling this is WIP).
-		olcf-summit) NPROC=16 ;;
-
+		olcf-summit)
+                if [[ -n "${LSB_JOBID}" ]]; then
+                        # On worker nodes, use all cores
+                        NPROC=$(nproc)
+                else
+                        # OLCF Summit login machines enforce a per-user limit
+                        # of 16 HW thread, 16GB mem; base system builds with
+                        # NPROC=16, but some packages in casper profile might
+                        # not (handling this is WIP).
+                        NPROC=16
+                fi
+                ;;
 		# ANL Theta login machines are shared, but no limit is enforced
 		anl-theta) NPROC=12 ;;
 
