@@ -30,4 +30,4 @@ exec bsub "${ARGS[@]}" -P "${ACCOUNT}" \
 	-nnodes 1 -W 24:00 -q killable \
 	-J "gpref-${tstamp}" \
 	-o "${LOGDIR}/gpref-${tstamp}.%J.log" \
-	${JOBS_DIR}/gpref.sh "${PPATH}" "${PROFILE}"
+	jsrun -n 1 ${JOBS_DIR}/gpref.sh "${PPATH}" "${PROFILE}"
