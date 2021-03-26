@@ -179,9 +179,10 @@ $(DATA_DIR)/prun_%.rankfile: $(DATA_DIR)/prun_%.settings | $(DATA_DIR)/
 ifneq ($(IN),)
 # prun-cmd(target-stem, rankfile, env vars)
 define prun-cmd
-prun -n "$(call tgt-extract,ranks,$(1))" \
-    --map-by "rankfile:FILE=$(2)$(call gen-map-by-mods)" \
-    $(patsubst %,-x %,$(3)) $(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
+prun --dvm-uri "file:$(DVM_URI_FILE)" \
+	-n "$(call tgt-extract,ranks,$(1))" \
+	--map-by "rankfile:FILE=$(2)$(call gen-map-by-mods)" \
+	$(patsubst %,-x %,$(3)) $(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
 endef
 # Example usage from the consumer makefile:
 #$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.hostfile | $(DATA_DIR)/
@@ -226,9 +227,10 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 		$(BSUB_ARGS) \
 		-- \
 		env LOG=$${JOB_NAME}.dvmlog \
-		dvmrun \
+		dvmrun --report-uri "$${JOB_NAME}.dvmuri" \
 		-- \
 		make -j -k -C $(CURDIR) IN=1 \
+		DVM_URI_FILE="$${JOB_NAME}.dvmuri" \
 		DATA_DIR=$(DATA_DIR) MPIRUN_ARGS='$(MPIRUN_ARGS)' \
 		VERBOSE=$(VERBOSE) TASKS=$(TASKS) \
 		NOLOCAL=$(NOLOCAL) \
