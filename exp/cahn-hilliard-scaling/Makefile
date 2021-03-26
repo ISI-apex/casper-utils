@@ -25,5 +25,12 @@ $(DAT)/ch-mesh-dist-4096.pdf: $(DAT)/ch-subset.csv plot-mesh-dist.py
 $(DAT)/ch-mem.pdf: $(DAT)/ch-subset.csv plot-mem.py
 	python plot-mem.py $< $@
 
+$(DAT)/ch-4k-steps-25.pdf: $(DAT)/fd-26-prod-5-ch_agg_part.csv plot-basic.py
+	python plot-basic.py --mesh 4096 --tpn 42 --timesteps 25 $< $@
+$(DAT)/ch-4k-steps-50.pdf: $(DAT)/fd-26-prod-5-ch_agg_part.csv plot-basic.py
+	python plot-basic.py --mesh 4096 --tpn 42 --timesteps 50 $< $@
+$(DAT)/ch-8k-steps-25.pdf: $(DAT)/fd-26-prod-5-ch_agg_part.csv plot-basic.py
+	python plot-basic.py --mesh 8192 --tpn 42 --timesteps 25 $< $@
+
 # Preserve intermediate artifacts
 .SECONDARY:
