@@ -179,7 +179,7 @@ $(DATA_DIR)/prun_%.rankfile: $(DATA_DIR)/prun_%.settings | $(DATA_DIR)/
 ifneq ($(IN),)
 # prun-cmd(target-stem, rankfile, env vars)
 define prun-cmd
-prun --dvm-uri "file:$(DVM_URI_FILE)" \
+prun $(if $(DVM_URI_FILE),--dvm-uri "file:$(DVM_URI_FILE)") \
 	-n "$(call tgt-extract,ranks,$(1))" \
 	--map-by "rankfile:FILE=$(2)$(call gen-map-by-mods)" \
 	$(patsubst %,-x %,$(3)) $(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)

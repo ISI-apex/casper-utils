@@ -192,7 +192,7 @@ ifneq ($(IN),)
 # TODO: switch to rankfile
 define prun-cmd
 $(error TODO: not implemented: switch to rankfile)
-prun --dvm-uri "file:$(DVM_URI_FILE)" \
+prun $(if $(DVM_URI_FILE),--dvm-uri "file:$(DVM_URI_FILE)") \
 	-n "$(call tgt-extract,ranks,$(1))" \
 	--map-by "slot$(call gen-map-by-mods)" --hostfile "$(abspath $(2))" \
 	$(patsubst %,-x %,$(3)) $(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
