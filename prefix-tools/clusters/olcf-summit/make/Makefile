@@ -165,7 +165,13 @@ ifneq ($(call is-dbg-q),)
 endif
 endif # IN
 
-$(DATA_DIR)/prun_%.rankfile: | $(DATA_DIR)/
+# Logic to regeneate rankfile and the main target if some make variables change
+PRUN_SETTINGS=DEDI_NODE_FOR_RANK0=$(DEDI_NODE_FOR_RANK0)
+$(DATA_DIR)/prun_%.settings: PHONY | $(DATA_DIR)/
+	[[ -f "$@" && "$$(cat $@)" == "$(PRUN_SETTINGS)" ]] || \
+		echo -n "$(PRUN_SETTINGS)" > $@
+
+$(DATA_DIR)/prun_%.rankfile: $(DATA_DIR)/prun_%.settings | $(DATA_DIR)/
 	mapranks --ranks "$(call tgt-extract,ranks,$*)" \
 		--ranks-per-node "$(call tgt-tasks-per-node,$*)" \
 		$(if $(DEDI_NODE_FOR_RANK0),--dedicate-node-to-rank0) "$@"
@@ -240,4 +246,6 @@ job:
 .PHONY: job
 endif # IN
 
+.PHONY: PHONY
+PHONY: ;
 .SECONDARY:

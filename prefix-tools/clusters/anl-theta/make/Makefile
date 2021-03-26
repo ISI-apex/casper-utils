@@ -165,9 +165,13 @@ ifneq ($(call is-dbg-q),)
 endif
 endif # IN
 
-# Note: support for rankfile is limited when there are more than one prun job
-# running against the PRRTE DVM. The prted daemon owns the rankfile, so there
-# can only be one, whereas we need one per prun subjob.
+# Logic to regeneate rankfile and the main target if some make variables change
+PRUN_SETTINGS=DEDI_NODE_FOR_RANK0=$(DEDI_NODE_FOR_RANK0)
+$(DATA_DIR)/prun_%.settings: PHONY | $(DATA_DIR)/
+	[[ -f "$@" && "$$(cat $@)" == "$(PRUN_SETTINGS)" ]] || \
+		echo -n "$(PRUN_SETTINGS)" > $@
+
+# TODO: support rankfile on Theta
 #$(DATA_DIR)/ch_%.csv.rankfile: | $(DATA_DIR)/
 #	mapranks --ranks "$(call tgt-extract,ranks,$*)" \
 #		--ranks-per-node "$(call tgt-tasks-per-node,$*)" \
@@ -176,7 +180,9 @@ endif # IN
 # hostfile is actually the same for all jobs, the node specification is
 # implicit (requests "empty" nodes) and different sets of nodes are chosen
 # dynamically for each prun invocation.
-$(DATA_DIR)/prun_%.hostfile: | $(DATA_DIR)/
+#
+# Always regenerate hostfile, because DEDI_NODE_FOR_RANK0 may change
+$(DATA_DIR)/prun_%.hostfile: $(DATA_DIR)/prun_%.settings | $(DATA_DIR)/
 	echo -e $(if $(DEDI_NODE_FOR_RANK0),\
 		'+e:1 max_slots=1\n+e:$(call calc,$(call tgt-nodes,$*)-1) max_slots=$(call tgt-tasks-per-node,$*)',\
 		'+e:$(call tgt-nodes,$*) max_slots=$(call tgt-tasks-per-node,$*)') > $@
@@ -249,4 +255,6 @@ job:
 .PHONY: job
 endif # IN
 
+.PHONY: PHONY
+PHONY: ;
 .SECONDARY:
