@@ -30,4 +30,5 @@ exec bsub "${ARGS[@]}" -P "${ACCOUNT}" \
 	-nnodes 1 -W 24:00 -q killable \
 	-J "gpref-${tstamp}" \
 	-o "${LOGDIR}/gpref-${tstamp}.%J.log" \
-	jsrun -n 1 ${JOBS_DIR}/gpref.sh "${PPATH}" "${PROFILE}"
+	jsrun -n 1 --cpu_per_rs ALL_CPUS --bind none \
+	${JOBS_DIR}/gpref.sh "${PPATH}" "${PROFILE}"
