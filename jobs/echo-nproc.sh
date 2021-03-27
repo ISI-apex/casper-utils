@@ -1,0 +1,4 @@
+echo OMP_NUM_THREADS=$OMP_NUM_THREADS OMP_THREAD_LIMIT=$OMP_THREAD_LIMIT
+taskset -p $$
+nproc
+nproc --all
