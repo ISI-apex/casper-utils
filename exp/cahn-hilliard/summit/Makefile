@@ -41,6 +41,16 @@ DATS_ch-4k-steps-25=\
 
 $(call target-set,ch-4k-steps-25,$(DATS_ch-4k-steps-25))
 
+DATS_ch-4k-steps-25-pow2=\
+	ch_mesh-4096_ranks-32_tpn-42_steps-25.csv \
+	ch_mesh-4096_ranks-64_tpn-42_steps-25.csv \
+	ch_mesh-4096_ranks-128_tpn-42_steps-25.csv \
+	ch_mesh-4096_ranks-256_tpn-42_steps-25.csv \
+	ch_mesh-4096_ranks-512_tpn-42_steps-25.csv \
+	ch_mesh-4096_ranks-1024_tpn-42_steps-25.csv \
+
+$(call target-set,ch-4k-steps-25-pow2,$(DATS_ch-4k-steps-25-pow2))
+
 DATS_ch-4k-steps-50=\
 	ch_mesh-4096_ranks-42_tpn-42_steps-50.csv \
 	ch_mesh-4096_ranks-84_tpn-42_steps-50.csv \
