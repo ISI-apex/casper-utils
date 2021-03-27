@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+set -x
 set -o pipefail
 
 # set env var BARE to non-zero value if you just want a prefix
@@ -41,6 +42,9 @@ then
 else
 	NICE=""
 fi
+
+echo "$(basename $0): host $(hostname) procs ${NPROC} tmpdir ${TMPDIR}"
+env > "${LOGDIR}"/gpref-${tstamp}.env
 
 ${NICE} ${SELF_DIR}/gpref-sys.sh "${PPATH}" "${PROFILE}" 2>&1 | tee ${LOGDIR}/gpref-sys-${tstamp}.log
 echo "gpref-sys RC: $?"
