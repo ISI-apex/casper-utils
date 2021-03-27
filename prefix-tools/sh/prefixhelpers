@@ -272,10 +272,7 @@ function set_tmpdir
 		elif [[ -n "${__LSF_JOB_TMPDIR__}" ]]
 		then
 			THE_TMPDIR="${__LSF_JOB_TMPDIR__}"
-		fi
-
-		# Next priority: use TMPDIR
-		if [[ -n "${TMPDIR}" ]]
+		elif [[ -n "${TMPDIR}" ]]
 		then
 			THE_TMPDIR="${TMPDIR}"
 		fi
