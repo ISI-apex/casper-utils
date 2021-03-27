@@ -33,17 +33,17 @@ do
 		if [[ "${arg}" =~ ^(-J)$ ]]
 		then
 			job_name="${1}" # the following arg
-			QSUB_ARGS+=("${job_name}")
+			QSUB_ARGS+=("${1}")
 			shift
 		elif [[ "${arg}" =~ ^-(o|oo)$ ]]
 		then
 			logs+=("${1}") # the following arg
-			QSUB_ARGS+=("${log_out}")
+			QSUB_ARGS+=("${1}")
 			shift
 		elif [[ "${arg}" =~ ^-(e|eo)$ ]]
 		then
 			logs+=("${1}") # the following arg
-			QSUB_ARGS+=("${log_out}")
+			QSUB_ARGS+=("${1}")
 			shift
 		fi
 	fi
