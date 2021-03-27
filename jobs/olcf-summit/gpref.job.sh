@@ -26,9 +26,17 @@ mkdir -p "${LOGDIR}"
 
 tstamp=$(date +%Y%m%d%H%M%S)
 
+# Something in the default environment breaks loader, so keep only some vars,
+# besides the some defaults
+EXTRA_ENV=(
+	LSB_JOBID
+	__LSF_JOB_TMPDIR__
+)
+
 exec bsub "${ARGS[@]}" -P "${ACCOUNT}" \
 	-nnodes 1 -W 24:00 -q killable \
 	-J "gpref-${tstamp}" \
 	-o "${LOGDIR}/gpref-${tstamp}.%J.log" \
 	jsrun -n 1 --cpu_per_rs ALL_CPUS --bind none \
+	${JOBS_DIR}/filterenv.sh "${EXTRA_ENV[@]}" -- \
 	${JOBS_DIR}/gpref.sh "${PPATH}" "${PROFILE}"
