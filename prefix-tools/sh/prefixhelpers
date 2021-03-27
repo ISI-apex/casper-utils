@@ -266,10 +266,10 @@ function set_tmpdir
 	then
 		# Highest priority: use the tmp dir alloced to the job
 		# by the resource manager
-		if [[ -n "${SLURM_TMPDIR}" ]]
+		if [[ -n "${SLURM_TMPDIR}" && -d "${SLURM_TMPDIR}" ]]
 		then
 			THE_TMPDIR="${SLURM_TMPDIR}"
-		elif [[ -n "${__LSF_JOB_TMPDIR__}" ]]
+		elif [[ -n "${__LSF_JOB_TMPDIR__}" && -d "${__LSF_JOB_TMPDIR__}" ]]
 		then
 			THE_TMPDIR="${__LSF_JOB_TMPDIR__}"
 		elif [[ -n "${TMPDIR}" ]]
