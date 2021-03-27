@@ -31,6 +31,7 @@ tstamp=$(date +%Y%m%d%H%M%S)
 EXTRA_ENV=(
 	LSB_JOBID
 	__LSF_JOB_TMPDIR__
+	TMPDIR
 )
 
 exec bsub "${ARGS[@]}" -P "${ACCOUNT}" \
