@@ -280,7 +280,7 @@ function set_tmpdir
 
 	# If still not set, then use a default
 	if [[ -z "${THE_TMPDIR}" || \
-			( "${THE_TMPDIR}" = "/tmp" && "${cluster}" = "olcf-summit" ]]
+			( "${THE_TMPDIR}" = "/tmp" && "${cluster}" = "olcf-summit" ) ]]
 	then
 		case "${cluster}" in
 		olcf-summit)
