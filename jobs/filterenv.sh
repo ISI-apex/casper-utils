@@ -8,13 +8,13 @@ rune() {
 }
 
 vars=(
-	HOME="${HOME}"
-	SHELL="${SHELL}"
-	PATH="${PATH}"
-	TERM="${TERM}"
-	USER="${USER}"
-	XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}"
-	XDG_SESSION_ID="${XDG_SESSION_ID}"
+	HOME
+	SHELL
+	PATH
+	TERM
+	USER
+	XDG_RUNTIME_DIR
+	XDG_SESSION_ID
 )
 while [[ "$#" -gt 0 && "$1" != "--" ]]
 do
@@ -23,4 +23,10 @@ do
 done
 shift # --
 
-rune env -i ${vars[@]} "$@"
+var_vals=()
+for var in ${vars[@]}
+do
+	var_vals+=("${var}=${!var}")
+done
+
+rune env -i ${var_vals[@]} "$@"
