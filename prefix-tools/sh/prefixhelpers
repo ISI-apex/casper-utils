@@ -278,9 +278,10 @@ function set_tmpdir
 		fi
 	fi
 
-	# If still not set, then use a default
+	# If still not set (or in special cases), then use a default
 	if [[ -z "${THE_TMPDIR}" || \
-			( "${THE_TMPDIR}" = "/tmp" && "${cluster}" = "olcf-summit" ) ]]
+			( "${cluster}" = "olcf-summit" && -z "${LSB_JOBID}" \
+				&& "${THE_TMPDIR}" = "/tmp" ) ]]
 	then
 		case "${cluster}" in
 		olcf-summit)
@@ -290,19 +291,13 @@ function set_tmpdir
 			# same FS as the prefix (which is expected to be the
 			# Spectrum parallel FS). Note: for worker machines we
 			# won't get here since RM case above.
-			if [[ -z "${LSB_JOBID}" ]]
+			if [[ -n "${root}" ]]
 			then
-				if [[ -n "${root}" ]]
-				then
-					THE_TMPDIR="${root}"/var/tmp
-				else
-					echo "ERROR: temp dir selection failed: " \
-						"refusing to use /tmp on Summit login machine," \
-						"but prefix path was not given" 1>&2
-					exit 1
-				fi
-			else # should have detected the tmp dir set by the RM above
-				echo "ERROR: set_tmpdir: internal logic error: unreachable" 1>&2
+				THE_TMPDIR="${root}"/var/tmp
+			else
+				echo "ERROR: temp dir selection failed: " \
+					"refusing to use /tmp on Summit login machine," \
+					"but prefix path was not given" 1>&2
 				exit 1
 			fi
 			;;
