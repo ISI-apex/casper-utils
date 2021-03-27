@@ -218,8 +218,8 @@ $(DATA_DIR)/%: | $(DATA_DIR)/
 	echo $@ > $${JOB_NAME}.tgt
 	MONITOR=$(MONITOR) SUPPRESS_RC=$(SUPPRESS_RC) \
 	$(PTOOLS_HOST)/pbsub -J "$${JOB_NAME}" \
-		-oo "$${JOB_NAME}.out" \
-		-eo "$${JOB_NAME}.err" \
+		-o "$${JOB_NAME}.out" \
+		-e "$${JOB_NAME}.err" \
 		-P "$(ACCOUNT)" \
 		-nnodes "$(call job-nodes-arg,$*)" \
 		-W "$(call max-time-arg,$*)" \
