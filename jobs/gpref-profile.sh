@@ -47,6 +47,8 @@ fi
 # sets TMPDIR, needed by prun (via .prefixrc)
 set_tmpdir "${CLUSTER}" 16000 "$ROOT" # MB of space
 
+echo "$(basename $0): host $(hostname) procs ${NPROC} tmpdir ${TMPDIR}"
+
 step_is_done() {
 	test -f "${STATUS_DIR}/$1"
 }

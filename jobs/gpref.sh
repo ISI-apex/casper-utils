@@ -43,7 +43,6 @@ else
 	NICE=""
 fi
 
-echo "$(basename $0): host $(hostname) procs ${NPROC} tmpdir ${TMPDIR}"
 env > "${LOGDIR}"/gpref-${tstamp}.env
 
 ${NICE} ${SELF_DIR}/gpref-sys.sh "${PPATH}" "${PROFILE}" 2>&1 | tee ${LOGDIR}/gpref-sys-${tstamp}.log

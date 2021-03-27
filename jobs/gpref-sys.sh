@@ -61,6 +61,8 @@ fi
 set_tmpdir "${CLUSTER}" 16000 "$ROOT" # MB of free space
 TMP_HOME="${TMPDIR}" # name used in this script, to avoid confusion
 
+echo "$(basename $0): host $(hostname) procs ${NPROC} tmpdir ${TMPDIR}"
+
 mkdir -p $ROOT
 
 # Workaround for /etc/profile.d/..mx. setting LD_LIBRARY_PATH: wrap shell
