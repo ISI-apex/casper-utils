@@ -451,8 +451,12 @@ function set_nproc {
 
 		olcf-summit)
                 if [[ -n "${LSB_JOBID}" ]]; then
-                        # On worker nodes, use all cores
-                        NPROC=$(nproc)
+                        # On worker nodes, use all cores; note that jsrun
+						# must be given --bind none and request all cores
+						# (i.e. ALL_CPUS); then we set NPROC to fill only
+						# one HW thread per core using the division here.
+						local HW_THREADS_PER_CORE=4
+                        NPROC=$(( $(nproc) / ${HW_THREADS_PER_CORE} ))
                 else
                         # OLCF Summit login machines enforce a per-user limit
                         # of 16 HW thread, 16GB mem; base system builds with
