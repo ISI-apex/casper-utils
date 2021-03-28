@@ -6,9 +6,6 @@ else
 EPREFIX_REQUIRED=
 endif
 
-# Very important to set OMP threads, otherwise it spawns way to many, and the
-# default also varies by rank count -- the default is a mess.
-OMP_NUM_THREADS?=1
 
 # Prevent worker nodes from quering compiler version (in Firedrake)
 FD_CC=gcc
@@ -16,12 +13,15 @@ FD_CXX=g++
 FD_CCVER=$(shell $(FD_CC) -dumpversion | cut -d. -f-2)
 FD_BENCH_DIR=../../apps/firedrake-bench
 
+# Very important to set OMP threads, otherwise it spawns way to many, and the
+# default also varies by rank count -- the default is a mess.
+
 ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 	mkdir -p "$(patsubst %.csv,%.mpl,%@)" \
 		"$(patsubst %.csv,%.sol,$@)"
 	set -o pipefail; \
-	OMP_NUM_THREADS=$(OMP_NUM_THREADS) \
+	OMP_NUM_THREADS=$(call tgt-extract,omp,$*,1) \
 	XDG_CACHE_HOME="$(patsubst %.csv,%.cache,$@)" \
 	MPLCONFIGDIR="$(patsubst %.csv,%.mpl,$@)" \
 	CC="$(FD_CC)" CXX="$(FD_CXX)" CCVER="$(FD_CCVER)" \
