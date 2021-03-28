@@ -94,16 +94,16 @@ define is-dbg-q
 $(findstring debug,$(QUEUE_ARG))
 endef
 
-# tgt-extract(key, target_name [, is_optional=0]) -> value
+# tgt-extract(key, target_name [, default, [optional]]) -> value
 define tgt-extract
 $(strip $(if $(findstring $(1),$(2)),\
 	$(subst $(1)-,,$(filter $(1)-%,$(subst _, ,$(subst ., ,$(2))))),
-	$(if $(3),,$(error Field $(1) not in target name))))
+	$(or $(3),$(if $(4),,$(error Field $(1) not in target name)))))
 endef
 
-# tgt-arg(target_name, key, [, arg_name=key]) -> --key value
+# tgt-arg(target_name, key, [, arg_name=key, [default]]) -> --key value
 define tgt-arg
-$(call opt-arg,$(or $(3),$(2)),$(call tgt-extract,$(2),$(1),optional))
+$(call opt-arg,$(or $(3),$(2)),$(call tgt-extract,$(2),$(1),$(4),optional))
 endef
 
 # opt-arg(name, value) -> --name value (if non-empty)
@@ -115,7 +115,7 @@ COMMA:=,
 
 # tgt-tasks(target_name) -> comma-separated list of algorithm step names
 define tgt-tasks
-$(strip $(subst -,$(COMMA),$(call tgt-extract,tasks,$(1),optional)))
+$(strip $(subst -,$(COMMA),$(call tgt-extract,tasks,$(1),,optional)))
 endef
 
 define gen-map-by-mods
