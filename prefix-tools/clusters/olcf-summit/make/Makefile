@@ -224,7 +224,7 @@ endef
 .ONESHELL:
 $(DATA_DIR)/%: | $(DATA_DIR)/
 	JOB_NAME="$(DATA_DIR)/job.$$(date +%Y%m%d%H%M%S).$$$$"
-	echo JOB_NAME=$${JOB_NAME}
+	@echo JOB_NAME=$${JOB_NAME}
 	echo $@ > $${JOB_NAME}.tgt
 	MONITOR=$(MONITOR) SUPPRESS_RC=$(SUPPRESS_RC) \
 	$(PTOOLS_HOST)/pbsub -J "$${JOB_NAME}" \
