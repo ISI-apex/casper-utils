@@ -186,9 +186,9 @@ then
 
 	# ... but for live VCS packages (including ones that snapshot by date),
 	# the online fetch happens unconditionally, so we have to disable it
-	# on clusters that are offline
+	# in offline mode
 	sed -i '/^EVCS_OFFLINE=/d' "$ROOT/etc/portage/make.conf"
-	if [[ "${PROFILE}" =~ usc-discovery ]]
+	if [[ -n "${OFFLINE_MODE}" ]]
 	then
 		echo 'EVCS_OFFLINE=1' >> "$ROOT/etc/portage/make.conf"
 	fi
