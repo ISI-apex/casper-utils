@@ -35,12 +35,12 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 		--solution-out \
 		  "$(patsubst %.csv,%.sol,$@)/$(patsubst %.csv,%.pvd,$@)" \
 		--obj-dir "$(patsubst %.csv,%.obj,$@)" \
-		$(if $(call tgt-extract,steps,$*,1),\
-			--steps "$(call tgt-extract,steps,$*)") \
-		$(if $(call tgt-tasks,$*),--tasks "$(call tgt-tasks,$*)") \
-		$(if $(MEM_PER_NODE),--mem-per-node "$(MEM_PER_NODE)") \
-		$(if $(DEDI_NODE_FOR_RANK0),--dedicated-node-for-rank0) \
-		$(if $(MONITOR_MEM),--monitor-mem $(MONITOR_MEM)) \
+		$(call tgt-arg,$*,steps) \
+		$(call tgt-arg,$*,dt) \
+		$(call opt-arg,tasks,$(call tgt-tasks,$*)) \
+		$(call opt-arg,mem-per-node,$(MEM_PER_NODE)) \
+		$(call opt-arg,dedicated-node-for-rank0,$(DEDI_NODE_FOR_RANK0)) \
+		$(call opt-arg,monitor-mem,$(MONITOR_MEM)) \
 	2>&1 | tee "$@.log"
 endif # IN=
 

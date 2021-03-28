@@ -94,11 +94,21 @@ define is-dbg-q
 $(findstring debug,$(QUEUE_ARG))
 endef
 
-# tgt-extract(key, target_name [, is_optional]) -> value
+# tgt-extract(key, target_name [, is_optional=0]) -> value
 define tgt-extract
 $(strip $(if $(findstring $(1),$(2)),\
 	$(subst $(1)-,,$(filter $(1)-%,$(subst _, ,$(subst ., ,$(2))))),
 	$(if $(3),,$(error Field $(1) not in target name))))
+endef
+
+# tgt-arg(target_name, key, [, arg_name=key]) -> --key value
+define tgt-arg
+$(call opt-arg,$(or $(3),$(2)),$(call tgt-extract,$(2),$(1),optional))
+endef
+
+# opt-arg(name, value) -> --name value (if non-empty)
+define opt-arg
+$(if $(2),--$(1) "$(2)")
 endef
 
 COMMA:=,
