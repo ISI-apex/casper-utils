@@ -163,6 +163,15 @@ if ! step_is_done patch_startprefix
 then
 	# Temporary patch to allow prun; in gpref-profile job the patched
 	# version of app-portage/prefix-toolkit reinstalls this script.
+
+	# Make this step idempotent: if it failed part-way, restore from orig
+	if [[ -f "$ROOT"/startprefix.orig ]]
+	then
+		cp "$ROOT"/starprefix{.orig,}
+	else
+		cp "$ROOT"/starprefix{,.orig}
+	fi
+
 	# Note: P1, P2 are not in a .patch because the script has the
 	# explicit path to prefix, which would require generating .patch.
 	#
@@ -174,7 +183,7 @@ then
 	echo 'exit $RC' >> "$ROOT"/startprefix
 	sed -i 's/\(Leaving .* exit status\) \$[?]/\1 $RC/' "$ROOT"/startprefix
 	# P3: Read env vars to preserve from .prefixenv file
-	${ROOT}/usr/bin/patch -b -p1 "$ROOT"/startprefix ${FILES_PATH}/startprefix.patch
+	${ROOT}/usr/bin/patch -p1 "$ROOT"/startprefix ${FILES_PATH}/startprefix.patch
 	sed -i 's/$RETAIN/"${RETAIN[@]}"/g' "$ROOT"/startprefix # part of the above .patch
 	step_done patch_startprefix
 fi
