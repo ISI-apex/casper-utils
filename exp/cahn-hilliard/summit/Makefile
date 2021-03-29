@@ -73,6 +73,17 @@ DATS_ch-4k-steps-100=\
 
 $(call target-set,ch-4k-steps-100,$(DATS_ch-4k-steps-100))
 
+DATS_ch-4k-steps-100-pow2=\
+	ch_mesh-4096_ranks-32_tpn-42_steps-100.csv \
+	ch_mesh-4096_ranks-64_tpn-42_steps-100.csv \
+	ch_mesh-4096_ranks-128_tpn-42_steps-100.csv \
+	ch_mesh-4096_ranks-256_tpn-42_steps-100.csv \
+	ch_mesh-4096_ranks-512_tpn-42_steps-100.csv \
+
+#ch_mesh-4096_ranks-1024_tpn-42_steps-100.csv \
+
+$(call target-set,ch-4k-steps-100-pow2,$(DATS_ch-4k-steps-100-pow2))
+
 DATS_ch-4k=\
 	ch_mesh-4096_ranks-42_tpn-42_steps-1.csv \
 	ch_mesh-4096_ranks-84_tpn-42_steps-1.csv \
@@ -117,6 +128,16 @@ DATS_ch-16k=\
 	ch_mesh-16384_ranks-11072_tpn-40.csv \
 
 $(call target-set,ch-16k,$(DATS_ch-16k))
+
+DATS_ch-2k-omp=\
+	ch_mesh-2048_ranks-32_tpn-42_steps-25_omp-1.csv \
+	ch_mesh-2048_ranks-16_tpn-42_steps-25_omp-2.csv \
+	ch_mesh-2048_ranks-8_tpn-42_steps-25_omp-4.csv \
+	ch_mesh-2048_ranks-4_tpn-42_steps-25_omp-8.csv \
+	ch_mesh-2048_ranks-2_tpn-42_steps-25_omp-16.csv \
+	ch_mesh-2048_ranks-1_tpn-42_steps-25_omp-32.csv \
+
+$(call target-set,ch-2k-omp,$(DATS_ch-2k-omp))
 
 DATS_ch-tpn=\
 	ch_mesh-1024_ranks-64_tpn-8-node.csv \
