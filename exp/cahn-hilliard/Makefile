@@ -15,13 +15,14 @@ FD_BENCH_DIR=../../apps/firedrake-bench
 
 # Very important to set OMP threads, otherwise it spawns way to many, and the
 # default also varies by rank count -- the default is a mess.
+DEF_OMP_NUM_THREADS:=1
 
 ifneq ($(IN),)
 $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 	mkdir -p "$(patsubst %.csv,%.mpl,%@)" \
 		"$(patsubst %.csv,%.sol,$@)"
 	set -o pipefail; \
-	OMP_NUM_THREADS=$(call tgt-extract,omp,$*,1) \
+	OMP_NUM_THREADS=$(call tgt-extract,omp,$*,$(DEF_OMP_NUM_THREADS)) \
 	XDG_CACHE_HOME="$(patsubst %.csv,%.cache,$@)" \
 	MPLCONFIGDIR="$(patsubst %.csv,%.mpl,$@)" \
 	CC="$(FD_CC)" CXX="$(FD_CXX)" CCVER="$(FD_CCVER)" \
