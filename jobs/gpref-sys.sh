@@ -167,9 +167,9 @@ then
 	# Make this step idempotent: if it failed part-way, restore from orig
 	if [[ -f "$ROOT"/startprefix.orig ]]
 	then
-		cp "$ROOT"/starprefix{.orig,}
+		cp "$ROOT"/startprefix{.orig,}
 	else
-		cp "$ROOT"/starprefix{,.orig}
+		cp "$ROOT"/startprefix{,.orig}
 	fi
 
 	# Note: P1, P2 are not in a .patch because the script has the
