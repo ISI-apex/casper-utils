@@ -38,6 +38,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
 		--obj-dir "$(patsubst %.csv,%.obj,$@)" \
 		$(call tgt-arg,$*,steps) \
 		$(call tgt-arg,$*,dt) \
+		$(call tgt-arg,$*,omp,omp-threads,$(DEF_OMP_NUM_THREADS)) \
 		$(call opt-arg,tasks,$(call tgt-tasks,$*)) \
 		$(call opt-arg,mem-per-node,$(MEM_PER_NODE)) \
 		$(call opt-arg,dedicated-node-for-rank0,$(DEDI_NODE_FOR_RANK0)) \
