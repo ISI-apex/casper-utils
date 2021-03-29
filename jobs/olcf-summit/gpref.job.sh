@@ -26,6 +26,11 @@ mkdir -p "${LOGDIR}"
 
 tstamp=$(date +%Y%m%d%H%M%S)
 
+# Some libs are not available on worker nodes, so copy them there;
+# build recipes already expect them in $EPREFIX/host
+mkdir -p "$ROOT"/host
+rsync -aP -r --files-from="${SELF_DIR}"/host.paths / "$ROOT"/host
+
 # Something in the default environment breaks loader, so keep only some vars,
 # besides the some defaults
 EXTRA_ENV=(
