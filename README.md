@@ -161,7 +161,15 @@ times and thus prevent the purge, run this every couple of months:
 The build can be done on a worker node (preferred), run this command
 on the login machine to submit the job:
 
-        $ casper-utils/jobs/olcf-summit/gpref.job.sh PREFIX_PATH casper-olcf-summit
+    $ casper-utils/jobs/olcf-summit/gpref.job.sh PREFIX_PATH casper-olcf-summit
+
+Once the job starts (see `bjobs`), you can monitor the log with:
+
+    $ ls -t PREFIX_PATH/var/log/prefix/gpref-*.*.log | head -1 | xargs tail -f
+
+Note that there are two parts to the job, each with its own log file, so after
+the first half completes, re-run the above command to start monitoring the
+second log.
 
 Or, the build can also be done directly on the login macine:
 
