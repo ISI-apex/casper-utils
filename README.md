@@ -13,6 +13,17 @@ If you already cloned non-recursively then simply do this:
     $ git submodule init
     $ git submodule update
 
+Later, but before building, you'll need to checkout the latest release tag
+appropriate for the system on which you are going to build. Building master
+tip branch is not recommended, because it moves quickly and not every commit
+is tested, so it is too likely for the build job to fail. Release tags have
+been verified to build successfully to the end on the system mentioned in the
+tag's release note. You can checkout a tag with:
+
+    $ cd casper-utils
+    $ git checkout TAG_IDENTIFIER
+    $ git submodule update --rebase
+
 Build Gentoo Prefix with CASPER and dependencies
 ================================================
 
@@ -105,6 +116,9 @@ In all sections that follow:
   the prefix will be built (ensure several GB of space, and note that after
   prefix is built it cannot be relocated to another path)
 * the second argument is a Gentoo profile name specific to the given platform
+
+***NOTE***: before building, remember to checkout the latest release verified
+to build on the system that you're building on (see details in Step 0).
 
 ### USC HPCC or Discovery
 
