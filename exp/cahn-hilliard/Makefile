@@ -55,8 +55,7 @@ endef
 $(DATA_DIR)/ch_agg_all.csv: $(call append-dir,$(DATS))
 $(DATA_DIR)/ch_agg_part.csv: $(wildcard $(DATA_DIR)/ch_mesh-*.csv)
 $(DATA_DIR)/ch_agg_%.csv:
-	sed -n '1p' $< > $@
-	echo $^ | xargs -n 1 sed -n '2,$$p' | sort -n >> $@
+	joind $@ $^
 
 $(DATA_DIR)/ch_agg_%.pdf \
 $(DATA_DIR)/ch_agg_%.svg: $(DATA_DIR)/ch_agg_%.csv
