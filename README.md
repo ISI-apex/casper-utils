@@ -67,11 +67,12 @@ from a shared filesystem:
 * On other hosts, the same directory is available as a tar archive, which needs
 to be downloaded manually from the link below via a browser (or by using
 `gdown` tool, `curl`/`wget` likely will not work due to Google intricacies)
-and extracted at root of this repository:
+and extracted at root of this repository; `TAG_DATE` should be the date
+on the latest release tag:
 
         $ cd casper-utils
         $ gdown https://drive.google.com/uc?id=1nQqWsyeYBwCBA8gUdwSyjryr_OvSQFk1
-        $ tar xf distfiles-20200604.tar
+        $ tar xf distfiles-TAG_DATE.tar
 
 Regardless of on which system in the above list, make your copy writeable:
 
