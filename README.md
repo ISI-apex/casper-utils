@@ -71,7 +71,7 @@ and extracted at root of this repository; `TAG_DATE` should be the date
 on the latest release tag:
 
         $ cd casper-utils
-        $ gdown https://drive.google.com/uc?id=1nQqWsyeYBwCBA8gUdwSyjryr_OvSQFk1
+        $ gdown https://drive.google.com/uc?id=1v-4jcsP1VAbWrGGsloh9b07y5IMk_Wfa
         $ tar xf distfiles-TAG_DATE.tar
 
 Regardless of on which system in the above list, make your copy writeable:
