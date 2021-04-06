@@ -35,5 +35,20 @@ $(DAT)/ch-4k-steps-50.pdf: $(DAT)/fd-26-prod-5-ch_agg_part.csv plot-basic.py
 $(DAT)/ch-8k-steps-25.pdf: $(DAT)/fd-26-prod-5-ch_agg_part.csv plot-basic.py
 	python plot-basic.py --mesh 8192 --tpn 42 --timesteps 25 $< $@
 
+$(DAT)/ch-all-release-vs-master.csv: \
+	$(DAT)/ch_agg_part-summit.csv $(DAT)/fd-26-prod-3-ch_agg_part.csv
+	python join.py -o $@ -c version \
+		release $(DAT)/ch_agg_part-summit.csv \
+		master $(DAT)/fd-26-prod-3-ch_agg_part.csv
+
+$(DAT)/ch-subset-release-vs-master.csv: $(DAT)/ch-all-release-vs-master.csv subset.py
+	python subset.py -o $@ --rank 0 --mesh 4096 $<
+
+$(DAT)/ch-mesh-dist-4096-release-vs-master.pdf: \
+	$(DAT)/ch-subset-release-vs-master.csv plot-mesh-dist-release-vs-master.py
+	python plot-mesh-dist-release-vs-master.py \
+		--mesh 4096 --release-tpn 41 --master-tpn 42 $< $@
+
+
 # Preserve intermediate artifacts
 .SECONDARY:
