@@ -12,7 +12,7 @@ $(DAT)/ch-all.csv: $(DAT)/ch_agg_part-theta.csv $(DAT)/ch_agg_part-summit.csv
 	python join.py $^ $@
 
 $(DAT)/ch-subset.csv: $(DAT)/ch-all.csv subset.py
-	python subset.py $< $@
+	python subset.py -o $@ --rank 0 --mesh 4096,8192 $<
 
 $(DAT)/ch-dsl.pdf: $(DAT)/ch-subset.csv plot-dsl.py
 	python plot-dsl.py $< $@
