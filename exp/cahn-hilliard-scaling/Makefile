@@ -8,8 +8,10 @@ $(DAT)/ch_agg_part-theta.csv $(DAT)/ch_agg_part-summit.csv:
 	echo "  from respective exp/cahn-hilliard/*/ dirs" 1>&2
 	exit 1
 
-$(DAT)/ch-all.csv: $(DAT)/ch_agg_part-theta.csv $(DAT)/ch_agg_part-summit.csv
-	python join.py $^ $@
+$(DAT)/ch-all.csv: $(DAT)/ch_agg_part-theta-repo.csv $(DAT)/ch_agg_part-summit.csv
+	python join.py -o $@ -c cluster \
+		theta $(DAT)/ch_agg_part-theta-repo.csv \
+		summit $(DAT)/ch_agg_part-summit.csv
 
 $(DAT)/ch-subset.csv: $(DAT)/ch-all.csv subset.py
 	python subset.py -o $@ --rank 0 --mesh 4096,8192 $<
