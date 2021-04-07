@@ -68,7 +68,7 @@ ax_theta.set_xlabel("Ranks")
 
 lns = ln_theta + ln_summit 
 labs = [l.get_label() for  l in lns]
-ax_theta.legend(lns, labs, loc=(0.35, 0.75))
+ax_theta.legend(lns, labs, loc=(0.1, 0.1))
 
 ax_theta.set_ylim(ymin=0)
 ax_summit.set_ylim(ymin=0)

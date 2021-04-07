@@ -70,7 +70,7 @@ ax_release.set_xlabel("Ranks")
 
 lns = ln_release + ln_master 
 labs = [l.get_label() for  l in lns]
-ax_release.legend(lns, labs, loc=(0.35, 0.75))
+ax_release.legend(lns, labs, loc=(0.1, 0.1))
 
 ax_release.set_ylim(ymin=0)
 ax_master.set_ylim(ymin=0)
