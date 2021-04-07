@@ -48,10 +48,10 @@ ax_release = plt.gca()
 
 ln_release = ax_release.plot(d_release['ranks'], d_release['mesh_s'],
         label='Dist. (release)',
-        marker='o', color='blue')
+        marker='o', color='green')
 ln_release += ax_release.plot(d_release['ranks'], d_release['total_s'], '--',
         label='Total (release)',
-        marker='o', color='blue')
+        marker='o', color='green')
 ax_release.set_ylabel("Execution time on release version (s)")
 
 #ax_master = ax_release.twinx()
@@ -59,10 +59,10 @@ ax_master = ax_release
 
 ln_master = ax_master.plot(d_master['ranks'], d_master['mesh_s'],
         label='Dist. (master)',
-        marker='o', color='green')
+        marker='o', color='red')
 ln_master += ax_master.plot(d_master['ranks'], d_master['total_s'], '--',
         label='Total (master)',
-        marker='o', color='green')
+        marker='o', color='red')
 ax_master.set_ylabel("Execution time on master version (s)")
 
 plt.title(f"Time to distribute {args.mesh} x {args.mesh} 2D mesh")
