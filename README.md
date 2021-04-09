@@ -14,11 +14,13 @@ If you already cloned non-recursively then simply do this:
     $ git submodule update
 
 Later, but before building, you'll need to checkout the latest release tag
-appropriate for the system on which you are going to build. Building master
-tip branch is not recommended, because it moves quickly and not every commit
-is tested, so it is too likely for the build job to fail. Release tags have
-been verified to build successfully to the end on the system mentioned in the
-tag's release note. You can checkout a tag with:
+appropriate for the system on which you are going to build, and then
+update to the latest ebuilds repo (following instructions in the Update
+section below). Building master tip branch from scratch is not recommended,
+because it moves quickly and not every commit is tested, so it is too likely
+for the from-scratch build job to fail. Release tags have been verified to
+build successfully to the end on the system mentioned in the tag's release
+note. You can checkout a tag with:
 
     $ cd casper-utils
     $ git checkout TAG_IDENTIFIER
