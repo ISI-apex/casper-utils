@@ -498,6 +498,84 @@ format:
 
     app-portage/prefix-tools **
 
+Forking package recipes
+-----------------------
+
+Whenever you need to make a change to the build recipe for a package
+you need to fork it from the `gentoo` repo into the `casper` repo. The
+procedure is:
+
+1. `cd $EPREFIX/var/db/repos`
+2. Check the the package hasn't already been forked:
+
+        $ ls casper/category/package
+
+3. Copy the package directory:
+
+        $ cp -a gentoo/category/package casper/category/
+
+4. Commit the unmodified copy, so that your later diffs are easy to see,
+recording the latest version in the commit message:
+
+        $ git add casper/category/package
+        $ git commit -m `category/package: LATEST VERSION (gentoo)`
+
+5. Pin the package version, so that when the package gets updated
+in Gentoo, and you update the Gentoo snapshot in your prefix, the
+package manager doesn't replace your forked version with the
+updated version. Add to `casper/profiles/casper/package.mask`:
+
+        >category/package-VERSION
+
+However, pinning is not necessary in some cases. For example, if
+you change something about dependencies that enables the package
+to be pulled in successfully by the package manager, then your forked
+version will be the only one that would work regardless of
+updates available in `gentoo` repo, or if those updates are also
+fixed to start working then you want to pull them in. An example
+where pinning is not needed is when your change is just to relax
+the minimum version of the kernel in the dependency list.
+
+Also, note that this pinning guideline has not been followed in
+the past, so a lot of currently forked packages are not pinned,
+but should be ideally.
+
+### Maintaining the fork
+
+Once a package is forked into `casper` repo, you need to keep
+an eye on the updates that may happen to it in the `gentoo`
+repo, and whenever possible either unfork (by simply removing the package from
+the `casper` repo), or rebase your changes onto the updated version.
+Upstream moves quickly, but the `gentoo` repo in your prefix is
+only updated manually (see the update section earlier in this README), so the
+fork maintainance is something that needs attention only every time after you
+update the `gentoo` snapshot.
+
+The rebase is a manual process:
+
+1. Look at the list of patches that you've made to your fork, relative to the
+   time when the copy was made from the `gentoo`:
+
+    $ cd casper
+    $ git log category/package
+
+2. Then, copy the new version from `gentoo` repo (you may also need to copy
+   patches in `files/`):
+
+    $ cp gentoo/category/package/package-UPDATED_VERSION.ebuild \
+        casper/category/package/
+
+3. Commit the unmodified updated version:
+
+    $ git add casper/category/package/package-UPDATED_VERSION.ebuild
+    $ git commit -m 'category/package: UPDATED_VERSION (gentoo)
+
+4. Apply the patches you've noted in Step 1. This can be done
+   either by manually editting the new `.ebuild` file, or exporting
+   the patch with `git format-patch HASH^..HEAD` and applying it manually
+   with `patch -p1 package-UPDATED_VERSION.ebuild patch_file.patch`.
+
+
 Troubleshooting: errors about manifests
 ---------------------------------------
 
