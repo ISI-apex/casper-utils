@@ -493,7 +493,7 @@ Live package versions
 To enable "live" versions a package (master tip from VCS, which will change
 every time you re-emerge the package), which may be useful for some packages
 provided by the casper overlay, add to
-`$EPREFIX/etc/protage/package.accept_keywords` packages in the following
+`$EPREFIX/etc/portage/package.accept_keywords` packages in the following
 format:
 
     app-portage/prefix-tools **
