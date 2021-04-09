@@ -404,6 +404,27 @@ Not that each Prefix directory is standalone and does not reference the
 existing Prefix and pulling new commits to `casper-utils`repo are unrelated
 operations.
 
+There are three steps to the update, not all of which need to be done
+every time:
+
+1. update the tarballs in the `distfiles/` directory (usually, the prefix will
+   point to `casper-utils/distfiles`, but check `DISTDIR` in
+`PREFIX/etc/portage/make.conf` to make sure). See earlier sections in this
+document for where to get `distfiles` content from, then `rsync` from that
+location to get any files that may have been added:
+
+        rsync -aP PATH_TO_DISTFILES/ distfiles/
+
+2. update the Gentoo repo to a known tested snapshot (not any upstream snapshot! upstream moves quickly and we only take updates very rarely). The latest tested
+snapshot is in `jobs/gpref-sys.sh` in the `SNAPSHOT_DATE` variable. Note: it
+is important to do step 1 above, because upstream servers don't store snapshots
+indefinitely. Update to the snapshot given by `YYYYMMDD` date with command:
+
+        emerge-webrsync -v --keep --revert=YYYYMMDD
+
+3. update Casper repo (this you want to do as frequently as possible),
+   instructions are below
+
 To update the casper overlay, which involves rebuilding any packages that
 have changed (and their downstream dependencies requering a rebuild),
 enter the overlay directory:
@@ -420,17 +441,36 @@ Pull the changes:
 
     git pull --ff-only up master
 
-On a login machine, first enable online fetching (see subsection above), then
-tell portage to figure out what needs to be rebuilt and fetch the sources:
+### Generic Linux host
 
-    p4port emerge -f --ask -uDU --keep-going --with-bdeps=y @world
+Run emerge to rebuild what needs to be rebuild given the updated ebuilds:
+
+    emerge --ask --update --changed-use --newuse --newrepo \
+      --deep --with-bdeps=y @world
+
+Don't continue if there are errors; it may be difficult to diagnose the
+problems, but it has to be done, otherwise the prefix will end up in a
+chaotic state. The only known errors that are ok, are:
+ * `dev-python/randomgen`: versions `>=1.18` are masked, continue with
+   installing `1.16.x`
+
+### On Summit
+
+Follow the instructions for Generic Linux host above, on a login machine.
+
+### On USC Discovery
+
+On a login machine, first enable online fetching (see subsection above), then
+tell portage to figure out what needs to be rebuilt and fetch the sources,
+replace `...` with the arguments given for the generic Linux host):
+
+    p4port emerge ...
 
 On USC Discovery, the build should be done on a worker node, not on the
 shared login machine where CPU usage limits are enforced. To schedule
 a job:
 
-    $EPREFIX/ptools/psbatch discovery ARCH 1 16 02:00:00 \
-	pport emerge -uDU --keep-going --with-bdeps=y @world
+    $EPREFIX/ptools/psbatch discovery ARCH 1 16 02:00:00 pport emerge ...
 
 where ARCH is the architecture for which the prefix was built (or `any`
 for an unoptimized prefix). Partition may be specified by appending a suffix
