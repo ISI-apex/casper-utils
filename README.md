@@ -490,6 +490,11 @@ just run the second `emerge` on the login machine too:
 Live package versions
 ---------------------
 
+Package recipes (`.ebuild`s) usually have versions corresponding to releases
+from upstrea.  However, there are special recipes called "live" of the form
+`package-VER.9999.ebuild`, where `VER` is some components of the version. These
+build the tip of the master branch in the upstream repository.
+
 To enable "live" versions a package (master tip from VCS, which will change
 every time you re-emerge the package), which may be useful for some packages
 provided by the casper overlay, add to
@@ -497,6 +502,34 @@ provided by the casper overlay, add to
 format:
 
     app-portage/prefix-tools **
+
+There are two (solved) issues with live ebuilds:
+1. once installed it's not possible to tell which commit was installed
+(without having saved the build log, and then it is painful anyway)
+2. once you tested a commit that you bulit via a live ebuild, there's
+no way to pin it into the package repository as the latest version to
+be installed by default.
+
+Both of these are solved by the custom `snapshot.eclass`. To use it, ebuilds
+needs to inherit it and invoke it explicitly, so not all packages use it yet.
+This eclass installs a file as part of the installation of the live ebuild
+into `PREFIX/etc/snapshot/category/package` with the commit hash in the file.
+Also, this eclass supports easy way of pinning by creating a symlink to the
+live ebuild with a name that identifies the commit (the commit can only
+be identified by a date or date+time, in order for the version to be valid
+and well-orderable):
+
+    $ ln -s package-1.9999.ebuild package-1.0_pYYYYMMDD.ebuild
+
+The convension we use is `1.0_p` suffix to mean that the version includes
+everything that is in release `1.0` and commits up to date `YYYYMMDD`, and
+the `2.0_pre` suffix to mean that the version is the not yet released `2.0`
+with commits up to `YYYYMMDD` (i.e. when upstream bumps the version).
+Obviously, any unreleased commit can be described by either `_p` or `_pre`
+so use your judgement according to what makes sense with the given upstream.
+
+Note that using the full timestamp `YYYYMMDDHHMMSS` uniquely identifies
+a commit. See `git rev-list --count 1 --before=YYYYMMDDTHH:MM:SS HEAD`.
 
 Forking package recipes
 -----------------------
