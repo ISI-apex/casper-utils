@@ -154,7 +154,7 @@ define prun-cmd
 prun $(if $(DVM_URI_FILE),--dvm-uri "file:$(DVM_URI_FILE)") \
 	-n "$(call tgt-extract,ranks,$(1))" \
 	$(if $(filter %.rankfile,$(2)),\
-		--map-by "rankfile:FILE=$(2)$(call gen-map-by-mods)",\
+		--map-by "rankfile:FILE=$(abspath $(2))$(call gen-map-by-mods)",\
 		$(if $(filter %.hostfile,$(2)),\
 			--map-by "slot$(call gen-map-by-mods)" \
 			--hostfile "$(abspath $(2))",\
