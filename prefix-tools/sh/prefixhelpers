@@ -301,6 +301,11 @@ function set_tmpdir
 				exit 1
 			fi
 			;;
+		anl-theta)
+			# On Theta, /dev/shm lacks the executable permission;
+			# /tmp is next best thing: on a local /dev/sda
+			THE_TMPDIR=/tmp
+			;;
 		esac
 	fi
 
