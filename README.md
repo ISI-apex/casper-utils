@@ -110,6 +110,43 @@ for tarballs used during the stage 1 of bootstrap, because otherwise
 the build host needs to have bzip2 installed (an extra dependency). In
 the provided distfiles archive and directory, the format is `tar.gz`.
 
+### Maintaining the shared distfiles directories
+
+The procedure followed is that every prefix build (or at least each user) makes
+its own copy of distfiles directory, because rarely but sometimes changes might
+happen, e.g. when a download of a new tarball results in an error, files are
+left around, need to be removed, or for live ebuilds that build from VCS, the
+git repository is clone is kept in distfiles directory, so it gets updated
+every time the package is rebuilt, so it's not a good idea to let multiple
+prefixes be updating that same git repo concurrently.
+
+The shared directory itself is manually updated when casper-utils is tagged
+(signifying a tested end-to-end prefix build from scratch on at least one
+system, see notes at the top of this README). The shared directory is usually
+updated from a copy in the prefix that had been updated.
+
+To enforce that nothing is written into the shared distfiles directory, the
+owner of the files manually changes the permissions to make everything
+non-writable to everyone, including the owner. For the update, the owner
+temporarily makes the files writable.
+
+For the update, temporarily make the contents of the shared directory writable:
+
+      chmod -R o+w PATH_TO_SHARED/distfiles/
+
+Do the copy from an updated distfiles directory:
+
+      rsync -aq PATH_TO_PRIVATE/distfiles/ PATH_TO_SHARED/distfiles/
+
+Make what you just copied readable for everyone:
+
+      chmod -R a+r PATH_TO_SHARED/distfiles/
+      find PATH_TO_SHARED/distfiles/ -type d -exec chmod a+x {} \;
+
+Revert the permisions to read-only for everyone, including you the owner:
+
+      chmod -R a-w PATH_TO_SHARED/distfiles/
+
 Step 2. Run build job
 ---------------------
 
