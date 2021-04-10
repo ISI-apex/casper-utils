@@ -113,7 +113,7 @@ step_done() {
 if ! step_is_done bootstrap
 then
 	# This script is incremental itself
-	"${FILES_PATH}"/bootstrap-prefix.sh
+	"${SHELL}" "${FILES_PATH}"/bootstrap-prefix.sh
 	step_done bootstrap
 fi
 
