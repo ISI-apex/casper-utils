@@ -565,8 +565,16 @@ with commits up to `YYYYMMDD` (i.e. when upstream bumps the version).
 Obviously, any unreleased commit can be described by either `_p` or `_pre`
 so use your judgement according to what makes sense with the given upstream.
 
-Note that using the full timestamp `YYYYMMDDHHMMSS` uniquely identifies
-a commit. See `git rev-list --count 1 --before=YYYYMMDDTHH:MM:SS HEAD`.
+Note that using the full timestamp `YYYYMMDDhhmmss` uniquely identifies a
+commit (`YYYYMMDD` is equivalent to `YYYYMMDDT00:00:00+0000`). It translates to
+the following command:
+
+    git rev-list --first-parent --max-count 1 --before=YYYYMMDDThh:mm:ss+0000 HEAD
+
+If you want to see the commit timestamps with a date that you'd use to set
+this snapshot timestamp, then use:
+
+    TZ=UTC git log --date=iso-local
 
 Forking package recipes
 -----------------------
