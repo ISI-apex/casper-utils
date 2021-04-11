@@ -549,25 +549,25 @@ be installed by default.
 
 Both of these are solved by the custom `snapshot.eclass`. To use it, ebuilds
 needs to inherit it and invoke it explicitly, so not all packages use it yet.
+
 This eclass installs a file as part of the installation of the live ebuild
 into `PREFIX/etc/snapshot/category/package` with the commit hash in the file.
+
 Also, this eclass supports easy way of pinning by creating a symlink to the
 live ebuild with a name that identifies the commit (the commit can only
 be identified by a date or date+time, in order for the version to be valid
-and well-orderable):
+and well-ordered):
 
-    $ ln -s package-1.9999.ebuild package-1.0_pYYYYMMDD.ebuild
+    $ ln -s package-1.9999.ebuild package-1.0.YYYYMMDD.hhmmss_p.ebuild
 
-The convension we use is `1.0_p` suffix to mean that the version includes
-everything that is in release `1.0` and commits up to date `YYYYMMDD`, and
-the `2.0_pre` suffix to mean that the version is the not yet released `2.0`
-with commits up to `YYYYMMDD` (i.e. when upstream bumps the version).
-Obviously, any unreleased commit can be described by either `_p` or `_pre`
-so use your judgement according to what makes sense with the given upstream.
+The `.hhmmss` can be ommitted, in which case it is interpreted as time
+`00:00:00+0000` (UTC). The convension we use is `_p` suffix means that the
+version includes everything that is in release `1.0` and commits up to date
+`YYYYMMDD`, and the `_pre` suffix means that the version is the not yet
+released `2.0` with commits up to `YYYYMMDD` (i.e. when upstream has bumped the
+version in the repository but doesn't yet realeased a new tarball).
 
-Note that using the full timestamp `YYYYMMDDhhmmss` uniquely identifies a
-commit (`YYYYMMDD` is equivalent to `YYYYMMDDT00:00:00+0000`). It translates to
-the following command:
+Note that using the timestamp uniquely identifies a commit:
 
     git rev-list --first-parent --max-count 1 --before=YYYYMMDDThh:mm:ss+0000 HEAD
 
