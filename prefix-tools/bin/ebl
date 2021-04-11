@@ -22,7 +22,7 @@ rune() {
 }
 
 usage() {
-	echo "USAGE: $0 -e pkg command [args]"
+	echo "USAGE: $0 -e pkg [command [args]]"
 	echo "  -e: preserve temp/environment file"
 }
 
@@ -46,15 +46,21 @@ do
 	esac
 	shift
 done
-if [[ "$#" -lt 2 ]]
+if [[ "$#" -lt 1 ]]
 then
 	usage 1>&2
 	exit 1
 fi
 
 pkg=$1
-cmd_abv=$2
-shift 2
+shift
+if [[ "$#" -ge 1 ]]
+then
+	cmd_abv=$1
+	shift
+else
+	cmd_abv=manifest
+fi
 
 if [ ! -f "$PWD/metadata/layout.conf" ]
 then
