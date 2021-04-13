@@ -134,6 +134,9 @@ $(DATA_DIR)/prun_%.settings: PHONY | $(DATA_DIR)/
 	[[ -f "$@" && "$$(cat $@)" == "$(PRUN_SETTINGS)" ]] || \
 		echo -n "$(PRUN_SETTINGS)" > $@
 
+$(DATA_DIR)/prun_%.slot: $(DATA_DIR)/prun_%.settings | $(DATA_DIR)/
+	touch "$@"
+
 $(DATA_DIR)/prun_%.rankfile: $(DATA_DIR)/prun_%.settings | $(DATA_DIR)/
 	mapranks --ranks "$(call tgt-extract,ranks,$*)" \
 		--ranks-per-node "$(call tgt-tasks-per-node,$*)" \
@@ -149,16 +152,18 @@ $(DATA_DIR)/prun_%.hostfile: $(DATA_DIR)/prun_%.settings | $(DATA_DIR)/
 		'+e:1 max_slots=1\n+e:$(call calc,$(call tgt-nodes,$*)-1) max_slots=$(call tgt-tasks-per-node,$*)',\
 		'+e:$(call tgt-nodes,$*) max_slots=$(call tgt-tasks-per-node,$*)') > $@
 
-# prun-cmd(target-stem, rankfile|hostfile, filename, env vars)
+# prun-cmd(target-stem, slot|rankfile|hostfile, filename, env vars)
 define prun-cmd
 prun $(if $(DVM_URI_FILE),--dvm-uri "file:$(DVM_URI_FILE)") \
 	-n "$(call tgt-extract,ranks,$(1))" \
+	$(if $(filter %.slot,$(2)),\
+		--map-by "slot",\
 	$(if $(filter %.rankfile,$(2)),\
 		--map-by "rankfile:FILE=$(abspath $(2))$(call gen-map-by-mods)",\
-		$(if $(filter %.hostfile,$(2)),\
-			--map-by "slot$(call gen-map-by-mods)" \
-			--hostfile "$(abspath $(2))",\
-			$(error prun-cmd: unknown mapping file type: $(2)))) \
+	$(if $(filter %.hostfile,$(2)),\
+		--map-by "slot$(call gen-map-by-mods)" \
+		--hostfile "$(abspath $(2))",\
+	$(error prun-cmd: unknown mapping file type: $(2))))) \
 	$(patsubst %,-x %,$(3)) $(MPIRUN_ARGS) $(MPIRUN_INTERNAL_ARGS)
 endef
 # Example usage from the consumer makefile:
