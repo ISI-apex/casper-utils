@@ -242,3 +242,12 @@ then
 	portrun "emerge --depclean"
 	step_done depclean_post
 fi
+
+if ! step_is_done vcs_online
+then
+	# Turn on online mode after the prefix build is done, this is necessary
+	# for VCS packages with snapshot versions (see snapshot.eclass)
+	# to rebuild the new version after their recipes had been updated.
+	sed -i 's/^EVCS_OFFLINE=1/#EVCS_OFFLINE=1/' "$ROOT"/etc/portage/make.conf
+	step_done vcs_online
+fi

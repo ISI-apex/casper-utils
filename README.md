@@ -429,9 +429,26 @@ parallel processes to use appropriately.
 Fetching sources
 ----------------
 
-By default, online fetching is disabled (which is appropriate when running
-portage from . To enable it comment out `EVCS_OFFLINE=1` from
-`$EPREFIX/etc/portage/make.conf`.
+Whether the package manager is allowed to access the Internet to download
+tarballs or update VCS repositories (for packages built directly from repos),
+is controlled by `EVCS_OFFLINE` variable in`$EPREFIX/etc/portage/make.conf`.
+
+By default, when prefix is built from scratch, online fetching starts disabled
+and is kept disabled until the very end of the build, at which point it is
+automatically turned on. It is turned on, because otherwise updating VCS packages, 
+won't work intutitively. In offline mode, the VCS packages end up updated only
+up to the version stored in the package's repo clone in `distfiles/`, regardless
+of the snapshot timestamp in the package version.
+
+For example, if you have version (snapshot) 20210101 of a VCS package A
+installed, and the recipe for A in the casper repo gets updated to snapshot
+20210102, and you pull that update, and rebuild in offline mode, you'll end up
+rebuilding the old 20210101 snapshot, despite the version you'll see being the
+new one 20210102. This is because the way snapshot is implemented is using `git
+rev-list --before=TIMESTAMP`, so if the repo clone in `distfiles/` is out of
+date, and emerge is disallowed to check online, it won't ever see new commits,
+and the `before` will evaluate to the same top commit, despite `TIMESTAMP`
+having increased.
 
 Updating
 --------
