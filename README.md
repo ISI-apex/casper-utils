@@ -273,10 +273,45 @@ Some notes:
   a worker node (because not easy to get to the local file system of
   that node after job exists), as is the case on USC HPCC.
 
-Step 3. Test the prefix
-------------------------
+Enter the prefix
+================
 
-### Minimal smoke test
+To build and run applications (or anything else) inside the prefix, it is in
+theory sufficient to invoke the application by its full path, however it is
+usually convenient to "enter" into the prefix, which adds the prefix binary
+PATHs to the PATH env var and does other setup.
+
+Generic Linux host
+------------------
+
+To enter the prefix on a generic Linux host:
+
+    $ PREFIX_PATH/startprefix
+
+USC HPCC
+--------
+
+To enter the prefix on a USC HPCC host (login or worker with interactive shell):
+
+    $ PREFIX_PATH/ptools/pstart
+
+To enqueue a job inside the prefix on a USC HPCC worker node:
+
+    $ PREFIX_PATH/ptools/psbatch CLUSTER[:PARTITION] ARCH[:GPU:GPU_COUNT] MAX_MEM_PER_TASK \
+	NUM_NODES NUM_TASKS_PER_NODE TIME_LIMIT command arg arg...
+
+for example:
+
+    $ PREFIX_PATH/ptools/psbatch hpcc sandybridge:k20:1 all 1 1 00:10:00 python --version
+
+The keyword 'all' for `MAX_MEM_PER_TASK` grants all memory on the node
+("per task" does not apply anymore).
+
+Test the prefix
+===============
+
+Minimal smoke test
+------------------
 
 The minimal test is to enter the prefix shell (more details on entering the
 prefix are in a dedicated section below):
@@ -295,7 +330,8 @@ entering the prefix shell and using portage (`emerge`) to diagnose. Then,
 the top-level job may be restarted (as described in previous step), and
 it should resume incrementally.
 
-### MPI hello-world test
+MPI hello-world test
+--------------------
 
 First, build the `mpitest` application in the prefix:
 
@@ -311,7 +347,7 @@ prefix path:
 Then, while your shell is still in the prefix, run the app with
 the following test scripts.
 
-#### On a generic host
+### On a generic host
 
 On a host (compatible with the ARCH for which the prefix was built):
 
@@ -321,7 +357,7 @@ On a host (compatible with the ARCH for which the prefix was built):
 Note: On a generic host, `test-mpi.sh` will only test multiple ranks on a
 single node. Modify the script if you want something different.
 
-#### On USC HPCC and Discovery
+### On USC HPCC and Discovery
 
 To launch a job on USC HPCC worker node, run this launcher script
 on the login node:
@@ -348,7 +384,7 @@ manually check the queue with `squeue` and monitor the job log files the
 paths to which where printed when the job was run (look for `--output` and
 `--error` arguments in the log).
 
-#### On Argonne Theta
+### On Argonne Theta
 
 Enqueue a job for an in interactive mode:
 
@@ -357,7 +393,7 @@ Enqueue a job for an in interactive mode:
 In the job's shell on the "MOM" node, enter the prefix and run the script
 as you would on a generic host, see instructions above.
 
-#### On Summit
+### On Summit
 
 Enqueue a job for an in interactive mode:
 
@@ -366,7 +402,8 @@ Enqueue a job for an in interactive mode:
 In the job's shell on the "batch" node, enter the prefix and run the script as
 you would on a generic host, see instructions above.
 
-### CFD application test: Cahn-Hilliard
+CFD application test: Cahn-Hilliard
+-----------------------------------
 
 The Cahn-Hilliard application in Firedrake can be invoked via a
 Makefile-based infrastructure, either directly in the shell or
@@ -395,7 +432,8 @@ job (on Theta this would be the MOM node, and on Summit the batch node):
 
         $ pterm
 
-### CFD application test: Lid-Driven cavity (old scripts)
+CFD application test: Lid-Driven cavity (old scripts)
+-----------------------------------------------------
 
 There is a script that runs a CFD application in
 
@@ -412,46 +450,12 @@ Instructions are similar to the MPI hello-world test:
 The `test-cfd.sh` script takes one optional argument that enables
 the test on GPU (besides the non-GPU tests) when non-empty.
 
-#### On USC HPCC and Discovery
+### On USC HPCC and Discovery
 
 For USC HPCC or Discovery clusters, there's a script that
 submits the test script as a job:
 
     $ bash exp/test-prefix/usc/test-cfd.job.sh PREFIX_PATH CLUSTER ARCH:GPU
-
-Enter the prefix
-================
-
-To build and run applications (or anything else) inside the prefix, it is in
-theory sufficient to invoke the application by its full path, however it is
-usually convenient to "enter" into the prefix, which adds the prefix binary
-PATHs to the PATH env var and does other setup.
-
-USC HPCC
---------
-
-To enter the prefix on a USC HPCC host (login or worker with interactive shell):
-
-    $ PREFIX_PATH/ptools/pstart
-
-To enqueue a job inside the prefix on a USC HPCC worker node:
-
-    $ PREFIX_PATH/ptools/psbatch CLUSTER[:PARTITION] ARCH[:GPU:GPU_COUNT] MAX_MEM_PER_TASK \
-	NUM_NODES NUM_TASKS_PER_NODE TIME_LIMIT command arg arg...
-
-for example:
-
-    $ PREFIX_PATH/ptools/psbatch hpcc sandybridge:k20:1 all 1 1 00:10:00 python --version
-
-The keyword 'all' for `MAX_MEM_PER_TASK` grants all memory on the node
-("per task" does not apply anymore).
-
-Generic Linux host
-------------------
-
-To enter the prefix on a generic Linux host:
-
-    $ PREFIX_PATH/startprefix
 
 Tips for maintaining the Prefix
 ===============================
