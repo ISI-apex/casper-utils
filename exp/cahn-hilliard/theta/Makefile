@@ -1,5 +1,6 @@
 CLUSTER=anl-theta
 ACCOUNT?=CASPER
+MAP_BY?=rankfile
 
 PTOOLS_MAKE:=${EPREFIX}/usr/lib/prefix-tools/make
 

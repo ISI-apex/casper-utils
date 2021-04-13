@@ -17,8 +17,10 @@ FD_BENCH_DIR=../../apps/firedrake-bench
 # default also varies by rank count -- the default is a mess.
 DEF_OMP_NUM_THREADS:=1
 
+MAP_BY?=slot
+
 ifneq ($(IN),)
-$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.rankfile | $(DATA_DIR)/
+$(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.$(MAP_BY) | $(DATA_DIR)/
 	mkdir -p "$(patsubst %.csv,%.mpl,%@)" \
 		"$(patsubst %.csv,%.sol,$@)"
 	set -o pipefail; \

@@ -1,5 +1,6 @@
 CLUSTER=olcf-summit
 ACCOUNT?=csc436
+MAP_BY?=rankfile
 
 PTOOLS_MAKE:=${EPREFIX}/usr/lib/prefix-tools/make
 
