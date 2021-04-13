@@ -20,4 +20,4 @@ else
 	MPI_ARGS=(-n 4)
 fi
 
-run mpirun ${MPI_ARGS[@]} command "${SELF_DIR}"/../apps/mpitest/mpitest
+run mpirun ${MPI_ARGS[@]} "${SELF_DIR}"/../apps/mpitest/mpitest
