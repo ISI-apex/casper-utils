@@ -16,9 +16,6 @@ omp_tool=$(basename $0)
 args=()
 mpirun_args=(
 	# -v
-
-	# Fix for env var not propagating with prun (PRRTE PR #795)
-	--personality ompi
 )
 
 # mpirun needs to talk to ALPS, so it neds to load its libs at runtime

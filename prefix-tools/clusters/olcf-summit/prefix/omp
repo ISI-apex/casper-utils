@@ -21,10 +21,6 @@ LSF_LIB_DIR="/opt/ibm/spectrumcomputing/lsf/10.1.0.9/linux3.10-glibc2.17-ppc64le
 args=()
 mpirun_args=(
 	#-v
-
-	# For PRRTE < 2021-03 only: fix for env var not propagating with prun
-	# (PRRTE PR #795)
-	# --personality ompi
 )
 
 # Propagate env vars exported by $EPREFIX/etc/profile (which is in part
