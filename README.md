@@ -441,10 +441,19 @@ Not that each Prefix directory is standalone and does not reference the
 existing Prefix and pulling new commits to `casper-utils`repo are unrelated
 operations.
 
-There are three steps to the update, not all of which need to be done
-every time:
+First, you need to decide what kind of update you need:
+A. "passively" track changes made by others to the prefix: you want to pull
+latest changes to the package recipes in the casper repo,
+B. like A, but you know that the snapshot on top of which the overlay
+is based has been updated (you can tell by reading the git log of the
+casper overlay repo, and by checking the `SNAPSHOT_DATE` variable in
+`casper-utils/jobs/gpref-sys.sh`)
+C. "actively" change the prefix for others: you want to "rebase" the
+casper overlay repo onto a new version of gentoo repo.
 
-1. update the tarballs in the `distfiles/` directory (usually, the prefix will
+### (For Cases B and C  only) Update the gentoo repo to a new snapshot
+
+1. Update the tarballs in the `distfiles/` directory (usually, the prefix will
    point to `casper-utils/distfiles`, but check `DISTDIR` in
 `PREFIX/etc/portage/make.conf` to make sure). See earlier sections in this
 document for where to get `distfiles` content from, then `rsync` from that
@@ -452,15 +461,25 @@ location to get any files that may have been added:
 
         rsync -aP PATH_TO_DISTFILES/ distfiles/
 
-2. update the Gentoo repo to a known tested snapshot (not any upstream snapshot! upstream moves quickly and we only take updates very rarely). The latest tested
-snapshot is in `jobs/gpref-sys.sh` in the `SNAPSHOT_DATE` variable. Note: it
-is important to do step 1 above, because upstream servers don't store snapshots
-indefinitely. Update to the snapshot given by `YYYYMMDD` date with command:
+2. Update the Gentoo repo to a known tested snapshot (not any upstream
+   snapshot! upstream moves quickly and we only take updates very rarely). The
+latest tested snapshot is in `jobs/gpref-sys.sh` in the `SNAPSHOT_DATE`
+variable. Note: it is important to do step 1 above, because upstream servers
+don't store snapshots indefinitely. Update to the snapshot given by `YYYYMMDD`
+date with command:
 
         emerge-webrsync -v --keep --revert=YYYYMMDD
 
-3. update Casper repo (this you want to do as frequently as possible),
-   instructions are below
+3. Rebuild the packages in casper overlay, by following the subsection below
+(this will usually require a lot of fixing and very careful attention to
+forked packages, which may need to be re-forked (re-based) if they had been
+updated upstream, or at least their version needs to be pinned)
+
+4. Edit `casper-utils/jobs/gpref-sys.sh` and set `SNAPSHOT_DATE` variable to
+the new date, so that when a prefix is built from scratch, it is built on
+the new snapshot that you just updated to.
+
+### Update casper overlay repo
 
 To update the casper overlay, which involves rebuilding any packages that
 have changed (and their downstream dependencies requering a rebuild),
@@ -478,7 +497,7 @@ Pull the changes:
 
     git pull --ff-only up master
 
-### Generic Linux host
+#### Generic Linux host
 
 Run emerge to rebuild what needs to be rebuild given the updated ebuilds:
 
@@ -491,11 +510,11 @@ chaotic state. The only known errors that are ok, are:
  * `dev-python/randomgen`: versions `>=1.18` are masked, continue with
    installing `1.16.x`
 
-### On Summit
+#### On Summit
 
 Follow the instructions for Generic Linux host above, on a login machine.
 
-### On USC Discovery
+#### On USC Discovery
 
 On a login machine, first enable online fetching (see subsection above), then
 tell portage to figure out what needs to be rebuilt and fetch the sources,
@@ -522,7 +541,7 @@ that are being updated are quick to build (e.g. python packages without a
 compilation step at all, or small packages quick to compile), then you can
 just run the second `emerge` on the login machine too:
 
-    $EPREFIX/ptools/pstart p4port emerge -uDU --keep-going --with-bdeps=y @world
+    $EPREFIX/ptools/pstart p4port emerge ...
 
 Live package versions
 ---------------------
