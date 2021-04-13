@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Bump the snapshot version of prefix-tools* packages.
+
+set -e
+
+timestamp=$1
+
+run() {
+	echo "$@"
+	"$@"
+}
+
+if [[ -z "${timestamp}" ]]
+then
+	echo "error: no timestamp specified" 1>&2
+	exit 1
+fi
+
+# TODO: check if working copy is clean, since `git mv` stages the changes.
+
+CLUSTERS=(olcf-summit anl-theta usc-discovery)
+
+for cluster in "" ${CLUSTERS[@]}
+do
+	categ=app-portage
+	pkg=prefix-tools
+	if [[ -n "${cluster}" ]]
+	then
+		pkg=${pkg}-${cluster}
+	fi
+	run git mv ${categ}/${pkg}/${pkg}-0*.ebuild ${categ}/${pkg}/${pkg}-0.${timestamp}_pre.ebuild
+	run ebuild ${categ}/${pkg}/${pkg}-9999.ebuild manifest
+done
