@@ -29,7 +29,12 @@ add_custom_target(ch.run
   ${CMAKE_COMMAND} -E env
     XDG_CACHE_HOME=cachedir
     EXTRA_PYTHONPATH="${EXTRA_PYTHONPATH}"
+    ${ch_BUILD_DIR}/ch
+  DEPENDS ${ch_BUILD_DIR}/ch)
+add_custom_target(ch.mpirun
+  ${CMAKE_COMMAND} -E env
+    XDG_CACHE_HOME=cachedir
+    EXTRA_PYTHONPATH="${EXTRA_PYTHONPATH}"
     mpirun -x XDG_CACHE_HOME -x EXTRA_PYTHONPATH
-      -n $$RANKS --map-by ppr:1:node:NOLOCAL
-        ${ch_BUILD_DIR}/ch
+    -n $$\{RANKS:-1\} --map-by $$\{MAPBY:-slot\} ${ch_BUILD_DIR}/ch
   DEPENDS ${ch_BUILD_DIR}/ch)
