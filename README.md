@@ -612,6 +612,16 @@ this snapshot timestamp, then use:
 
     TZ=UTC git log --date=iso-local
 
+Note that this snapshot functionality needs extra care in offline
+mode (`EVCS_OFFLINE=1` in `$PREFIX/etc/portage/make.conf`): updating
+the timestamp in the package version is not enough in offline mode, you also 
+need to make sure that the clone of the package's repo in `distfiles/git-r3/`
+is update to date (the way to pull latest commits into that clone is to turn
+online mode and simply emerge the package; regardless of version). See
+section on `Fetching sources` in this README for more details. You normally
+don't have to worry about this because the prefix build script switches the
+prefix into online mode at the end of the build.
+
 Forking package recipes
 -----------------------
 
