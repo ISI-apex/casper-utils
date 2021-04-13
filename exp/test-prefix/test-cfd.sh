@@ -17,15 +17,19 @@ FRAMEWORKS[firedrake]=1
 # FEniCS (DOLFIN) is not built in the prefix by default
 #FRAMEWORKS[fenics]=1
 
+# Matlab creates files in this dir, and it must not be the $HOME filesystem
+export MPLCONFIGDIR=mpldir
+export XDG_CACHE_DIR=cachedir
 
 # Test single-node and multi-node (one proc per node)
 for nodes in 1 2
 do
+	MPI_ARGS=(-x MPLCONFIGDIR -x XDG_CACHE_DIR)
 	if [[ "${nodes}" -gt 1 ]]
 	then
-		MPI_ARGS=(--map-by node)
+		MPI_ARGS+=(--map-by node)
 	else
-		MPI_ARGS=()
+		MPI_ARGS+=()
 	fi
 
 	for solver in ${SOLVERS[@]}
