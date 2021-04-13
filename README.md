@@ -457,6 +457,40 @@ submits the test script as a job:
 
     $ bash exp/test-prefix/usc/test-cfd.job.sh PREFIX_PATH CLUSTER ARCH:GPU
 
+CASPER compiler test
+--------------------
+
+Enter the prefix, if you're not already in the prefix:
+
+    $ PREFIX_PATH/startprefix
+
+Build the CASPER compiler:
+
+    $ cd casper-utils/compiler
+    $ mkdir build
+    $ cd build
+    $ CC=clang CXX=clang++ cmake ..
+    $ make -j6
+
+Build and run the SAR app:
+
+    $ cd casper-utils/exp/apps/casper/sar
+    $ mkdir build
+    $ cd build
+    $ CC=clang CXX=clang++ cmake ..
+    $ make -j6
+    $ make sarbp.run
+
+Build and run the CFD app:
+
+    $ cd casper-utils/exp/apps/casper/cahnhilliard
+    $ mkdir build
+    $ cd build
+    $ CC=clang CXX=clang++ cmake ..
+    $ make -j6
+    $ make ch.run
+    $ RANKS=2 MAPBY=slot make ch.mpirun
+
 Tips for maintaining the Prefix
 ===============================
 
