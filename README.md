@@ -295,13 +295,9 @@ entering the prefix shell and using portage (`emerge`) to diagnose. Then,
 the top-level job may be restarted (as described in previous step), and
 it should resume incrementally.
 
-### Application test
+### MPI hello-world test
 
-The are two tests available:
-1. `test-mpi`: a hello-world MPI test on two nodes with two ranks on each
-2. `test-cfd`: a CFD benchmark in FEniCS and Firedrake with MPI and GPU.
-
-First, build the `mpitest` application:
+First, build the `mpitest` application in the prefix:
 
     $ cd casper-utils/exp/apps/mpitest
     $ PREFIX_PATH/startprefix
@@ -312,14 +308,25 @@ prefix path:
 
     $ ldd ./mpitest
 
+Then, while your shell is still in the prefix, run the app with
+the following test scripts.
 
-#### On USC HPCC
+#### On a generic host
+
+On a host (compatible with the ARCH for which the prefix was built):
+
+    $ cd casper-utils/exp/test-prefix
+    $ bash test-mpi.sh
+
+Note: On a generic host, `test-mpi.sh` will only test multiple ranks on a
+single node. Modify the script if you want something different.
+
+#### On USC HPCC and Discovery
 
 To launch a job on USC HPCC worker node, run this launcher script
 on the login node:
 
-    $ bash exp/test-prefix/test-mpi.job.sh PREFIX_PATH CLUSTER ARCH
-    $ bash exp/test-prefix/test-cfd.job.sh PREFIX_PATH CLUSTER ARCH:GPU
+    $ bash exp/test-prefix/usc/test-mpi.job.sh PREFIX_PATH CLUSTER ARCH
 
 where `PREFIX_PATH` is the directory with the prefix, CLUSTER is the
 name of the compute cluster (e.g. `discovery` see Step 2 above), ARCH is the
@@ -343,36 +350,74 @@ paths to which where printed when the job was run (look for `--output` and
 
 #### On Argonne Theta
 
-Enqueue a job (in this example, in interactive mode):
+Enqueue a job for an in interactive mode:
 
-    qsub -A CASPER -n 2 -t 10 -I
+    qsub -A CASPER -n 2 -t 10 -q debug-cache-quad -I
 
-In the job's shell on the "MOM" node, first add the special wrapper scripts to
-`PATH`:
+In the job's shell on the "MOM" node, enter the prefix and run the script
+as you would on a generic host, see instructions above.
 
-    $ export EPREFIX=/absolute/path/to/prefix
-    $ export PATH=/absolute/path/to/casper-utils/bin/theta:$PATH
+#### On Summit
 
-Then procede to run the `test-*.job.sh` test scripts as in the instructions for
-USC HPCC above.
+Enqueue a job for an in interactive mode:
 
-#### On a generic host
+    bsub -P csc436 -nnodes 2 -W 10 -q debug -Is /bin/bash
 
-On a host (compatible with the ARCH for which the prefix was built):
+In the job's shell on the "batch" node, enter the prefix and run the script as
+you would on a generic host, see instructions above.
 
-    $ PREFIX_PATH/startprefix 
-    $ mkdir -p casper-utils/exp/dat
-    $ cd casper-utils/exp/dat
-    $ bash ../jobs/test-mpi.sh
+### CFD application test: Cahn-Hilliard
+
+The Cahn-Hilliard application in Firedrake can be invoked via a
+Makefile-based infrastructure, either directly in the shell or
+through launching a job.
+
+First, enter the directory for the relevant `CLUSTER`:
+
+    $ cd exp/cahn-hilliard/CLUSTER
+
+To invoke directly on the node, either a geneirc linux host, or, in interactive
+job (on Theta this would be the MOM node, and on Summit the batch node):
+
+1. Launch the persistent PRRTE DVM on all the nodes in your job allocation:
+
+        $ prte --daemonize
+
+2. Invoke the application (you may change the parameters in the target name to
+   execute for a different mesh size, ranks, etc.; application output and
+   time info will be in `dat/test-1/` directory):
+
+        $ make IN=1 dat/test-1/ch_mesh-64_ranks-4_tpn-16.csv
+
+3. Terminate the DVM (you may invoke multiple jobs without restarting the DVM;
+   the invocations may even be concurrent in theory, but this is broken in
+   practice, so run only one job at a time):
+
+        $ pterm
+
+### CFD application test: Lid-Driven cavity (old scripts)
+
+There is a script that runs a CFD application in
+
+* Firedrake FEM framework
+* FEniCS (aka. DOLFIN) FEM framework [ currently disabled ]
+
+The script cycles through several direct solvers to test them.
+
+Instructions are similar to the MPI hello-world test:
+
+    $ cd casper-utils/exp/test-prefix
+    $ bash test-cfd.sh
 
 The `test-cfd.sh` script takes one optional argument that enables
-the test on GPU (besides the non-GPU tests) when non-empty:
+the test on GPU (besides the non-GPU tests) when non-empty.
 
-    $ bash ../jobs/test-cfd.sh 1
+#### On USC HPCC and Discovery
 
+For USC HPCC or Discovery clusters, there's a script that
+submits the test script as a job:
 
-Note: As oppsoed on the cluster (see above), on a generic host, the `test-mpi`
-will only test one node. Modify the script if you want something different.
+    $ bash exp/test-prefix/usc/test-cfd.job.sh PREFIX_PATH CLUSTER ARCH:GPU
 
 Enter the prefix
 ================
