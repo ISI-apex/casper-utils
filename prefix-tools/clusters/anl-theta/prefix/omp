@@ -37,7 +37,7 @@ alps_libs_paths="$(PATH=$HOST_PATH pkg-config ${alps_libs[@]} --libs-only-L | \
 # the full path (instead of just taking --prefix as the overriding one).
 # So, we invoke mpirun via the executable name by appending Prefix to
 # PATH.
-if [[ "${omp_tool}" != pterm ]]
+if [[ "${omp_tool}" =~ ^(mpiexec|mpirun|prte|prun)$ ]]
 then
 	args+=(--prefix /dev/null)
 	args+=("${mpirun_args[@]}")
