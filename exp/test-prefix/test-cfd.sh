@@ -36,12 +36,12 @@ do
 
 			if [[ -n "${FRAMEWORKS[firedrake]}" ]]
 			then
-				run mpirun ${MPI_ARGS_LOC[@]} command \
+				run mpirun ${MPI_ARGS_LOC[@]} \
 					python "${SELF_DIR}"/../apps/firedrake/matrix_free/stokes-casper.py 64 $solver 0 1
 			fi
 			if [[ -n "${FRAMEWORKS[fenics]}" ]]
 			then
-				run mpirun ${MPI_ARGS_LOC[@]} command \
+				run mpirun ${MPI_ARGS_LOC[@]} \
 					python "${SELF_DIR}"/../apps/fenics/cavity/demo_cavity.py 64 $solver 0 1
 			fi
 
@@ -54,12 +54,12 @@ do
 
 				if [[ -n "${FRAMEWORKS[firedrake]}" ]]
 				then
-					run mpirun ${MPI_ARGS_LOC[@]} command \
+					run mpirun ${MPI_ARGS_LOC[@]} \
 						python "${SELF_DIR}"/../apps/firedrake/matrix_free/stokes-casper.py 64 $solver 1 1
 				fi
 				if [[ -n "${FRAMEWORKS[fenics]}" ]]
 				then
-					run mpirun ${MPI_ARGS_LOC[@]} command \
+					run mpirun ${MPI_ARGS_LOC[@]} \
 						python "${SELF_DIR}"/../apps/fenics/cavity/demo_cavity.py 64 $solver 1 1
 				fi
 
