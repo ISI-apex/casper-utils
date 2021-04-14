@@ -457,6 +457,13 @@ submits the test script as a job:
 
     $ bash exp/test-prefix/usc/test-cfd.job.sh PREFIX_PATH CLUSTER ARCH:GPU
 
+### On Theta and Summit
+
+You must set `NOLOCAL` environment variable so that the launch node (`MOM` on
+Theta, `batch` on Summit) is not used:
+
+   $ NOLOCAL=1 bash test-cfd.sh
+
 CASPER compiler test
 --------------------
 

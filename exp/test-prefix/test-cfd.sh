@@ -11,6 +11,11 @@ run() {
 
 GPU=$1
 
+if [[ -n "${NOLOCAL}" ]]
+then
+	MAP_BY_SUFFIX=:NOLOCAL
+fi
+
 SOLVERS=(mumps superlu_dist pastix)
 declare -A FRAMEWORKS
 FRAMEWORKS[firedrake]=1
@@ -27,9 +32,9 @@ do
 	MPI_ARGS=(-x MPLCONFIGDIR -x XDG_CACHE_DIR)
 	if [[ "${nodes}" -gt 1 ]]
 	then
-		MPI_ARGS+=(--map-by node)
+		MPI_ARGS+=(--map-by node${MAP_BY_SUFFIX})
 	else
-		MPI_ARGS+=()
+		MPI_ARGS+=(--map-by slot${MAP_BY_SUFFIX})
 	fi
 
 	for solver in ${SOLVERS[@]}
