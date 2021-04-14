@@ -9,6 +9,11 @@ run() {
 	"$@"
 }
 
+die() {
+	echo "$@" 1>&2
+	exit 1
+}
+
 GPU=$1
 
 if [[ -n "${NOLOCAL}" ]]
@@ -26,9 +31,26 @@ FRAMEWORKS[firedrake]=1
 export MPLCONFIGDIR=mpldir
 export XDG_CACHE_DIR=cachedir
 
+# Create a persistent PRRTE DVM that spans the whole job allocation, to
+# amortize the cost to startup the OpenMPI daemons on each node.
+run prte --daemonize
+trap "run pterm" EXIT
+
+# TODO: update the above to this when openmpi & co packages are updated
+#run prte --report-pid dvm.pid --daemonize
+#while [[ ! -f "dvm.pid" ]]
+#do
+#	echo "Waiting for DVM to startup..."
+#	sleep 2
+#done
+#DVM_PID=$(cat dvm.pid)
+#[[  -n "${DVM_PID}" ]] || die "DVM did not create a PID file"
+#trap "run pterm --pid ${DVM_PID}" EXIT
+
 # Test single-node and multi-node (one proc per node)
 for nodes in 1 2
 do
+	# TODO: add --pid "${DVM_PID}" (see above)
 	MPI_ARGS=(-x MPLCONFIGDIR -x XDG_CACHE_DIR)
 	if [[ "${nodes}" -gt 1 ]]
 	then
@@ -45,12 +67,12 @@ do
 
 			if [[ -n "${FRAMEWORKS[firedrake]}" ]]
 			then
-				run mpirun ${MPI_ARGS_LOC[@]} \
+				run prun ${MPI_ARGS_LOC[@]} \
 					python "${SELF_DIR}"/../apps/firedrake/matrix_free/stokes-casper.py 64 $solver 0 1
 			fi
 			if [[ -n "${FRAMEWORKS[fenics]}" ]]
 			then
-				run mpirun ${MPI_ARGS_LOC[@]} \
+				run prun ${MPI_ARGS_LOC[@]} \
 					python "${SELF_DIR}"/../apps/fenics/cavity/demo_cavity.py 64 $solver 0 1
 			fi
 
@@ -58,23 +80,23 @@ do
 			then
 				if [[ "$solver" = "superlu_dist" ]]
 				then
-					eselect superlu_dist set superlu_dist_cuda
+					run eselect superlu_dist set superlu_dist_cuda
 				fi
 
 				if [[ -n "${FRAMEWORKS[firedrake]}" ]]
 				then
-					run mpirun ${MPI_ARGS_LOC[@]} \
+					run prun ${MPI_ARGS_LOC[@]} \
 						python "${SELF_DIR}"/../apps/firedrake/matrix_free/stokes-casper.py 64 $solver 1 1
 				fi
 				if [[ -n "${FRAMEWORKS[fenics]}" ]]
 				then
-					run mpirun ${MPI_ARGS_LOC[@]} \
+					run prun ${MPI_ARGS_LOC[@]} \
 						python "${SELF_DIR}"/../apps/fenics/cavity/demo_cavity.py 64 $solver 1 1
 				fi
 
 				if [[ "$solver" = "superlu_dist" ]]
 				then
-					eselect superlu_dist set superlu_dist
+					run eselect superlu_dist set superlu_dist
 				fi
 			fi
 		done
