@@ -16,12 +16,11 @@ casper_add_exec(ch ch.meta
 # 'site' module, and even if wa call site.main() -- double-check the latter
 # part, though.
 find_package(Python COMPONENTS Interpreter REQUIRED) # for Python_SITELIB
+find_package(PkgConfig REQUIRED)
+pkg_search_module(PETSC REQUIRED petsc PETSc)
 
-# TODO: the .pth shortcut is not being honored when importing from the
-# embedded interpreter for some reason.
-set(PETSC_PY_DIR $ENV{PETSC_DIR}/lib)
-
-set(EXTRA_PYTHONPATH "${CMAKE_CURRENT_SOURCE_DIR}:${CASPER_PYAPI_DIR}:${Python_SITELIB}:${PETSC_PY_DIR}")
+string(JOIN : EXTRA_PYTHONPATH ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CASPER_PYAPI_DIR} ${Python_SITELIB} ${PETSC_LIBDIR})
 
 # Run the target program (test target)
 # TODO: burn the EXTRA_PYTHONPATH into the metaprogram somehow
