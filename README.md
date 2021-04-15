@@ -160,6 +160,9 @@ In all sections that follow:
 ***NOTE***: before building, remember to checkout the latest release verified
 to build on the system that you're building on (see details in Step 0).
 
+The build script is incremental, so in case of errors, troubleshoot them, and
+then simply restart the build job by the same method you used to start it.
+
 ### USC HPCC or Discovery
 
 Use this wrapper script to launch the build job on worker nodes:
@@ -210,6 +213,12 @@ Once the job starts (see `bjobs`), you can monitor the log with:
 Note that there are two parts to the job, each with its own log file, so after
 the first half completes, re-run the above command to start monitoring the
 second log.
+
+The build job is submitted to Summit's `killable` queue, which is the only
+queue that can support single-node reservations of several hours. Jobs in this
+queue may be pre-empted by Summit's job scheduler (which terminates the job
+with a `SIGTERM` but automatically re-enqueues it). The build job is written
+such that is incremental, so it's ok if it is preempted and restarted.
 
 Or, the build can also be done directly on the login macine:
 
@@ -874,6 +883,22 @@ networked filesystems of various kinds). Try disable the `sync` that is called
 after merging (and has been observed to hang on NFS):
 
     FEATURES="-merge-sync" emerge ...
+
+Troubleshooting: strange errors after prefix was built from scratch
+-------------------------------------------------------------------
+
+If you built a prefix from scratch, from a release tag (which means
+the prefix was tested on the systems mentioned in the tag name), and
+you're seeing strange failures when testing, then the first quick
+thing to try is to re-build the package that appears in the stack
+traces, if you get one: `emerge category/package`.
+
+This is especially relevant if the build job experienced a failure (and you
+restarted it) -- for example, on Theta, occassional spurious filesystem errors
+have been observed to cause the build job to fail with a spurious "no space
+left on device" error. Simply restarting the job would let it continue, but
+the interruption damaged some package installation, so they cause errors
+later on. Simply re-emerging the package fixes these kinds of issues.
 
 Evaluate CASPER Auto-tuner
 ==========================
