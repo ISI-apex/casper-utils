@@ -558,6 +558,131 @@ Phi architecture, it is an open issue that needs resolving.
 On Summit, runs with more than one rank hang in the `mass` task. This
 is a new open issue and needs to be debugged.
 
+Running experiments
+===================
+
+The above section on testing covers some experiments, but this section goes
+into more detail about the infrastructure available for invoking apps
+in order to collect measurements.
+
+So far, not all experiments are using this infrastructure:
+
+* The experiment that does use this infrastructure is the one for collecing
+  scaling data for the CFD app implemented in Firedrake, it lives in
+  `exp/cahnilliard`, and there is a subdirectory per platform, with a makefile
+  that has useful functionality for submitting jobs described next.
+
+* The experiments that do not, exist in `exp/some-experiment` subdiectories,
+  and use ad-hoc scripts or are completely manual -- each such and has its own
+  README with instructions.
+
+This infrastructure allows to invoke apps (on various input sizes, with various
+rank counts) by specifying parameters on in a target name and invoking that
+target. The infrastructure also makes it easy to enqueue the target invocations
+into jobs on the supported HPC clusters.
+
+The general idea is that you can time a particular run of an application
+with a command like:
+
+    $ cd casper-utils/exp/cahn-hilliard/CLUSTER
+    $ make dat/test-1/ch_mesh-64_ranks-2_tpn-16_trial-1.csv
+
+This command would create this file, if it doesn't already exist. The
+underlying command for the app is specified in each `Makefile` and determines
+how this file is created and what it contains (e.g. timings), and what other
+files might be created along with it (e.g. `.sol` with solution data).
+
+The path must start with two levels of subdirectories `dat/test-1`. The
+file name is a key-value map (e.g. `{mesh=64, ranks=1, ....}` above) and
+this map is used to construct the command by which the app is invoked.
+Any keys can be added, but some keys are required, depending on the
+`Makefile` for an individual experiment.
+
+Some job parameters may be specified via make variables:
+
+       $ make MAX_TIME=60 QUEUE=debug dat/test-1/ch_mesh-64_ranks-2_tpn-16.csv
+
+There are two main usage modes:
+
+A. wrapped into a job and enqueued to the job manager
+B. direct invocation in the current shell (enabled by `IN=1` make var)
+
+Mode A makes sense only on HPC clusters with a job manager. Mode B makes sense
+only on in an interactive job session on a "MOM" node on Theta cluster or a
+"batch" node on Summit, or on a generic host without a resource manager.
+
+The infrastructure uses the persistent DVM (Distributed Virtual Machine)
+provided by the OpenMPI stack. This sets up the OpenMPI daemons on each
+node in the job allocation only onces, and allows jobs to be invoked
+without having to redo this setup for each job.
+
+In Mode A, launching of the DVM is part of the job. To submit a job,
+you would just run:
+
+    $ make IN=1 dat/test-12/ch_mesh-64_ranks-2_tpn-16_trial-1.csv
+
+But, in Mode B, you need to launch the DVM before invoking the target:
+
+    $ prte --daemonize
+    $ make IN=1 dat/test-12/ch_mesh-64_ranks-2_tpn-16_trial-1.csv
+    $ make IN=1 dat/test-12/ch_mesh-64_ranks-2_tpn-16_trial-2.csv
+    $ pterm
+
+In Mode B, in theory, you can invoke multiple jobs in the same DVM in parallel
+(e.g. the two make commands above might be put into background with `&`), but
+this doesn't always work due to bugs in PRRTE/OpenMPI, so prefer
+to run one job at a time.
+
+In Mode A, in theory, you can invoke multiple targets (one job per each) and
+let them run concurrently. However, due to bugs in PRRTE/OpenMPI, when a job in
+one DVM dies it takes down the other DVMs with it (observed on Summit). So,
+prefer to have only one job running at a time. This is very annoying, since HPC
+clusters do let users submit and run at least several jobs concurrently. But,
+the only way is to fix the bugs.
+
+Some useful features (but beware of the bugs mentioned above!) (dry-mode
+`make -n ...` is useful to see what exactly each command woudl do):
+
+* When multiple targets are specified in the make command, a separate job
+  is enqued for each target (Mode A) or a separate prun is invoked for each
+  target (Mode B), for example using shell globbing you can collect
+  data for two rank counts:
+
+        $ make dat/test-1/ch_mesh-64_ranks-{2,4}_tpn-16_trial-1.csv
+
+* If you want to create one job that will invoke two prun instances, combine
+  the targets with a `+` sign (can't use globbing anymore):
+
+        $ make dat/test-1/ch_mesh-64_ranks-2_tpn-16_trial-1.csv+dat/test-1/ch_mesh-64_ranks-2_tpn-16_trial-1.csv
+
+* Inside `Makefile` sets of targets can be defined using the `target-set`
+  function so that they may be invoked by the name of the set (by default,
+  all targets will be executed within one job):
+
+        $ make dat/test-1/ch_test-2
+
+* If you want to invoke a set of targets with one job per target, suffix with
+  `^split`:
+
+        $ make dat/test-1/ch_test-2^split
+
+For the commands that result in more than one job, the jobs are submitted
+concurrently to the job manager, unless `QUEUE=debug` is specified (which
+supports only one job at a time). If you want to force multiple jobs to
+run in sequence use `make -j1`. Currently there is not yet a way to
+force sequential execution `prun`s invoke bia a target set (see above).
+
+This infrastructure is implemented in GNU Make by makefiles in
+`prefix-tools/make/Makefile.job` and `prefix-tools/clusters/*/make/Makefile`.
+Note that these makefiles are installed into the prefix by the
+`app-portage/prefix-tools*` packages, so if you want to change them, the
+process is to commit the changes, bump the package versions, and re-emerge the
+package (you could also temporarily edit the installed copies in
+`$EPREFIX/usr/lib/prefix-tools`, but be careful to not lose your edits upon
+package re-builds). The makefiles installed in the prefix are included by
+per-experiment makefiles that exist outside the prefix and define actual
+app commands (e.g. `exp/cahn-hilliard/Makefile`).
+
 Tips for maintaining the Prefix
 ===============================
 
