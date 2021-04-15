@@ -411,6 +411,31 @@ Enqueue a job for an in interactive mode:
 In the job's shell on the "batch" node, enter the prefix and run the script as
 you would on a generic host, see instructions above.
 
+CUDA smoke test
+---------------
+
+First, check that the CUDA compiler is installed:
+
+    $ nvcc --version
+    nvcc: NVIDIA (R) Cuda compiler driver
+
+There is a hello-world CUDA application in `exp/apps/cuda`: It has currently
+been tested only on a generic Linux host (with an Nvidia K40 GPU), not
+on any HPC clusters.
+
+    $ cd exp/apps/cuda
+    $ make
+    $ ./add_cuda
+    $ ./add_managed
+
+### Known issues
+
+* Only one of {`add_copy`, `add_managed`} ever worked. I can't remember which
+one.
+
+* The app that did work on a generic Linux host with an earlier version of
+CUDA now segfaults with CUDA v11.
+
 CFD application test: Cahn-Hilliard
 -----------------------------------
 
