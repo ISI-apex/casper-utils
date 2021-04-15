@@ -487,14 +487,18 @@ Build the SAR app:
     $ mkdir build
     $ cd build
     $ CC=clang CXX=clang++ cmake ..
-    $ make -j6
 
 On Summit, a manual workaround is required to compensate for some
 unimplemented functionality:
 
     $ cp ../tuned-params-summit.ini tuned-params.ini
 
-Run the SAR app:
+Continue with the build:
+
+    $ make -j6
+
+Run the SAR app (On Theta, must be on a worker node (not login, not MOM
+node)!):
 
     $ make sarbp.run
 
@@ -507,9 +511,10 @@ an interactive session:
 
     $ qsub -A CASPER -n 2 -t 30 -q debug-cache-quad -I --attrs enable_ssh=1
 
-Then, from the MOM node, get the hostname of a worker node and login to it:
+Then, from the MOM node, get the hostname of a worker node and login to it (if
+this hangs, you can also check `qstat debug-cache-quad` output for node names):
 
-    $ apstat -n 1 hostname
+    $ aprun -n 1 hostname
     nidXXXXX
     $ ssh nidXXXXX
 
@@ -532,6 +537,8 @@ on HPC clusters, because MPI is imported within Python, and hence
 the app must be invoked via the mpi launcher):
 
     $ make ch.run
+
+You can add `make VERBOSE=1` to the make command to see the invoked command line.
 
 #### Known Issues
 
