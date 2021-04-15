@@ -487,10 +487,15 @@ Build the SAR app:
     $ mkdir build
     $ cd build
     $ CC=clang CXX=clang++ cmake ..
+    $ make -j6
+
+On Summit, a manual workaround is required to compensate for some
+unimplemented functionality:
+
+    $ cp ../tuned-params-summit.ini tuned-params.ini
 
 Run the SAR app:
 
-    $ make -j6
     $ make sarbp.run
 
 ### CFD app
@@ -508,7 +513,8 @@ Then, from the MOM node, get the hostname of a worker node and login to it:
     nidXXXXX
     $ ssh nidXXXXX
 
-Build the CFD app (on Theta, must do this on worker node!):
+Build the CFD app (On Theta, must do this on worker node! On Summit, must do
+tihs on the batch node!):
 
     $ cd casper-utils/exp/apps/casper/cahnhilliard
     $ mkdir build
@@ -516,7 +522,8 @@ Build the CFD app (on Theta, must do this on worker node!):
     $ CC=clang CXX=clang++ cmake ..
     $ make -j6
 
-Run the CFD app (on Theta, must do this on the MOM node!):
+Run the CFD app (On Theta, must do this on the MOM node! On Sumit, must do this
+on the batch node!):
 
     $ RANKS=2 MAPBY=slot make ch.mpirun
 
