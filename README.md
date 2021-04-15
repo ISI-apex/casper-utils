@@ -645,6 +645,9 @@ chaotic state. The only known errors that are ok, are:
  * `dev-python/randomgen`: versions `>=1.18` are masked, continue with
    installing `1.16.x`
 
+After the emerge finishes, exit and re-enter the prefix, for any updated config
+files that set environment variables to be re-applied.
+
 #### On Summit
 
 Follow the instructions for Generic Linux host above, on a login machine.
@@ -677,6 +680,9 @@ compilation step at all, or small packages quick to compile), then you can
 just run the second `emerge` on the login machine too:
 
     $EPREFIX/ptools/pstart p4port emerge ...
+
+After the emerge finishes, exit and re-enter the prefix, for any updated config
+files that set environment variables to be re-applied.
 
 Live package versions
 ---------------------
