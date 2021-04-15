@@ -659,7 +659,7 @@ Pull the changes:
 
 Run emerge to rebuild what needs to be rebuild given the updated ebuilds:
 
-    emerge --ask --update --changed-use --newuse --newrepo \
+    emerge --ask --update --changed-use --changed-slot --newuse --newrepo \
       --deep --with-bdeps=y @world
 
 Don't continue if there are errors; it may be difficult to diagnose the
