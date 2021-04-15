@@ -533,6 +533,15 @@ the app must be invoked via the mpi launcher):
 
     $ make ch.run
 
+#### Known Issues
+
+The app is likely to fail on Theta with `DIVERGED_LINEAR_SOLVE` error.
+This is a problem related to floating point differences introduced by the Xeon
+Phi architecture, it is an open issue that needs resolving.
+
+On Summit, runs with more than one rank hang in the `mass` task. This
+is a new open issue and needs to be debugged.
+
 Tips for maintaining the Prefix
 ===============================
 
