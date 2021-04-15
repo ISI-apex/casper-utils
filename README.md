@@ -35,12 +35,24 @@ useful on HPC clusters. Conceptually, in essence, it's a wrapper around
 `./configure && make && make install`. Binaries built within the prefix may be
 called from the host as any other binary (although it's usually useful to work
 in a prefix shell, see below), and host binaries may be invoked from within the
-prefix seemlessly. A Prefix allows everything to be independent of the host
-distribution (prefix bootstrap is very robust and should boostrap on any Linux
-system) and thus the versions of any of the software libraries, toolchains, and
-applications may be chosen at will. A Prefix is a lot more useful than
-Singularity or similar containers based on immutable images. The following
-sections describe how to build a prefix on USC HPCC cluster and on other hosts.
+prefix seemlessly.
+
+A Prefix allows everything to be independent of the host distribution (prefix
+bootstrap is very robust and should boostrap on any Linux system) and thus the
+versions of any of the software libraries, toolchains, and applications may be
+chosen at will. A Prefix is a lot more useful than Singularity or similar
+containers based on immutable images. The following sections describe how to
+build a prefix on USC HPCC cluster and on other hosts.
+
+***NOTE***: Never run `make install` or similar in the prefix, because this
+will write and override files everywhere without any way to track then nor
+remove them, which will brake your prefix in the strangest ways imaginable,
+without any simple way to recover (you are not protected by root, since all
+paths in the prefix are user-writable, so be careful what commands you run). To
+install software into the prefix, it must be packaged in an `.ebuild`. It is
+usually very quick and easy to write a new `.ebuild` for some new software
+library or app, starting from an existing `.ebuild` as a template, and there
+are tens of thousands of packages already available (see `eix searchstring`).
 
 Step 1. Prepare source tarballs
 ------------------------------
