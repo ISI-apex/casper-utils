@@ -471,7 +471,7 @@ Enter the prefix, if you're not already in the prefix:
 
     $ PREFIX_PATH/startprefix
 
-Build the CASPER compiler:
+### Build the CASPER compiler:
 
     $ cd casper-utils/compiler
     $ mkdir build
@@ -479,24 +479,52 @@ Build the CASPER compiler:
     $ CC=clang CXX=clang++ cmake ..
     $ make -j6
 
-Build and run the SAR app:
+### SAR app
+
+Build the SAR app:
 
     $ cd casper-utils/exp/apps/casper/sar
     $ mkdir build
     $ cd build
     $ CC=clang CXX=clang++ cmake ..
+
+Run the SAR app:
+
     $ make -j6
     $ make sarbp.run
 
-Build and run the CFD app:
+### CFD app
+
+On Theta, the following build (not run) steps must be done on a worker node,
+because CASPER compiler does not support cross-compiling for apps that use
+the Firedrake/UFL DSL yet. To get a shell on a worker node on Theta, first get
+an interactive session:
+
+    $ qsub -A CASPER -n 2 -t 30 -q debug-cache-quad -I --attrs enable_ssh=1
+
+Then, from the MOM node, get the hostname of a worker node and login to it:
+
+    $ apstat -n 1 hostname
+    nidXXXXX
+    $ ssh nidXXXXX
+
+Build the CFD app (on Theta, must do this on worker node!):
 
     $ cd casper-utils/exp/apps/casper/cahnhilliard
     $ mkdir build
     $ cd build
     $ CC=clang CXX=clang++ cmake ..
     $ make -j6
-    $ make ch.run
+
+Run the CFD app (on Theta, must do this on the MOM node!):
+
     $ RANKS=2 MAPBY=slot make ch.mpirun
+
+Run without MPI (this might work on a generic Linux host, but not
+on HPC clusters, because MPI is imported within Python, and hence
+the app must be invoked via the mpi launcher):
+
+    $ make ch.run
 
 Tips for maintaining the Prefix
 ===============================
