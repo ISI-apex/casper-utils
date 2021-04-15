@@ -28,8 +28,9 @@ FRAMEWORKS[firedrake]=1
 #FRAMEWORKS[fenics]=1
 
 # Matlab creates files in this dir, and it must not be the $HOME filesystem
+# NOTE: if you add/change these, make sure to change then below too
 export MPLCONFIGDIR=mpldir
-export XDG_CACHE_DIR=cachedir
+export XDG_CACHE_HOME=cachedir
 
 # Create a persistent PRRTE DVM that spans the whole job allocation, to
 # amortize the cost to startup the OpenMPI daemons on each node.
@@ -51,7 +52,7 @@ trap "run pterm" EXIT
 for nodes in 1 2
 do
 	# TODO: add --pid "${DVM_PID}" (see above)
-	MPI_ARGS=(-x MPLCONFIGDIR -x XDG_CACHE_DIR)
+	MPI_ARGS=(-x MPLCONFIGDIR -x XDG_CACHE_HOME)
 	if [[ "${nodes}" -gt 1 ]]
 	then
 		MPI_ARGS+=(--map-by node${MAP_BY_SUFFIX})
