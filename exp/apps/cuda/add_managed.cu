@@ -1,3 +1,5 @@
+#include <cassert>
+#include <cstdio>
 #include <iostream>
 #include <math.h>
 // Kernel function to add the elements of two arrays
@@ -11,11 +13,21 @@ void add(int n, float *x, float *y)
 int main(void)
 {
 	int N = 1<<20;
-	float *x, *y;
+	float *x = NULL, *y = NULL;
 
 	// Allocate Unified Memory  accessible from CPU or GPU
-	cudaMallocManaged(&x, N*sizeof(float));
-	cudaMallocManaged(&y, N*sizeof(float));
+	cudaError_t err = cudaMallocManaged(&x, N*sizeof(float));
+	if (err) {
+		fprintf(stderr, "cudaMallocManaged failed: %s\n", cudaGetErrorString(err));
+		exit(1);
+	}
+	assert(x);
+	err = cudaMallocManaged(&y, N*sizeof(float));
+	if (err) {
+		fprintf(stderr, "cudaMallocManaged failed: %s\n", cudaGetErrorString(err));
+		exit(1);
+	}
+	assert(y);
 
 	// initialize x and y arrays on the host
 	for (int i = 0; i < N; i++) {
