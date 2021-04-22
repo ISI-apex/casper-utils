@@ -36,7 +36,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.$(MAP_BY) | $(DATA_DIR)/
 		"$(call tgt-tasks-per-node,$*)" \
 		--elapsed-out "$@" \
 		--solution-out \
-		  "$(patsubst %.csv,%.sol,$@)/$(patsubst %.csv,%.pvd,$@)" \
+		  "$(patsubst %.csv,%.sol,$@)/$(patsubst %.csv,%.pvd,$(notdir $@))" \
 		--obj-dir "$(patsubst %.csv,%.obj,$@)" \
 		$(call tgt-arg,$*,steps) \
 		$(call tgt-arg,$*,dt) \
