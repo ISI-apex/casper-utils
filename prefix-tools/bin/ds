@@ -20,6 +20,9 @@ parser.add_argument('--rank', type=int,
 	help='Print only the rows for the given rank')
 args = parser.parse_args()
 
+# show all rows (set limit to unlimited)
+pd.set_option('display.max_rows', None)
+
 for csv_file in args.csv_file:
 	d = pd.read_csv(csv_file)
 
