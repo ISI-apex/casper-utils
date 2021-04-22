@@ -41,6 +41,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.$(MAP_BY) | $(DATA_DIR)/
 		$(call tgt-arg,$*,steps) \
 		$(call tgt-arg,$*,dt) \
 		$(call tgt-arg,$*,trial) \
+		$(call tgt-arg,$*,plat) \
 		$(call tgt-arg,$*,omp,omp-threads,$(DEF_OMP_NUM_THREADS)) \
 		$(call opt-arg,tasks,$(call tgt-tasks,$*)) \
 		$(call opt-arg,mem-per-node,$(MEM_PER_NODE)) \
