@@ -1,5 +1,8 @@
 all: add_copy add_managed
 
+# Workaround for error: _ieee128 undefined (on Summit)
+CXXFLAGS_FLOAT_FIX?=-Xcompiler -mno-float128
+
 define NL
 
 
@@ -18,7 +21,7 @@ $(error GCC $(GCC_VER_MAJMIN) not supported by CUDA:$(NL) \
 endif
 
 add_%: add_%.cu
-	nvcc -o $@ $<
+	nvcc $(CXXFLAGS_FLOAT_FIX) -o $@ $<
 
 clean:
 	rm -f add_copy add_managed
