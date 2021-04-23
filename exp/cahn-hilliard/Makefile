@@ -47,6 +47,7 @@ $(DATA_DIR)/ch_%.csv: $(DATA_DIR)/prun_%.$(MAP_BY) | $(DATA_DIR)/
 		$(call opt-arg,mem-per-node,$(MEM_PER_NODE)) \
 		$(call opt-arg,dedicated-node-for-rank0,$(DEDI_NODE_FOR_RANK0)) \
 		$(call opt-arg,monitor-mem,$(MONITOR_MEM)) \
+		$(if $(VERBOSE),--verbose) \
 	2>&1 | tee "$@.log"
 endif # IN=
 
