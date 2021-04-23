@@ -426,7 +426,7 @@ function p4port { # useful on USC Discovery (usage capped at 4 cores @ 100%)
 
 function profile_to_cluster {
 	local CLUSTER=""
-	if [[ "${PROFILE}" =~ generic ]]
+	if [[ "${PROFILE}" =~ generic|isi-gpuk40 ]]
 	then
 		CLUSTER=generic
 	elif [[ "${PROFILE}" =~ usc-hpcc ]]
