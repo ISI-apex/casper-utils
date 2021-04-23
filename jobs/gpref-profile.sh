@@ -114,39 +114,83 @@ then
 	# Manual parts of selecting the profile:
 	#   Setup files that are not supported by profiles (but we do
 	#   store them in the profiles directory tree to keep stuff together)
-	# NOTE: only depth 1 is supported, no nested dirs
-	ETC_FILES=(
-		casper/etc/portage/package.license
-		casper/etc/portage/package.env
-		${CLUSTER}/etc/portage/package.provided
-	)
-	if [[ "${CLUSTER}" =~ anl-theta ]]
-	then
-		ETC_FILES+=(casper-cross/etc/portage/package.env)
-	fi
-	ETC_DIRS=(
-		casper/etc/portage/sets
-		casper/etc/portage/env
-	)
-	for f in ${ETC_FILES[@]}
-	do
-		ETC_FILE="$ROOT"/${REPO_PATH}/profiles/${f}
-		if [[ -f "${ETC_FILE}" ]]
+
+	# Walks the tree in depth-first order, returns list of profile names
+	# Usage: profile_tree path_to_profiles_dir_in_ebuild_repo root_profile
+	function profile_tree() {
+		local dir="$1"
+		local prof="$2"
+		if [[ -f "${dir}"/"${prof}"/parent ]]
 		then
-			cat "${ETC_FILE}" >> "$ROOT"/etc/portage/$(basename ${f})
-		fi
-	done
-	for d in ${ETC_DIRS[@]}
-	do
-		mkdir -p "$ROOT"/etc/portage/$(basename ${d})
-		(
-			cd "$ROOT"/${REPO_PATH}/profiles/${d}
-			for f in *
+			local line parent_prof
+			while read -r line
 			do
-				ln -sf ../../../${REPO_PATH}/profiles/${d}/${f} \
-					"$ROOT"/etc/portage/$(basename ${d})/${f}
-			done
+				parent_prof=${line#../}
+				if [[ ! "${parent_prof}" =~ gentoo: ]]
+				then
+					profile_tree "${dir}" "${parent_prof}"
+				fi
+			done < "${dir}"/"${prof}"/parent
+		fi
+		echo "${prof}"
+	}
+	function is_dir_not_empty() {
+		typeset dir="${1:?required directory argument is missing}"
+		if [[ ! -d "${dir}" ]]
+		then
+			return 1
+		fi
+		set -- ${dir}/*
+		if [ "${1}" == "${dir}/*" ]
+		then
+			return 1
+		else
+			return 0
+		fi
+	}
+	profiles=($(profile_tree "$ROOT"/${REPO_PATH}/profiles "${PROFILE}"))
+	for profile in "${profiles[@]}"
+	do
+		profile_path=${REPO_PATH}/profiles/${profile}
+		# These files are merged
+		ETC_FILES=(
+			package.env
+			package.license
+			package.provided
 		)
+		# All files in these diretories are symlinked;
+		# later profiles override earlier profiles
+		ETC_DIRS=(
+			sets
+			env
+		)
+		for f in ${ETC_FILES[@]}
+		do
+			ETC_FILE=${profile_path}/etc/portage/${f}
+			if [[ -f "$ROOT"/"${ETC_FILE}" ]]
+			then
+				merged_file="$ROOT"/etc/portage/${f}
+				echo -e "\n# BEGIN: ${ETC_FILE}\n" >> "${merged_file}"
+				cat "$ROOT"/"${ETC_FILE}" >> "${merged_file}"
+				echo -e "\n# END: ${ETC_FILE}\n" >> "${merged_file}"
+			fi
+		done
+		for d in ${ETC_DIRS[@]}
+		do
+			ETC_DIR=${profile_path}/etc/portage/${d}
+			if is_dir_not_empty "$ROOT"/"${ETC_DIR}"
+			then
+				mkdir -p "$ROOT"/etc/portage/${d}
+				(
+					cd "$ROOT"/"${ETC_DIR}"
+					for f in *
+					do
+						ln -sf ../../../${ETC_DIR}/${f} \
+							"$ROOT"/etc/portage/${d}/${f}
+					done
+				)
+			fi
+		done
 	done
 	step_done select_profile_etc
 fi
