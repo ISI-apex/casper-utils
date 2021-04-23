@@ -5,7 +5,6 @@ DEDI_NODE_FOR_RANK0?=
 
 PTOOLS_MAKE:=${EPREFIX}/usr/lib/prefix-tools/make
 
-include $(PTOOLS_MAKE)/Makefile.job
 include $(PTOOLS_MAKE)/Makefile
 
 all: ch-test
