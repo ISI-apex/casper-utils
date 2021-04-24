@@ -29,22 +29,22 @@ In the following commands, replace `RELEASE_ID` with the tag name chosen above.
 
 Take care to include the `file://` URI prefix, since required by `git-lfs`.
 
-* On ***OLCF Summit***:
+* On **OLCF Summit**:
 
         $ git clone -b RELEASE_ID file:///gpfs/alpine/csc436/proj-shared/repos/casper-utils.git
         $ ./bootstrap.sh
 
-* On ***ANL Theta***:
+* On **ANL Theta**:
 
         $ git clone -b RELEASE_ID file:///lus/theta-fs0/projects/CASPER/repos/casper-utils.git
         $ ./bootstrap.sh
 
-* On ***ISI gpuk40***:
+* On **ISI gpuk40**:
 
         $ git clone -b RELEASE_ID file:///home/pub/casper/repos/casper-utils.git
         $ ./bootstrap.sh
 
-* On ***Generic Linux system*** (TODO: no public LFS server available yet, so
+* On **Generic Linux system** (TODO: no public LFS server available yet, so
   can only clone the repo without LFS objects, won't be able to build the
   Prefix!):
 
