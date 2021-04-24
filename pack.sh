@@ -46,6 +46,9 @@ fi
 
 for repo_path in "${DIST_DIR}/${VCS_DIR}"/*
 do
-	repo=$(basename ${repo_path})
-	run tar -C "${DIST_DIR}/${VCS_DIR}" -c -f "${DIST_DIR}/${VCS_DIR}/${repo}.tar" "${repo}"
+	if [[ -d "${repo_path}" ]]
+	then
+		repo=$(basename ${repo_path})
+		run tar -C "${DIST_DIR}/${VCS_DIR}" -c -f "${DIST_DIR}/${VCS_DIR}/${repo}.tar" "${repo}"
+	fi
 done
