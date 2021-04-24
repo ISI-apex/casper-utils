@@ -295,3 +295,11 @@ then
 	sed -i 's/^EVCS_OFFLINE=1/#EVCS_OFFLINE=1/' "$ROOT"/etc/portage/make.conf
 	step_done vcs_online
 fi
+
+if ! step_is_done git_lfs
+then
+	# Note: we assume dev-vcs/git-lfs is listed in the profile's packages list
+	# installation of git-lfs needs another step
+	prun "git lfs install"
+	step_done git_lfs
+fi
