@@ -1,30 +1,82 @@
 Utilities for building CASPER and running experiments.
 
-Step 0. Clone this repository recursively
-------------------------------------------
+Clone this repository
+=====================
 
-This repository contains references to other repositories as git
-submodules. To fetch the whole tree, clone recursively:
+This repository stores and version-controls source tarballs as git LFS (Large
+File Storage) objects, so git-lfs is required to clone (assuming you want to
+build the prefix).
 
-    $ git clone --recursive https://github.com/ISI-apex/casper-utils
+On supported HPC clusters, this repository along with LFS storage is available
+on the shared file system, and it should be cloned from there, so that the
+tarballs are copied quickly rather than downloaded from a remote server.
 
-If you already cloned non-recursively then simply do this:
+On all systems without `git-lfs` (that includes all of the supported HPC
+clusters), first boostrap git-lfs from its upstream binary distribution
+(replace `CLUSTER` with one of {`generic`, `olcf-summit`, `anl-theta`,
+`isi-gpuk40`} or nothing for another generic Linux system):
 
-    $ git submodule init
-    $ git submodule update
+    $ ./bootstrap.sh CLUSTER
 
-Later, but before building, you'll need to checkout the latest release tag
-appropriate for the system on which you are going to build, and then
-update to the latest ebuilds repo (following instructions in the Update
-section below). Building master tip branch from scratch is not recommended,
-because it moves quickly and not every commit is tested, so it is too likely
-for the from-scratch build job to fail. Release tags have been verified to
-build successfully to the end on the system mentioned in the tag's release
-note. You can checkout a tag with:
+Set the `PATH` env variable so that this git-lfs installation is found (you
+must do this if you open a new shell between the previous bootstrap command and
+the clone command):
+
+    $ PATH=$PATH:$PWD/git-lfs/prefix/bin
+
+Check that `git-lfs` is found:
+
+    $ git-lfs -v
+
+NOTE: this git-lfs is used only as a bootstrap for this first clone; later,
+when Gentoo Prefix is built, git-lfs is installed into the Prefix, and that
+version will get used for all git operations done from within Prefix (which is
+preferred).
+
+This repository contains references to other repositories as git submodules. To
+fetch the whole tree, clone recursively.
+
+Note that the `file://` URI prefix is required by `git-lfs`.
+
+* On ***OLCF Summit***:
+
+        $ git clone --recursive file:///gpfs/alpine/csc436/proj-shared/repos/casper-utils.git
+
+* On ***ANL Theta***:
+
+        $ git clone --recusrive file:///lus/theta-fs0/projects/CASPER/repos/casper-utils.git
+
+* On ***Generic Linux system***:
+
+        $ git clone --recursive https://github.com/ISI-apex/casper-utils.git
+
+### Switch to a release tag
+
+Before building the prefix, checkout the latest release tag appropriate for the
+system on which you are going to build:
 
     $ cd casper-utils
     $ git checkout TAG_IDENTIFIER
     $ git submodule update --rebase
+
+We clone master, but we roll back to the latest release tag to build the
+Prefix, because the release tag has been tested, while the master tip is very
+likely to be broken (because it moves quickly and is not tested on all
+platforms on every commit). Once release tag is built, follow the instructions
+in the Update section of this README to update to the master tip.
+
+### Unpack the VCS tarballs
+
+Some sources stored in `git-lfs` need to be unpacked:
+
+    $ cd casper-utils
+    $ ./unpack.sh
+
+This unpacks the clones of `git` repositories for VCS packages (i.e. packages
+built direcly from a clone of the upstream git repositroy rather than a
+released tarball). These repository clones are stored in packed form in order
+to avoid adding thousands of small files as LFS objects. If repos are updated,
+before they can be added to LFS, they need to be packed with `./pack.sh`.
 
 Build Gentoo Prefix with CASPER and dependencies
 ================================================
@@ -54,113 +106,8 @@ usually very quick and easy to write a new `.ebuild` for some new software
 library or app, starting from an existing `.ebuild` as a template, and there
 are tens of thousands of packages already available (see `eix searchstring`).
 
-Step 1. Prepare source tarballs
-------------------------------
-
-To build Gentoo Prefix need to pre-populate `distfiles/` directory
-with some special source tarballs (even if the build host is online).
-
-On some supported HPC clusters, the `distfiles/` directory can be copied
-from a shared filesystem:
-* On USC HPCC/Discovery clusters:
-
-        $ rsync -aq /project/jpwalter_356/distfiles/ casper-utils/distfiles/
-
-* On ANL Theta:
-
-	$ rsync -aq /lus/theta-fs0/projects/CASPER/distfiles/ casper-utils/distfiles/
-
-* On Oak Ridge Summit:
-
-	$ rsync -aq /ccs/proj/csc436/distfiles/ casper-utils/distfiles/
-
-* On the ISI gpuk40 machine:
-
-        $ rsync -aq /home/casper/distfiles/ casper-utils/distfiles/
-
-* On other hosts, the same directory is available as a tar archive, which needs
-to be downloaded manually from the link below via a browser (or by using
-`gdown` tool, `curl`/`wget` likely will not work due to Google intricacies)
-and extracted at root of this repository; `TAG_DATE` should be the date
-on the latest release tag:
-
-        $ cd casper-utils
-        $ gdown https://drive.google.com/uc?id=1M90ZyBjODuO5TKllZBfof0Vwoy1z2jfP
-        $ tar xf distfiles-TAG_DATE.tar
-
-Regardless of on which system in the above list, make your copy writeable:
-
-	$ chmod -R u+rw casper-utils/distfiles/
-
-### Supplemental information: unfetchable tarballs
-
-Online build hosts will automatically fetch tarballs from upstream (subject to
-broken links or server downtime), but some tarballs (listed below) cannot be
-fetched from upstream at all. So, even for online hosts, you have to obtain
-the tarball directory as described above.
-
-For reference, the special source tarballs that cannot be fetched from upstream:
-
-* `portage-DATE.tar.bz2`
-* `gentoo-DATE.tar.bz2`
-
-  The snapshot date is indicated in the job script.  Cannot always be fetched
-  from online, because upstream hosts only about 1 month.
-
-* `gentoo-headers{,-base}-KERNEL_VERSION.tar.gz`
-
-  Archives for the kernel version running on the host. The archives for 3.10
-  are available in `distfiles/` (see below). To make an archive for other kernel
-  versions, see the comments in the ebuild.
-
-* `tetgen` (manually fill out form to get download link)
-* `ampi` (manually fill out form to get download link)
-* `pyop2` (due to checksum changes in tarball autogenerated by GitHub?)
-
-Note: It is important to use `.tar.gz` archive format (not `.tar.bz2`)
-for tarballs used during the stage 1 of bootstrap, because otherwise
-the build host needs to have bzip2 installed (an extra dependency). In
-the provided distfiles archive and directory, the format is `tar.gz`.
-
-### Maintaining the shared distfiles directories
-
-The procedure followed is that every prefix build (or at least each user) makes
-its own copy of distfiles directory, because rarely but sometimes changes might
-happen, e.g. when a download of a new tarball results in an error, files are
-left around, need to be removed, or for live ebuilds that build from VCS, the
-git repository is clone is kept in distfiles directory, so it gets updated
-every time the package is rebuilt, so it's not a good idea to let multiple
-prefixes be updating that same git repo concurrently.
-
-The shared directory itself is manually updated when casper-utils is tagged
-(signifying a tested end-to-end prefix build from scratch on at least one
-system, see notes at the top of this README). The shared directory is usually
-updated from a copy in the prefix that had been updated.
-
-To enforce that nothing is written into the shared distfiles directory, the
-owner of the files manually changes the permissions to make everything
-non-writable to everyone, including the owner. For the update, the owner
-temporarily makes the files writable.
-
-For the update, temporarily make the contents of the shared directory writable:
-
-      chmod -R o+w PATH_TO_SHARED/distfiles/
-
-Do the copy from an updated distfiles directory:
-
-      rsync -aq PATH_TO_PRIVATE/distfiles/ PATH_TO_SHARED/distfiles/
-
-Make what you just copied readable for everyone:
-
-      chmod -R a+r PATH_TO_SHARED/distfiles/
-      find PATH_TO_SHARED/distfiles/ -type d -exec chmod a+x {} \;
-
-Revert the permisions to read-only for everyone, including you the owner:
-
-      chmod -R a-w PATH_TO_SHARED/distfiles/
-
-Step 2. Run build job
----------------------
+Run build job
+-------------
 
 In all sections that follow:
 
@@ -761,6 +708,36 @@ rev-list --before=TIMESTAMP`, so if the repo clone in `distfiles/` is out of
 date, and emerge is disallowed to check online, it won't ever see new commits,
 and the `before` will evaluate to the same top commit, despite `TIMESTAMP`
 having increased.
+
+### Unfetchable tarballs
+
+Online build hosts will automatically fetch tarballs from upstream (subject to
+broken links or server downtime), but some tarballs (listed below) cannot be
+fetched from upstream at all. So, even for online hosts, you have to obtain
+the tarball directory as described above.
+
+For reference, the special source tarballs that cannot be fetched from upstream:
+
+* `portage-DATE.tar.bz2`
+* `gentoo-DATE.tar.bz2`
+
+  The snapshot date is indicated in the job script.  Cannot always be fetched
+  from online, because upstream hosts only about 1 month.
+
+* `gentoo-headers{,-base}-KERNEL_VERSION.tar.gz`
+
+  Archives for the kernel version running on the host. The archives for 3.10
+  are available in `distfiles/` (see below). To make an archive for other kernel
+  versions, see the comments in the ebuild.
+
+* `tetgen` (manually fill out form to get download link)
+* `ampi` (manually fill out form to get download link)
+* `pyop2` (due to checksum changes in tarball autogenerated by GitHub?)
+
+Note: It is important to use `.tar.gz` archive format (not `.tar.bz2`)
+for tarballs used during the stage 1 of bootstrap, because otherwise
+the build host needs to have bzip2 installed (an extra dependency). In
+the provided distfiles archive and directory, the format is `tar.gz`.
 
 Updating
 --------
