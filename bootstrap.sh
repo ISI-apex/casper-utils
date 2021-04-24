@@ -97,13 +97,17 @@ else
 	# bootstrap will simply ignore LFS.
 	trap "run git lfs uninstall" EXIT
 fi
-# Do not expose this bootstrapped git-lfs outside this script;
-# if it's not installed
-trap "run git lfs uninstall" EXIT
 
 run git submodule init
 run git submodule update
 
+# Workaround for git-lfs bug that causes pull to fail
+# https://github.com/git-lfs/git-lfs/issues/4488
+DUMMY_REPO=.git-lfs-dummy
+[[ -d "${DUMMY_REPO}" ]] || git init --bare "${DUMMY_REPO}"
+git config filter.lfs.clean "git --git-dir ${DUMMY_REPO} lfs clean -- %f"
+
 run git lfs pull
+run git lfs fsck
 
 run ./unpack.sh
