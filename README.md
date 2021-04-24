@@ -3,80 +3,60 @@ Utilities for building CASPER and running experiments.
 Clone this repository
 =====================
 
-This repository stores and version-controls source tarballs as git LFS (Large
-File Storage) objects, so git-lfs is required to clone (assuming you want to
-build the prefix).
+This repository needs to be cloned carefully, because it makes use of:
+* submodules to depend on repositories that need to be separate
+* git LFS (Large File Storage) to store source tarballs
+* some tarballs stored in git LFS need to be unpacked (repos for VCS packages)
+
+The cloning proceedure is:
+1. clone the repository non-recursively from the "closest" clone (aka. mirror)
+2. run the bootstrap script that initializes submodules and git lfs objects
 
 On supported HPC clusters, this repository along with LFS storage is available
 on respective shared file systems, and it should be cloned from there, so that
-the tarballs are copied quickly rather than downloaded from a remote server.
+the tarballs are copied quickly rather than downloaded.
 
-On all systems without `git-lfs` (that includes all of the supported HPC
-clusters), first boostrap git-lfs from its upstream binary distribution
-(replace `CLUSTER` with one of {`generic`, `olcf-summit`, `anl-theta`,
-`isi-gpuk40`} or nothing for another generic Linux system):
+The clone commands below select a release rather than master tip. The workflow
+is: (1) build a release, (2) update to master tip (accoding to instructions
+in the Update section below). This is necessary because only releases
+have been tested to build without errors, while the master tip is very
+likely to be broken (because it moves quickly and is not tested on all
+platforms on every commit). Not all releases have been tested on all
+platforms, select the release tested on your platform from the ones available
+on [releases page on GitHub](https://github.com/ISI-apex/casper-utils/releases).
 
-    $ ./bootstrap.sh CLUSTER
+In the following commands, replace `RELEASE_ID` with the tag name chosen above.
 
-Set the `PATH` env variable so that this git-lfs installation is found (you
-must do this if you open a new shell between the previous bootstrap command and
-the clone command):
-
-    $ PATH=$PATH:$PWD/git-lfs/prefix/bin
-
-Check that `git-lfs` is found:
-
-    $ git-lfs -v
-
-NOTE: this git-lfs is used only as a bootstrap for this first clone; later,
-when Gentoo Prefix is built, git-lfs is installed into the Prefix, and that
-version will get used for all git operations done from within Prefix (which is
-preferred).
-
-This repository contains references to other repositories as git submodules. To
-fetch the whole tree, clone recursively.
-
-Note that the `file://` URI prefix is required by `git-lfs`.
+Take care to include the `file://` URI prefix, since required by `git-lfs`.
 
 * On ***OLCF Summit***:
 
-        $ git clone --recursive file:///gpfs/alpine/csc436/proj-shared/repos/casper-utils.git
+        $ git clone -b RELEASE_ID file:///gpfs/alpine/csc436/proj-shared/repos/casper-utils.git
+        $ ./bootstrap.sh
 
 * On ***ANL Theta***:
 
-        $ git clone --recusrive file:///lus/theta-fs0/projects/CASPER/repos/casper-utils.git
+        $ git clone -b RELEASE_ID file:///lus/theta-fs0/projects/CASPER/repos/casper-utils.git
+        $ ./bootstrap.sh
 
-* On ***Generic Linux system***:
+* On ***ISI gpuk40***:
 
-        $ git clone --recursive https://github.com/ISI-apex/casper-utils.git
+        $ git clone -b RELEASE_ID file:///home/pub/casper/repos/casper-utils.git
+        $ ./bootstrap.sh
 
-### Switch to a release tag
+* On ***Generic Linux system*** (TODO: no public LFS server available yet, so
+  can only clone the repo without LFS objects, won't be able to build the
+  Prefix!):
 
-Before building the prefix, checkout the latest release tag appropriate for the
-system on which you are going to build:
+        $ GIT_LFS_SKIP_SMUDGE=1
+        $ git clone -b RELEASE_ID https://github.com/ISI-apex/casper-utils.git
+        $ ./bootstrap.sh
 
-    $ cd casper-utils
-    $ git checkout TAG_IDENTIFIER
-    $ git submodule update --rebase
-
-We clone master, but we roll back to the latest release tag to build the
-Prefix, because the release tag has been tested, while the master tip is very
-likely to be broken (because it moves quickly and is not tested on all
-platforms on every commit). Once release tag is built, follow the instructions
-in the Update section of this README to update to the master tip.
-
-### Unpack the VCS tarballs
-
-Some sources stored in `git-lfs` need to be unpacked:
-
-    $ cd casper-utils
-    $ ./unpack.sh
-
-This unpacks the clones of `git` repositories for VCS packages (i.e. packages
-built direcly from a clone of the upstream git repositroy rather than a
-released tarball). These repository clones are stored in packed form in order
-to avoid adding thousands of small files as LFS objects. If repos are updated,
-before they can be added to LFS, they need to be packed with `./pack.sh`.
+Note: The bootstrapped git-lsf is inaccessible outside the bootstrap script
+deliberately. After you build the Prefix, do all git operations from within the
+Prefix to use the git and git-lfs that's installed in the Prefix. This has the
+added benefit of a recent git version that works faster with submodules than
+the ancient git versions installed on HPC clusters.
 
 Build Gentoo Prefix with CASPER and dependencies
 ================================================
