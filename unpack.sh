@@ -49,8 +49,10 @@ do
 	repo_dir="${repo_tarball%.tar}"
 	if [[ -d "${repo_dir}" ]]
 	then
-		echo "ERROR: directory already exists: ${repo_dir}" 1>&2
-		exit 3
+		# TODO: ideally we'd check if the archive is newer, and if so,
+		# replace the existing dir, but no easy way to do such a check.
+		echo "WARNING: skipping existing: ${repo_dir}" 1>&2
+		continue
 	fi
 	run tar -C "${DIST_DIR}/${VCS_DIR}" -x -f "${repo_tarball}"
 done
