@@ -8,8 +8,8 @@ File Storage) objects, so git-lfs is required to clone (assuming you want to
 build the prefix).
 
 On supported HPC clusters, this repository along with LFS storage is available
-on the shared file system, and it should be cloned from there, so that the
-tarballs are copied quickly rather than downloaded from a remote server.
+on respective shared file systems, and it should be cloned from there, so that
+the tarballs are copied quickly rather than downloaded from a remote server.
 
 On all systems without `git-lfs` (that includes all of the supported HPC
 clusters), first boostrap git-lfs from its upstream binary distribution
