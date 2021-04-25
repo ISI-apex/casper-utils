@@ -1,5 +1,4 @@
 .*.swp
 .*.swo
-distfiles/git3-src/*/
 git-lfs/
 .git-lfs-dummy/
