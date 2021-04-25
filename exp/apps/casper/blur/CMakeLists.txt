@@ -11,7 +11,7 @@ set(INPUT_IMG
   #casper.bmp
   #casper-tiled10.bmp
 )
-configure_file(${INPUT_IMG} casper.bmp COPYONLY)
+configure_file(../../../data/images/${INPUT_IMG} casper.bmp COPYONLY)
 
 casper_add_exec(blur blur.meta
   SOURCES blur.meta.cpp halide_kern.meta.cpp
