@@ -109,5 +109,3 @@ git config filter.lfs.clean "git --git-dir ${DUMMY_REPO} lfs clean -- %f"
 
 run git lfs pull
 run git lfs fsck
-
-run ./unpack.sh

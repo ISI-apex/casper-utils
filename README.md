@@ -6,7 +6,6 @@ Clone this repository
 This repository needs to be cloned carefully, because it makes use of:
 * submodules to depend on repositories that need to be separate
 * git LFS (Large File Storage) to store source tarballs
-* some tarballs stored in git LFS need to be unpacked (repos for VCS packages)
 
 The cloning proceedure is:
 1. clone the repository non-recursively from the "closest" clone (aka. mirror)
