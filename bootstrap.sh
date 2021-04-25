@@ -91,12 +91,10 @@ then
 		echo "INFO: git-lfs present but not installed:" \
 			"installing temporarily"
 		run git lfs install --local
-		trap "run git lfs uninstall --local" EXIT
 	fi
 else
 	bootstrap_git_lfs # upstream script does 'git lfs install'
 	git lfs install --local
-	trap "run git lfs uninstall --local" EXIT
 fi
 
 run git submodule init
