@@ -31,31 +31,67 @@ Take care to include the `file://` URI prefix, since required by `git-lfs`.
 * On **OLCF Summit**:
 
         $ git clone -b RELEASE_ID file:///gpfs/alpine/csc436/proj-shared/repos/casper-utils.git
+        $ cd casper-utils
         $ ./bootstrap.sh
 
 * On **ANL Theta**:
 
         $ git clone -b RELEASE_ID file:///lus/theta-fs0/projects/CASPER/repos/casper-utils.git
+        $ cd casper-utils
         $ ./bootstrap.sh
 
 * On **ISI gpuk40**:
 
         $ git clone -b RELEASE_ID file:///home/pub/casper/repos/casper-utils.git
+        $ cd casper-utils
         $ ./bootstrap.sh
 
-* On **Generic Linux system** (TODO: no public LFS server available yet, so
-  can only clone the repo without LFS objects, won't be able to build the
-  Prefix!):
+* On **Generic Linux system**: no public LFS server is available yet, and
+  LFS cannot transfer objects over SSH (only over HTTP or over local
+  `file://`), this leaves the following options:
 
-        $ GIT_LFS_SKIP_SMUDGE=1
-        $ git clone -b RELEASE_ID https://github.com/ISI-apex/casper-utils.git
+  - clone the repo without LFS objects (won't be able to build the Prefix):
+
+        $ GIT_LFS_SKIP_SMUDGE=1 git clone --recursive -b RELEASE_ID https://github.com/ISI-apex/casper-utils.git
+
+  - if you have SSH access to one of the above systems, transfer the bare
+    repo to your system and clone from it:
+
+        $ rsync -aP USER@HOST:/PATH/TO/casper-utils.git .
+        $ git clone file://$PWD/casper-utils.git casper-utils
+        $ cd casper-utils
         $ ./bootstrap.sh
+
+  - if you don't have access yourself, then you could ask someone who does to
+    make you a tarball of the bare repo directory `casper-utils.git/`.
+
+        $ tar xf casper-utils.git.tar
+        $ git clone file://$PWD/casper-utils.git casper-utils
+        $ cd casper-utils
+        $ ./bootstrap.sh
+
+  - if you have SSH access to one of the above systems, mount the remote file
+    system using `sshfs` (sshfs need to be installed as root on your
+    system, because fusermount needs to have setuid root permission):
+
+        $ mkdir -p /mnt/host/repos
+        $ sshfs USER@HOST:/PATH/TO/repos /mnt/host/repos
+        $ git clone file:///mnt/host/repos/casper-utils.git casper-utils
+        $ cd casper-utils
+        $ ./bootstrap.sh
+        $ fusermount -u /mnt/host/repos
 
 Note: The bootstrapped git-lsf is inaccessible outside the bootstrap script
 deliberately. After you build the Prefix, do all git operations from within the
 Prefix to use the git and git-lfs that's installed in the Prefix. This has the
 added benefit of a recent git version that works faster with submodules than
 the ancient git versions installed on HPC clusters.
+
+Note: The clones spread around various platforms are all subordinate to
+the master clone on GitHub. When pushing changes, you must push to GitHub
+clone first, and only after that you can push to the other clones. Having
+a designated master clone is critical, because a synchronization funnel is
+needed among all the committers, otherwise clones could diverge.
 
 Build Gentoo Prefix with CASPER and dependencies
 ================================================
