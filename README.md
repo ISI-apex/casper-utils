@@ -93,6 +93,26 @@ clone first, and only after that you can push to the other clones. Having
 a designated master clone is critical, because a synchronization funnel is
 needed among all the committers, otherwise clones could diverge.
 
+Note: We do not use GitHub's free-tier LFS storage, but there's no way
+to disable it for the repository on Github.com [1], no way to disable
+per remote on the client [2], and even no working way to override the LFS
+storage endpoint per remote on the client (`git config
+remote.REMOTENAME.lfsurl` is not honored). So, the workaround is: before
+pushing to GitHub make sure to disable LFS.
+
+Assuming you cloned from a clone other than the GitHub clone (see above),
+add GitHub as a remote clone under the name of `gh` (only need to this
+once after you cloned above):
+
+    $ git remote add gh git@github.com:ISI-apex/casper-utils.git
+
+Then, when you want to push to GitHub, temporarily disable LFS:
+
+    $ git lfs uninstall
+    $ git push gh master
+    $ git lfs install
+
+
 Build Gentoo Prefix with CASPER and dependencies
 ================================================
 
@@ -1149,3 +1169,6 @@ The speedup from best parameter values over poorest or over average parameter
 values can be plotted using scripts in `exp/tune/`, however at the moment, the
 raw data output by the previous steps needs to be manually post-processed to
 extract aggregated maximum/minimum/etc values.
+
+[1] https://docs.github.com/en/github/managing-large-files/removing-files-from-git-large-file-storage#git-lfs-objects-in-your-repository
+[2] https://stackoverflow.com/questions/36626793/disable-git-lfs-for-a-remote
