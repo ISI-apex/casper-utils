@@ -104,8 +104,8 @@ run git submodule update
 # Workaround for git-lfs bug that causes pull to fail
 # https://github.com/git-lfs/git-lfs/issues/4488
 DUMMY_REPO=.git-lfs-dummy
-[[ -d "${DUMMY_REPO}" ]] || git init --bare "${DUMMY_REPO}"
-git config filter.lfs.clean "git --git-dir ${DUMMY_REPO} lfs clean -- %f"
+[[ -d "${DUMMY_REPO}" ]] || run git init --bare "${DUMMY_REPO}"
+run git config filter.lfs.clean "git --git-dir ${DUMMY_REPO} lfs clean -- %f"
 
 run git lfs pull
 run git lfs fsck
