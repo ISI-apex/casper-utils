@@ -70,13 +70,13 @@ function bootstrap_git_lfs() {
 	mkdir -p "${PREFIX_DIR}"
 
 	PREFIX=${PREFIX_DIR} run ./install.sh
+	PATH=$PATH:${PREFIX_DIR}/bin
+
 	# The install script installs git-lfs globally, but we don't want to
 	# change user's config from this script, so install local to repo.
 	run git lfs uninstall
 
-	PATH=$PATH:${PREFIX_DIR}/bin
-
-	run git-lfs -v
+	run git lfs -v
 	popd
 	echo "Bootstrapped git-lfs successfully"
 }
