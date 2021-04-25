@@ -68,7 +68,11 @@ function bootstrap_git_lfs() {
 
 	PREFIX_DIR=$PWD/prefix
 	mkdir -p "${PREFIX_DIR}"
+
 	PREFIX=${PREFIX_DIR} run ./install.sh
+	# The install script installs git-lfs globally, but we don't want to
+	# change user's config from this script, so install local to repo.
+	run git lfs uninstall
 
 	PATH=$PATH:${PREFIX_DIR}/bin
 
@@ -86,16 +90,13 @@ then
 	then
 		echo "INFO: git-lfs present but not installed:" \
 			"installing temporarily"
-		run git lfs install
-		# Leave no trace: don't change the user's config
-		trap "run git lfs uninstall" EXIT
+		run git lfs install --local
+		trap "run git lfs uninstall --local" EXIT
 	fi
 else
 	bootstrap_git_lfs # upstream script does 'git lfs install'
-	# Do not expose this bootstrapped git-lfs outside this script.
-	# If git-lfs was not installed, then git operations done after
-	# bootstrap will simply ignore LFS.
-	trap "run git lfs uninstall" EXIT
+	git lfs install --local
+	trap "run git lfs uninstall --local" EXIT
 fi
 
 run git submodule init
