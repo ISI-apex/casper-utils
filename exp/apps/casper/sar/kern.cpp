@@ -238,8 +238,6 @@ void save(uint8_t *img_dat_buf, uint8_t *img_dat,
         .type =  halide_type_t{halide_type_uint, /* bits */ 8, /* lanes*/ 1},
         .dimensions = dims,
         .dim = dim,
-
-        .padding = NULL,
     };
     Halide::Buffer img_b{img_hb};
 
