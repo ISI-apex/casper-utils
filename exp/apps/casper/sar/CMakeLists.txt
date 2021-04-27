@@ -21,7 +21,6 @@ find_path(CNPY_INCLUDE_DIR cnpy.h
 set(H_SAR halide-sar-app)
 
 set(INPUT_DATA_DIR ${H_SAR}/data/AFRL/pass1/HH_npy)
-
 file(GLOB INPUT_DATA_FILES ${INPUT_DATA_DIR}/*)
 set(INPUT_DATA_BLD_DIR input_data_dir)
 file(MAKE_DIRECTORY ${INPUT_DATA_BLD_DIR})
@@ -55,6 +54,7 @@ casper_add_exec(sarbp sarbp.meta
     Halide::ImageIO
   PLATFORM platform.ini
   TUNED_PARAMS tuned-params.ini
+  RUNTIME_CFG crt.ini
 )
 target_link_libraries(sarbp.meta LINK_PUBLIC ${CNPY})
 
