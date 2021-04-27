@@ -1,13 +1,17 @@
+CC?=mpicc
+CFLAGS?=-O0 -g
+LIBS?=
+
 all: mpitest mpitest_dbg mpitest_sleep
 
 mpitest: mpitest.c
-	mpicc -O0 -g -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
 
 mpitest_dbg: mpitest.c
-	mpicc -O0 -g -DWAIT_FOR_DEBUGGER -o $@ $<
+	$(CC) $(CFLAGS) -DWAIT_FOR_DEBUGGER -o $@ $< $(LIBS)
 
 mpitest_sleep: mpitest.c
-	mpicc -O0 -g -DSLEEP -o $@ $<
+	$(CC) $(CFLAGS) -DSLEEP -o $@ $< $(LIBS)
 
 clean:
 	rm -f *.o mpitest mpitest_dbg mpitest_sleep
