@@ -106,11 +106,12 @@ once after you cloned above):
 
     $ git remote add gh git@github.com:ISI-apex/casper-utils.git
 
-Then, when you want to push to GitHub, temporarily disable LFS:
+Then, when you want to push to GitHub, temporarily disable LFS
+(note, this assumes git-lfs is *not* installed globally):
 
-    $ git lfs uninstall
+    $ git lfs uninstall --local
     $ git push gh master
-    $ git lfs install
+    $ git lfs install --local
 
 
 Build Gentoo Prefix with CASPER and dependencies
