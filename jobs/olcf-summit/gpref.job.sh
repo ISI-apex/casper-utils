@@ -3,6 +3,10 @@
 set -e
 
 ACCOUNT=csc436
+if [[ -z "${MAX_TIME}" ]]
+then
+	MAX_TIME=24:00
+fi
 
 PPATH=$1
 PROFILE=$2
@@ -40,7 +44,7 @@ EXTRA_ENV=(
 )
 
 exec bsub "${ARGS[@]}" -P "${ACCOUNT}" \
-	-nnodes 1 -W 24:00 -q killable \
+	-nnodes 1 -W "${MAX_TIME}" -q killable \
 	-J "gpref-${tstamp}" \
 	-o "${LOGDIR}/gpref-${tstamp}.%J.log" \
 	jsrun -n 1 --cpu_per_rs ALL_CPUS --bind none \

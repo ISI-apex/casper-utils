@@ -2,6 +2,11 @@
 
 set -e
 
+if [[ -z "${MAX_TIME}" ]]
+then
+	MAX_TIME=23:59:00
+fi
+
 # set env var BARE to non-zero value if you just want a prefix
 # configured with CASPER overlay, but do not want to build the numerical
 # libraries.
@@ -68,14 +73,14 @@ qjob() {
 tstamp=$(date +%Y%m%d%H%M%S)
 
 # Actual time: ~15 hours (but leave margin)
-qjob sbatch "${ARGS[@]}" --time 23:59:00 \
+qjob sbatch "${ARGS[@]}" --time "${MAX_TIME}" \
 	--output="${LOGDIR}"/gpref-${tstamp}.out \
 	--error="${LOGDIR}"/gpref-${tstamp}.err \
 	${SELF_DIR}/gpref-sys.sh "${PPATH}"
 
 # Actual time: ~18 hours (but leave margin)
 qjob sbatch --dependency=afterok:$JOBID \
-	"${ARGS[@]}" --time 23:59:00 \
+	"${ARGS[@]}" --time "${MAX_TIME}" \
 	--output="${LOGDIR}"/gpref-profile-${tstamp}.out \
 	--error="${LOGDIR}"/gpref-profile-${tstamp}.err \
 	${SELF_DIR}/gpref-profile.sh "${PPATH}" "${PROFILE}"
