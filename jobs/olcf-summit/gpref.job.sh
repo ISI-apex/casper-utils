@@ -43,6 +43,7 @@ EXTRA_ENV=(
 	TMPDIR
 )
 
+set -x
 exec bsub "${ARGS[@]}" -P "${ACCOUNT}" \
 	-nnodes 1 -W "${MAX_TIME}" -q killable \
 	-J "gpref-${tstamp}" \
