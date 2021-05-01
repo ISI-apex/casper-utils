@@ -1,6 +1,6 @@
-CC?=mpicc
-CFLAGS?=-O0 -g
-LIBS?=
+CC=mpicc
+CFLAGS=-O0 -g
+LIBS=
 
 all: mpitest mpitest_dbg mpitest_sleep
 
