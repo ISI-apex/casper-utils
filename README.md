@@ -414,22 +414,34 @@ First, check that the CUDA compiler is installed:
     $ nvcc --version
     nvcc: NVIDIA (R) Cuda compiler driver
 
+Switch to a gcc version that's compatible with CUDA:
+
+    $ cuda-config -s
+    ... 8.4
+    $ gcc-config -l
+    [1] ...-8.4
+    [2] ...-10.2
+    $ gcc-config 1
+    $ gcc --version
+    ...8.4
+
 There is a hello-world CUDA application in `exp/apps/cuda`: It has currently
 been tested only on a generic Linux host (with an Nvidia K40 GPU), not
 on any HPC clusters.
 
     $ cd exp/apps/cuda
     $ make
-    $ ./add_cuda
     $ ./add_managed
+
+Switch back to the latest gcc, or else other builds will fail:
+
+    $ gcc-config 2
+    $ gcc --version
+    ...10.2
 
 ### Known issues
 
-* Only one of {`add_copy`, `add_managed`} ever worked. I can't remember which
-one.
-
-* The app that did work on a generic Linux host with an earlier version of
-CUDA now segfaults with CUDA v11.
+* Only `add_managed` (unified memory) not `add_copy` works.
 
 CFD application test: Cahn-Hilliard
 -----------------------------------
@@ -500,6 +512,15 @@ Enter the prefix, if you're not already in the prefix:
 
     $ PREFIX_PATH/startprefix
 
+Make sure you have the latest GCC version selected (otherwise you might get
+erros from the `ld` linker, which is used with Clang too):
+
+    $ gcc-config -l
+    [1] ...-8.4
+    [2] ...-10.2
+    $ gcc-config 2
+    $ gcc --version
+
 ### Build the CASPER compiler:
 
     $ cd casper-utils/compiler
@@ -530,6 +551,8 @@ Run the SAR app (On Theta, must be on a worker node (not login, not MOM
 node)!):
 
     $ make sarbp.run
+
+Output image is in the current directory (build directory) `output_image.png`.
 
 ### CFD app
 
@@ -568,6 +591,9 @@ the app must be invoked via the mpi launcher):
     $ make ch.run
 
 You can add `make VERBOSE=1` to the make command to see the invoked command line.
+
+The output is in `ch-sol.pvd` file in the current directory (build directory),
+and can be viwed with ParaView GUI software.
 
 #### Known Issues
 
