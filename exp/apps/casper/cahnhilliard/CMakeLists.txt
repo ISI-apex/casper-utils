@@ -9,6 +9,7 @@ casper_add_exec(ch ch.meta
   SOURCES ch.meta.cpp
   PLATFORM platform.ini
   TUNED_PARAMS tuned-params.ini
+  RUNTIME_CFG crt.ini
   )
 
 # TODO: workaround: the app has to set Python_SITELIB explicitly.
