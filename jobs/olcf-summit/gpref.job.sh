@@ -5,7 +5,7 @@ set -e
 ACCOUNT=csc436
 if [[ -z "${MAX_TIME}" ]]
 then
-	MAX_TIME=24:00
+	MAX_TIME=14:00
 fi
 
 PPATH=$1
