@@ -3,6 +3,14 @@
 
 MAKEFLAGS+=--keep-going
 
+# On some systems, make forces SHELL to /bin/sh (outside of prefix).
+# TODO: The root cause of this needs to be found, but until then,
+# set the shell for all systems:
+ifeq (${EPREFIX},)
+$(error EPREFIX env var is not set to the full path to Prefix directory)
+endif
+SHELL=${EPREFIX}/bin/bash
+
 # Some defaults used by various functions here
 NOLOCAL?=1
 OVERSUBSCRIBE?=
