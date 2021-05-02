@@ -35,6 +35,8 @@ define is-dbg-q
 $(findstring debug,$(QUEUE_ARG))
 endef
 
+include $(EPREFIX)/usr/lib/prefix-tools/make/Makefile.job
+
 COMMA:=,
 
 ifeq ($(IN),)
