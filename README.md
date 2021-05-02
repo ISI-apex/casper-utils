@@ -351,15 +351,17 @@ prefix path:
 Then, while your shell is still in the prefix, run the app with
 the following test scripts.
 
+The test is scripted in `test-mpi.sh`, and instructions for running
+it are below. The script takes one optional argument that sets the number of
+nodes. By default only one node will be assumed, so the test will execute
+multiple ranks on a single node.
+
 ### On a generic host
 
 On a host (compatible with the ARCH for which the prefix was built):
 
     $ cd casper-utils/exp/test-prefix
     $ bash test-mpi.sh
-
-Note: On a generic host, `test-mpi.sh` will only test multiple ranks on a
-single node. Modify the script if you want something different.
 
 ### On USC HPCC and Discovery
 
@@ -465,7 +467,7 @@ job (on Theta this would be the MOM node, and on Summit the batch node):
    execute for a different mesh size, ranks, etc.; application output and
    time info will be in `dat/test-1/` directory):
 
-        $ make IN=1 dat/test-1/ch_mesh-64_ranks-4_tpn-16.csv
+        $ make IN=1 dat/test-1/ch_mesh-64_ranks-4_tpn-16_steps-5.csv
 
 3. Terminate the DVM (you may invoke multiple jobs without restarting the DVM;
    the invocations may even be concurrent in theory, but this is broken in
