@@ -65,3 +65,7 @@ add_dependencies(sarbp.link dft)
 add_custom_target(sarbp.run
   COMMAND ${sarbp_BUILD_DIR}/sarbp
   DEPENDS ${sarbp_BUILD_DIR}/sarbp)
+
+add_custom_target(sarbp.mpirun
+  COMMAND mpirun -n 2 ${sarbp_BUILD_DIR}/sarbp
+  DEPENDS ${sarbp_BUILD_DIR}/sarbp)

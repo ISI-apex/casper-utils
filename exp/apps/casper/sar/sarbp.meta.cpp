@@ -158,6 +158,7 @@ int main(int argc, char **argv) {
 	Task& task_bp_dB = tg.createTask(HalideKernel("img_output_to_dB"),
                         {bp, bp_dB},
 			{&task_destroy_fft});
+        task_bp_dB.onlyRank0 = true;
 
 #if 1
 	Dat *bp_u8 = &tg.createIntDat(8, 2, {nu, nv});
@@ -166,11 +167,13 @@ int main(int argc, char **argv) {
 	Task& task_bp_u8 = tg.createTask(HalideKernel("img_output_u8"),
                         {bp_dB, dB_min, dB_max, bp_u8},
 			{&task_bp_dB});
+        task_bp_u8.onlyRank0 = true;
 #endif
 #endif
 
         Task& task_save = tg.createTask(CKernel("save"), {bp_u8},
 		{&task_bp_u8});
+        task_save.onlyRank0 = true;
 
 	return tryCompile(tg, opts);
 }
